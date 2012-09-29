@@ -8,7 +8,7 @@
 }
 \usage{
 Q.stats(obj, xvar = NULL, xcut.points = NULL, n.inter = 10, zvals = TRUE, 
-        save = TRUE, ...)
+        save = TRUE, plot = TRUE, ...)
 }
 
 \arguments{
@@ -19,6 +19,7 @@ Q.stats(obj, xvar = NULL, xcut.points = NULL, n.inter = 10, zvals = TRUE,
   \item{zvals}{if \code{TRUE} the output matrix contains the individual z's rather that  Q statistics}
   \item{save}{whether to save the Q-statistics or not with default equal to \code{TRUE}. 
             In this case the functions produce a matrix giving individual Q (or z) statistics and the final aggregate Q's}
+ \item{plot}{whether to plt the results}
    \item{\dots}{for extra arguments}
 }
 

@@ -6,6 +6,7 @@ Q.stats <- function(obj,
                     n.inter = 10,
                     zvals = TRUE,
                     save = TRUE,
+                    plot = TRUE,
                     ...)
 {
 # function 1 -------------------------
@@ -91,6 +92,73 @@ get.par.df <- function(obj)
         maxall <- max(c(mu.df,sigma.df,nu.df,tau.df)) 
       list(location=mu.df, scale=sigma.df, skewness=nu.df, kurtosis=tau.df, maximum=maxall )             
       }
+#----------------------------
+# function 5
+ 
+ Qstats.plot<- function(obj, zvals = TRUE)
+ {	
+       	 bg <- "white"	
+        dim <- dim(obj)	
+         nr <- dim[1]-3
+         nc <- dim[2]-2
+        Mat <- obj[1:nr, 1:nc]     
+      par(mar = c(0, 0, 2, 0), bg = "white")
+  plot.new()
+  plot.window(c(0, nr), c(0, nc), asp = 1)
+      rname <- rownames(Mat)
+      cname <- colnames(Mat)
+  xlabwidth <- max(strwidth(rname, cex = 1))
+  ylabwidth <- max(strwidth(cname, cex = 1))
+   plot.window(c(-xlabwidth + 0.5, nc + 0.5), c(0, nr + 1 + ylabwidth),
+                asp = 1, xlab="", ylab="")
+    rect(0.5, 0.5, nc + 0.5, nr + 0.5, col = bg)  ##background color
+    text(rep(-xlabwidth/2, nr), nr:1, rname, col = "red", cex = 1)
+    text(1:nc, rep(nr + 1 + ylabwidth/2, nc), cname, srt = 90, col = "red", 
+        cex = 1)
+title("Q-Statistics")
+    ## add grid
+    segments(rep(0.5, nr + 1), 0.5 + 0:nr, rep(nc + 0.5, nr + 1), 
+        0.5 + 0:nr, col = "gray")
+    segments(0.5 + 0:nc, rep(0.5, nc + 1), 0.5 + 0:nc, rep(nr + 0.5, 
+        nc), col = "gray")
+#rainbow(n, s = 1, v = 1, start = 0, end = max(1,n - 1)/n, alpha = 1)
+#heat.colors(n, alpha = 1)
+#terrain.colors(n, alpha = 1)
+#topo.colors(n, alpha = 1)
+ ## pick up color scheme
+         col <- colorRampPalette(c("blue","red"))(100)#colorRampPalette(c("blue","white","red"))(100)
+        lcol <- length(col)
+ ##    this depends of the values 
+ ##     for Z min(Mat) max(Mat) 
+ #       for Q 0 to max(Mat)
+          ff <- if (zvals)  seq(min(Mat),max(Mat), length=lcol+1) else seq(0,max(Mat), length=lcol+1)
+         bg2 <- rep(0, nr * nc)
+        for (i in 1:(nr * nc))
+        {
+            bg2[i] <- rank(c(ff[2:lcol], as.vector(Mat)[i]), 
+                            ties.method = "random")[lcol]
+        }
+        bg <- (col[1:lcol])[bg2]
+       
+       if (zvals)
+       {
+       forsquares <-  ifelse(as.vector(abs(Mat))>1.96, as.vector(sqrt(abs(Mat))/4), NA) 
+       symbols( as.vector(col(Mat)), as.vector(rev(row(Mat))), add = TRUE, inches = FALSE, 
+        circles = as.vector(sqrt(abs(Mat))/4), bg = as.vector(bg))
+       }
+       else
+       {
+       	forsquares <- ifelse(as.vector(Mat)>3.84, as.vector(sqrt(abs(Mat))/max(Mat)), NA) 
+       	symbols( as.vector(col(Mat)), as.vector(rev(row(Mat))), add = TRUE, inches = FALSE, 
+        circles = as.vector(sqrt(abs(Mat))/max(Mat)), bg = as.vector(bg))
+       } 
+  	#
+  #symbols(rep(1:nc, each = nr), rep(nr:1, nc), add = TRUE, inches = F, 
+  #      stars = cbind(.5, 1, as.vector(sqrt(abs(Mat))/max(Mat))), bg = as.vector(bg))
+  symbols(rep(1:nc, each = nr), rep(nr:1, nc), add = TRUE, inches = FALSE, 
+        squares = forsquares)     
+ }
+#----------------------------
 # main function starts here
     overlap <- 0
     if (is.gamlss(obj))  
@@ -181,6 +249,12 @@ get.par.df <- function(obj)
           dimnames(pval)[[1]]<-as.character(c("p-val for Q stats"))
           X <- rbind( X , nc ,ndf, pval)
           Z <- rbind( Z , nc ,ndf, pval)      
+if (plot)
+{
+	if (zvals) Qstats.plot(Z, zvals=zvals)  
+    else Qstats.plot(X, zvals=zvals) 
+}  
+    
 if (save) {
            if (zvals) return(Z)  
            else return(X)

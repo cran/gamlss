@@ -11,7 +11,7 @@ help/HTML help/packages/gamlss/directory/gamlss-manual.pdf
 
 More information and papers about GAMLSS can be found in
 
-http://www.gamlss.com/
+http://www.gamlss.org/
 
 Question or suggestions about GAMLSS can be send to
 
@@ -19,6 +19,42 @@ Question or suggestions about GAMLSS can be send to
 or
    r.rigby@londonmet.ac.uk
 ---------------------------------------------------------------------
+Version 4.1-9
+
+1. gamlss: The functions prof.dev() and prof.term() are improved. 
+    The argument step is not anymore compulsory and if not set the argument length is used. 
+    For most cases there is no need to have a fine grid  since the function is approximated using splinefun(). 
+    Also the output is saved as an "profDeviance.gamlss" object.     
+    TO DO: more testing is needed.
+
+2. gamlss.dist: All the FORTRAN routines have their REAL change to "double precession"
+
+3. gamlss.add: 
+                i) The function ga() have changed to accept all of Simon Wood's gam() arguments.
+                   This allows to fit random Markov fields using gamlss.
+               ii) The function penLags() for fitting penalised lag terms and its interface with gamlss la() are added here.
+              iii) The functions fitFixBP() and fitFreeKnots() have been moved from the
+                    gamlss.util packages to the gamlss.add package to be closer with their interface function fk() which allows 
+                    fitting within gamlss 
+               iv) BUG: the fk() function needs checking it seems that with the aids data produce the wrong break point
+
+
+4. gamlss.util: i) The functions fitFixBP() and fitFreeKnots() are moved to package gamlss.add
+               ii) garmaFit() for fitting generalised ARMA models is introduced
+              iii) centile.ts() for giving centiles for time series data is introduced
+               iv) lagPlot() for scatter plotting of lags is introduced.  
+
+5. gamlss : The function fitDist() allows extra arguments "…" to be passed to gamlssML() and gamlss(). 
+
+6. gamlss : The prof.dev() can be used now in conjunction with gamlssML()  
+
+7. gamlss.dist : The distribution function SICHEL has been amended to so in the limited case where sigma is bigger than 10000 and nu > zero it switches to the negative binomial.  (the old version has sigma>1000 which creates problem with the prof.dev() function when was used for nu in the lice data see the Stasinopoulos and Rigby (2007) paper in JSS. Thanks to Ivailo Stoyanov who point out the problem.)
+
+
+8. gamlss.data : i) the film30 and film90 data sets are introduced 
+
+9. gamlss: The function Q.stats() now allows plotting the resulting matrix for easy identification of the parts of the model which do not fit well. 
+                  
 Version 4.1-8
 
 1. The cs() and scs() are calling now the R function smooth.spline() rather than the FORTRAN code to comply with R regulations
@@ -27,8 +63,7 @@ Version 4.1-8
 
 3. The function lo() is rewritten to comply with R regulation. Now it takes a formula as its first argument rather than a list of explanatory variables. Also no standard errors for the smooth function are provided since the R function loess()  do not provide this information at the moment.
 
-4. The logic link function in the the package gamlss.dist is amended so it does not call 
-the R .C function.
+4. The logic link function in the package gamlss.dist is amended so it does not call the R .C function.
   
 
 Version 4.1-7

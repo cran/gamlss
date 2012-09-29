@@ -5,7 +5,6 @@
 #-------------------------------------------------------------------------------
 # the grouping of distributions
 #-------------------------------------------------------------------------------
-
 .realline <- c( 
   "NO", "GU", "RG" ,"LO", "NET", # 2 par
   "TF", "PE", "SN1", "SN2",  # 3 par
@@ -41,7 +40,7 @@ fitDist <- function(y,
                  type = c("realAll", "realline", "realplus","real0to1","counts", "binom" ), 
            try.gamlss = FALSE,  # whether to try the gamlss() if gamlssML() fails
                 extra = NULL,
-                 data = NULL) # for extra distributions to include 
+                 data = NULL, ...) # for extra distributions to include 
 {
   if (!is.null(data)) {attach(data); on.exit(detach(data))}
   type <- match.arg(type)
@@ -64,10 +63,10 @@ if  (!is.null(extra)) DIST <- c(DIST, extra)
     fits <- list()
 for (i in 1:length(DIST)) 
 {
-    m1 <- try(gamlssML(y,family=DIST[i]), silent=TRUE)
+    m1 <- try(gamlssML(y,family=DIST[i], ...), silent=TRUE)
         if (any(class(m1)%in%"try-error")&&try.gamlss==TRUE) 
         { 
-         m1 <-  try(gamlss(y~1,family=DIST[i], trace=FALSE),  silent=TRUE)
+         m1 <-  try(gamlss(y~1,family=DIST[i], trace=FALSE, ...),  silent=TRUE)
         }
     
        if (any(class(m1)%in%"try-error"))

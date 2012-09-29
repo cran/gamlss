@@ -1,5 +1,5 @@
 # this is an attempt to create a function which 
-# fits a GAMLSS distribution using non linear maximisation like optim()
+# fits a GAMLSS distribution using non-linear maximisation like optim()
 # in fact here we use MLE() which is a copy of the mle() function of stat4
 # The reason for doing this 
 #     i) to improve the speed of fitting 
@@ -24,7 +24,9 @@
 # only the MLE function is mainly effected
 # the optimHess() function is now used for the hessian matrix
 # the method optim.proc() in MLE allows to use  optim() or nlminb()
+
 # can we use profile likelihood here?
+# not yet but I am working on it now 
 #######################################################################################
 #names(m1)          
 #[5]  "weights"                   
@@ -121,24 +123,24 @@ gamlssML<-function(y,
    fullcoef[n] <- fixed
 		if (!missing(start) && (!is.list(start) || is.null(names(start)))) 
 			stop("'start' must be a named list")
-	 start[n] <- NULL
-		start <- sapply(start, eval.parent)
-		   nm <- names(start)
-		   oo <- match(nm, names(fullcoef))
+   	  start[n] <- NULL
+		 start <- sapply(start, eval.parent)
+		    nm <- names(start)
+		    oo <- match(nm, names(fullcoef))
 		if (any(is.na(oo))) 
 			stop("some named arguments in 'start' are not arguments to the supplied log-likelihood")
-		start <- start[order(oo)]
-		   nm <- names(start)
-		    f <- function(p) 
-		      {
+		 start <- start[order(oo)]
+		    nm <- names(start)
+		     f <- function(p) 
+		       {
 			           l <- as.list(p)
 			    names(l) <- nm
 			        l[n] <- fixed
 			    do.call("minuslogl", l)
-		      }
+		       }
 		     
   		 if (length(start))
-  		 {
+  		  {
   		  switch(optim.p, 
   		       "nlminb"={
               oout <- nlminb(start = start, objective = f,  control=optim.control)
@@ -157,15 +159,15 @@ gamlssML<-function(y,
         oout$hessian <- optimHess(oout$par, f) #HessianPB(pars=oout$par, fun=f)$Hessian
           value.of.f <- oout$value
                           })    
-  		 } 
-		else 
+  		    } 
+	   	  else 
 			oout <- list(par = numeric(0L), value = f(start))		
 		    coef <- oout$par
 	  if (length(coef))
-  	    {
+  	     {
 		  	 vcov <- try(solve(oout$hessian))
             if (any(class(vcov)%in%"try-error")) vcov <- matrix(NA, dim(oout$hessian)[1], dim(oout$hessian)[2])		  	
-	    } 				
+	     } 				
 	else     vcov <- matrix(numeric(0L), 0L, 0L)
      fullcoef[nm] <- coef
            method <- if (optim.p =="nlminb") "nlminb" else method
@@ -178,7 +180,6 @@ gamlssML<-function(y,
 class(out) <- "MLE"
 		out
 	}
-# end of MLE
 # end of MLE
 #--------------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------------
@@ -213,7 +214,6 @@ body(rqres) <-  eval(quote(body(rqres)), envir = getNamespace("gamlss"))
           N <- length(y)
           w <- if(is.null(weights))    rep(1, N) else weights
                if(any(w < 0)) stop("negative weights not allowed") # 
-# get the initial values if are not set by the user
 # here is the place to  start from ACTION HERE
 # check whether start.from is null
 if (!is.null(start.from)) # MS 21-12-11
@@ -238,41 +238,43 @@ if (!is.null(start.from)) # MS 21-12-11
        	 else stop("start.from is a non numeric variable")
        }
  }
+##  get the initial values if are not set by the user
            if ("mu"%in%names(fam$parameters))
            {
-             mu <- if(is.null(mu.start))  mean(eval(fam$mu.initial, list(y=y)))
-			       else mu.start 
-               eta.mu <- fam$mu.linkfun(mu)
-			  #eta.par <- c(eta.mu)          
+                  mu <- if(is.null(mu.start))  mean(eval(fam$mu.initial, list(y=y)))
+		       	       else mu.start[1] 
+              eta.mu <- fam$mu.linkfun(mu)
+			#eta.par <- c(eta.mu)          
            }
            if ("sigma"%in%names(fam$parameters))
            {
-             sigma <- if(is.null(sigma.start)) mean(eval(fam$sigma.initial, list(y=y, mu=mu)))
-			          else sigma.start
-            eta.sigma <- fam$sigma.linkfun(sigma)
-			  #eta.par <- c(eta.mu, eta.sigma)
+               sigma <- if(is.null(sigma.start)) mean(eval(fam$sigma.initial, list(y=y, mu=mu)))
+			            else sigma.start[1]
+           eta.sigma <- fam$sigma.linkfun(sigma)
+			#eta.par <- c(eta.mu, eta.sigma)
            }
            if ("nu"%in%names(fam$parameters))
            {
-			   nu <- if(is.null(nu.start))  mean(eval(fam$nu.initial, list(y=y, mu=mu, sigma=sigma)))
-			         else nu.start
-               eta.nu <- fam$nu.linkfun(nu)
-			  #eta.par <- c(eta.mu, eta.sigma, eta.nu)
+			      nu <- if(is.null(nu.start))  mean(eval(fam$nu.initial, list(y=y, mu=mu, sigma=sigma)))
+			            else nu.start[1]
+              eta.nu <- fam$nu.linkfun(nu)
+			#eta.par <- c(eta.mu, eta.sigma, eta.nu)
            }
            if ("tau"%in%names(fam$parameters))
            {  
-			   tau <- if(is.null(tau.start)) mean(eval(fam$tau.initial, list(y=y, mu=mu, sigma=sigma, nu=nu)))
-			   else tau.start
-           	eta.tau <- fam$tau.linkfun(tau)
+			     tau <- if(is.null(tau.start)) mean(eval(fam$tau.initial, list(y=y, mu=mu, sigma=sigma, nu=nu)))
+			           else tau.start[1]
+           	 eta.tau <- fam$tau.linkfun(tau)
 			#eta.par <- c(eta.mu, eta.sigma, eta.nu, eta.tau)
            }
-# whether to fix parameters
+## whether to fix parameters
    fixed <- list()
-   if (mu.fix)      fixed <- c(fixed, eta.mu=mu)
-   if (sigma.fix)   fixed <- c(fixed, eta.sigma=sigma)
-   if (nu.fix)      fixed <- c(fixed, eta.nu=nu)
-   if (tau.fix)     fixed <- c(fixed, eta.tau=tau)
+   if (mu.fix)      fixed <- c(fixed, eta.mu=mu[1])
+   if (sigma.fix)   fixed <- c(fixed, eta.sigma=sigma[1])
+   if (nu.fix)      fixed <- c(fixed, eta.nu=nu[1])
+   if (tau.fix)     fixed <- c(fixed, eta.tau=tau[1])
                   noFixed <- sum(c(mu.fix, sigma.fix, nu.fix, tau.fix))
+## define the likelihood and find the maximum
     switch(nopar, 
 			{# one parameter 
 				ll1 <- function(eta.mu)
@@ -313,7 +315,8 @@ if (!is.null(start.from)) # MS 21-12-11
 				}
 				fit <-	MLE(ll4, start=list(eta.mu=eta.mu, eta.sigma=eta.sigma, eta.nu=eta.nu, eta.tau=eta.tau), fixed=fixed, ...)
 			}
-	  )
+	  ) # end of switch
+# saving things
   df.fit <- nopar-noFixed
      out <-list(family = fam$family,  
 			parameters =  as.character(names(fam$par)), 
@@ -332,29 +335,27 @@ if (!is.null(start.from)) # MS 21-12-11
 		        Allpar = fit$coef)
     if ("mu"%in%names(fam$parameters))
 		   {
-			    mu <- fam$mu.linkinv(fit$coef["eta.mu"])
-				names(mu) <- "mu"
-				mu.coefficients = fit$coef["eta.mu"]
-				names(mu.coefficients) <- "mu.coefficients"
-				
-				out <- c(out, mu, mu.coefficients )
-				out$mu.link <- fam$mu.link
+			            mu <- if (mu.fix)  fam$mu.linkinv(eta.mu) else fam$mu.linkinv(fit$coef["eta.mu"])
+			     names(mu) <- "mu"
+		   mu.coefficients <- fit$coef["eta.mu"]
+    names(mu.coefficients) <- "mu.coefficients"
+				       out <- c(out, mu, mu.coefficients )
+			   out$mu.link <- fam$mu.link
 		   }
 		   ## Output for sigma model: ---------------------------------------------------------------
 		   if ("sigma"%in%names(fam$parameters))
 		   {
-			    sigma <- fam$sigma.linkinv(fit$coef["eta.sigma"])
-				names(sigma) <- "sigma"
-				sigma.coefficients = fit$coef["eta.sigma"]
-				names(sigma.coefficients) <- "sigma.coefficients"
-				
-				 out <- c(out, sigma, sigma.coefficients )
-				 out$sigma.link <- fam$sigma.link
+			        sigma <- if (sigma.fix)  fam$mu.linkinv(eta.sigma) else fam$sigma.linkinv(fit$coef["eta.sigma"])
+		     names(sigma) <- "sigma"
+ 	   sigma.coefficients <- fit$coef["eta.sigma"]
+names(sigma.coefficients) <- "sigma.coefficients"	
+				      out <- c(out, sigma, sigma.coefficients )
+		   out$sigma.link <- fam$sigma.link
 		   }
 		   ##  output for nu ------------------------------------------------------------------------
 		   if ("nu"%in%names(fam$parameters))
 		   {
-			     nu <- fam$nu.linkinv(fit$coef["eta.nu"])
+			     nu <- if (nu.fix)  fam$mu.linkinv(eta.nu) else fam$nu.linkinv(fit$coef["eta.nu"])
 				names(nu) <- "nu"
 				nu.coefficients = fit$coef["eta.nu"]
 				names(nu.coefficients) <- "nu.coefficients"			    
@@ -365,7 +366,7 @@ if (!is.null(start.from)) # MS 21-12-11
 		   ##  output for tau -----------------------------------------------------------------------
 		   if ("tau"%in%names(fam$parameters))
 		   {
-			   tau <- fam$tau.linkinv(fit$coef["eta.tau"])
+			   tau <- if (tau.fix)  fam$mu.linkinv(eta.tau) else fam$tau.linkinv(fit$coef["eta.tau"])
 				names(tau) <- "tau"
 				tau.coefficients = fit$coef["eta.tau"]
 				names(tau.coefficients) <- "tau.coefficients"			    
