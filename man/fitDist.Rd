@@ -10,8 +10,8 @@ This function is using the function \code{gamlssML()} to fit all relevant parame
 }
 \usage{
 fitDist(y, k = 2, 
-        type = c("realAll", "realline", "realplus", "real0to1", "counts", "binom"), 
-  try.gamlss = FALSE, extra = NULL, data = NULL)
+      type = c("realAll", "realline", "realplus", "real0to1", "counts", "binom"), 
+      try.gamlss = FALSE, extra = NULL, data = NULL, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -21,6 +21,7 @@ fitDist(y, k = 2,
   \item{try.gamlss}{if \code{gamlssML()} failed whether should try \code{gamlss} instead. This will slow up things for big data.}
   \item{extra}{whether extra distribution should be tried which are not in the \code{type} list}
   \item{data}{the data frame where \code{y} ca be found}
+  \item{\dots}{for extra arguments to be passed to gamlssML() to gamlss()}
 }
 \details{
 The following are the different \code{type} argument:

@@ -261,24 +261,24 @@ regpenEM <- function(y, X, w, lambda, order, D)
 #------------------------------------------------------------------
 # the main function starts here
 # get the attributes
-         X <-  if (is.null(xeval)) as.matrix(attr(x,"X")) #the trick is for prediction
-              else  as.matrix(attr(x,"X"))[seq(1,length(y)),]
-         D <- as.matrix(attr(x,"D")) # penalty
-    lambda <- as.vector(attr(x,"lambda")) # lambda
-        df <- as.vector(attr(x,"df")) # degrees of freedom
-   control <- as.list(attr(x, "control")) 
-gamlss.env <- as.environment(attr(x, "gamlss.env"))
+              X <-  if (is.null(xeval)) as.matrix(attr(x,"X")) #the trick is for prediction
+                    else  as.matrix(attr(x,"X"))[seq(1,length(y)),]
+              D <- as.matrix(attr(x,"D")) # penalty
+         lambda <- as.vector(attr(x,"lambda")) # lambda
+             df <- as.vector(attr(x,"df")) # degrees of freedom
+        control <- as.list(attr(x, "control")) 
+     gamlss.env <- as.environment(attr(x, "gamlss.env"))
 startLambdaName <- as.character(attr(x, "NameForLambda")) 
-     order <- control$order # the order of the penalty matrix
-         n <- nrow(X) # the no of observations
-         p <- ncol(D) # the rows of the penalty matrix
-     tau2  <- sig2 <- NULL
+          order <- control$order # the order of the penalty matrix
+              n <- nrow(X) # the no of observations
+              p <- ncol(D) # the rows of the penalty matrix
+          tau2  <- sig2 <- NULL
 # now the action depends on the values of lambda and df
 #-------------------------------------------------------------------- \
    lambdaS <-  get(startLambdaName, envir=gamlss.env) ## geting the starting value
  if (lambdaS>=1e+07) lambda <- 1e+07 # MS 19-4-12
  if (lambdaS<=1e-07) lambda <- 1e-07 # MS 19-4-12
- #cat(lambda, "\n")
+ # cat(lambda, "\n")
  # case 1: if lambda is known just fit
  if (is.null(df)&&!is.null(lambda)||!is.null(df)&&!is.null(lambda))
  {

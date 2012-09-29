@@ -8,9 +8,7 @@ of the parameters \code{mu}, \code{sigma}, \code{nu} or \code{tau} is a constant
 a profile confidence intervals. 
 }
 \usage{
-prof.dev(object, which = NULL, min = NULL, max = NULL, step = NULL, 
-          startlastfit = TRUE, type = "o", plot = TRUE, perc = 95, 
-          ...)
+prof.dev(object, which = NULL, min = NULL, max = NULL, step = NULL, length = 7, startlastfit = TRUE, plot = TRUE, perc = 95, ...)
 }
 
 \arguments{
@@ -19,8 +17,8 @@ prof.dev(object, which = NULL, min = NULL, max = NULL, step = NULL,
   \item{min}{the minimum value for the parameter e.g. \code{min=1}}
   \item{max}{the maximum value for the parameter e.g.  \code{max=20}}
   \item{step}{how often to evaluate the global deviance (defines the step length of the grid for the parameter) e.g. \code{step=1} }
+  \item{length}{the length if step is not set, default equal 7}
   \item{startlastfit}{whether to start fitting from the last fit or not, default value is \code{startlastfit=TRUE}  }
-  \item{type}{what type of plot required. This is the same as in \code{type} for \code{plot}, default value is \code{type="o"}, that is, both line and points }
    \item{plot}{whether to plot, \code{plot=TRUE} or save the results, \code{plot=FALSE}  }
   \item{perc}{what \% confidence interval is required }
   \item{\dots}{for extra arguments}
@@ -33,7 +31,15 @@ or a Box-Cox power exponential is appropriate by plotting the profile of the par
 A profile deviance showing support for  \code{tau=2} indicates adequacy of the Box-Cox Cole and Green (i.e. Box-Cox normal) distribution.      
 }
 \value{
-A plot of profile global deviance
+ Return a profile plot (if the argument \code{plot=TRUE}) and an \code{ProfLikelihood.gamlss} object if saved.  The object contains:
+  
+  \item{values}{the values at the grid where the parameter was evaluated}
+  \item{fun}{the function which approximates the points using splines}
+   \item{min}{the minimum values in the grid}
+    \item{max}{te maximum values in the grid}
+     \item{max.value}{the value of the parameter maximising the Profile deviance (or GAIC) }
+      \item{CI}{the profile confidence interval (if global deviance is used)}
+       \item{criterion}{which criterion was used}
 }
 \references{Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), 
 \emph{Appl. Statist.}, \bold{54}, part 3, pp 507-554.
@@ -53,7 +59,7 @@ and decrease  gradually the step length for more accuracy. }
 \examples{
 data(abdom)
 h<-gamlss(y~pb(x), sigma.formula=~pb(x), family=BCT, data=abdom) 
-prof.dev(h,"nu",min=-2.000,max=2,step=0.25,type="l")
+prof.dev(h,"nu",min=-2.000,max=2)
 rm(h)
 }
 \keyword{regression}% 
