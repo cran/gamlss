@@ -14,7 +14,7 @@ term.plot <- function (object,
                partial.resid = FALSE, 
                          rug = FALSE, 
                        terms = NULL, 
-                          se = FALSE, 
+                          se = TRUE, 
                        xlabs = NULL, 
                        ylabs = NULL, 
                         main = NULL, 
@@ -32,7 +32,7 @@ term.plot <- function (object,
                          ask = interactive() && nb.fig < n.tms &&.Device != "postscript", 
            use.factor.levels = TRUE, 
                       smooth = NULL,  
-                       ylim  = NULL,
+                        ylim = "common", # 
                              ...) 
 {
 ## only for gamlss objects 
@@ -46,7 +46,7 @@ term.plot <- function (object,
       par.terms <- object[[paste(what, "terms", sep=".")]]
       par.attr  <- attributes(par.terms)
           terms <- if (is.null(terms)) lpred(object, what = what, type = "terms", se.fit = se)
-                  else lpred(object, what = what, type = "terms", se,fit = se, terms = terms)
+                  else lpred(object, what = what, type = "terms", se.fit = se, terms = terms)
           n.tms <- ncol(tms <- as.matrix(if (se) terms$fit  else terms))
 ## if the parameters has only a constant fitted stop
      if (n.tms == 0)
@@ -129,9 +129,22 @@ term.plot <- function (object,
             op <- par(ask = TRUE)
              on.exit(par(op))
               }
+    ylims <- ylim
+    if (identical(ylims, "common")) 
+    {
+      ylims <- if (!se) 
+        range(tms, na.rm = TRUE)
+      else range(tms + 1.05 * 2 * terms$se.fit, tms - 1.05 * 
+                   2 * terms$se.fit, na.rm = TRUE)
+      if (partial.resid) 
+        ylims <- range(ylims, pres, na.rm = TRUE)
+      if (rug) 
+        ylims[1L] <- ylims[1L] - 0.07 * diff(ylims)
+    }
     for (i in 1:n.tms) 
     {
-         if (is.null(ylim))
+      # if we need differnt y limit for each variable
+        if (identical(ylim, "free"))
           { 
                ylims <- range(tms[, i], na.rm = TRUE)
             if (se) 
@@ -143,10 +156,7 @@ term.plot <- function (object,
             if (rug) 
            ylims[1] <- ylims[1] - 0.07 * diff(ylims)
            }
-           else 
-           {
-           ylims <- ylim
-           }
+        # if is a factor
         if (is.fac[i]) 
         {
             ff <- mf[, nmt[i]]
@@ -175,12 +185,14 @@ term.plot <- function (object,
                 if (se) 
                   se.lines(jf, iy = ww, i = i)
             }
-        }
+        }  
         else 
-        {
+        { # here is where changes had to be made at the moment every pass
+          # cn is expression
             xx <- carrier(cn[[i]]) # ds Friday, October 9, 2009 at 13:13
+          # why we need this ??? is it for random??
             if (is.factor(xx)) xx <- seq(along = levels(xx))
-            if (!is.null(use.rows)) 
+            if (!is.null(use.rows)) # in case soem of the rows are not used 
                 xx <- xx[use.rows]
             xlims <- range(xx, na.rm = TRUE)
             if (rug) 

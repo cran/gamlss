@@ -60,10 +60,12 @@ Venables, W. N. and Ripley, B. D. (2002) \emph{Modern Applied Statistics with S}
 \dontrun{
 data(hodges)
 plot(prind~state, data=hodges)
-m1<- gamlss(prind~random(state), sigma.fo=~random(state), nu.fo=~random(state), tau.fo=~random(state), family=BCT, data=hodges)
+m1<- gamlss(prind~random(state), sigma.fo=~random(state), nu.fo=~random(state), 
+             tau.fo=~random(state), family=BCT, data=hodges)
 edfAll(m1)
 # radnom effect for tau is not needed
-m2<- gamlss(prind~random(state), sigma.fo=~random(state), nu.fo=~random(state),  family=BCT, data=hodges, start.from=m1)
+m2<- gamlss(prind~random(state), sigma.fo=~random(state), nu.fo=~random(state),  
+            family=BCT, data=hodges, start.from=m1)
 edfAll(m2)
 plot(m2)
 #op<-par(mfrow=c(3,1))

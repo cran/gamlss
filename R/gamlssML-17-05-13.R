@@ -202,8 +202,9 @@ body(rqres) <-  eval(quote(body(rqres)), envir = getNamespace("gamlss"))
 # main function starts here
   mlFitcall <- match.call()  #   the function call  
   # if data exit attach them
-       if (!is.null(data)) {attach(data); on.exit(detach(data))}
-       if (is(y, "formula")) stop("gamlssML() needs a vector as its first argument")
+  #     if (!is.null(data)) {attach(data, name="The_Data_Env"); on.exit(detach("The_Data_Env"))}
+if (is(y, "formula")) stop("gamlssML() needs a vector as its first argument")
+          y <- if (!is.null(data)) get(deparse(substitute(y)), envir=as.environment(data)) else y
        fam  <- as.gamlss.family(family)
       fname <- fam$family[[1]] 
        dfun <- paste("d",fname,sep="")

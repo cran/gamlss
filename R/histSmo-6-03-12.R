@@ -5,17 +5,17 @@
 histSmo <- function(y, lambda=NULL, df=NULL, order=3, lower=NULL, upper=NULL, type=c("freq", "prob"), save=FALSE, plot=TRUE, breaks=NULL,  discrete = FALSE, ...)
 {
        type <- match.arg(type) 
-     if (is.null(lambda)&&is.null(df))
+     if (is.null(lambda)&&is.null(df))# estimate lambda
      {
 m1 <- histSmoP(y=y, lambda=lambda, df=df, order=order, lower=lower, upper=upper, type=type, save=save, plot=plot, breaks = breaks, discrete = discrete, ...)  
 if (save) return(m1)
      }
-       if (!is.null(lambda))
+       if (!is.null(lambda))# specify lambda
      {
 m1 <- histSmoO(y=y, lambda=lambda,order=order, lower=lower, upper=upper, type=type, save=save, plot=plot, breaks = breaks, discrete = discrete, ...)  
 if (save) return(m1)
      }   
-       if (!is.null(df))
+       if (!is.null(df))# specify df's
      {
 m1 <- histSmoC(y=y, df=df, lower=lower, upper=upper, type=type, save=save, plot=plot, breaks = breaks, discrete = discrete, ...)  
 if (save) return(m1)
@@ -62,7 +62,7 @@ histSmoO <- function(y,
  }
 #--------------------------------
 # this function is for descrete variable smooting
-# it take a descrete variable and creates values and frequencies 	
+# it take a discrete variable and creates values and frequencies 	
 getTabs <- function(y, freq=NULL, lower=min(y), upper=max(y))
 {
         x1 <- seq(lower, upper, step=1)

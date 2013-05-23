@@ -5,21 +5,21 @@
 \description{
   Plots regression terms against their predictors, optionally with
      standard errors and partial residuals added. It is almost identical to the R function \code{termplot} 
-     suitable changed to apply to GAMLSS objects.
+     suitably changed to apply to GAMLSS objects.
 
 }
 \usage{
 term.plot(object, what = c("mu", "sigma", "nu", "tau"), data = NULL, 
           envir = environment(formula(object)), 
           partial.resid = FALSE, rug = FALSE, 
-          terms = NULL, se = FALSE, xlabs = NULL, ylabs = NULL, 
+          terms = NULL, se = TRUE, xlabs = NULL, ylabs = NULL, 
           main = NULL, col.term = 2, lwd.term = 1.5, 
           col.se = "orange", lty.se = 2, lwd.se = 1, 
           col.res = "gray", cex = 1, pch = par("pch"), 
           col.smth = "darkred", lty.smth = 2, 
           span.smth = 2/3, 
           ask = interactive() && nb.fig < n.tms && .Device != "postscript", 
-          use.factor.levels = TRUE, smooth = NULL,  ylim  = NULL, ...)
+          use.factor.levels = TRUE, smooth = NULL,  ylim  = "common", ...)
 }
 
 \arguments{
@@ -28,18 +28,18 @@ term.plot(object, what = c("mu", "sigma", "nu", "tau"), data = NULL,
   \item{data}{data frame in which variables in \code{object} can be found}
   \item{envir}{environment in which variables in \code{object} can be found }
   \item{partial.resid}{logical; should partial residuals be plotted?}
-  \item{rug}{ add rugplots (jittered 1-d histograms) to the axes?}
+  \item{rug}{ add rug plots (jitter 1-d histograms) to the axes?}
   \item{terms}{which terms to plot (default 'NULL' means all terms) }
-  \item{se}{plot pointwise standard errors?}
+  \item{se}{plot point-wise standard errors?}
   \item{xlabs}{vector of labels for the x axes }
   \item{ylabs}{vector of labels for the y axes }
   \item{main}{logical, or vector of main titles;  if 'TRUE', the model's
           call is taken as main title, 'NULL' or 'FALSE' mean no
           titles.}
-  \item{col.term, lwd.term}{color and width for the "term curve", see 'lines'.}
-  \item{col.se, lty.se, lwd.se}{ color, line type and line width for the
+  \item{col.term, lwd.term}{colour and width for the "term curve", see 'lines'.}
+  \item{col.se, lty.se, lwd.se}{ colour, line type and line width for the
           "twice-standard-error curve" when 'se = TRUE'.}
-  \item{col.res, cex, pch}{color, plotting character expansion and type for
+  \item{col.res, cex, pch}{colour, plotting character expansion and type for
           partial residuals, when 'partial.resid = TRUE', see 'points'.}
   \item{lty.smth,col.smth, span.smth}{Passed to 'smooth'}
   \item{ask}{logical; if 'TRUE', the user is asked before each plot, see
@@ -49,7 +49,7 @@ term.plot(object, what = c("mu", "sigma", "nu", "tau"), data = NULL,
   \item{smooth}{'NULL' or a function with the same arguments as
           'panel.smooth' to draw a smooth through the partial residuals
           for non-factor terms}
-  \item{ylim}{for setting the y axis limits}
+  \item{ylim}{an optional range for the y axis, or "common" when a range sufficient for all the plot will be computed, or "free" when limits are computed for each plot.}
   \item{\dots}{other graphical parameters}
 }
 \details{

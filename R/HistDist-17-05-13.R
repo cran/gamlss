@@ -22,8 +22,11 @@ histDist <- function(y,
            dfun <- paste("d",fname,sep="")
            lpar <- length(FA$parameters)
        typeDist <- FA$type
-    if (!is.null(data)) {attach(data); on.exit(detach(data))}
- switch(typeDist, 
+    #if (!is.null(data)) {attach(data); on.exit(detach(data))}
+         subsY <- substitute(y)
+             y <- if (!is.null(data)) get(deparse(substitute(y)), envir=as.environment(data)) else y
+          freq <- if (!is.null(data)&&!is.null(freq)) get(deparse(substitute(freq)), envir=as.environment(data)) else freq  
+  switch(typeDist, 
      "Continuous"=
            {
          extra <- (max(y,na.rm = TRUE)-min(y, na.rm = TRUE))/5
@@ -116,7 +119,14 @@ histDist <- function(y,
              
              
                          mod$call$family <- eval(as.expression(fname)) 
-                   if (mod$method=="BFGS"||mod$method=="nlminb") mod$call$formula <- substitute(y)  else  mod$call$formula[[2]] <- substitute(y)
+                   if (mod$method=="BFGS"||mod$method=="nlminb") 
+                    {
+                     mod$call$formula <-  subsY
+                    }   
+                 else  
+                   {
+                     mod$call$formula[[2]] <-  subsY
+                   }   
        if (!is.null(data)) mod$call$data <- substitute(data)
            # get the pdf
      switch(lpar, 
@@ -180,10 +190,10 @@ switch(typeDist,
            #main2 <- paste("the fitted ", FA$family[2]," distribution to y-variable", sep = "") #main <- paste("Histogram of y and a fitted (GAMLSS family), ", family," distribution to y", sep = "")
            # main <- c(main1, main2) 
               main <-  if (is.null(main))  
-                      paste("The ", deparse(substitute(y)), " and the fitted ", FA$family[1]," distribution", sep = "")
+                      paste("The ", deparse(subsY), " and the fitted ", FA$family[1]," distribution", sep = "")
                       else main
               if (!is.null(freq)) y <- rep(y,freq) # in case frequencies are used
-              xlab <- if (is.null(xlab)) deparse(substitute(y)) else xlab
+              xlab <- if (is.null(xlab)) deparse(subsY) else xlab
               ylab <- if (is.null(ylab)) paste("f()") else ylab
             truehist(y, xlim = xlim, ylim = ylim, xlab=xlab, ylab=ylab, nbins=nbins, main = main, col="gray", lty=3, 
                      border="blue", fg=rainbow(12)[9], col.main = "blue4", col.lab = "blue4", col.axis = "blue")
@@ -218,11 +228,11 @@ switch(typeDist,
                       else  
                         {
                         xlim <- c(xmin, xmax)
-                        main <- paste("proportions of ", deparse(substitute(y)), sepp = "")
+                        main <- paste("proportions of ", deparse(subsY), sepp = "")
                         
-                        main <-  if (is.null(main))  paste("proportions of ", deparse(substitute(y)), sepp = "")
+                        main <-  if (is.null(main))  paste("proportions of ", deparse(subsY), sepp = "")
                                  else main
-                        xlab <- if (is.null(xlab)) deparse(substitute(y)) else xlab
+                        xlab <- if (is.null(xlab)) deparse(subsY) else xlab
                         ylab <- if (is.null(ylab)) paste("f()") else ylab
                         truehist(y1/bd, xlim = xlim, xlab="proportions", ylab=ylab, ylim=ylim, 
                                 nbins=nbins, col="gray", 
@@ -254,7 +264,7 @@ switch(typeDist,
             # main2 <- paste("the fitted ", FA$family[2]," distribution to y-variable", sep = "") #main <- paste("Histogram of y and a fitted (GAMLSS family), ", family," distribution to y", sep = "")
             #  main <- c(main1, main2)
                main <-  if (is.null(main))  
-                      paste("Barplot of the ", deparse(substitute(y)), " and the fitted ", FA$family[2]," distribution", sep = "")
+                      paste("Barplot of the ", deparse(subsY), " and the fitted ", FA$family[2]," distribution", sep = "")
                       else main 
                  r <-  barplot(tabley/ sum(xtabs(~notresy)),  # Friday, February 12, 2010 at 17:41
                                     fg = "blue", col="gray", axis.lty=1, 

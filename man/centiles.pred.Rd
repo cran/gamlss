@@ -78,6 +78,8 @@ mat <- centiles.pred(a, xname="x",xvalues=newx, type="s", plot = TRUE )
 newx <- c(20,21.2,23,20.9,24.2,24.1,25)
 newy <- c(130,121,123,125,140,145,150)
 for(i in 1:7) points(newx[i],newy[i],col="blue")
+
+\dontrun{
 # now calculate their z-scores
 znewx <- centiles.pred(a, xname="x",xvalues=newx,yval=newy, type="z-scores" )
 znewx
@@ -96,6 +98,6 @@ newd<-data.frame( abdom, nx=abdom$x^0.5)
 mat <-  centiles.pred(aa, xname="nx", xvalues=c(30), power=0.5, data=newd)
 xxx<-rep(mat[,1],9)
 yyy<-mat[,2:10]
-points(xxx,yyy,col="red")
+points(xxx,yyy,col="red")}
 }
 \keyword{regression}% 

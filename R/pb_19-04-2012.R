@@ -43,6 +43,7 @@ pb <- function(x, df = NULL, lambda = NULL, control=pb.control(...), ...)
      }
   }
 #---------------------------------------------------
+browser()
 # the main function starts here
          scall <- deparse(sys.call())
             lx <- length(x)

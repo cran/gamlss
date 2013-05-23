@@ -19,8 +19,7 @@ par.plot(formula = NULL, data = NULL, subjects = NULL,
           plots of \code{y} versus \code{x} should be produced conditional on the
           two variables \code{a} and \code{b}.}
   \item{data}{ a data frame containing values for any variables in the
-          formula.  By default the environment where \code{par.plot} was
-          called from is used.}
+          formula.  This argument is compulsory.}
   \item{subjects}{a factor which distinguish between the individual participants }
   \item{color}{whether the parallel plot are shown in colour, \code{color=TRUE} (the default) or not \code{color=FALSE}  }
   \item{show.given}{ logical (possibly of length 2 for 2 conditioning variables): 
@@ -32,7 +31,7 @@ par.plot(formula = NULL, data = NULL, subjects = NULL,
 It returns a plot. 
 }
 \references{ Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), 
-\emph{Appl. Statist.}, \bold{54}, part 3, pp 507-554.
+\emph{App. Statist.}, \bold{54}, part 3, pp 507-554.
  
  Stasinopoulos D. M., Rigby R.A. and Akantziliotou C. (2006) Instructions on how to use the GAMLSS package in R.
 Accompanying documentation in the current GAMLSS  help files, (see also  \url{http://www.gamlss.org/}).
@@ -49,9 +48,9 @@ Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location s
 
 library(nlme)
 data(Orthodont)
-par.plot(distance~age,data=Orthodont,sub=Subject)
-par.plot(distance~age|Sex,data=Orthodont,sub=Subject)
-par.plot(distance~age|Subject,data=Orthodont,sub=Subject,show.given=FALSE)
+par.plot(distance~age,data=Orthodont,subject=Subject)
+par.plot(distance~age|Sex,data=Orthodont,subject=Subject)
+par.plot(distance~age|Subject,data=Orthodont,subject=Subject,show.given=FALSE)
 
 }
 \keyword{regression}%

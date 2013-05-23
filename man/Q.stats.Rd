@@ -3,28 +3,31 @@
 
 \title{A function to calculate the Q-statistics}
 \description{
- This function calculates and prints the Q-statistics which are useful to test normality of the residuals within a range 
- of an independent variable, for example age in centile estimation, see Royston and Wright (2000).
+ This function calculates and prints the Q-statistics (or Z-statistics) which are useful to test normality of the residuals within a range of an independent variable, for example age in centile estimation, see Royston and Wright (2000). 
 }
 \usage{
-Q.stats(obj, xvar = NULL, xcut.points = NULL, n.inter = 10, zvals = TRUE, 
-        save = TRUE, plot = TRUE, ...)
+Q.stats(obj = NULL, xvar = NULL, resid = NULL, xcut.points = NULL, n.inter = 10, 
+      zvals = TRUE, save = TRUE, plot = TRUE, ...)
 }
 
 \arguments{
-  \item{obj}{a GAMLSS object or any other residual vector}
+  \item{obj}{a GAMLSS object}
   \item{xvar}{a unique explanatory variable}
+  \item{resid}{quantile or standardised residuals can be given here instead of a GAMLSS object in \code{obj}. In this case the function behaves diffently (see details below) }
   \item{xcut.points}{the x-axis cut off points e.g. \code{c(20,30)}. If \code{xcut.points=NULL} then the \code{n.inter} argument is activated }
-  \item{n.inter}{if \code{xcut.points=NULL} this argument gives the number of intervals in which the x-variable will be split, with default 4}
-  \item{zvals}{if \code{TRUE} the output matrix contains the individual z's rather that  Q statistics}
+  \item{n.inter}{if \code{xcut.points=NULL} this argument gives the number of intervals in which the x-variable will be split, with default 10}
+  \item{zvals}{if \code{TRUE} the output matrix contains the individual Z-statistics rather that  the Q statistics}
   \item{save}{whether to save the Q-statistics or not with default equal to \code{TRUE}. 
             In this case the functions produce a matrix giving individual Q (or z) statistics and the final aggregate Q's}
- \item{plot}{whether to plt the results}
+ \item{plot}{whether to plot  a visual version of the Q statistics  (default is TRUE)  }
    \item{\dots}{for extra arguments}
+}
+\details{
+Note that the function \code{Q.stats} behaves differently depending whether the \code{obj} or the \code{resid} argument is set. The \code{obj} argument produces the Q-statistics (or Z-statistics) table appropriate for centile estimation (therefore it expect a reasonable large number of observations). The argument \code{resid} allows any model residuals, (not necessary GAMLSS), suitable standardised and is appropriate for any size of data. The resulting table contains only the  individuals  Z-statistics. 
 }
 
 \value{
-  A matrix containing the individual Q's and the aggregate Q-statistics
+  A table containing the  Q-statistics or Z-statistics. If \code{plot=TRUE} it produces also an graphical represenation of the table. 
 }
 \references{
 
@@ -48,6 +51,7 @@ data(abdom)
 h<-gamlss(y~pb(x), sigma.formula=~pb(x), family=BCT, data=abdom) 
 Q.stats(h,xvar=abdom$x,n.inter=8)
 Q.stats(h,xvar=abdom$x,n.inter=8,zvals=FALSE)
+Q.stats(resid=resid(h),  xvar=abdom$x, n.inter=5)
 rm(h)
 }
 \keyword{regression}% 

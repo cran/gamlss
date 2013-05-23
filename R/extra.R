@@ -294,6 +294,16 @@ GAIC <- function(object,..., k = 2 ) #UseMethod("AIC")
     h<-hat(qr(WX))
     h
 }
+#-----------------------------------------------------------------------------------
+# the generalised R-squred funtion
+Rsq <- function(object)
+{
+  if (!is.gamlss(object)) stop("this is design for gamlss objects only")
+  #  m0 <- update(object,  formula=~1, sigma.formula=~1, nu.formula=~1, tau.formula=~1, trace=F)
+  suppressWarnings(m0 <- gamlssML(object$y, family=object$family))
+  rsq <- 1-exp((2/object$N)*(logLik(m0)[1]-logLik(object)[1]))  
+  rsq
+}
 #----------------------------------------------------------------------------------------
 # the function is in a new file now
 # this intoducing the shifted log and logit links 

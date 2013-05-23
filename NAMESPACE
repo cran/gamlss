@@ -28,7 +28,8 @@ export(gamlss, gamlss.control, glim.control, is.gamlss,
         edf, edfAll,
         LR.test, dtop,
         gamlssML, fitDist, histSmo, histSmoO, histSmoC, histSmoP,
-        calibration, lms)
+        calibration, lms, Rsq, gen.likelihood,
+        acfResid)
 
 
 
@@ -76,6 +77,7 @@ S3method(predict, gamlss)
 S3method(model.matrix, gamlss)
 S3method(vcov, gamlss)
 S3method(logLik, gamlss)
+S3method(confint, gamlss)
 
 
 S3method(fitted, gamlssML)

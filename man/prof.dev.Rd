@@ -8,7 +8,9 @@ of the parameters \code{mu}, \code{sigma}, \code{nu} or \code{tau} is a constant
 a profile confidence intervals. 
 }
 \usage{
-prof.dev(object, which = NULL, min = NULL, max = NULL, step = NULL, length = 7, startlastfit = TRUE, plot = TRUE, perc = 95, ...)
+prof.dev(object, which = NULL, min = NULL, max = NULL, 
+        step = NULL, length = 7, startlastfit = TRUE, 
+        plot = TRUE, perc = 95, ...)
 }
 
 \arguments{
@@ -57,9 +59,10 @@ Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location s
 and decrease  gradually the step length for more accuracy. }  
 \seealso{ \code{\link{gamlss}},  \code{\link{prof.term}} }
 \examples{
+\dontrun{
 data(abdom)
 h<-gamlss(y~pb(x), sigma.formula=~pb(x), family=BCT, data=abdom) 
 prof.dev(h,"nu",min=-2.000,max=2)
-rm(h)
+rm(h)}
 }
 \keyword{regression}% 

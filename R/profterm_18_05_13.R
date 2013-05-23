@@ -19,6 +19,7 @@ prof.term <- function (model = NULL,
                       xlabel = NULL,
                         plot = TRUE,
                         perc = 95,
+                  start.prev = TRUE, 
                         ...) 
 {
 if(is.null(model)) stop("you have not defined the model")
@@ -30,22 +31,25 @@ criterion  <- match.arg(criterion)
   interval <- if (is.null(step)) seq(from=min, to=max, length.out=length) else seq(from=min, to=max, by=step)
      I.C <- rep(0, length(interval)) 
     call <- model
- if (!is.null(model$data)) 
-        {
-        DaTaa<-model$data  
-        attach(eval(substitute(DaTaa)))
-        on.exit(detach(eval(substitute(DaTaa))))
-        }
+# if (!is.null(model$data)) 
+#        {
+#        DaTaa<-model$data  
+#        attach(eval(substitute(DaTaa)))
+#        on.exit(detach(eval(substitute(DaTaa))))
+#        }
     for (i in 1:length(interval))
     {
     this<<- this <- interval[i] # mikis Thursday, March 27, 2008 
     if (!is.null(other)) eval(other)
       mod.1 <- eval(call) 
        call <- mod.1$call
-     call$mu.start<-fitted(mod.1,"mu")
-     if ("sigma"%in%mod.1$parameters)  call$sigma.start <- fitted(mod.1,"sigma")
-     if (   "nu"%in%mod.1$parameters)  call$nu.start    <- fitted(mod.1,"nu")
-     if (  "tau"%in%mod.1$parameters)  call$tau.start   <- fitted(mod.1,"tau")
+    if (start.prev)
+    {
+      if (   "mu"%in%mod.1$parameters)  call$mu.start<-fitted(mod.1,"mu")
+      if ("sigma"%in%mod.1$parameters)  call$sigma.start <- fitted(mod.1,"sigma")
+      if (   "nu"%in%mod.1$parameters)  call$nu.start    <- fitted(mod.1,"nu")
+      if (  "tau"%in%mod.1$parameters)  call$tau.start   <- fitted(mod.1,"tau")
+    }
  I.C[i]<-  if(criterion=="GD")  deviance(mod.1) else  GAIC(mod.1,k=penalty)
     } # finish the loop
       xlab <- if(!is.null(xlabel)) xlabel else "parameter" 
