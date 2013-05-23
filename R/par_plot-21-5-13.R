@@ -2,11 +2,11 @@
 # the problem with this method is that the panel.fun do not know the correct 
 # subject factor because it had not subdivide in therms of the | in the formula 
 # so the we have to include coplotnew() to rectify this 
-par.plot1<- function(formula = NULL,
-                       data = NULL,
-                     subjects = NULL,
-                      color = TRUE,
-                 show.given = TRUE,
+par.plot<- function( formula = NULL,
+                        data = NULL,
+                    subjects = NULL,
+                       color = TRUE,
+                  show.given = TRUE,
                  ... 
                     )
 {#1
@@ -420,73 +420,77 @@ par.plot1<- function(formula = NULL,
 # end of panel.fun
 #----------------------------------------------------------------------  
 #we need this to interpreted the formula
- rcParseFormula <- function (model) 
-   {
-     parseCond <- function(model) 
-     {
-        model <- eval(parse(text = paste("~", deparse(model))))[[2]]
-        model.vars <- list()
-        while (length(model) == 3 && (model[[1]] == as.name("*") || 
-            model[[1]] == as.name("+"))) {
-            model.vars <- c(model.vars, model[[3]])
-            model <- model[[2]]
-        }
-        rev(c(model.vars, model))
-     } # end of parseCond
-     if (!inherits(model, "formula")) 
-        stop("model must be a formula object")
-     ans <- list(left = NULL, right = NULL, condition = NULL, left.name = character(0), 
-            right.name = character(0))
-         if (length(model) == 3) 
-            {
-             ans$left <- eval(model[[2]])
-             if (inherits(ans$left, "POSIXt")) 
-             ans$left <- as.POSIXct(ans$left)
-             ans$left.name <- deparse(model[[2]])
-             }       
-     model <- model[[length(model)]]
-     if (length(model) == 3 && model[[1]] == as.name("|")) 
-     {
-        model.vars <- parseCond(model[[3]])
-        ans$condition <- vector("list", length(model.vars))
-        names(ans$condition) <- sapply(model.vars, deparse)
-        for (i in seq(along = model.vars)) 
-          {
-            ans$condition[[i]] <- eval(model.vars[[i]],sys.frame(sys.parent(2))) #MSWednesday, April 16, 2003 at 09:58
-            if (inherits(ans$condition[[i]], "POSIXt")) 
-                ans$condition[[i]] <- as.POSIXct(ans$condition[[i]])
-          }
-        model <- model[[2]]
-     }
-     ans$right <- eval(model,sys.frame(sys.parent(2))) #MSWednesday, April 16, 2003 at 09:58
-      if (inherits(ans$right, "POSIXt"))  ans$right <- as.POSIXct(ans$right)
-       ans$right.name <- deparse(model)
-    ans
-   } 
+# rcParseFormula <- function (model) 
+#   {
+#     parseCond <- function(model) 
+#     {
+#        model <- eval(parse(text = paste("~", deparse(model))))[[2]]
+#        model.vars <- list()
+#        while (length(model) == 3 && (model[[1]] == as.name("*") || 
+#            model[[1]] == as.name("+"))) {
+#            model.vars <- c(model.vars, model[[3]])
+#            model <- model[[2]]
+#        }
+#        rev(c(model.vars, model))
+#     } # end of parseCond
+#     if (!inherits(model, "formula")) 
+#        stop("model must be a formula object")
+#     ans <- list(left = NULL, right = NULL, condition = NULL, left.name = character(0), 
+#            right.name = character(0))
+#         if (length(model) == 3) 
+#            {
+#             ans$left <- eval(model[[2]])
+#             if (inherits(ans$left, "POSIXt")) 
+#             ans$left <- as.POSIXct(ans$left)
+#             ans$left.name <- deparse(model[[2]])
+#             }       
+#     model <- model[[length(model)]]
+#     if (length(model) == 3 && model[[1]] == as.name("|")) 
+#     {
+#        model.vars <- parseCond(model[[3]])
+#        ans$condition <- vector("list", length(model.vars))
+#        names(ans$condition) <- sapply(model.vars, deparse)
+#        for (i in seq(along = model.vars)) 
+#          {
+#            ans$condition[[i]] <- eval(model.vars[[i]],sys.frame(sys.parent(2))) #MSWednesday, April #16, 2003 at 09:58
+#            if (inherits(ans$condition[[i]], "POSIXt")) 
+#                ans$condition[[i]] <- as.POSIXct(ans$condition[[i]])
+#          }
+#        model <- model[[2]]
+#     }
+#     ans$right <- eval(model,sys.frame(sys.parent(2))) #MSWednesday, April 16, 2003 at 09:58
+#      if (inherits(ans$right, "POSIXt"))  ans$right <- as.POSIXct(ans$right)
+#       ans$right.name <- deparse(model)
+#    ans
+#   } 
 # end of rcParseFormula 
 #----------------------------------------------------------------------
 # here is the main function    
 #----------------------------------------------------------------------
 #if (!is.null(data)) {attach(data) ; on.exit(detach(data))} 
-browser()
-
+if (is.null(data)) stop("The argument data is required")
+         subjects <- eval(substitute(subjects), envir=as.environment(data))
+            form <- as.formula(formula, env=as.environment(data))
+     subjectExist <- length(form[[3]])>1
 if (is.null(subjects)) stop("the subjects factor is not set")  
 if (!is.factor(subjects)) stop("the subjects argument should be a factor")
-   subjects <- factor(as.integer(subjects))
-       form <- rcParseFormula(formula)
-if (is.null(form$condition))
-    {    id <- NULL # added Thursday, March 27, 2008 at 16:54
-          y <- form$left
-          x <- form$right
-     xlabel <- form$right.name 
-     ylabel <- form$left.name
+  subjects <- factor(as.integer(subjects))
+#       form <- rcParseFormula(formula)
+if (!subjectExist)
+    {    
+  id <- NULL # added Thursday, March 27, 2008 at 16:54
+          y <- with(data, eval(form[[2]]))
+          x <- with(data, eval(form[[3]]))
+    # xlabel <- form$right.name 
+    # ylabel <- form$left.name
        ymax <- max(y)
        ymin <- min(y)
        xmax <- max(x)
         xmin <- min(x)
          col <- 1
          lll <- nlevels(subjects)
-         plot(x,y, type="n", ylab=ylabel, xlab= xlabel)
+         plot(form, type="n", data=data)
+         
          for (i in 1:lll)
            {
             sy <-  y[subjects==i]

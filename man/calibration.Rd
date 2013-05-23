@@ -6,7 +6,8 @@
  This function can used when the fitted model centiles do not coincide with the sample centiles.  
 }
 \usage{
-calibration(object, xvar, cent = 100 * pnorm((-4:4) * 2/3), legend = FALSE, fan = FALSE, ...)
+calibration(object, xvar, cent = 100 * pnorm((-4:4) * 2/3),
+            legend = FALSE, fan = FALSE, ...)
 }
 \arguments{
   \item{object}{a gamlss fitted object}

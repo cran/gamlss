@@ -54,13 +54,11 @@ Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location s
 \seealso{\code{\link{gamlss}}, \code{\link[gamlss.dist]{gamlss.family}} }
 \examples{
 data(abdom)
-attach(abdom)
-histDist(y,family="NO")
-# use the ymax argument of the of the truehist()
-histDist(y,family="NO",ymax=0.005)
+histDist(y,family="NO", data=abdom)
+# use the ylim 
+histDist(y,family="NO", ylim=c(0,0.005), data=abdom)
 # bad fit use PE
-histDist(y,family="PE",ymax=0.005)
-detach(abdom)
+histDist(y,family="PE",ymax=0.005, data=abdom)
 # discere data counts 
 #  Hand at al. p150  Leptinotarsa decemlineata
 y <- c(0,1,2,3,4,6,7,8,10,11)

@@ -114,6 +114,7 @@ with(aids, lines(x,fitted(aids2),col="green"))
 with(aids, lines(x,fitted(aids1),col="yellow"))
 rm(aids1, aids2, aids3)
 #=============================
+\dontrun{
 # cy()
 # simulate data
 set.seed(555)
@@ -154,8 +155,10 @@ m3 <- gamlss(y~pb(x)+f*x, data=da)
 m4 <- gamlss(y~pvc(x, by=f), data=da)
 GAIC(m1,m2,m3,m4)
 # plotting the fit
-lines(fitted(m4)[da$f==1][order(da$x[da$f==1])]~da$x[da$f==1][order(da$x[da$f==1])], col="blue", lwd=2)
-lines(fitted(m4)[da$f==2][order(da$x[da$f==2])]~da$x[da$f==2][order(da$x[da$f==2])], col="red", lwd=2)
+lines(fitted(m4)[da$f==1][order(da$x[da$f==1])]~da$x[da$f==1]
+         [order(da$x[da$f==1])], col="blue", lwd=2)
+lines(fitted(m4)[da$f==2][order(da$x[da$f==2])]~da$x[da$f==2]
+         [order(da$x[da$f==2])], col="red", lwd=2)
 rm(da,m1,m2,m3,m4)
 #=================================
 # the rent data
@@ -167,8 +170,10 @@ r1 <- gamlss(R~pb(Fl), data=rent)
 r11 <- gamlss(R~pvc(Fl), data=rent)
 # now with the factor
 r2 <- gamlss(R~pvc(Fl, by=B), data=rent)
-lines(fitted(r2)[rent$B==1][order(rent$Fl[rent$B==1])]~rent$Fl[rent$B==1][order(rent$Fl[rent$B==1])], col="blue", lwd=2)
-lines(fitted(r2)[rent$B==0][order(rent$Fl[rent$B==0])]~rent$Fl[rent$B==0][order(rent$Fl[rent$B==0])], col="red", lwd=2)
+lines(fitted(r2)[rent$B==1][order(rent$Fl[rent$B==1])]~rent$Fl[rent$B==1]
+                [order(rent$Fl[rent$B==1])], col="blue", lwd=2)
+lines(fitted(r2)[rent$B==0][order(rent$Fl[rent$B==0])]~rent$Fl[rent$B==0]
+                [order(rent$Fl[rent$B==0])], col="red", lwd=2)
 # probably not very sensible model
 rm(r1,r11,r2)
 #-----------
@@ -178,7 +183,7 @@ rm(r1,r11,r2)
 # varying-coefficient model
  h2 <-gamlss(R~pb(Fl)+pb(A)+pvc(A,by=Fl), data=rent)
 AIC(h1,h2)
-rm(h1,h2)
+rm(h1,h2)}
 #==================================
 }
 \keyword{regression}% 

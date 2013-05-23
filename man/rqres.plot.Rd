@@ -1,21 +1,20 @@
 \name{rqres.plot}
 \alias{rqres.plot}
 
-\title{Plotting Randomized Quantile Residuals }
+\title{Plotting Randomized Quantile Residuals}
 \description{
- This function plots QQ-plots of the normalized randomized quantile residuals (see Dunn and Smyth, 1996) for a model using a discrete GAMLSS family distribution.   
- 
+ This function plots worm plots, van Buuren and Fredriks M. (2001),  or QQ-plots of the normalized randomized quantile residuals (Dunn and Smyth, 1996) for a model using a discrete GAMLSS family distribution.    
 }
 \usage{
-rqres.plot(obj = NULL, howmany = 6, all = TRUE, save = FALSE, ...)
+rqres.plot(obj = NULL, howmany = 6, plot = c("all", "average"), 
+           type = c("wp", "QQ"), ...)
 }
 
 \arguments{
   \item{obj}{a fitted GAMLSS model object from a "discrete" type of family }
   \item{howmany}{The number of QQ-plots required up to ten i.e. \code{howmany=6}}
-  \item{all}{if TRUE QQ-plots from \code{howmany} realizations are plotted. 
-             If FALSE then a single qq-plot of the median of the \code{howmany} realizations is plotted}
-  \item{save}{If TRUE the median residuals can be saved }
+   \item{plot}{whether to plot all plots all the residual realisations  \code{"all"} or just the mean \code{"average"}}
+     \item{type}{whether to plot worm plots \code{"wp"}or QQ plots \code{"QQ"} with default worm plots}
    \item{\dots}{for extra arguments}
 }
 \details{For discrete family distributions, the \code{\link{gamlss}()} function saves on exit one realization of randomized quantile residuals which 
@@ -43,13 +42,14 @@ Accompanying documentation in the current GAMLSS  help files, (see also  \url{ht
 
 Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
 \emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
+
+van Buuren and Fredriks M. (2001) Worm plot: simple diagnostic device for modelling growth reference curves. 
+            \emph{Statistics in Medicine}, \bold{20}, 1259--1277
 }
 
 \author{Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}}
 
 
-
-\section{Warning }{....}  
 \seealso{ \code{\link{plot.gamlss}}, \code{\link{gamlss}}  }
 
 \examples{
@@ -59,6 +59,6 @@ plot(h)
 # plot qq- plots from 6 realization of the randomized quantile residuals
 rqres.plot(h) 
 # a qq-plot from the medians from 40 realizations
-rqres.plot(h,howmany=40,all=FALSE) # 
+rqres.plot(h,howmany=40,plot="average") # 
 }
 \keyword{regression}% 

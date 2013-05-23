@@ -1,9 +1,8 @@
 \name{wp}
 \alias{wp}
-\title{ Worm plot }
+\title{ Worm plot}
 \description{
-Provides single or multiple worm plots for GAMLSS fitted objects. This is 
-a diagnostic tool for checking the residuals within different ranges (by default not overlapping) of the explanatory variable
+Provides a single plot or multiple worm plots for a GAMLSS fitted or more general for any fitted models where the method resid() exist and the residuals are defined sensibly. The worm plot (a de-trended QQ-plot), van Buuren and Fredriks M. (2001), is a diagnostic tool for checking the residuals within different ranges (by default not overlapping) of the explanatory variable(s).
           }
 \usage{
 wp(object=NULL, xvar = NULL,  resid = NULL, n.inter = 4,
@@ -16,8 +15,8 @@ wp(object=NULL, xvar = NULL,  resid = NULL, n.inter = 4,
 }
 
 \arguments{
-  \item{object}{a GAMLSS fitted object or any other fitted model where the resid() method works (preferably it should be quantile residuals)}
-  \item{xvar}{ the explanatory variable against which the worm plots will be plotted }
+  \item{object}{a GAMLSS fitted object or any other fitted model where the resid() method works (preferably it should be standarised or quantile residuals)}
+  \item{xvar}{the explanatory variable(s) against which the worm plots will be plotted. If only one variable is involved use \code{xvar=x1} if two variables are involved use \code{xvar=~x1*x2}. See also note below for use of formula if the data argument is not found in the fitted model}
   \item{resid}{if object is missing this argument can be used to specify the residual vector (again it should a quantile residuals or it be assumed to come from a normal distribution)}
   \item{n.inter}{the number of intervals in which the explanatory variable \code{xvar} will be cut}
   \item{xcut.points}{the x-axis cut off points e.g. \code{c(20,30)}. If \code{xcut.points=NULL} then the \code{n.inter} argument is activated }
@@ -33,19 +32,20 @@ wp(object=NULL, xvar = NULL,  resid = NULL, n.inter = 4,
    \item{\dots}{for extra arguments}
  }
 \details{
- If the \code{xvar} argument is not specified then a single worm plot is used. In this case a worm plot is a detrended normal QQ-plot 
- so departure from normality is highlighted.
- If the  \code{xvar} is specified then we have as many worm plot as \code{n.iter}. In this case the x-variable is cut into \code{n.iter}
- intervals with an equal number observations and detrended normal QQ (i.e. worm) plots for each interval are plotted. 
- This is a way of highlighting failures of the model within different ranges of the 
- explanatory variable. The fitted coefficients from fitting cubic polynomials to the residuals (within each x-variable interval) can be obtain by e.g. 
- \code{coeffs<-wp(model1,xvar=x,n.iner=9)}.  van Buuren \emph{et al.} (2001) used these residuals to identify regions (intervals) of the 
- explanatory variable within which the model does not fit adequately the data (called "model violation")  
- 
+ If the \code{xvar} argument is not specified then a single worm plot is used. In this case a worm plot is a de-trended normal QQ-plot so departure from normality is highlighted. 
+
+If a single  \code{xvar} is specified (with or without the use of a formula) i.e. \code{xvar=x1} or \code{xvar=~x1}) then we have as many worm plot as \code{n.iter}. 
+ In this case the x-variable is cut into \code{n.iter} intervals with an equal number observations and de-trended normal QQ (i.e. worm) plots for each interval are plotted. This is a way of highlighting failures of the model within different ranges of the 
+the single explanatory variable. The fitted coefficients from fitting cubic polynomials to the residuals (within each x-variable interval) can be obtain by e.g. \code{coeffs<-wp(model1,xvar=x,n.iner=9)}.  van Buuren and Fredriks M. (2001) used these residuals to identify regions (intervals) of the explanatory variable within which the model does not fit adequately the data (called "model violation")  
+
+Two variables can be displayed with the use of a formula, i.e. \code{xvar=~x1*x2}. In this case the \code{n.inter} can be a vector with two values.   
  
 }
 \value{
   For multiple plots the \code{xvar} intervals and the coefficients of the fitted cubic polynomials to the residuals (within each \code{xvar} interval) are returned.   
+}
+\note{Note that the \code{wp()} function, if the argument \code{object} is used, is looking for the data argument of the object. If the argument \code{data} exists it uses its enviroment to find   \code{xvar} (whether it is a formula or not). As a result if \code{data} exists withing \code{object}  
+\code{xvar=~x*f} can be used (assuming thet \code{x} and \code{f} are in the data) otherwise the variable should be expicitly defined i.e. \code{xvar=~data$x*data$f}.
 }
 \references{
 Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), \emph{Appl. Statist.}, \bold{54}, part 3,
@@ -67,10 +67,50 @@ van Buuren and Fredriks M. (2001) Worm plot: simple diagnostic device for modell
 
 \examples{
 data(abdom)
+# with data
 a<-gamlss(y~pb(x),sigma.fo=~pb(x,1),family=LO,data=abdom)
 wp(a)
-coeff1<-wp(a,abdom$x)
+coeff1<-wp(a,xvar=x)
 coeff1
-rm(a,a1)
+\dontrun{
+# no data argument
+b <- gamlss(abdom$y~pb(abdom$x),sigma.fo=~pb(abdom$x),family=LO)
+wp(b) 
+wp(b, xvar=abdom$x)# not wp(b, xvar=x)
+# using  the argument resid
+# this will work
+wp(resid=resid(a),  xvar=abdom$x)
+# not this
+# wp(resid=resid(a),  xvar=x)
+# this example uses the rent data
+m1 <- gamlss(R~pb(Fl)+pb(A)+loc, sigma.fo=~pb(Fl)+pb(A), data=rent, family=GA)
+# a single worm plot
+wp(m1, ylim.all=0.5)
+# a single continuous x variable 
+wp(m1, xvar=Fl, ylim.worm=.8)
+# a single x variable changing the default number of intervals
+wp(m1, xvar=Fl, ylim.worm=1.5, n.inter=9)
+# different x variable changing the default number of intervals
+B1<-wp(m1, xvar=A, ylim.worm=1.2, n.inter=9) 
+B1
+# the number five plot has intervals 
+# [5,] 1957.5 1957.5 
+# rather disappoining 
+# try formula for xvar
+wp(m1, xvar=~A, ylim.worm=1.2, n.inter=9)
+# better in this case using formula
+# now using a factor included in the model
+wp(m1, xvar=~loc, ylim.worm=1.2, n.inter=9)
+# using a factor notin the model
+wp(m1, xvar=~B, ylim.worm=1.5, n.inter=9)
+# level 2 (with B=1) did not fit well
+# trying two continuous variable 
+wp(m1, xvar=~Fl*A, ylim.worm=1.5, n.inter=4)
+# one continuous and one categorical 
+wp(m1, xvar=~Fl*loc, ylim.worm=1.5, n.inter=4)
+# two categorical
+wp(m1, xvar=~B*loc, ylim.worm=1.5, n.inter=4)
+}
+
 }
 \keyword{regression}% 

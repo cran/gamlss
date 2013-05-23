@@ -1,3 +1,4 @@
+## offsets are saved for the vcov() to work 1-5-13
 ## revisised Friday, March 19, 2010 to correct a bug reported by Dr Willem Vervoort
 ## major revision MS Wednesday, December 29, 2004 at 18:04
 ## to unify the output and tidy the input 
@@ -30,9 +31,10 @@ gamlssNews <- function() file.show(system.file("doc", "NEWS.txt", package="gamls
 ##----------------------------------------------------------------------------------------
 .gamlss.bi.list<-c("BI", "Binomial", "BB", "Beta Binomial", "ZIBI", "ZIBB", "ZABI", "ZABB") # binomial denominators
 ##----------------------------------------------------------------------------------------
-.gamlss.sm.list<-c("cs", "scs", "vc",             # smoothing cubic splines  : cs, scs, vc
+.gamlss.sm.list<-c("cs", "scs", "vc","s",         # smoothing cubic splines  : cs, scs, vc
                    "ps", "pb", "cy", "tp", "pvc", # penalised splines        : ps, pb, cy tp pvc pbq
-                   "pbq",                         #
+                   "pbq",                         # pb using Qfunction
+                   "mrf",                         # Markov random fields
                    "lo",                          # loess                    : lo
                    "random","ra","rc","rash","re",# random effect            : random, ra, rc, re (lme) rash
                    "fp","pp",                     # fractional poly          : fp, pp
@@ -246,7 +248,7 @@ body(rqres) <-  eval(quote(body(rqres)), envir = getNamespace("gamlss"))
            } #end of while
            pen <- 0 # DS Thursday, November 21, 2002 at 23:04
            if(length(who) > 0) {pen<- sum(eta*wt*(wv-eta)) }
-           c(fit, list(fv = fv, wv = wv, wt = wt, eta = eta, pen = pen)) #ms Saturday, December 4, 2004 
+           c(fit, list(fv = fv, wv = wv, wt = wt, eta = eta, os = os)) #ms Saturday, December 4, 2004 
          }     
            ##-end of GLIM.fit------------------------------------------------------------
       
@@ -484,21 +486,23 @@ body(rqres) <-  eval(quote(body(rqres)), envir = getNamespace("gamlss"))
                                  who = who.mu, smooth.frame = smooth.frame.mu, maxit = 1, 
                                  tol = bf.tol, trace = bf.trace)
                  mu.fit$eta <<- eta.mu <- mu.fit$fitted.values+mu.offset
-                  mu.fit$fv <<-    mu <<- mu.object$linkinv(eta.mu)
+                  mu.fit$fv <<-  mu <<- mu.object$linkinv(eta.mu)
                     s.mu.old <- s.mu
                         s.mu <- mu.fit$smooth 
                  mu.fit$pen <<- sum(eta.mu*w.mu*(wv.mu-eta.mu))
                   mu.fit$wv <<- wv.mu
                   mu.fit$wt <<- w.mu
+                  mu.fit$os <<- mu.offset
                  
                 }   
                 else 
                 { 
                      mu.fit <<- lm.wfit(x=mu.X,y=wv.mu,w=w.mu*w,method="qr") 
                  mu.fit$eta <<- eta.mu <- mu.fit$fitted.values+mu.offset
-                  mu.fit$fv <<-    mu <<- mu.object$linkinv(eta.mu)
+                  mu.fit$fv <<-   mu <<- mu.object$linkinv(eta.mu)
                   mu.fit$wv <<- wv.mu
-                  mu.fit$wt <<- w.mu   
+                  mu.fit$wt <<- w.mu
+                  mu.fit$os <<- mu.offset      
                 }
              }
             }     
@@ -525,7 +529,8 @@ body(rqres) <-  eval(quote(body(rqres)), envir = getNamespace("gamlss"))
                          s.sigma <- sigma.fit$smooth
                   sigma.fit$pen <<- sum(eta.sigma*w.sigma*(wv.sigma-eta.sigma))
                    sigma.fit$wv <<- wv.sigma
-                   sigma.fit$wt <<- w.sigma 
+                   sigma.fit$wt <<- w.sigma
+                   sigma.fit$os <<- sigma.offset 
                 }   
                 else 
                 { 
@@ -533,7 +538,8 @@ body(rqres) <-  eval(quote(body(rqres)), envir = getNamespace("gamlss"))
               sigma.fit$eta <<- eta.sigma <- sigma.fit$fitted.values+sigma.offset
                sigma.fit$fv <<- sigma    <<- sigma.object$linkinv(eta.sigma) 
                sigma.fit$wv <<- wv.sigma
-               sigma.fit$wt <<- w.sigma   
+               sigma.fit$wt <<- w.sigma 
+               sigma.fit$os <<- sigma.offset   
                 }
              }   
             }
@@ -557,7 +563,8 @@ body(rqres) <-  eval(quote(body(rqres)), envir = getNamespace("gamlss"))
                       s.nu <- nu.fit$smooth 
                nu.fit$pen <<- sum(eta.nu*w.nu*(wv.nu-eta.nu)) 
                 nu.fit$wv <<- wv.nu
-                nu.fit$wt <<- w.nu  
+                nu.fit$wt <<- w.nu 
+                nu.fit$os <<- nu.offset  
                 }   
                 else 
                 { 
@@ -565,7 +572,8 @@ body(rqres) <-  eval(quote(body(rqres)), envir = getNamespace("gamlss"))
               nu.fit$eta <<- eta.nu <- nu.fit$fitted.values+nu.offset
                nu.fit$fv <<-    nu <<- nu.object$linkinv(eta.nu) 
                nu.fit$wv <<- wv.nu
-               nu.fit$wt <<- w.nu       
+               nu.fit$wt <<- w.nu 
+               nu.fit$os <<- nu.offset      
                 } 
               }
              }    
@@ -589,7 +597,8 @@ body(rqres) <-  eval(quote(body(rqres)), envir = getNamespace("gamlss"))
                       s.tau <- tau.fit$smooth 
                tau.fit$pen <<- sum(eta.tau*w.tau*(wv.tau-eta.tau)) 
                 tau.fit$wv <<- wv.tau
-                tau.fit$wt <<- w.tau   
+                tau.fit$wt <<- w.tau 
+                tau.fit$os <<- tau.offset  
                 }   
                 else 
                 { 
@@ -597,7 +606,8 @@ body(rqres) <-  eval(quote(body(rqres)), envir = getNamespace("gamlss"))
                tau.fit$eta <<- eta.tau <- tau.fit$fitted.values+tau.offset
                 tau.fit$fv <<-    tau <<- tau.object$linkinv(eta.tau)
                 tau.fit$wv <<- wv.tau
-                tau.fit$wt <<- w.tau       
+                tau.fit$wt <<- w.tau
+                tau.fit$os <<- tau.offset        
                 }
               }
              }                        
@@ -694,6 +704,7 @@ parameterOut <- function(what="mu", save)
                  out$x <- eval(parse(text=(paste(what,".X", sep=""))))
                 out$qr <- eval(parse(text=(paste(what,".fit$qr", sep="")))) 
       out$coefficients <- eval(parse(text=(paste(what,".fit$coefficients", sep="")))) 
+            out$offset <- eval(parse(text=(paste(what,".fit$os",           sep="")))) 
           out$xlevels  <- .getXlevels( eval(parse(text=paste(what,".terms",sep="")))
                                        , eval(parse(text=paste(what,".frame",sep="")))) 
                                               # ms Sunday, June 13 2004  
@@ -705,13 +716,12 @@ parameterOut <- function(what="mu", save)
                 out$s  <- eval(parse(text=paste(what,".fit$smooth",sep=""))) 
                out$var <- eval(parse(text=paste(what,".fit$var",sep="")))  
            out$coefSmo <- eval(parse(text=paste(what,".fit$coefSmo",sep=""))) 
-            out$lambda <- eval(parse(text=paste(what,".fit$lambda",sep=""))) 
-              out$pen  <- eval(parse(text=paste(what,".fit$pen",sep=""))) 
+            out$lambda <- eval(parse(text=paste(what,".fit$lambda",sep="")))            
               }
             else                       
               { out$df <- eval(parse(text=paste(what,".fit$rank",sep=""))) 
              out$nl.df <- 0
-              out$pen  <- 0 #ms May 13, 2004 
+         #    out$pen  <- 0 #ms May 13, 2004 
               }
      }
    else
@@ -728,15 +738,15 @@ parameterOut <- function(what="mu", save)
               { out$df <- eval(parse(text=paste(what,".fit$nl.df",sep="")))+
                           eval(parse(text=paste(what,".fit$rank",sep=""))) 
              out$nl.df <- eval(parse(text=paste(what,".fit$nl.df",sep="")))
-                 out$terms <- eval(parse(text=(paste(what,".terms", sep=""))))
-                  out$formula <- eval(parse(text=paste(what,".formula",sep="")))
+             out$terms <- eval(parse(text=(paste(what,".terms", sep=""))))
+           out$formula <- eval(parse(text=paste(what,".formula",sep="")))
               }
             else                       
               {  
-              out$df <- eval(parse(text=paste(what,".fit$rank",sep=""))) 
-              out$nl.df <- 0
-                 out$terms <- eval(parse(text=(paste(what,".terms", sep=""))))
-                  out$formula <- eval(parse(text=paste(what,".formula",sep="")))
+                out$df <- eval(parse(text=paste(what,".fit$rank",sep=""))) 
+             out$nl.df <- 0
+             out$terms <- eval(parse(text=(paste(what,".terms", sep=""))))
+           out$formula <- eval(parse(text=paste(what,".formula",sep="")))
               }
      }
    else
@@ -785,7 +795,7 @@ smoothers <- a$specials #S convert variable pointers to term pointers
    }
 ##=========================================================================================
 ##-----------------------------------------------------------------------------------------
-## this function creates the parametr objects
+## this function creates the parameter objects
 ##-----------------------------------------------------------------------------------------
 ##=========================================================================================
 get.object <- function(what)
@@ -1111,8 +1121,8 @@ method <- substitute(method)
                            #, na.action=na.act
     out$converged <- conv  
     out$residuals <- eval(family$rqres)
-    noObs <- if(all(trunc(w)==w)) sum(w) else N 
-    out$noObs <- noObs
+            noObs <- if(all(trunc(w)==w)) sum(w) else N 
+        out$noObs <- noObs
 ## binomial denominator 
 if(any(family$family%in%.gamlss.bi.list))  out$bd <- bd        
 ##-----------------------------------------------------------------------------------------
@@ -1128,14 +1138,14 @@ else
  }
 ## define now the degrees of freedom for the fit and residuals
      out$df.fit <- out$mu.df
-        out$pen <- out$mu.pen
+#       out$pen <- out$mu.pen
 out$df.residual <- noObs-out$mu.df
 ## Output for dispersion model: ----------------------------------------------------------
 if ("sigma"%in%names(family$parameters))
 {
             out <- c(out, sigma = parameterOut(what="sigma", save=saveParam) )  
      out$df.fit <- out$mu.df + out$sigma.df
-        out$pen <- out$mu.pen + out$sigma.pen
+#        out$pen <- out$mu.pen + out$sigma.pen
 out$df.residual <- noObs-out$mu.df-out$sigma.df
 }
 ##  output for nu ------------------------------------------------------------------------
@@ -1144,14 +1154,14 @@ if ("nu"%in%names(family$parameters))
             out <- c(out, nu = parameterOut(what="nu", save=saveParam) ) 
      out$df.fit <- out$mu.df+out$sigma.df+out$nu.df
 out$df.residual <- noObs-out$mu.df-out$sigma.df-out$nu.df
-        out$pen <- out$mu.pen + out$sigma.pen + out$nu.pen
+#        out$pen <- out$mu.pen + out$sigma.pen + out$nu.pen
 }
 ##  output for tau -----------------------------------------------------------------------
 if ("tau"%in%names(family$parameters))
 {
             out <- c(out, tau = parameterOut(what="tau", save=saveParam) )       
      out$df.fit <- out$mu.df+out$sigma.df+out$nu.df+out$tau.df
-        out$pen <- out$mu.pen + out$sigma.pen + out$nu.pen + out$tau.pen
+#        out$pen <- out$mu.pen + out$sigma.pen + out$nu.pen + out$tau.pen
 out$df.residual <- noObs-out$mu.df-out$sigma.df- out$nu.df -out$tau.df
 }
 ##=======================================================================================

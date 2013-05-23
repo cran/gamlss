@@ -97,6 +97,7 @@ Mikis Stasinopoulos, Paul Eilers, Bob Rigby and Vlasios Voudouris
 \examples{
 # creating data from Pareto 2 distribution
 Y <- rPARETO2(1000) 
+\dontrun{
 # getting the density 
  histSmo(Y, lower=0)
 # more  breaks a bit slower
@@ -122,7 +123,7 @@ m1<- histSmo(YY, save=TRUE)
 # calculate Pr(-10<YY<10)
 1-(1-m1$cdf(10))-m1$cdf(-10)
 YYY <- rNBI(1000, mu=5, sigma=4)
-histDist(YYY, discrete=TRUE, family=NBI())
+histDist(YYY, discrete=TRUE, family=NBI())}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

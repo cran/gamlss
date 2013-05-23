@@ -42,7 +42,9 @@ fitDist <- function(y,
                 extra = NULL,
                  data = NULL, ...) # for extra distributions to include 
 {
-  if (!is.null(data)) {attach(data); on.exit(detach(data))}
+  # if (!is.null(data)) {attach(data); on.exit(detach(data))}
+  #if (!is.null(data)) {attach(data, name="TheDatA"); on.exit(detach(TheDatA))}
+  y <- if (!is.null(data)) get(deparse(substitute(y)), envir=as.environment(data)) else y
   type <- match.arg(type)
     DIST <- switch(type, "realAll"=.realAll, 
                         "realline"=.realline, 

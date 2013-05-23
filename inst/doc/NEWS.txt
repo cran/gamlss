@@ -1,6 +1,6 @@
 -------------- GAMLSS NEWS-------------------------------------------
 
-GAMLSS is a R package implementing the Generalized Additive Models for
+GAMLSS is a R package implementing the Generalised Additive Models for
 location scale shape of Rigby and Stasinopoulos (2005),  Appl. Statist.,
 54,  pp. 507-554.
 
@@ -19,7 +19,41 @@ Question or suggestions about GAMLSS can be send to
 or
    r.rigby@londonmet.ac.uk
 ---------------------------------------------------------------------
-Version 4.1-9
+Version 4.2-4
+
+1. gamlss:  
+     i) the function lms() has an extra argument method.pk added on. This allows the use of the GAIC method of estimating the     smoothing in pb() parameters. It was found that for large data the local maximum likelihood (which is the default) produces too wiggly centiles. The penalty k is taken from the argument k and it is the same as the one selecting the distribution.
+
+    ii) the function rqres.plot() is fixed and improved to allow worm plot as well as  QQ-plots 
+nd 
+    iii) The Rsq() function is introduced. It uses the generalised R-squared of Nagelkerke, (1991).
+
+    iv) The term.plot() function has now se=TRUE and  ylim="common" as defaults.
+
+    v) the function gen.likelihood() is introduced.  It creates the log-likelihood of a fitted model. It is used for vcov() and it should be more reliable than previous version of vcov(). 
+
+   vi) The gamlss() function now saves the offset's for all parameters. This is needed for vcov() and gen.likelihood() and allows the vcov() to work with offsets. 	
+   
+  vii) The wp() function allows now two explanatory variables including factors (see the examples in help). Also it was found that if the model is very bad some of the values  of the worm plot could be Inf so if line=TRUE the function was failing when the cubic fit in lm() was used. Now if there are Inf values it do not fit the lm() model.
+
+  viii) summary() now allows to save the coefficients and standard errors in a table.
+
+    ix) acfResid() is introduced to plot the act function for power function of the residuals, r, r^2, r^3 and r^4.  
+
+    x) the method confint() is introduced for gamlss objects 
+   
+    xi) attach() was taken out from the functions findhyper(), fitDist(), gamlssML(), histDis(), 
+        par.plot(), prof.term() and wp() to comply with the new regulation of R
+
+2. gamlss.tr: 
+     i)  A new argument "varying" is introduce in all the truncated functions. It allows the distribution of the response variable to have different truncated points at observational level. (Note that before the truncated parameters had to be the same for all observations)
+
+
+3. gamlss.dist:
+  
+     i) NOF distribution has changed to allow for negative values for y. This was suggested by Michael Höhle.
+
+Version 4.2-0
 
 1. gamlss: The functions prof.dev() and prof.term() are improved. 
     The argument step is not anymore compulsory and if not set the argument length is used. 

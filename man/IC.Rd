@@ -3,15 +3,15 @@
 \alias{AIC.gamlss}
 \alias{GAIC}
 \alias{extractAIC.gamlss}
-
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Gives the GAIC for a GAMLSS Object}
 \description{
- \code{IC} is a function to calculate the Generalized Akaike information criterion (GAIC) for a given penalty \code{k} for a fitted GAMLSS object. 
+ \code{IC} is a function to calculate the Generalised Akaike information criterion (GAIC) for a given penalty \code{k} for a fitted GAMLSS object. 
  The function \code{AIC.gamlss} is the method associated with a GAMLSS object of the generic function \code{AIC}. 
  The function \code{GAIC} is a synonymous of the function \code{AIC.gamlss}. 
  The function \code{extractAIC} is a the method associated a GAMLSS object of the generic function \code{extractAIC} and it is 
  mainly used in the \code{stepAIC} function. 
+The function \code{Rsq} compute a generalisation of the R-squared for not normal models.
 }
 \usage{
 IC(object, k = 2)

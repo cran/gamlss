@@ -8,27 +8,28 @@ It is only applicable when only "one" explanatory variable is available (usually
 }
 \usage{
 lms(y, x, families = LMS, data = NULL, k = 2, 
-     cent = 100*pnorm((-4:4)*2/3), 
-     calibration = TRUE, legent = FALSE, mu.df = NULL, 
-     sigma.df = NULL, nu.df = NULL, tau.df = NULL, ...)
+        cent = 100 * pnorm((-4:4) * 2/3), 
+        calibration = TRUE, legend = FALSE, 
+        mu.df = NULL, sigma.df = NULL, nu.df = NULL, 
+        tau.df = NULL, method.pb = c("ML", "GAIC"), ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{y}{The response variable}
-  \item{x}{The unique explanatory variable
-}
-  \item{families}{a list of \code{gamlss.families} with default \code{LMS=c("BCCGo",  "BCPEo", "BCTo")}
-}
+  \item{x}{The unique explanatory variable}
+  \item{families}{a list of \code{gamlss.families} with default \code{LMS=c("BCCGo",  "BCPEo", "BCTo")}}
   \item{data}{the data frame}
   \item{k}{the penanlty to be used in the GAIC}
-  \item{cent}{a vector with elements the \% centile values for which the centile curves have to be evaluated}
-  \item{calibration}{whether calibrartion is required with default \code{TRUE}}
-  \item{legent}{whether a legent is required with default \code{FALSE}}
-  \item{mu.df}{\code{mu} effective degrees of freedon if required otherwise are estimated}
+ \item{cent}{a vector with elements the \% centile values for which the centile curves have to be evaluated} 
+ \item{calibration}{whether calibration is required with default \code{TRUE}}
+ \item{legend}{whether a legend is required in the plot with default \code{FALSE}}
+ \item{mu.df}{\code{mu} effective degrees of freedon if required otherwise are estimated}
   \item{sigma.df}{\code{sigma} effective degrees of freedon if required otherwise are estimated}
   \item{nu.df}{\code{nu} effective degrees of freedon if required otherwise are estimated}
   \item{tau.df}{\code{tau} effective degrees of freedon if required otherwise are estimated}
-  \item{\dots}{extra argument which cen be passed to \code{gamlss}}
+  \item{method.pb}{the method used in the \code{pb()} for estimating the smoothing 
+  parameters. The default is local maximum likelihood \code{"ML"}. \code{"GAIC"} is also permited where \code{k} is taken from the \code{k} argument of the function.}
+  \item{\dots}{extra argument which can be passed to \code{gamlss}}
 }
 \details{
 This function should be used if only one explanatory variable is available.
@@ -41,7 +42,8 @@ Justification of using the specific centile (0.38  2.27  9.1211220 25.25, 50, 74
 \value{It returns a \code{gamlss} fitted object}
 
 \references{
-Cole, T. J. (1994) Do growth chart centiles need a face lift? \emph{BMJ}, 308--641.
+Cole, T. J. (1994) Do growth chart centiles need a face lift?
+ \emph{BMJ}, 308--641.
 
 Cole,  T. J. and Green,  P. J. (1992) Smoothing reference centile curves: the LMS method and penalized likelihood, \emph{Statist. Med.} \bold{11}, 1305--1319
 
@@ -63,7 +65,8 @@ Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby \email{r.
 \examples{
 \dontrun{
 data(abdom)
-m1<-lms(y,x , data=abdom, n.cyc=30)
+m1 <- lms(y,x , data=abdom, n.cyc=30)
+m2 <- lms(y,x ,data=abdom, method.pb="GAIC", k=log(610))
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

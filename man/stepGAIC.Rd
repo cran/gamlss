@@ -231,7 +231,7 @@ mod6$anova
 mod6
 # now stepGAICAll.A    
 mod7<-stepGAICAll.A(mod4, scope=list(lower=~1,upper=~x1+x2+x3+x4+x5+x6)) 
-# now  stepGAICAll.A
+# now  stepGAICAll.B
 mod8<-stepGAICAll.B(mod4, scope=list(lower=~1,upper=~x1+x2+x3+x4+x5+x6))
 # now stepTGD()
 data(aep)
