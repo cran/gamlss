@@ -653,7 +653,7 @@ else  # here is if.Factor==TRUE     -----------------------------------FACTOR---
          lev <- hat(sqrt(waug)*xaug,intercept=FALSE)[1:n] # get the hat matrix
            lev <- (lev-.hat.WX(w,X)) # This has to checked???? 
          var <- lev/w   
-     #if (any(is.na(fv))) browser()
+     #if (any(is.na(fv)))
      if (is.null(xeval)) # if no prediction 
      {
       list(fitted.values=fv, residuals=y-fv, var=var, nl.df =sum(edf)-(2*nlev),

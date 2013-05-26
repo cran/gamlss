@@ -144,7 +144,6 @@ if(p!=ap) stop("the dimensions of the augmented matrix and of the design matrix 
 else 
     {
  #ndm <- as.matrix(attr(x,"design.matrix"))[seq(length(y)+1, 2),]
- #browser()
      ll <- dim(as.matrix(attr(x,"design.matrix")))[1]
   nxvar <- as.matrix(attr(x,"design.matrix"))[seq(length(y)+1,ll),]
    pred <- drop(nxvar %*% coef(fit))

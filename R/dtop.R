@@ -97,7 +97,6 @@ panel.fun<-function (x, y, col = par("col"), bg = NA, pch = par("pch"),
 {
 #	qq <- as.data.frame(qqnorm(y, plot = FALSE))
 #	qq$y <- qq$y - qq$x  
-	#browser()
 #	grid(nx=NA,ny=NA, lwd = 2) 
 	xx <- NPL.bands(y, conf.level=conf.level)
 	lower <- qnorm(xx$lower)-xx$x      
@@ -121,7 +120,6 @@ panel.fun<-function (x, y, col = par("col"), bg = NA, pch = par("pch"),
 	#abline(0, 100000, lty = 2, col = 2)
 	if (line)
 			{
-				#browser()
 			fcdf <- ecdf(y) # create a function 
               mm <- fcdf(y) # evaluate it 
           zscore <- qNO(mm) # normalize it 
@@ -195,7 +193,6 @@ panel.fun<-function (x, y, col = par("col"), bg = NA, pch = par("pch"),
 					cex = cex, bar.bg = c(num = "light blue"), ...)
 		#	if (overlap==0)
 		#	{
-		#		browser()
 		#		if  (total.points!=length(resid(object)))
 		#			warning("the total number of points in the plot is not equal \n to the number of observations in y \n")
 		#	}
