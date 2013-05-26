@@ -87,7 +87,6 @@ if (!is.null(df)&&is.null(lambda)) # case 3 : if df are required----------------
   #  if(is.null(df))     df <- sum(non.zero)
   #  if(lambda == 0) lambda <- df.inv(nw[non.zero], df)
   #   df <- sum(nw[non.zero]/(nw[non.zero] + lambda))
-    #browser()
     beta <- fit$beta #tapply(w * y, x, sum)/(nw + lambda)
       fv <-   fit$beta[x]
      var <- as.vector(w/(nw[x] + lambda))

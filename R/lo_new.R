@@ -80,8 +80,7 @@ lo.control <-  function (span = 0.75, enp.target=NULL, degree = 2,
 #--------------------------------------------------------------------------------------
 # the definition of the backfitting additive function
 gamlss.lo <-function(x, y, w, xeval = NULL, ...)
-{       
-	#browser()     
+{           
     formula <- attr(x,"formula")
     formula <- as.formula(paste("Y.var",deparse(formula), sep=""))
     control <- as.list(attr(x, "control"))

@@ -15,7 +15,6 @@ rc <- function(formula, lambda=NULL)
         }
         rev(c(model.vars, model))
      } # end of parseCond
-    #browser()
      if (!inherits(model, "formula")) 
         stop("model must be a formula object")
      ans <- list(left = NULL, right = NULL, condition = NULL, left.name = character(0), 
@@ -110,7 +109,6 @@ rcFactor <- function(A)
     if(is.null(lambda)) stop("lambda matrix not set")
     if(dim(lambda)[1]!=dim(lambda)[2]) stop("lambda matrix is not square") 
     if(dim(lambda)[1]!=dim(Xs)[2]) stop("the dimension of X not equal that of lambda")      
-   # browser()
     aug <- solve(lambda)
     aug<-chol(aug)
     #aug <- rc.getL(aug)
@@ -118,7 +116,6 @@ rcFactor <- function(A)
     #now the bid aug matrix
     A<-rcFactor(G)
     Aug<-kronecker(A,aug)
-    #browser()
     attr(xfactor, "design.matrix") <- Xs
     attr(xfactor, "big.design.matrix") <- newX 
     attr(xfactor, "groups") <- G  
@@ -159,7 +156,6 @@ rcFactor <- function(A)
       fit <- lm.wfit(xaug-1,yaug,w=waug,method="qr") 
       cov <-  diag(chol2inv(fit$qr$qr[1:p, 1:p, drop = FALSE]))
     nl.df <- sum(diag(solve(t(xaug) %*% (waug * xaug)) %*% (t(dm) %*% (waug[1:N] * dm))))
-    #browser()
     # equivalent way to estimate df Hodges ansd Sargent (1998)
     #   s<-svd(sqrt(waug)*xaug)
     #   U1<-s$u[1:N,]

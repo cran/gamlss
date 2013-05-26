@@ -107,7 +107,6 @@ if (length(parform)==3)
  offsetVar <- if (!is.null(off.num <- attr(Terms, "offset"))) # new 
              eval(attr(Terms, "variables")[[off.num + 1]], data) 
 ## model frame 
-# browser()
          m <- model.frame(Terms, data, xlev = object[[paste(what,"xlevels",sep=".")]])           
              ## model design matrix y and w 
          X <- model.matrix(Terms, data, contrasts = object$contrasts)

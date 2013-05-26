@@ -77,7 +77,6 @@ if (npoly==1)
               start=c(p1=start[1], p2=start[2], p3=start[3]), algorithm = "plinear")
      fv <- coef(fit)[4]+coef(fit)[5]*xvar^coef(fit)[1]+coef(fit)[5]*xvar^coef(fit)[2]+coef(fit)[7]*xvar^coef(fit)[3] 
    }  
-   #browser() 
     #new.start<- as.vector(coef(fit)[1])
  
    # eval(expression(attr(data[["pp(x, start = list(p1 = 0.5))"]],"start")),sys.parent())
