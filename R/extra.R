@@ -304,7 +304,8 @@ Rsq <- function(object)
   rsq <- 1-exp((2/object$N)*(logLik(m0)[1]-logLik(object)[1]))  
   rsq
 }
-#----------------------------------------------------------------------------------------
+
+#-----------------------------------------------------------------------------------
 # the function is in a new file now
 # this intoducing the shifted log and logit links 
 # MS Sunday, February 20, 2005 

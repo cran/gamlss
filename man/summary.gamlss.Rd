@@ -6,7 +6,8 @@
       objects returned by modelling functions. 
 }
 \usage{
-\method{summary}{gamlss}(object, type = c("vcov", "qr"), save = FALSE, ...)
+\method{summary}{gamlss}(object, type = c("vcov", "qr"), 
+                       robust=FALSE, save = FALSE, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -17,6 +18,7 @@
   estimated the standard errors but it is not reliable since it do not take into the account the inter-correlation between
   the distributional parameters \code{mu}, \code{sigma}, \code{nu} and \code{tau}.
  }
+  \item{robust}{whether robust (sandwich) standard errors are required}
   \item{save}{whether to save the environment of the function so to have access to its values}
   \item{\dots}{for extra arguments}
 }

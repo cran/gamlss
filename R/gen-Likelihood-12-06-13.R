@@ -17,7 +17,9 @@
 gen.likelihood <- function(object)
 {
 if (!is.gamlss(object)) stop("needs a gamlss object")
-        fam <- as.gamlss.family(object$family)
+    #    fam <- as.gamlss.family(object$family) this is changed to get the right link functions
+        fam <-  if(is.null(object$call$family)) as.gamlss.family(NO) 
+                else as.gamlss.family(object$call$family)
       fname <- object$family[1]
        dfun <- paste("d",fname,sep="")
       #pfun <- paste("p",fname,sep="")
