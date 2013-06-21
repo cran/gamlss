@@ -29,7 +29,7 @@ export(gamlss, gamlss.control, glim.control, is.gamlss,
         LR.test, dtop,
         gamlssML, fitDist, histSmo, histSmoO, histSmoC, histSmoP,
         calibration, lms, Rsq, gen.likelihood,
-        acfResid)
+        acfResid, rvcov, get.K, getSmo)
 
 
 

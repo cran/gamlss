@@ -19,6 +19,24 @@ Question or suggestions about GAMLSS can be send to
 or
    r.rigby@londonmet.ac.uk
 ---------------------------------------------------------------------
+Version 4.2-6
+
+1. gamlss 
+     i)  LR.test() a small amendment when checking whether it is  gamlss model
+     ii) gen.likelihood()  a small amendment to make sure that it getsthe correct link functions
+     iii) the functions get.K() and rvcov() are introduced for robust (sandwich) standard errors
+     iv)  A new argument "robust" is introduced for the methods
+           a) vcov.gamlss()
+           b) summary.gamlss()
+           c) confint.gamlss()
+      v) getSmo() is introduced for get information for smoother terms
+      vi) lms() a bug on the previuse verson is correced and a additinal feature is added with argument
+          "trans.x".  With "tans.x=TRUE" the function looks for a transormation in the x-variable.
+2. gamlss.add
+      i)  fitFixBP() is named now fitFixKNots()
+      ii) attach() data is taken out from fitFixKnots(), fitFreeKnots(), penLags().
+
+---------------------------------------------------------------------
 Version 4.2-4
 
 1. gamlss:  

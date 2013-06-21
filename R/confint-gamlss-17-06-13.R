@@ -4,7 +4,8 @@
 # i) worth inversigating the function profile.glm() in MASS MASS:::profile.glm
 # since it is the function  used for glm models and used in confint.glm()
 # ------------------------------------------------------------------------------
-confint.gamlss  <- function (object, parm, level = 0.95, what="mu", ...) 
+confint.gamlss  <- function (object, parm, level = 0.95, what="mu", 
+                             robust=FALSE, ...) 
 {
   cf <- coef(object, what)
   pnames <- names(cf)
@@ -18,7 +19,7 @@ confint.gamlss  <- function (object, parm, level = 0.95, what="mu", ...)
   fac <- qnorm(a)
   ci <- array(NA, dim = c(length(parm), 2L), dimnames = list(parm, 
                                                              pct))
-  ses <- sqrt(diag(vcov(object)))[parm] # this needs checking
+  ses <- sqrt(diag(vcov(object, robust=robust)))[parm] # this needs checking
   ci[] <- cf[parm] + ses %o% fac
   ci
 }
