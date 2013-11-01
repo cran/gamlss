@@ -18,7 +18,7 @@
            { 
             y  <- rep(obj$y, w)
             mu <- rep(fitted(obj, "mu"),w)
-            if(any(obj$family%in%gamlss:::.gamlss.bi.list)){ bd <- rep(obj$bd,w)} # MS Wednesday, July 23, 2003 at 12:03   
+            if(any(obj$family%in%.gamlss.bi.list)){ bd <- rep(obj$bd,w)} # MS Wednesday, July 23, 2003 at 12:03   
             if ("sigma"%in%obj$parameters)  sigma <- rep(fitted(obj,"sigma"),w)
             if ("nu"%in%obj$parameters)        nu <- rep(fitted(obj,"nu"),w)
             if ("tau"%in%obj$parameters)      tau <- rep(fitted(obj,"tau"),w)  
@@ -27,7 +27,7 @@
            {
             y  <- obj$y
             mu <- fitted(obj)
-            if(any(obj$family%in%gamlss:::.gamlss.bi.list)){ bd <- obj$bd} # MS Wednesday, July 23, 2003 at 12:03   
+            if(any(obj$family%in%.gamlss.bi.list)){ bd <- obj$bd} # MS Wednesday, July 23, 2003 at 12:03   
             if ("sigma"%in%obj$parameters)  sigma <- fitted(obj,"sigma")
             if ("nu"%in%obj$parameters)        nu <- fitted(obj,"nu")
             if ("tau"%in%obj$parameters)      tau <- fitted(obj,"tau")

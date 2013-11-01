@@ -228,30 +228,35 @@ else stop(paste("this is not a gamlss object"))
 #######################################################################################
 #                 AIC.gamlss 
 #######################################################################################
-AIC.gamlss <- function (object, ..., k = 2) 
+AIC.gamlss <- function (object, ..., k = 2, c = FALSE) 
 {
  if (length(list(...))) 
       {
       object <- list(object, ...)
+    
     isgamlss <- unlist(lapply(object, is.gamlss))
     if (!any(isgamlss)) stop("some of the objects are not gamlss")
           df <- as.numeric(lapply(object, function(x) x$df.fit))
-         AIC <- as.numeric(lapply(object, function(x) x$G.dev+x$df.fit*k ))  
+           N <- as.numeric(lapply(object, function(x) x$N))
+         Cor <- if ((k == 2)&&(c==TRUE)) (2*df*(df+1))/(N-df-1) else rep(0, length(object)) 
+         AIC <- as.numeric(lapply(object, function(x) x$G.dev+x$df.fit*k ))+Cor  
          val <- as.data.frame(cbind(df,AIC))
         Call <- match.call()
       Call$k <- NULL
+      Call$c <- NULL 
  row.names(val) <- as.character(Call[-1])
-        val  <-  val[order(AIC),]
+        val  <- val[order(AIC),]
         val
      }
   else 
      { val <- if (is.gamlss(object)) object$G.dev+object$df.fit*k 
-                 else stop(paste("this is not a gamlss object"))
+                 else stop(paste("this is not a gamlss object"))    
+              if ((k == 2)&&(c==TRUE)) val <- val + (2*object$df.fit*(object$df.fit+1))/(object$N-object$df.fit-1) 
        val 
       }
 }
 
-GAIC <- function(object,..., k = 2 ) #UseMethod("AIC")
+GAIC <- function(object,..., k = 2, c = FALSE ) #UseMethod("AIC")
 {
  if (length(list(...))) 
       {
@@ -259,10 +264,13 @@ GAIC <- function(object,..., k = 2 ) #UseMethod("AIC")
     isgamlss <- unlist(lapply(object, is.gamlss))
     if (!any(isgamlss)) stop("some of the objects are not gamlss")
           df <- as.numeric(lapply(object, function(x) x$df.fit))
-         AIC <- as.numeric(lapply(object, function(x) x$G.dev+x$df.fit*k ))  
+           N <- as.numeric(lapply(object, function(x) x$N))
+         Cor <- if ((k == 2)&&(c==TRUE)) (2*df*(df+1))/(N-df-1) else rep(0, length(object)) 
+         AIC <- as.numeric(lapply(object, function(x) x$G.dev+x$df.fit*k ))+Cor  
          val <- as.data.frame(cbind(df,AIC))
         Call <- match.call()
       Call$k <- NULL
+      Call$c <- NULL 
  row.names(val) <- as.character(Call[-1])
         val  <-  val[order(AIC),]
         val
@@ -270,6 +278,7 @@ GAIC <- function(object,..., k = 2 ) #UseMethod("AIC")
   else 
      { val <- if (is.gamlss(object)) object$G.dev+object$df.fit*k 
                  else stop(paste("this is not a gamlss object"))
+       if ((k == 2)&&(c==TRUE)) val <- val + (2*object$df.fit*(object$df.fit+1))/(object$N-object$df.fit-1) 
        val 
       }
 }
@@ -295,16 +304,21 @@ GAIC <- function(object,..., k = 2 ) #UseMethod("AIC")
     h
 }
 #-----------------------------------------------------------------------------------
-# the generalised R-squred funtion
-Rsq <- function(object)
+# the generalised R-squared funtion
+# This should work now with Binomial
+Rsq <- function(object, type = c("Cox Snell","Cragg Uhler","both"))
 {
+  type <- match.arg(type)
   if (!is.gamlss(object)) stop("this is design for gamlss objects only")
   #  m0 <- update(object,  formula=~1, sigma.formula=~1, nu.formula=~1, tau.formula=~1, trace=F)
   suppressWarnings(m0 <- gamlssML(object$y, family=object$family))
-  rsq <- 1-exp((2/object$N)*(logLik(m0)[1]-logLik(object)[1]))  
-  rsq
+  rsq1 <- 1-exp((2/object$N)*(logLik(m0)[1]-logLik(object)[1]))
+  rsq2 <- rsq1/(1-exp((2/object$N)*logLik(m0)[1]))
+  if (type=="Cox Snell") return(rsq1)
+  if (type=="Cragg Uhler") return(rsq2)
+  if (type=="both") return(list(CoxSnell=rsq1, CraggUhler=rsq2)) 
 }
-
+#-----------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------
 # the function is in a new file now
 # this intoducing the shifted log and logit links 

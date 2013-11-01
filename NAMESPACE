@@ -29,7 +29,9 @@ export(gamlss, gamlss.control, glim.control, is.gamlss,
         LR.test, dtop,
         gamlssML, fitDist, histSmo, histSmoO, histSmoC, histSmoP,
         calibration, lms, Rsq, gen.likelihood,
-        acfResid, rvcov, get.K, getSmo)
+        acfResid, rvcov, get.K, getSmo, 
+        .gamlss.sm.list, .gamlss.bi.list, .gamlss.multin.list,
+        plot2way, loglogSurv1, loglogSurv2, loglogSurv3, loglogSurv, logSurv )
 
 
 
@@ -53,8 +55,9 @@ importFrom(graphics, plot)
 #importFrom(base, print)
 importFrom(splines, bs, ns, spline.des)
 #importFrom(gamlss.tr, trun)
-
-
+importFrom(gamlss.data)
+importFrom(gamlss.dist)
+importFrom(nlme)
 
 S3method(addterm, gamlss)
 S3method(add1, gamlss)

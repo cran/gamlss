@@ -1,5 +1,4 @@
 -------------- GAMLSS NEWS-------------------------------------------
-
 GAMLSS is a R package implementing the Generalised Additive Models for
 location scale shape of Rigby and Stasinopoulos (2005),  Appl. Statist.,
 54,  pp. 507-554.
@@ -19,19 +18,54 @@ Question or suggestions about GAMLSS can be send to
 or
    r.rigby@londonmet.ac.uk
 ---------------------------------------------------------------------
+Version 4.2-7
+
+1. gamlss 
+       i) gamlssML(): now allows the fitting  binomial data (sorry it never checked before) and the use of formula in the specification of the model (e.g, y~1) to be consistent with gamlss(). Note that explanatory variables will be ignored if used with gamlssML().
+       ii)  .gamlss.multin.list is now on NAMESPACE
+       iii) the functions vcov.gamlss() and summary.gamlss() have now an extra argument 
+            Hessian.fun with two alternatives "R" and "PB" in order to calculate the Hessian.
+            The "R" option uses the R function optimHess() while the "PB" uses a local function 
+            based a function of Pinheiro and Bates in nlme package.
+       iv)  the function plot2way() is introduced as a way of plotting a two way interaction between two
+            categorical variables (factors).
+        v)  the functions vcov.gamlss() and gen.likelihood() now works even if NA are in the coefficients 
+             of the beta the paraneters
+       vi)  The functions loglogSurv1(), loglogSurv2(), loglogSurv3(), loglogSurv() and logSurv() are
+            introduced as a way of exploring  the tail behaviour of a distribution.
+       vii) AIC(), GAIC() and  extractAIC() have a new argument "c" which if k=2 and c=TRUE gives the corrected AIC that is, AICc (suggested by Mario Alvarado).
+
+2. gamlss.dist
+       i) The use of the distributions BCCGo(), BCPEo() and BCTo()  (which are identical to BCCG, BCPE 
+          and BCT respectively apart from the fact that they using log link for mu) had some side effects
+          because the equivalent d, p, q and r functions did not exist. In this version to avoid the 
+          problem we have added the functions dBCCGo(), pBCCGo(), qBCCGo(), rBCCGo(), dBCPEo(), 
+          pBCPEo(), qBCPEo() and rBCPEo(), dBCTo(), pBCTo(), qBCTo() and rBCTo(). Those functions
+          are identical to  d, p, q, and r functions of  BCCG(), BCPE() and BCT(). 
+       
+
+3. gamlss.tr
+        i) functions fitTail() and fitTailAll() are introduced for fitting truncated distributions to 
+           the tails and creating Hill type of plots respectively.
+
+4. gamlss.demo
+      i) The distributions SN1, SN2, LOGITNO, LOGNO2, TF2 and SST are added to the demos
+
+
+
 Version 4.2-6
 
 1. gamlss 
      i)  LR.test() a small amendment when checking whether it is  gamlss model
-     ii) gen.likelihood()  a small amendment to make sure that it getsthe correct link functions
+     ii) gen.likelihood()  a small amendment to make sure that it gets the correct link functions
      iii) the functions get.K() and rvcov() are introduced for robust (sandwich) standard errors
      iv)  A new argument "robust" is introduced for the methods
            a) vcov.gamlss()
            b) summary.gamlss()
            c) confint.gamlss()
-      v) getSmo() is introduced for get information for smoother terms
-      vi) lms() a bug on the previuse verson is correced and a additinal feature is added with argument
-          "trans.x".  With "tans.x=TRUE" the function looks for a transormation in the x-variable.
+      v) getSmo() is introduced for get information on smoothing terms
+      vi) lms() a bug on the previous version is corrected and a additional feature is added with argument
+          "trans.x".  With "tans.x=TRUE" the function looks for a transformation in the x-variable.
 2. gamlss.add
       i)  fitFixBP() is named now fitFixKNots()
       ii) attach() data is taken out from fitFixKnots(), fitFreeKnots(), penLags().

@@ -74,22 +74,23 @@ if (is.null(newdata))  #
 if (se.fit) 
     warning(" se.fit = TRUE is not supported for new data values at the moment \n")
 ##  stop if newdata is not data frame
-if (!(is.atomic(newdata) | inherits(newdata, "data.frame")))
-    stop("newdata must be a data frame or a frame mumber")
+## note that atomic is not working here so better to take it out Mikis 23-10-13 
+## if (!(is.atomic(newdata) | inherits(newdata, "data.frame")))
+  if (!(inherits(newdata, "data.frame")))
+    stop("newdata must be a data frame ") # or a frame mumber
 ## getting which parameter and type   
        what <- match.arg(what)
        type <- match.arg(type)
 ## get the original call 
        Call <- object$call
 ## we need both the old and the new data sets
-## 
+## the argument data can be provided by predict
 data<- data1 <- if (is.null(data))
-           {
-            if (!is.null(Call$data)) eval(Call$data)
+{        ## if it is not provided then get it from the original call
+            if (!is.null(Call$data)) eval(Call$data) 
             else stop("define the original data using the option data") 
            }
-        else data 
-
+        else data # if it provide get it 
 ## keep only the same variables 
 ## this assumes that all the relevant variables will be in newdata
 ## what happens if not?
@@ -225,7 +226,8 @@ if (!is.null(smo.mat))
               pred.s <- array(0, c(nrows, n.smooths), list(names(pred), 
                             dimnames(smo.mat)[[2]])) ## creating the prediction matrix 
                                  # smooth.labels[smooth.labels%in%colnames(X)]    
-                                 #  smooth.wanted <- smooth.labels[match(smooth.labels, colnames(X), 0) > 0] 
+                                 # smooth.wanted <- smooth.labels[match(smooth.labels, colnames(X), 0) > 0] 
+                                                               ## getting the smoothing call
         smooth.calls <- lapply(m[smooth.labels], attr, "call") # i.e $`pb(Fl)`
                                                                #     gamlss.pb(data[["pb(Fl)"]], z, w)
                 data <- subset(m, onlydata, drop=FALSE)        ## get the  original data

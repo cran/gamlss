@@ -3,7 +3,7 @@
 
 \title{Maximum Likelihood estimation of a simple GAMLSS model }
 \description{
- This is a function for fitting  a \code{gamlss.family} distribution to sigle  data set  using a non linear maximisation algorithm in \code{R}.
+ This is a function for fitting  a \code{gamlss.family} distribution to single  data set  using a non linear maximisation algorithm in \code{R}.
 This is relevant only when there are not explanatory variables. 
 }
 \usage{
@@ -15,7 +15,7 @@ gamlssML(y, family = NO, weights = NULL, mu.start = NULL,
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{y}{
-a vector of data requiring the fit of a \code{gamlss.family} distribution 
+a vector of data requiring the fit of a \code{gamlss.family} distribution or a formula,  for example, \code{y~1} (explanatory variables are ignored).  
 }
   \item{family}{ \code{\link[gamlss.dist]{gamlss.family}} object, which is used to define the distribution and the link functions of the various parameters. 
    The distribution families supported by \code{gamlssML()} can be found in \code{\link[gamlss.dist]{gamlss.family}}}
@@ -71,6 +71,12 @@ AIC(m1,m1a,m11, k=0)
   system.time(m1a<-gamlss(y~1, family=NBI, trace=FALSE))
 system.time(m11<-gamlssML(y, family=NBI))
 AIC(m1,m1a,m11, k=0)
+# binomial type data 
+data(aep)
+m1 <- gamlssML(aep$y, family=BB) # ok
+m2 <- gamlssML(y, data=aep, family=BB) # ok
+m3 <- gamlssML(y~1, data=aep, family=BB) # ok but not 
+#gamlssML(aep$y~1, family=BB)  
  }
 
 \keyword{regression}

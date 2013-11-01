@@ -32,7 +32,7 @@ VGD <-function(formula = NULL,
         ntau <- predict(m1,newdata=datava, type="response", data=dataor,what="tau")
          ny <-  model.extract(model.frame(formula,data=datava),"response")
         # ny <- datava$y # corrected Monday, November 6, 2006 DS
-      if (fname$family[[1]] %in% gamlss:::.gamlss.bi.list)# if binomial
+      if (fname$family[[1]] %in% .gamlss.bi.list)# if binomial
               {
                if (NCOL(ny) == 1) 
                  {
@@ -46,22 +46,22 @@ VGD <-function(formula = NULL,
               }
       if(lpar==1) 
        {
-       devi <- if (fname$family[[1]] %in% gamlss:::.gamlss.bi.list) call(dfun, x=y1, mu = nmu, bd=bd, log=TRUE) 
+       devi <- if (fname$family[[1]] %in% .gamlss.bi.list) call(dfun, x=y1, mu = nmu, bd=bd, log=TRUE) 
                 else call(dfun, x= ny, mu = nmu, log=TRUE) 
        }
       else if(lpar==2)
        {
-       devi <- if (fname$family[[1]] %in% gamlss:::.gamlss.bi.list) call(dfun, x=y1, mu = nmu, sigma=nsigma,  bd=bd, log=TRUE) 
+       devi <- if (fname$family[[1]] %in% .gamlss.bi.list) call(dfun, x=y1, mu = nmu, sigma=nsigma,  bd=bd, log=TRUE) 
                 else call(dfun, x=ny, mu = nmu, sigma = nsigma, log=TRUE) 
        }
       else if(lpar==3)
        {
-       devi <-  if (fname$family[[1]] %in% gamlss:::.gamlss.bi.list) call(dfun, x=y1, mu = nmu, sigma = nsigma, nu = nnu, bd=bd, log=TRUE)
+       devi <-  if (fname$family[[1]] %in% .gamlss.bi.list) call(dfun, x=y1, mu = nmu, sigma = nsigma, nu = nnu, bd=bd, log=TRUE)
                 else  call(dfun, x=ny, mu = nmu, sigma = nsigma, nu = nnu, log=TRUE)
        }
       else 
        {
-       devi <-  if (fname$family[[1]] %in% gamlss:::.gamlss.bi.list) call(dfun, x=y1, mu = nmu, sigma = nsigma, nu = nnu, tau=ntau, bd=bd, log=TRUE)
+       devi <-  if (fname$family[[1]] %in% .gamlss.bi.list) call(dfun, x=y1, mu = nmu, sigma = nsigma, nu = nnu, tau=ntau, bd=bd, log=TRUE)
                 else  call(dfun, x=ny, mu = nmu, sigma = nsigma,nu = nnu,tau = ntau, log=TRUE)
        
        }
@@ -95,7 +95,7 @@ VGD1 <-function(formula = NULL,
           m1 <- gamlss(formula=formula, sigma.formula=sigma.formula, nu.formula=nu.formula, tau.formula=tau.formula,
                       data=dataor, family=family, control=control, ...) #
          fit <- predictAll(m1,newdata=datava, type="response", data=dataor)
-         if (fname$family[[1]] %in% gamlss:::.gamlss.bi.list)# if binomial
+         if (fname$family[[1]] %in% .gamlss.bi.list)# if binomial
               {
                if (NCOL(fit$y) == 1) 
                  {
@@ -109,22 +109,22 @@ VGD1 <-function(formula = NULL,
               }
       if(lpar==1) 
        {
-        devi <- if (fname$family[[1]] %in% gamlss:::.gamlss.bi.list) call(dfun, x=y1, mu = fit$mu, bd=bd, log=TRUE) 
+        devi <- if (fname$family[[1]] %in% .gamlss.bi.list) call(dfun, x=y1, mu = fit$mu, bd=bd, log=TRUE) 
                 else call(dfun, x= fit$y, mu = fit$mu, log=TRUE)  
        }
       else if(lpar==2)
        {
-       devi <- if (fname$family[[1]] %in% gamlss:::.gamlss.bi.list) call(dfun, x=y1, mu = fit$mu, sigma=fit$sigma, bd=bd, log=TRUE) 
+       devi <- if (fname$family[[1]] %in% .gamlss.bi.list) call(dfun, x=y1, mu = fit$mu, sigma=fit$sigma, bd=bd, log=TRUE) 
                 else call(dfun, x=fit$y, mu = fit$mu, sigma = fit$sigma, log=TRUE) 
        }
       else if(lpar==3)
        {
-       devi <- if (fname$family[[1]] %in% gamlss:::.gamlss.bi.list) call(dfun, x=y1, mu = fit$mu, sigma=fit$sigma, nu = fit$nu, bd=bd, log=TRUE) 
+       devi <- if (fname$family[[1]] %in% .gamlss.bi.list) call(dfun, x=y1, mu = fit$mu, sigma=fit$sigma, nu = fit$nu, bd=bd, log=TRUE) 
                 else call(dfun, x=fit$y, mu = fit$mu, sigma = fit$sigma, nu = fit$nu, log=TRUE)  
        }
       else 
        {
-       devi <-  if (fname$family[[1]] %in% gamlss:::.gamlss.bi.list) call(dfun, x=y1, mu = fit$mu, sigma=fit$sigma, nu = fit$nu, tau = fit$tau, bd=bd, log=TRUE) 
+       devi <-  if (fname$family[[1]] %in% .gamlss.bi.list) call(dfun, x=y1, mu = fit$mu, sigma=fit$sigma, nu = fit$nu, tau = fit$tau, bd=bd, log=TRUE) 
                 else call(dfun, x=fit$y, mu = fit$mu, sigma = fit$sigma,nu = fit$nu,tau = fit$tau, log=TRUE)
        }
        dev <- -2*sum(eval(devi))
@@ -156,7 +156,7 @@ VGD2<- function (formula = NULL,
         tau.formula = tau.formula, data = data, family = family, control = control, 
         ...)
     nfitted <- predictAll(m1, newdata=newdata, data=data)
-     if (fname$family[1] %in% gamlss:::.gamlss.bi.list)# if binomial
+     if (fname$family[1] %in% .gamlss.bi.list)# if binomial
               {
                if (NCOL(nfitted$y) == 1) 
                  {
@@ -171,22 +171,22 @@ VGD2<- function (formula = NULL,
     
     if (lpar == 1) 
     {
-    devi <- if (fname$family[[1]] %in% gamlss:::.gamlss.bi.list) call(dfun, x=y1, mu = nfitted$mu, bd=bd, log=TRUE) 
+    devi <- if (fname$family[[1]] %in% .gamlss.bi.list) call(dfun, x=y1, mu = nfitted$mu, bd=bd, log=TRUE) 
                 else call(dfun, x = nfitted$y, mu = nfitted$mu, log = TRUE)
     }
     else if (lpar == 2) 
     {
-    devi <- if (fname$family[[1]] %in% gamlss:::.gamlss.bi.list) call(dfun, x=y1, mu = nfitted$mu, sigma=nfitted$sigma, bd=bd, log=TRUE) 
+    devi <- if (fname$family[[1]] %in% .gamlss.bi.list) call(dfun, x=y1, mu = nfitted$mu, sigma=nfitted$sigma, bd=bd, log=TRUE) 
                 else call(dfun, x = nfitted$y, mu =  nfitted$mu, sigma = nfitted$sigma, log = TRUE)
     }
     else if (lpar == 3) 
     {
-    devi <- if (fname$family[[1]] %in% gamlss:::.gamlss.bi.list) call(dfun, x=y1, mu = nfitted$mu, sigma=nfitted$sigma, nu = nfitted$nu, bd=bd, log=TRUE) 
+    devi <- if (fname$family[[1]] %in% .gamlss.bi.list) call(dfun, x=y1, mu = nfitted$mu, sigma=nfitted$sigma, nu = nfitted$nu, bd=bd, log=TRUE) 
                 else call(dfun, x = nfitted$y, mu =  nfitted$mu, sigma = nfitted$sigma, nu = nfitted$nu, log = TRUE)
     }
     else 
     {
-    devi <- if (fname$family[[1]] %in% gamlss:::.gamlss.bi.list) call(dfun, x=y1, mu = nfitted$mu, sigma=nfitted$sigma, nu = nfitted$nu, tau = nfitted$tau, bd=bd, log=TRUE) 
+    devi <- if (fname$family[[1]] %in% .gamlss.bi.list) call(dfun, x=y1, mu = nfitted$mu, sigma=nfitted$sigma, nu = nfitted$nu, tau = nfitted$tau, bd=bd, log=TRUE) 
                 else call(dfun, x = nfitted$y, mu =  nfitted$mu, sigma = nfitted$sigma, nu = nfitted$nu, tau = nfitted$tau, log = TRUE)
     }
     dev <- -2 * sum(eval(devi))
@@ -207,7 +207,7 @@ TGD<- function (object,   newdata = NULL, ...)
    #     stop("the data argument is needed in VGD")
     nfitted <- predictAll(object, newdata=newdata, ...)
     if (is.null(nfitted$y)) stop("the response variables is missing in the newdata")
-   if (fname$family[1] %in% gamlss:::.gamlss.bi.list)# if binomial
+   if (fname$family[1] %in% .gamlss.bi.list)# if binomial
               {
                if (NCOL(nfitted$y) == 1) 
                  {
@@ -221,23 +221,23 @@ TGD<- function (object,   newdata = NULL, ...)
               }
     if (lpar == 1) 
     {
-    devi <- if (fname$family[[1]] %in% gamlss:::.gamlss.bi.list) call(dfun, x=y1, mu = nfitted$mu, bd=bd, log=TRUE) 
+    devi <- if (fname$family[[1]] %in% .gamlss.bi.list) call(dfun, x=y1, mu = nfitted$mu, bd=bd, log=TRUE) 
                 else call(dfun, x = nfitted$y, mu = nfitted$mu, log = TRUE)
                      call(dfun, x = nfitted$y, mu = nfitted$mu, log = TRUE)
     }
     else if (lpar == 2) 
     {
-    devi <- if (fname$family[[1]] %in% gamlss:::.gamlss.bi.list) call(dfun, x=y1, mu = nfitted$mu, sigma=nfitted$sigma, bd=bd, log=TRUE) 
+    devi <- if (fname$family[[1]] %in% .gamlss.bi.list) call(dfun, x=y1, mu = nfitted$mu, sigma=nfitted$sigma, bd=bd, log=TRUE) 
                 else call(dfun, x = nfitted$y, mu =  nfitted$mu, sigma = nfitted$sigma, log = TRUE)
     }
     else if (lpar == 3) 
     {
-    devi <- if (fname$family[[1]] %in% gamlss:::.gamlss.bi.list) call(dfun, x=y1, mu = nfitted$mu, sigma=nfitted$sigma,  nu = nfitted$nu, bd=bd, log=TRUE) 
+    devi <- if (fname$family[[1]] %in% .gamlss.bi.list) call(dfun, x=y1, mu = nfitted$mu, sigma=nfitted$sigma,  nu = nfitted$nu, bd=bd, log=TRUE) 
                 else  call(dfun, x = nfitted$y, mu =  nfitted$mu, sigma = nfitted$sigma, nu = nfitted$nu, log = TRUE)
     }
     else 
     {
-    devi <- if (fname$family[[1]] %in% gamlss:::.gamlss.bi.list) call(dfun, x=y1, mu = nfitted$mu, sigma=nfitted$sigma,  nu = nfitted$nu, tau = nfitted$tau, bd=bd, log=TRUE) 
+    devi <- if (fname$family[[1]] %in% .gamlss.bi.list) call(dfun, x=y1, mu = nfitted$mu, sigma=nfitted$sigma,  nu = nfitted$nu, tau = nfitted$tau, bd=bd, log=TRUE) 
                 else  call(dfun, x = nfitted$y, mu =  nfitted$mu, sigma = nfitted$sigma, nu = nfitted$nu, tau = nfitted$tau, log = TRUE)
     }
     dev <- -2 * sum(eval(devi))
