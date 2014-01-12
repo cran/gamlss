@@ -18,7 +18,7 @@ stepGAICAll.A <- function(object, scope=NULL, sigma.scope=NULL, nu.scope=NULL, t
      if ("mu" %in% object$par && mu.try==TRUE)
          {
      current.par <- "mu"
-         iferror <- try( assign("objectAll", gamlss:::stepGAIC.VR(objectAll, scope=scope, direction="forward", what = "mu", ...)), silent = TRUE) 
+         iferror <- try( assign("objectAll", stepGAIC.VR(objectAll, scope=scope, direction="forward", what = "mu", ...)), silent = TRUE) 
              if (any(class(iferror)%in%"try-error"))
                  { 
                  cat("---------------------------------------------------", "\n")
@@ -39,7 +39,7 @@ stepGAICAll.A <- function(object, scope=NULL, sigma.scope=NULL, nu.scope=NULL, t
         {
          cat("---------------------------------------------------", "\n")
           current.par <- "sigma"
-        iferror <- try( assign("objectAll", gamlss:::stepGAIC.VR(objectAll, scope=sigma.scope, direction="forward", 
+        iferror <- try( assign("objectAll", stepGAIC.VR(objectAll, scope=sigma.scope, direction="forward", 
                        what = "sigma", ...))  , silent = TRUE) 
              if (any(class(iferror)%in%"try-error"))
                  {
@@ -58,7 +58,7 @@ stepGAICAll.A <- function(object, scope=NULL, sigma.scope=NULL, nu.scope=NULL, t
         {
          cat("---------------------------------------------------", "\n") 
           current.par <- "nu"
-        iferror <- try( assign("objectAll", obj<-gamlss:::stepGAIC.VR(objectAll, scope=nu.scope, direction="forward", 
+        iferror <- try( assign("objectAll", obj <- stepGAIC.VR(objectAll, scope=nu.scope, direction="forward", 
                          what = "nu", ...)), silent = TRUE)           
              if (any(class(iferror)%in%"try-error"))
                  { 
@@ -77,7 +77,7 @@ stepGAICAll.A <- function(object, scope=NULL, sigma.scope=NULL, nu.scope=NULL, t
         {
         cat("---------------------------------------------------", "\n") 
            current.par <- "tau"
-        iferror <- try( assign("objectAll", gamlss:::stepGAIC.VR(objectAll, scope=tau.scope, direction="forward", 
+        iferror <- try( assign("objectAll", stepGAIC.VR(objectAll, scope=tau.scope, direction="forward", 
                        what = "tau", ...)), silent = TRUE) 
              if (any(class(iferror)%in%"try-error"))
                  { 
@@ -96,7 +96,7 @@ stepGAICAll.A <- function(object, scope=NULL, sigma.scope=NULL, nu.scope=NULL, t
         { 
          cat("---------------------------------------------------", "\n") 
           current.par <- "nu"
-        iferror <- try(assign("objectAll", gamlss:::stepGAIC.VR(objectAll, scope=nu.scope, direction="backward", 
+        iferror <- try(assign("objectAll", stepGAIC.VR(objectAll, scope=nu.scope, direction="backward", 
                         what = "nu", ...))  , silent = TRUE) 
              if (any(class(iferror)%in%"try-error"))
                  { 
@@ -115,7 +115,7 @@ stepGAICAll.A <- function(object, scope=NULL, sigma.scope=NULL, nu.scope=NULL, t
         {
          cat("---------------------------------------------------", "\n")
           current.par <- "sigma"
-        iferror <- try( assign("objectAll", gamlss:::stepGAIC.VR(objectAll, scope=sigma.scope, direction="backward", 
+        iferror <- try( assign("objectAll", stepGAIC.VR(objectAll, scope=sigma.scope, direction="backward", 
                         what = "sigma", ...)) , silent = TRUE) 
              if (any(class(iferror)%in%"try-error"))
                  { cat("---------------------------------------------------", "\n")
@@ -133,7 +133,7 @@ stepGAICAll.A <- function(object, scope=NULL, sigma.scope=NULL, nu.scope=NULL, t
          {
           cat("---------------------------------------------------", "\n")  
            current.par <- "mu"
-      iferror <- try( assign("objectAll", gamlss:::stepGAIC.VR(objectAll, scope=scope, direction="backward", 
+      iferror <- try( assign("objectAll", stepGAIC.VR(objectAll, scope=scope, direction="backward", 
                      what = "mu", ...))  , silent = TRUE) 
              if (any(class(iferror)%in%"try-error"))
                  { 

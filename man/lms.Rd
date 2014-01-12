@@ -10,7 +10,7 @@ It is  applicable when only "one" explanatory variable is available (usually age
 lms(y, x, families = LMS, data = NULL, k = 2, 
         cent = 100 * pnorm((-4:4) * 2/3), 
         calibration = TRUE, trans.x = FALSE, 
-        lim.trans = c(0.001, 1,5), 
+        lim.trans = c(0.001, 1.5), 
         legend = FALSE, mu.df = NULL, 
         sigma.df = NULL, nu.df = NULL, 
         tau.df = NULL, method.pb = c("ML", "GAIC"), ...)

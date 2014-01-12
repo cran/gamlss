@@ -1,12 +1,17 @@
 # this function provides CI for a GAMLSS model
 # it relies on the vcov() working which I hope is the case for parameteric models
 # TO DO 
-# i) worth inversigating the function profile.glm() in MASS MASS:::profile.glm
+# i) worth inversigating the function profile.glm() in MASS MASS profile.glm
 # since it is the function  used for glm models and used in confint.glm()
 # ------------------------------------------------------------------------------
 confint.gamlss  <- function (object, parm, level = 0.95, what="mu", 
                              robust=FALSE, ...) 
 {
+#local function from stats	
+format.perc <- function (probs, digits) 
+paste(format(100 * probs, trim = TRUE, scientific = FALSE, digits = digits), 
+    "%")	
+#--------------------------	
   cf <- coef(object, what)
   pnames <- names(cf)
   if (missing(parm))
@@ -15,7 +20,7 @@ confint.gamlss  <- function (object, parm, level = 0.95, what="mu",
     parm <- pnames[parm]
   a <- (1 - level)/2
   a <- c(a, 1 - a)
-  pct <- stats:::format.perc(a, 3)
+  pct <- format.perc(a, 3)
   fac <- qnorm(a)
   ci <- array(NA, dim = c(length(parm), 2L), dimnames = list(parm, 
                                                              pct))

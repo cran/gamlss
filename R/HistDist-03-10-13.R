@@ -39,7 +39,7 @@ histDist <- function(y,
            },
       "Discrete" =
            {
-            if (fname %in% gamlss:::.gamlss.bi.list)# if binomial
+            if (fname %in% .gamlss.bi.list)# if binomial
               {
                if (NCOL(y) == 1) 
                  {
@@ -131,12 +131,12 @@ histDist <- function(y,
            # get the pdf
      switch(lpar, 
           "1" =  {
-             newcall <- if ((fname %in% gamlss:::.gamlss.bi.list)) 
+             newcall <- if ((fname %in% .gamlss.bi.list)) 
                                call(dfun,x1, mu = fitted(mod)[1], bd=bd[1] )
                         else   call(dfun,x1, mu = fitted(mod)[1])
                  },
           "2" =  {
-             newcall <- if ((fname %in% gamlss:::.gamlss.bi.list))
+             newcall <- if ((fname %in% .gamlss.bi.list))
                          {  
   call(dfun,x1, mu = fitted(mod)[1],sigma = fitted(mod,"sigma")[1], bd=bd[1])
 
@@ -147,7 +147,7 @@ histDist <- function(y,
                          }
                  },
           "3" = {      
-            newcall <- if ((fname %in% gamlss:::.gamlss.bi.list))
+            newcall <- if ((fname %in% .gamlss.bi.list))
                          {  
                          call(dfun,x1, mu = fitted(mod)[1],sigma = fitted(mod,"sigma")[1],
                                         nu = fitted(mod,"nu")[1], bd=bd[1])
@@ -160,7 +160,7 @@ histDist <- function(y,
                  },
           "4" =
                 {
-               newcall <- if ((fname %in% gamlss:::.gamlss.bi.list))
+               newcall <- if ((fname %in% .gamlss.bi.list))
                          {  
                          call(dfun,x1, mu = fitted(mod)[1],
                                     sigma = fitted(mod,"sigma")[1],
@@ -209,7 +209,7 @@ switch(typeDist,
               },
       "Discrete"=
               {  
-               if (fname %in% gamlss:::.gamlss.bi.list) # if binomial 
+               if (fname %in% .gamlss.bi.list) # if binomial 
                   {                  
                       if (all(bd==bd[1]))     # binary + equal bd
                         { 

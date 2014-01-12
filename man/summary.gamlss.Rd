@@ -7,7 +7,8 @@
 }
 \usage{
 \method{summary}{gamlss}(object, type = c("vcov", "qr"), 
-                       robust=FALSE, save = FALSE, ...)
+                       robust=FALSE, save = FALSE,
+                       hessian.fun = c("R", "PB"), ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -20,6 +21,7 @@
  }
   \item{robust}{whether robust (sandwich) standard errors are required}
   \item{save}{whether to save the environment of the function so to have access to its values}
+  \item{hessian.fun}{whether when calculate the Hessian should use the "R" function \code{optimHess()} or a function based on Pinheiro and Bates \code{nlme} package, "PB".}
   \item{\dots}{for extra arguments}
 }
 \details{Using the  default value \code{type="vcov"}, the \code{vcov()} method for gamlss is used to get  

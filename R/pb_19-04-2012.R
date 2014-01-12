@@ -74,7 +74,7 @@ gamlss.environment <- sys.frame(position)
 #--------
 ## get a random name to use it in the gamlss() environment
 #--------
-               sl <-sample(letters, 4)
+               sl <- sample(letters, 4)
       fourLetters <- paste(paste(paste(sl[1], sl[2], sep=""), sl[3], sep=""),sl[4], sep="")
   startLambdaName <- paste("start.Lambda",fourLetters, sep=".")
 ## put the starting values in the gamlss()environment
@@ -386,7 +386,7 @@ startLambdaName <- as.character(attr(x, "NameForLambda"))
       # if (any(class(lambda)%in%"try-error")) {lambda<-100000}   
            fit <- regpen(y, X, w, lambda, D)
             fv <- X %*% fit$beta
-  }#--------------------------------------------------------------------------end of case 3
+  }#end of case 3
   # I need to calculate the hat matrix here for the variance of the smoother
   # this is not working for large X
   #    lev <- diag(X%*%solve(XWX + lambda * t(D) %*% D)%*%t(XW))

@@ -51,8 +51,7 @@ regpen <- function(y, w, x, nw, lambda)
           nw <- tapply(w, x, sum) 
     non.zero <- !is.na(nw)
         sig2 <- tau2 <- 0
-            n <- length(x)
-    # what we are doing next???
+           n <- length(x)
     # if lamnda is not 
 # case 1 if lambda is know    
 if (is.null(df)&&!is.null(lambda)||!is.null(df)&&!is.null(lambda))

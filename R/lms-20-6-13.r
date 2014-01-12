@@ -20,7 +20,7 @@ lms <- function(y, x,
             cent = 100*pnorm((-4:4)*2/3),
      calibration = TRUE,
          trans.x = FALSE,  
-       lim.trans = c(0.001, 1,5),        
+       lim.trans = c(0.001, 1.5),        
           legend = FALSE,
            mu.df = NULL,
         sigma.df = NULL,
@@ -28,7 +28,7 @@ lms <- function(y, x,
           tau.df = NULL,
        method.pb = c("ML", "GAIC"),
               ... 
-                )
+                )  
 {
 ##  require(gamlss)
 ## the families to fit

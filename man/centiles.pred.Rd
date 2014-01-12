@@ -57,40 +57,61 @@ from the World Health Organization}
 
 \seealso{\code{\link{gamlss}}, \code{\link{centiles}}, \code{\link{centiles.split}} }
 \examples{
-# bring the data and fit the model
+## bring the data and fit the model
 data(abdom)
 a<-gamlss(y~pb(x),sigma.fo=~pb(x), data=abdom, family=BCT)
-#plot the centiles
+## plot the centiles
 centiles(a,xvar=abdom$x)
-# calculate the centiles at new x values 
+##-----------------------------------------------------------------------------
+## first use of  centiles.pred()
+## to calculate the centiles at new x values
+##-----------------------------------------------------------------------------
 newx<-seq(12,40,2)
 mat <- centiles.pred(a, xname="x", xvalues=newx )
 mat
-# now plot the centiles  
+## now plot the centile curves  
  mat <- centiles.pred(a, xname="x",xvalues=newx, plot=TRUE )
-# calculate standard-centiles for new x values using the fitted model
+##-----------------------------------------------------------------------------
+## second use of centiles.pred()
+## to calculate (nornalised) standard-centiles for new x
+## values using the fitted model
+##-----------------------------------------------------------------------------
 newx <- seq(12,40,2)
- mat <- centiles.pred(a, xname="x",xvalues=newx, type="standard-centiles" )
- mat
-# now plot the centiles  
-mat <- centiles.pred(a, xname="x",xvalues=newx, type="s", plot = TRUE )
+mat <- centiles.pred(a, xname="x",xvalues=newx, type="standard-centiles" )
+mat
+## now plot the standard centiles  
+mat <- centiles.pred(a, xname="x",xvalues=newx, type="standard-centiles",
+       plot = TRUE )
+##-----------------------------------------------------------------------------
+## third use of centiles.pred()
+##  if we have new x and y values what are their z-scores?
+##-----------------------------------------------------------------------------
 # create new y and x values and plot them in the previous plot
 newx <- c(20,21.2,23,20.9,24.2,24.1,25)
 newy <- c(130,121,123,125,140,145,150)
 for(i in 1:7) points(newx[i],newy[i],col="blue")
-
-\dontrun{
-# now calculate their z-scores
+## now calculate their z-scores
 znewx <- centiles.pred(a, xname="x",xvalues=newx,yval=newy, type="z-scores" )
 znewx
-# now with transformed x-variable within the formula
-aa<-gamlss(y~pb(x^0.5),sigma.fo=~pb(x^0.5), data=abdom, family=BCT)  
-centiles(aa,xvar=abdom$x)
-mat <- centiles.pred(aa, xname="x",xvalues=c(30) )
-xx<-rep(mat[,1],9)
+\dontrun{
+##-----------------------------------------------------------------------------
+## What we do if the x variables is transformed?
+##----------------------------------------------------------------------------
+##  case 1 : transformed x-variable within the formula
+##----------------------------------------------------------------------------
+## fit model
+aa <- gamlss(y~pb(x^0.5),sigma.fo=~pb(x^0.5), data=abdom, family=BCT)
+## centiles works
+centiles(aa,xvar=abdom$x, legend = FALSE)
+newx<-seq(12,40,2)
+mat <- centiles.pred(aa, xname="x",xvalues=newx, plot=TRUE )
+
+mat <- centiles.pred(aa, xname="x",xvalues=c(20, 2 )
+mat
+xx <- rep(mat[,1],9)
 yy<-mat[,2:10]
 points(xx,yy,col="red")
-# now with x-variable previously transformed 
+## case 2 : x-variable previously transformed 
 nx<-abdom$x^0.5
 aa<-gamlss(y~pb(nx),sigma.fo=~pb(nx), data=abdom, family=BCT)
 centiles(aa, xvar=abdom$x)

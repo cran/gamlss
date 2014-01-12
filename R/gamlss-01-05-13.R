@@ -30,11 +30,13 @@ gamlssNews <- function() file.show(system.file("doc", "NEWS.txt", package="gamls
 ##
 ##----------------------------------------------------------------------------------------
 .gamlss.bi.list<-c("BI", "Binomial", "BB", "Beta Binomial", "ZIBI", "ZIBB", "ZABI", "ZABB") # binomial denominators
+.gamlss.multin.list<-c("MULTIN", "MN3", "MN4", "MN5")
 ##----------------------------------------------------------------------------------------
 .gamlss.sm.list<-c("cs", "scs", "vc","s",         # smoothing cubic splines  : cs, scs, vc
                    "ps", "pb", "cy", "tp", "pvc", # penalised splines        : ps, pb, cy tp pvc pbq
                    "pbq",                         # pb using Qfunction
                    "mrf",                         # Markov random fields
+                   "mrfa",                        # Markov random fields
                    "lo",                          # loess                    : lo
                    "random","ra","rc","rash","re",# random effect            : random, ra, rc, re (lme) rash
                    "fp","pp",                     # fractional poly          : fp, pp
@@ -43,10 +45,12 @@ gamlssNews <- function() file.show(system.file("doc", "NEWS.txt", package="gamls
                    "boost",                       # boosting                 : boost
                    "fk",                          # free knot smoothing      : fk
                    "own", "test", "test0","test1",# for testing new          : own test test0 test1 
-                   "arma", "rw", "sr",            # time series              : arma, random walk
-                   "la", "ar",                    # time series              : penalised lags, auto regressive random effect models
+                   "arma",                        # time series              : arma
+                   "rw", "ar", "seas",            # time series              : random walk, ar, sesonality, 
+                   "srw", "sar",                  # time series              : seasonal rw, seasonal ar, 
+                   "la",                          # time series              : penalised lags, 
                    "tr",                          # decision trees           : tr
-                   "ga", "cr",                    # gam -Simon Wood          : ga, cr (cubic regression splines) 
+                   "ga", "cr",                    # gam - Simon Wood         : ga, cr (cubic regression splines) 
                    "nn",                          # neural netwoks           : nn
                    "sv",                          # suppor vector machines   : sv 
                    "ma",                          # mars                     : ma
@@ -55,7 +59,6 @@ gamlssNews <- function() file.show(system.file("doc", "NEWS.txt", package="gamls
 				   "pa")                          # partial regression       : pr
                    
 # note that predict only read 2 characters Monday, May 4, 2009 at 11:27
-.gamlss.multin.list<-c("MULTIN", "MN3", "MN4", "MN5")
 ##----------------------------------------------------------------------------------------
 ##========================================================================================
 ##  Generalised Additive Models for Location Scale and Shape 

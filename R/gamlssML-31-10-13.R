@@ -1,3 +1,4 @@
+# latest change done 1-11-13 MS 
 # this is an attempt to create a function which 
 # fits a GAMLSS distribution using non-linear maximisation like optim()
 # in fact here we use MLE() which is a copy of the mle() function of stat4
@@ -52,15 +53,15 @@ gamlssML<-function(y,
 		         family = NO,  
 		        weights = NULL, 
 		       mu.start = NULL, 
-            sigma.start = NULL, 
-	           nu.start = NULL, 
+        sigma.start = NULL, 
+	         nu.start = NULL, 
 		      tau.start = NULL,
-	             mu.fix = FALSE,
-		      sigma.fix = FALSE,
+	           mu.fix = FALSE,
+	        sigma.fix = FALSE,
 		         nu.fix = FALSE,
 		        tau.fix = FALSE,
-                   data = NULL, # it need start.from = NULL
-             start.from = NULL,
+               data = NULL, # it need start.from = NULL
+         start.from = NULL,
 			              ...) 
 {
 #------------------------------------------------------------------------------------------
@@ -73,7 +74,9 @@ gamlssML<-function(y,
 # here we use it as convenient way of calling optim()
 # and to cover the case that some parameters can be fixed
 #-------------------------------------------------------------------------------------------
+# local function taken from the mle() function
 # this function is not using hessian at the fitting
+#-------------------------------------------------------------------
   MLE <- function (minuslogl, 
                      start = formals(minuslogl), 
                     method = "BFGS", 
@@ -82,63 +85,31 @@ gamlssML<-function(y,
 			 optim.control = NULL,
 			           ...) 
 	{
-#-------------------------------------------------------------------
-# this function from nlme of Pinheiro and Bates 
-# HessianPB<-function (pars, fun, ..., .relStep = (.Machine$double.eps)^(1/3), 
-#    minAbsPar = 0) 
-#{
-#    pars <- as.numeric(pars)
-#    npar <- length(pars)
-#    incr <- ifelse(abs(pars) <= minAbsPar, minAbsPar * .relStep, 
-#        abs(pars) * .relStep)
-#    baseInd <- diag(npar)
-#    frac <- c(1, incr, incr^2)
-#    cols <- list(0, baseInd, -baseInd)
-#    for (i in seq_along(pars)[-npar]) {
-#        cols <- c(cols, list(baseInd[, i] + baseInd[, -(1:i)]))
-#        frac <- c(frac, incr[i] * incr[-(1:i)])
-#    }
-#    indMat <- do.call("cbind", cols)
-#    shifted <- pars + incr * indMat
-#    indMat <- t(indMat)
-#    Xcols <- list(1, indMat, indMat^2)
-#    for (i in seq_along(pars)[-npar]) {
-#        Xcols <- c(Xcols, list(indMat[, i] * indMat[, -(1:i)]))
-#    }
-#    coefs <- solve(do.call("cbind", Xcols), apply(shifted, 2, 
-#        fun, ...))/frac
-#    Hess <- diag(coefs[1 + npar + seq_along(pars)], ncol = npar)
-#    Hess[row(Hess) > col(Hess)] <- coefs[-(1:(1 + 2 * npar))]
-#    list(mean = coefs[1], gradient = coefs[1 + seq_along(pars)], 
-#    
-#        Hessian = (Hess + t(Hess)))
-#}
 #------------------------------------------------------------------------
-		  call <- match.call()
+	  	  call <- match.call()
 	   optim.p <- match.arg(optim.proc)
-		     n <- names(fixed)
+	  	     n <- names(fixed)
 	  fullcoef <- formals(minuslogl)
 		if (any(!n %in% names(fullcoef))) 
 			stop("some named arguments in 'fixed' are not arguments to the supplied log-likelihood")
-   fullcoef[n] <- fixed
+ fullcoef[n] <- fixed
 		if (!missing(start) && (!is.list(start) || is.null(names(start)))) 
 			stop("'start' must be a named list")
-   	  start[n] <- NULL
-		 start <- sapply(start, eval.parent)
-		    nm <- names(start)
-		    oo <- match(nm, names(fullcoef))
+   	start[n] <- NULL
+		   start <- sapply(start, eval.parent)
+		      nm <- names(start)
+		      oo <- match(nm, names(fullcoef))
 		if (any(is.na(oo))) 
 			stop("some named arguments in 'start' are not arguments to the supplied log-likelihood")
-		 start <- start[order(oo)]
-		    nm <- names(start)
-		     f <- function(p) 
+		   start <- start[order(oo)]
+		      nm <- names(start)
+		       f <- function(p) 
 		       {
 			           l <- as.list(p)
 			    names(l) <- nm
 			        l[n] <- fixed
 			    do.call("minuslogl", l)
 		       }
-		     
   		 if (length(start))
   		  {
   		  switch(optim.p, 
@@ -203,23 +174,60 @@ body(rqres) <-  eval(quote(body(rqres)), envir = getNamespace("gamlss"))
   mlFitcall <- match.call()  #   the function call  
   # if data exit attach them
   #     if (!is.null(data)) {attach(data, name="The_Data_Env"); on.exit(detach("The_Data_Env"))}
-if (is(y, "formula")) stop("gamlssML() needs a vector as its first argument")
-          y <- if (!is.null(data)) get(deparse(substitute(y)), envir=as.environment(data)) else y
+      YY <- deparse(substitute(y))     # we need this to allow formulas 
+    if (!is.null(data))                # if data exist
+    {
+     y  <-  if (grepl("~", YY) ) get(as.character(y[2]), envir=as.environment(data)) else      # formula 
+                   get(deparse(substitute(y)), envir=as.environment(data))   # non formula
+    }
+    if (is.null(data))
+    {
+    y <-  if (grepl("~", YY) ) stop("with formula you need to use the data argument") else y
+    }
        fam  <- as.gamlss.family(family)
       fname <- fam$family[[1]] 
        dfun <- paste("d",fname,sep="")
-	 # pfun <- paste("p",fname,sep="")
+     # pfun <- paste("p",fname,sep="")
         PDF <- eval(parse(text=dfun))
-	#	CDF <- eval(parse(text=pfun))
+      #	CDF <- eval(parse(text=pfun))
       nopar <- fam$nopar
           N <- length(y)
           w <- if(is.null(weights))    rep(1, N) else weights
-               if(any(w < 0)) stop("negative weights not allowed") # 
+            if(any(w < 0)) stop("negative weights not allowed") # 
+## extracting now the y and the binomial denominator in case we use BI or BB
+        if(any(fam$family%in%.gamlss.bi.list)) 
+           { 
+            if (NCOL(y) == 1) # binary
+               {
+                   y <- if (is.factor(y))  y != levels(y)[1] else y
+                  bd <- rep(1, N)
+                  if (any(y < 0 | y > 1)) stop("y values must be 0 <= y <= 1")
+               } 
+            else if (NCOL(y) == 2) 
+               {
+                 if (any(abs(y - round(y)) > 0.001)) 
+                   {
+                    warning("non-integer counts in a binomial GAMLSS!")
+                    }
+                 bd <- y[,1] + y[,2]
+                  y <-  y[,1]
+              if (any(y < 0 | y > bd)) stop("y values must be 0 <= y <= N") # MS Monday, October 17, 2005 
+               } 
+              else stop(paste("For the binomial family, y must be", 
+                  "a vector of 0 and 1's or a 2 column", "matrix where col 1 is no. successes", 
+                  "and col 2 is no. failures"))
+            }
+# multinomial checking
+            else if(any(fam$family%in%.gamlss.multin.list))
+                {
+                  y <- if(is.factor(y))   unclass(y)
+                       else y
+               } 
 # here is the place to  start from ACTION HERE
 # check whether start.from is null
 if (!is.null(start.from)) # MS 21-12-11
  {
-      if (is.gamlss(start.from)) # if not check whether model or vector
+       if (is.gamlss(start.from)) # if not check whether model or vector
        {
        	if ("mu"%in%names(fam$parameters))    {mu.start <- fitted(start.from, "mu")[1]}
        	if ("sigma"%in%names(fam$parameters)) {sigma.start <- fitted(start.from, "sigma")[1]}
@@ -281,7 +289,8 @@ if (!is.null(start.from)) # MS 21-12-11
 				ll1 <- function(eta.mu)
 				{
 					mu <- fam$mu.linkinv(eta.mu)
-					-sum(w*PDF(y, mu=mu, log=TRUE))
+					if(any(fam$family%in%.gamlss.bi.list)) -sum(w*PDF(y, mu=mu, bd=bd, log=TRUE)) # BI
+          else -sum(w*PDF(y, mu=mu, log=TRUE))# other
 				}
 			   fit <-	MLE(ll1, start=list(eta.mu=eta.mu), fixed=fixed, ...)
 			},
@@ -290,6 +299,7 @@ if (!is.null(start.from)) # MS 21-12-11
 				{
 					mu <- fam$mu.linkinv(eta.mu)
 				 sigma <- fam$sigma.linkinv(eta.sigma)
+					if(any(fam$family%in%.gamlss.bi.list))  -sum(w*PDF(y, bd=bd, mu=mu, sigma=sigma, log=TRUE))  else   
 					-sum(w*PDF(y, mu=mu, sigma=sigma, log=TRUE))
 				}
 				fit <-	MLE(ll2, start=list(eta.mu=eta.mu, eta.sigma=eta.sigma), fixed=fixed, ...)
@@ -300,7 +310,8 @@ if (!is.null(start.from)) # MS 21-12-11
 					   mu <- fam$mu.linkinv(eta.mu)
 					sigma <- fam$sigma.linkinv(eta.sigma)
 					   nu <- fam$nu.linkinv(eta.nu)
-					-sum(w*PDF(y, mu=mu, sigma=sigma, nu=nu, log=TRUE))
+			if(any(fam$family%in%.gamlss.bi.list)) -sum(w*PDF(y, bd=bd, mu=mu, sigma=sigma, nu=nu, log=TRUE)) else
+               -sum(w*PDF(y, mu=mu, sigma=sigma, nu=nu, log=TRUE))
 				}
 				fit <-	MLE(ll3, start=list(eta.mu=eta.mu, eta.sigma=eta.sigma, eta.nu=eta.nu), fixed=fixed, ...)
 				
