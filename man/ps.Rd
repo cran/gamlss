@@ -6,14 +6,16 @@
 \alias{pvc.control}
 \alias{cy}
 \alias{cy.control}
+\alias{pbm}
+\alias{pbm.control}
 
-\title{Specify a Penalised  B-Spline Fit in a GAMLSS Formula}
-\description{There are several function operating using penalised B-splines: \code{pb()},  \code{cy()}, \code{pvc()} and \code{ps()}.
-The functions take a vector and return it with several attributes. 
-The vector is used in the construction of the design matrix X used in the fitting.  The functions  do not do the  smoothing, 
-but assign the attributes to the vector to aid gamlss in the smoothing. 
-The functions doing the smoothing are  \code{\link{gamlss.ps}()} \code{\link{gamlss.pb}()}, \code{\link{gamlss.cy}()} and \code{\link{gamlss.pvc}()}
-which are used in the backfitting  function \code{\link{additive.fit}}.
+\title{Specify a Penalised  B-Spline Fits in a GAMLSS Formula}
+
+\description{
+There are several function operating using penalised B-splines: \code{pb()}, \code{cy()}, \code{pvc()}, \code{pbm()} and \code{ps()}.
+
+The functions take a vector and return it with several attributes. The vector is used in the construction of the design matrix X used in the fitting. The functions  do not do the  smoothing, but assign the attributes to the vector to aid gamlss in the smoothing.
+The functions doing the smoothing are   \code{\link{gamlss.pb}()}, \code{\link{gamlss.cy}()} and \code{\link{gamlss.pvc}()},  \code{\link{gamlss.pbm}()} and \code{\link{gamlss.ps}()} which are used in the backfitting  function \code{\link{additive.fit}}.
 
 The function \code{pb()} is more efficient and faster than the original penalized smoothing function \code{ps()}. 
 \code{pb()} allows the estimation of the smoothing parameters using different local (performance iterations) methods.
@@ -31,10 +33,13 @@ cy.control(inter = 20, degree = 3, order = 2, start = 10,
           method = c("ML", "GAIC", "GCV", "EM", "ML-1"), k = 2, ts=FALSE, ...)
 pvc(x, df = NULL, lambda = NULL, by = NULL, control = pvc.control(...), ...)          
 pvc.control(inter = 20, degree = 3, order = 2, start = 10, quantiles = FALSE, 
-             method = c("ML", "GAIC", "GCV", "EM", "ML-1"), k = 2, ...)          
+             method = c("ML", "GAIC", "GCV", "EM", "ML-1"), k = 2, ...) 
+pbm(x, df = NULL, lambda = NULL, mono=c("up", "down"), 
+            control = pbm.control(...), ...)
+pbm.control(inter = 20, degree = 3, order = 2, start = 10, quantiles = FALSE, 
+            method = c("ML", "GAIC"), k = 2, ...)
 ps(x, df = 3, lambda = NULL, ps.intervals = 20, degree = 3, order = 3)
 }
-
 
 \arguments{
   \item{x}{the univariate predictor}
@@ -52,11 +57,12 @@ ps(x, df = 3, lambda = NULL, ps.intervals = 20, degree = 3, order = 3)
   \item{ts}{if TRUE assumes that it is a seasonal factor} 
   \item{method}{The method used in the (local) performance iterations. Available methods are "ML", "ML-1", "EM", "GAIC" and "GCV"}
   \item{k}{the penalty used in "GAIC" and "GCV"}
+  \item{mono}{for monotonic P-splines whether going "up"  or "down"}
   \item{ps.intervals}{the no of break points in the x-axis}
 } 
 \details{
 The \code{ps()} function is based on Brian Marx function which can be found in \url{http://www.stat.lsu.edu/faculty/marx/}.
-The \code{pb()}, \code{cy()} and \code{pvc()} functions are based on Paul Eilers's original R functions. 
+The \code{pb()}, \code{cy()}, \code{pvc()} and  \code{pbm()} functions are based on Paul Eilers's original R functions. 
 Note that  \code{ps()} and  \code{pb()} functions behave differently at their default values if df and lambda are not specified.
 \code{ps(x)} by default  uses 3 extra degrees of freedom for smoothing \code{x}.
 \code{pb(x)} by default  estimates lambda (and therefore the degrees of freedom) automatically using a "local" method.
@@ -66,9 +72,16 @@ The local (or performance iterations) methods available are:
 (iii) local Generalized Cross validation "GCV" 
 (iv) local EM-algorithm, "EM" (which is very slow) and 
 (v) a modified version of the ML, "ML-1" which produce identical results with "EM" but faster.
-  
-Note that the local (or performance iterations) methods can occasionally  make the convergence of gamlss less stable
- compared to  models where the degrees of freedom are fixed.           
+
+The  function \code{pb()} fits a P-spline smoother.
+
+The  function \code{pbm()} fits a monotonic (going up) P-spline smoother.
+
+The  function \code{cy()} fits a P-spline smoother where the beginning and end are the same.  
+
+The \code{pvc()} fits a varying coefficient model.  
+
+Note that the local (or performance iterations) methods can occasionally  make the convergence of gamlss less stable compared to  models where the degrees of freedom are fixed.           
 }
 
 \value{
@@ -95,8 +108,8 @@ Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location s
 }
 \author{ Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby \email{r.rigby@londonmet.ac.uk } and Paul Eilers}
 
-\section{Warning}{There are occations where the automatic local methods do not work. One accation which came to our attention is  when 
-the range of the response variable values is very large. Scalling the response variable will solve the problem.} 
+\section{Warning}{There are occasions where the automatic local methods do not work. One accusation which came to our attention is  when 
+the range of the response variable values is very large. Calling the response variable will solve the problem.} 
 
 \seealso{ \code{\link{gamlss}}, \code{\link{gamlss.ps}}, \code{\link{cs}}}
 \examples{
@@ -183,7 +196,21 @@ rm(r1,r11,r2)
 # varying-coefficient model
  h2 <-gamlss(R~pb(Fl)+pb(A)+pvc(A,by=Fl), data=rent)
 AIC(h1,h2)
-rm(h1,h2)}
+rm(h1,h2)
+#-----------
+# monotone function
+set.seed(1334)
+x = seq(0, 1, length = 100)
+p = 0.4
+y = sin(2 * pi * p * x) + rnorm(100) * 0.1
+plot(y~x)
+m1 <- gamlss(y~pbm(x))
+points(fitted(m1)~x, col="red")
+yy <- -y
+plot(yy~x)
+m2 <- gamlss(yy~pbm(x, mono="down"))
+points(fitted(m2)~x, col="red")
+}
 #==================================
 }
 \keyword{regression}% 

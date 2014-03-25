@@ -43,9 +43,11 @@ Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location s
 \examples{
 data(usair)
 # standarized the x's
-for (i in 2:7) usair[,i] <- (usair[,i]-mean(usair[,i]))/sd(usair[,i])
-# create a matrix 
-usair$X <-as.matrix(usair[,c("x1","x2", "x3","x4", "x5", "x6")])
+# for (i in 2:7) usair[,i] <- (usair[,i]-mean(usair[,i]))/sd(usair[,i])
+# usair$X <-as.matrix(usair[,c("x1","x2", "x3","x4", "x5", "x6")])
+X<-with(usair, scale(cbind(x1,x2, x3,x4, x5, x6)))
+# create a matrix in the data
+usair$X <- X 
 m1<- gamlss(y~ridge(X, df=3), data=usair, family=GA)
 m2<- gamlss(y~ridge(X, lambda=10), data=usair, family=GA)
 # plotting the coeficients as function of the df 

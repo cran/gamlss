@@ -18,6 +18,24 @@ Question or suggestions about GAMLSS can be send to
 or
    r.rigby@londonmet.ac.uk
 ---------------------------------------------------------------------
+Version 4.2-8
+
+1. gamlss
+
+       i) pb(), cy(), ri(), and pvc(): now  divide with the correct number of obsrvations if prior weights with zeros are used.
+
+       ii) pbm() is added as a new additive function allowing montonic curve smooth fitting
+    
+
+2. gamlss.add
+       i) the function tr() is added for fitting decition tres within gamlss
+
+3. gamlss.data
+
+        i) the new data set rent99 is added
+        ii) the data mviBig is added 
+
+
 Version 4.2-7
 
 1. gamlss 

@@ -129,8 +129,13 @@ lms <- function(y, x,
     centiles(m0, xvar=x, cent=cent, pch = 15, cex = 0.5, 
              col = gray(0.7), ylab=ylab, xlab=xlab, legend=legend)		
   }
+
+class(m0) <- c("lms", class(m0))
   m0  # save the last model
 }
+#---------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------
 #---------------------------------------------------------------------------------
 #---------------------------------------------------------------------------------
 #---------------------------------------------------------------------------------
@@ -162,7 +167,7 @@ calibration <- function(object, xvar, cent=100*pnorm((-4:4)*2/3), legend=FALSE, 
 #  x <- if (!is.null(data)) get(deparse(substitute(x)), envir=as.environment(data)) else x
 # # assign(deparse(substitute(x)),get(deparse(substitute(x)), envir=as.environment(data)))
 ##  assign(deparse(substitute(y)),get(deparse(substitute(y)), envir=as.environment(data)))
-# # browser()
+# # 
 #  m1 <- gamlss(y~x)
 # # with(Data, {m1<- gamlss(y~x); assign("m1", m1, envir=currentEnv)})
 #  m1

@@ -88,9 +88,9 @@ what <- match.arg(what)
 if(what=="z-scores")
  {
   if (all(w==1)) x <- object$residuals
-  else if (all(trunc(w)==w)) 
+  else if (all(trunc(w)==w)) # this is for frequencies
         { if (object$type== "Continuous")  x <- rep(object$residuals, w)
-          else{
+          else{ # discrete cas
                y  <- rep(object$y, w)
                mu <- rep(fitted(object, "mu"),w)
                if(any(object$family%in%.gamlss.bi.list)){ bd <- rep(object$bd,w)} # MS Wednesday, July 23, 2003 at 12:03   
@@ -100,7 +100,6 @@ if(what=="z-scores")
                x <- eval(object$rqres)
               }  
          }
-
 else { warning("weights which are not frequencies are used: residuals remain unweighted")
            x <- object$residuals
      } # naresid(object$na.action, object$residuals)

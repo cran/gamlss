@@ -85,7 +85,8 @@ regpen <- function(y, X, w, lambda, order, D)
         D <- as.matrix(attr(x,"D"))
     order <- as.vector(attr(x,"order"))
    lambda <- as.vector(attr(x,"lambda"))
-       df <- as.vector(attr(x,"df"))   
+       df <- as.vector(attr(x,"df"))  
+        N <- sum(w!=0) # DS+FDB 3-2-14
         n <- nrow(X)
         p <- ncol(X)
        aN <- nrow(D)
@@ -107,7 +108,7 @@ regpen <- function(y, X, w, lambda, order, D)
    #   D = diff(diag(nb), diff =   1 )
         gamma. <- D %*% as.vector(fit$beta)
             fv <- X %*% fit$beta
-          sig2 <- sum(w * (y - fv) ^ 2) / (n - fit$edf)
+          sig2 <- sum(w * (y - fv) ^ 2) / (N - fit$edf)
           tau2 <- sum(gamma. ^ 2) / (fit$edf-order)# Tuesday, March 17, 2009 at 11:57
     lambda.old <- lambda
         lambda <- sig2 / tau2
@@ -137,7 +138,7 @@ regpen <- function(y, X, w, lambda, order, D)
      xaug <- as.matrix(rbind(X,sqrt(lambda)*D))
       lev <- hat(sqrt(waug)*xaug,intercept=FALSE)[1:n] # get the hat matrix
       lev <- (lev-.hat.WX(w,x)) # substract  the linear since is allready fitted 
-      var <- lev/w # the variance of the smootherz
+      var <- lev/w # the variance of the smoother
      #----------------------------------------------
 if (is.null(xeval))
     {

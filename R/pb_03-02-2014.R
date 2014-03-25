@@ -270,6 +270,7 @@ regpenEM <- function(y, X, w, lambda, order, D)
      gamlss.env <- as.environment(attr(x, "gamlss.env"))
 startLambdaName <- as.character(attr(x, "NameForLambda")) 
           order <- control$order # the order of the penalty matrix
+              N <- sum(w!=0) # DS+FDB 3-2-14
               n <- nrow(X) # the no of observations
               p <- ncol(D) # the rows of the penalty matrix
           tau2  <- sig2 <- NULL
@@ -297,7 +298,7 @@ startLambdaName <- as.character(attr(x, "NameForLambda"))
            fit  <- regpen(y, X, w, lambda, D) # fit model
          gamma. <- D %*% as.vector(fit$beta)  # get the gamma differences
              fv <- X %*% fit$beta             # fitted values
-           sig2 <- sum(w * (y - fv) ^ 2) / (n - fit$edf)
+           sig2 <- sum(w * (y - fv) ^ 2) / (N - fit$edf) # DS+FDB 3-2-14
            tau2 <- sum(gamma. ^ 2) / (fit$edf-order)# Monday, March 16, 2009 at 20:00 see LNP page 279
            if(tau2<1e-7) tau2 <- 1.0e-7 # MS 19-4-12
      lambda.old <- lambda
@@ -316,7 +317,7 @@ startLambdaName <- as.character(attr(x, "NameForLambda"))
            fit  <- regpen(y, X, w, lambda, D) # fit model
          gamma. <- D %*% as.vector(fit$beta)  # get the gamma differences
              fv <- X %*% fit$beta             # fitted values
-           sig2 <- 1 # sum(w * (y - fv) ^ 2) / (n - fit$edf)
+           sig2 <- 1 # sum(w * (y - fv) ^ 2) / (N - fit$edf)
            tau2 <- sum(gamma. ^ 2) / (fit$edf-order)# Monday, March 16, 2009 at 20:00 see LNP page 279
      if(tau2<1e-7) tau2 <- 1.0e-7
      lambda.old <- lambda

@@ -79,9 +79,13 @@ hessian.fun <- match.arg(hessian.fun)
 ## I think we should have a option to be able to use       
        hess <- if (hessian.fun=="R" ) optimHess(betaCoef, like.fun)
                else HessianPB(betaCoef, like.fun)$Hessian
-     varCov <- try(solve(hess))
-      if (any(class(beta)%in%"try-error"))
-      {stop("the Hessian matrix is singular probably the model is overparametrised")}
+     varCov <- try(solve(hess), silent = TRUE)
+      if (any(class(varCov)%in%"try-error"))
+        { # now if it fails try the "PB" function MS 9-2-14
+        varCov <- try(solve(HessianPB(betaCoef, like.fun)$Hessian), silent = TRUE) 
+        if (any(class(varCov)%in%"try-error")) # if it still fail give up
+        stop("the Hessian matrix is singular probably the model is overparametrised")
+        }
          se <- sqrt(diag(varCov))
        corr <- cov2cor(varCov) # cov/(se %o% se)
    coefBeta <- unlist(coefBeta)

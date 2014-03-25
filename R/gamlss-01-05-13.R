@@ -34,9 +34,12 @@ gamlssNews <- function() file.show(system.file("doc", "NEWS.txt", package="gamls
 ##----------------------------------------------------------------------------------------
 .gamlss.sm.list<-c("cs", "scs", "vc","s",         # smoothing cubic splines  : cs, scs, vc
                    "ps", "pb", "cy", "tp", "pvc", # penalised splines        : ps, pb, cy tp pvc pbq
+                   "pbm",                         # monotone
                    "pbq",                         # pb using Qfunction
                    "mrf",                         # Markov random fields
                    "mrfa",                        # Markov random fields
+                   "sap",                         # seperation of Anisotropic penelties
+                   "sap3",                         # 
                    "lo",                          # loess                    : lo
                    "random","ra","rc","rash","re",# random effect            : random, ra, rc, re (lme) rash
                    "fp","pp",                     # fractional poly          : fp, pp
@@ -55,8 +58,8 @@ gamlssNews <- function() file.show(system.file("doc", "NEWS.txt", package="gamls
                    "sv",                          # suppor vector machines   : sv 
                    "ma",                          # mars                     : ma
                    "pr",                          # projection pursuit Reg   : pr
-				   "pc",                          # principal component regr : pc
-				   "pa")                          # partial regression       : pr
+				           "pc",                          # principal component regr : pc
+				           "pa")                          # partial regression       : pr
                    
 # note that predict only read 2 characters Monday, May 4, 2009 at 11:27
 ##----------------------------------------------------------------------------------------
@@ -251,7 +254,7 @@ body(rqres) <-  eval(quote(body(rqres)), envir = getNamespace("gamlss"))
            } #end of while
            pen <- 0 # DS Thursday, November 21, 2002 at 23:04
            if(length(who) > 0) {pen<- sum(eta*wt*(wv-eta)) }
-           c(fit, list(fv = fv, wv = wv, wt = wt, eta = eta, os = os)) #ms Saturday, December 4, 2004 
+           c(fit, list(fv = fv, wv = wv, wt = wt, eta = eta, os = os, pen=pen)) #ms Saturday, December 4, 2004 
          }     
            ##-end of GLIM.fit------------------------------------------------------------
       
@@ -719,12 +722,13 @@ parameterOut <- function(what="mu", save)
                 out$s  <- eval(parse(text=paste(what,".fit$smooth",sep=""))) 
                out$var <- eval(parse(text=paste(what,".fit$var",sep="")))  
            out$coefSmo <- eval(parse(text=paste(what,".fit$coefSmo",sep=""))) 
-            out$lambda <- eval(parse(text=paste(what,".fit$lambda",sep="")))            
+            out$lambda <- eval(parse(text=paste(what,".fit$lambda",sep="")))
+               out$pen <- eval(parse(text=paste(what,".fit$pen",sep="")))            
               }
             else                       
               { out$df <- eval(parse(text=paste(what,".fit$rank",sep=""))) 
              out$nl.df <- 0
-         #    out$pen  <- 0 #ms May 13, 2004 
+             out$pen  <- 0 #ms May 13, 2004 
               }
      }
    else
@@ -1141,14 +1145,14 @@ else
  }
 ## define now the degrees of freedom for the fit and residuals
      out$df.fit <- out$mu.df
-#       out$pen <- out$mu.pen
+       out$pen <- out$mu.pen
 out$df.residual <- noObs-out$mu.df
 ## Output for dispersion model: ----------------------------------------------------------
 if ("sigma"%in%names(family$parameters))
 {
             out <- c(out, sigma = parameterOut(what="sigma", save=saveParam) )  
      out$df.fit <- out$mu.df + out$sigma.df
-#        out$pen <- out$mu.pen + out$sigma.pen
+        out$pen <- out$mu.pen + out$sigma.pen
 out$df.residual <- noObs-out$mu.df-out$sigma.df
 }
 ##  output for nu ------------------------------------------------------------------------
@@ -1157,14 +1161,14 @@ if ("nu"%in%names(family$parameters))
             out <- c(out, nu = parameterOut(what="nu", save=saveParam) ) 
      out$df.fit <- out$mu.df+out$sigma.df+out$nu.df
 out$df.residual <- noObs-out$mu.df-out$sigma.df-out$nu.df
-#        out$pen <- out$mu.pen + out$sigma.pen + out$nu.pen
+        out$pen <- out$mu.pen + out$sigma.pen + out$nu.pen
 }
 ##  output for tau -----------------------------------------------------------------------
 if ("tau"%in%names(family$parameters))
 {
             out <- c(out, tau = parameterOut(what="tau", save=saveParam) )       
      out$df.fit <- out$mu.df+out$sigma.df+out$nu.df+out$tau.df
-#        out$pen <- out$mu.pen + out$sigma.pen + out$nu.pen + out$tau.pen
+        out$pen <- out$mu.pen + out$sigma.pen + out$nu.pen + out$tau.pen
 out$df.residual <- noObs-out$mu.df-out$sigma.df- out$nu.df -out$tau.df
 }
 ##=======================================================================================

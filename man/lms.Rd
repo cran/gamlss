@@ -66,7 +66,7 @@ Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location s
 \emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
 }
 \author{
-Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby \email{r.rigby@londonmet.ac.uk} and Vlasios Voudouris \email{v.voudouris@londonmet.ac.uk}
+Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby \email{r.rigby@londonmet.ac.uk} and Vlasios Voudouris \email{vlasios.voudouris@abm-analytics.com}
 }
 \note{The function is fitting several models and for large data can be slow}
 

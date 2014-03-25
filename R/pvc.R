@@ -61,7 +61,7 @@ gamlss.environment <- sys.frame(position)
 #--------
 ## get a random name to use it in the gamlss() environment
 #--------
-               sl <-sample(letters, 4)
+               sl <- sample(letters, 4)
       fourLetters <- paste(paste(paste(sl[1], sl[2], sep=""), sl[3], sep=""),sl[4], sep="")
   startLambdaName <- paste("start.Lambda",fourLetters, sep=".")
 ## put the starting values in the gamlss()environment
@@ -172,7 +172,7 @@ regpen <- function(y, X, w, lambda, D)
           beta <- solve(XWX + G, t(XW) %*% y)
             fv <- X %*%beta
              H <- solve(XWX + G, XWX)
-         #  edf <- sum(diag(H))
+        #  edf <- sum(diag(H))
            fit <- list(beta = beta, edf = sum(diag(H)))
   return(fit)  
   }
@@ -260,7 +260,7 @@ regpenEM <- function(y, X, w, lambda, order, D)
       fnGCVforFactor <- function(lambda, k)
            {
            fac <- as.factor(colnames(S))
-          lambdas <- model.matrix(~fac-1)%*%lambda  
+       lambdas <- model.matrix(~fac-1)%*%lambda  
     I.lambda.D <- (1+lambdas*UDU$values)
            edf <- sum(1/I.lambda.D)
          y_Hy2 <- y.y-2*sum((yy^2)/I.lambda.D)+sum((yy^2)/((I.lambda.D)^2))
@@ -339,10 +339,11 @@ regpenEM <- function(y, X, w, lambda, order, D)
                      by.var <- as.vector(by.var)
                     }
                  } 
-   control <- as.list(attr(x, "control")) 
-gamlss.env <- as.environment(attr(x, "gamlss.env"))
+        control <- as.list(attr(x, "control")) 
+     gamlss.env <- as.environment(attr(x, "gamlss.env"))
 startLambdaName <- as.character(attr(x, "NameForLambda")) 
      order <- control$order # the order of the penalty matrix
+         N <- sum(w!=0) # DS+FDB 3-2-14   
          n <- nrow(X) # the no of observations
          p <- ncol(D) # the rows of the penalty matrix
         p2 <- nrow(D)
@@ -360,30 +361,30 @@ startLambdaName <- as.character(attr(x, "NameForLambda"))
                 else (y/ifelse(by.var==0,0.0001,by.var)) 
                 }
 ## we need to know whether by.var is a factor or not
-## if is not a factor fit the models with weights --------------------VARIABLE-VARIABLE    
+## if is not a factor fit the models with weights -------------by= is a VARIABLE    
 if (!is.Factor)
  {
 ## now the action depends on the values of lambda and df
 ##--------------------------------------------------------------------  
-## case 1: if lambda is known just fit
+## case 1: if lambda is known just fit------------------------------------------
   if (is.null(df)&&!is.null(lambda)||!is.null(df)&&!is.null(lambda))
   {
            fit <- regpen(yvar, X, w, lambda,  D)
-            fv <-  X %*% fit$beta          
-  } # case 2: if lambda is estimated ----------------------------------
+            fv <-  X %*% fit$beta    #--------------------------end case 1------      
+  } # case 2: if lambda is estimated -------------------------------------------
   else if (is.null(df)&&is.null(lambda)) # estimate lambda 
   { #   
    # cat("----------------------------","\n")
          lambda <-  get(startLambdaName, envir=gamlss.env) ## geting the starting value
    # if ML ----------------------
-   switch(control$method,    # which method to use for estimating lambda
+   switch(control$method,            # which method to use for estimating lambda
    "ML"={  
         for (it in 1:50) 
           {
             fit  <- regpen(yvar, X, w, lambda, D) # fit model
           gamma. <- D %*% as.vector(fit$beta)  # get the gamma differences
               fv <- X %*% fit$beta             # fitted values
-            sig2 <- sum(w * (yvar - fv) ^ 2) / (n - fit$edf)
+            sig2 <- sum(w * (yvar - fv) ^ 2) / (N - fit$edf)
             tau2 <- sum(gamma. ^ 2) / (fit$edf-order)# Monday, March 16, 2009 at 20:00 see LNP page 279
       lambda.old <- lambda
           lambda <- sig2 / tau2 # maybe only 1/tau2 will do since it gives exactly the EM results see LM-1
@@ -400,7 +401,7 @@ if (!is.Factor)
             fit  <- regpen(yvar, X, w, lambda, D) # fit model
           gamma. <- D %*% as.vector(fit$beta)  # get the gamma differences
               fv <- X %*% fit$beta             # fitted values
-            sig2 <- 1 # sum(w * (y - fv) ^ 2) / (n - fit$edf)
+            sig2 <- 1 # sum(w * (y - fv) ^ 2) / (N - fit$edf)
             tau2 <- sum(gamma. ^ 2) / (fit$edf-order)# Monday, March 16, 2009 at 20:00 see LNP page 279
       lambda.old <- lambda
           lambda <- sig2 / tau2 # 1/tau2 
@@ -447,8 +448,8 @@ if (!is.Factor)
             fv <- X %*% fit$beta     
          assign(startLambdaName, lambda, envir=gamlss.env) 
         })
-   }
-   else # case 3 : if df are required---------------------------------
+   } #--------------------------------------------------------end case 2 -------
+   else # case 3 : if df are required-------------------------------------------
    { 
        #method 2 from Simon Wood (2006) pages 210-211, and 360 
             QR <- qr(sqrt(w)*X)
@@ -460,7 +461,7 @@ if (!is.Factor)
        # if (any(class(lambda)%in%"try-error")) {lambda<-100000}   
             fit <- regpen(yvar, X, w, lambda, D)
              fv <- X %*% fit$beta
-   }#--------------------------------------------------------------------------end of case 3
+   }#--------------------------------------------------------------end of case 3
         waug <- as.vector(c(w, rep(1,nrow(D))))
         xaug <- as.matrix(rbind(X,sqrt(lambda)*D))
          lev <- hat(sqrt(waug)*xaug,intercept=FALSE)[1:n] # get the hat matrix
@@ -495,8 +496,8 @@ if (!is.Factor)
       }
      pred
      }  
- }# if by is NOT a FACTOR ends here -----------------------------------
-else  # here is if.Factor==TRUE     -----------------------------------FACTOR---FACTOR
+ }# if by is NOT a FACTOR ends here --------------------------------------------
+else  # here is if.Factor==TRUE     -----------------------------FACTOR---FACTOR
  {#    by  is a FACTOR
            nlev <- nlevels(by.var)
             lev <- levels(by.var)
@@ -519,10 +520,11 @@ else  # here is if.Factor==TRUE     -----------------------------------FACTOR---
      #         fv[In] <- X[II,]%*%fit[[i]]$beta      
      #  } 
      ## note that looping or just fitting using regpenByFactor1 is equivalent 
+     # case 1 for fixed lambdas  -----------------------------------------------   
             fit <- regpenByFactor1(yvar, X, w, by.var, lambda, D)   
             fv  <- fit$fv
-            edf <- fit$edf 
-     } # case 2: if lambda is estimated ----------------------------------
+            edf <- fit$edf   #-------------------- end case 1-------------------
+     } # case 2: if lambda is estimated ----------------------------------------
     else if (is.null(df[1])&&is.null(lambda[1])) 
      { #   
       #cat("----------------------------","\n")
@@ -532,7 +534,8 @@ else  # here is if.Factor==TRUE     -----------------------------------FACTOR---
      "ML"={## the method used here is to loop and fit the individual models
            for (i in 1:nlev)
            {
-                 II <-  by.var==lev[i]
+                 II <- by.var==lev[i]
+                  N <- sum(II*w!=0)
                  In <- Index[II]
                  #cat("parameter",i,"\n")
                   for (it in 1:50) 
@@ -543,7 +546,7 @@ else  # here is if.Factor==TRUE     -----------------------------------FACTOR---
                      lfv <- X[II,]%*%fit[[i]]$beta              # fitted values
                   fv[In] <- lfv 
                   gamma. <- D %*% as.vector(fit[[i]]$beta)  # get the gamma differences
-                    sig2 <- sum(w[II] * (y[II] - lfv) ^ 2) / (sum(II) - fit[[i]]$edf)
+                    sig2 <- sum(w[II] * (y[II] - lfv) ^ 2) / (N - fit[[i]]$edf)
                     tau2 <- sum(gamma. ^ 2) / (fit[[i]]$edf-order)# Monday, March 16, 2009 at 20:00 see LNP page 279
               lambda.old <- lambda[i]
                lambda[i] <- sig2 / tau2 # 

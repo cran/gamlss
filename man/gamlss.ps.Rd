@@ -5,20 +5,21 @@
 \alias{gamlss.pvc}
 \alias{gamlss.ri}
 \alias{gamlss.ridge}
+\alias{gamlss.pbm}
 
-
-\title{Support for Functions ps(), pb(), cy() and ri() }
+\title{Support for Functions  for smoothers}
 \description{
- Those functions  are support for the functions \code{ps()} and \code{pb()}.
+ Those functions  are support for the functions  \code{pb()},  \code{ps()},  \code{ridge()},  \code{ri()},  \code{cy()},  \code{pvc()},  and \code{pbm()}.
 The functions are not intended to be called directly by users. 
 }
 \usage{
-gamlss.ps(x, y, w, xeval = NULL, ...)
 gamlss.pb(x, y, w, xeval = NULL, ...)
+gamlss.ps(x, y, w, xeval = NULL, ...)
 gamlss.ridge(x, y, w, xeval = NULL, ...)
 gamlss.ri(x, y, w, xeval = NULL, ...)
 gamlss.cy(x, y, w, xeval = NULL, ...)
 gamlss.pvc(x, y, w, xeval = NULL, ...)
+gamlss.pbm(x, y, w, xeval = NULL, ...)
 }
 
 \arguments{
@@ -30,10 +31,7 @@ gamlss.pvc(x, y, w, xeval = NULL, ...)
 }
 
 \value{
-  
-  \item{comp1 }{Description of 'comp1'}
-  \item{comp2 }{Description of 'comp2'}
-  ...
+All function return fitted smoothers.  
 }
 \references{ Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), 
 \emph{Appl. Statist.}, \bold{54}, part 3, pp 507-554.
@@ -47,6 +45,6 @@ Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location s
 
 \author{ Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby \email{r.rigby@londonmet.ac.uk} }
 
-\seealso{ \code{\link{gamlss}}, \code{\link{ps}},  \code{\link{pb}} }
+\seealso{ \code{\link{gamlss}}, \code{\link{pb}},  \code{\link{ps}}, \code{\link{ri}},\code{\link{ridge}},\code{\link{cy}},\code{\link{pvc}},\code{\link{pbm}} }
 
 \keyword{regression}% 
