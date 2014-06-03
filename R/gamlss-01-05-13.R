@@ -38,8 +38,9 @@ gamlssNews <- function() file.show(system.file("doc", "NEWS.txt", package="gamls
                    "pbq",                         # pb using Qfunction
                    "mrf",                         # Markov random fields
                    "mrfa",                        # Markov random fields
-                   "sap",                         # seperation of Anisotropic penelties
-                   "sap3",                         # 
+                   "sap",                         # seperation of Anisotropic penalties
+                   "sap3",                        #
+                   "kri" ,                        # kriging
                    "lo",                          # loess                    : lo
                    "random","ra","rc","rash","re",# random effect            : random, ra, rc, re (lme) rash
                    "fp","pp",                     # fractional poly          : fp, pp

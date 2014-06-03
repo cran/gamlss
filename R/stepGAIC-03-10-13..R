@@ -34,7 +34,7 @@ dropterm.gamlss<-function (object,
                            trace = FALSE, 
                            ...) 
 {
-#-----------------------
+#-------------------------------------------------------------------------------
   drop1.scope<-function (terms1, terms2, what = c("mu", "sigma", "nu", "tau")) 
   {
     what <- match.arg(what)
@@ -44,7 +44,7 @@ dropterm.gamlss<-function (object,
     else attr(terms(terms2, what), "factor")
     factor.scope(attr(terms1, "factor"), list(drop = f2))$drop
   }
-#-----------------------
+#-------------------------------------------------------------------------------
     what <- match.arg(what)
     if (!what %in% object$par) 
         stop(paste(what, "is not a parameter in the object", "\n"))

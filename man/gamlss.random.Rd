@@ -1,20 +1,25 @@
 \name{gamlss.random}
 \alias{gamlss.random}
+\alias{gamlss.re}
 
-\title{Support for Function random()}
+\title{Support for Functions random() and re()}
+
 \description{
- This is support for the function random().
+ This is support for the functions \code{random()} and \code{re()} respectively.
 It is not intended to be called directly by users.
-The function \code{gamlss.radom} is similar to the GAMLSS function \code{gamlss.ra}.
+.
 }
 \usage{
 gamlss.random(x, y, w)
+gamlss.re(x, y, w, xeval = NULL, ...)
 }
 
 \arguments{
   \item{x}{the explanatory design matrix }
   \item{y}{the response variable }
   \item{w}{iterative weights }
+  \item{xeval}{it used internaly for prediction}
+  \item{\dots}{for extra arguments}
 }
 
 \value{Returns a list with
@@ -39,7 +44,7 @@ Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location s
 \author{Mikis Stasinopoulos, based on Trevor Hastie function \code{gam.random}}
 
 
-\seealso{ \code{\link{gamlss}}, \code{\link{random}}, \code{\link{ra}}  }
+\seealso{ \code{\link{gamlss}}, \code{\link{random}}}
 
 
 \keyword{regression}% 

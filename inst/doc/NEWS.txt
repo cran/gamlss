@@ -18,17 +18,41 @@ Question or suggestions about GAMLSS can be send to
 or
    r.rigby@londonmet.ac.uk
 ---------------------------------------------------------------------
+Version 4.2-9
+
+1. gamlss
+          i)   kri is added as another smoother
+          ii)  rvcov() the argument hessian.fun is added
+          iii) fp() now saves the lm fitted models and it can be access using 
+               gerSmo()
+          vi)  ra() and rc() are gone to be replaced by re() and interface for calling mle() within gamlss
+
+
+2. gamlss.dist
+
+          i) Family() is amended to save a function rather just a list
+          ii) all the FORTRAN source files have now translated to C thanks to 
+              Marco Enea
+          iii)  ST3C a version of ST3 written in C rather in R is added thanks to 
+               Alexios Ghalanos
+
+3, gamlss.add 
+          i) fk() now does not print the results in each iteration (it was left 
+              by mistake in the last version) 
+          ii) ga() ,tr() and nn() now can take bigger formula.
+
+
 Version 4.2-8
 
 1. gamlss
 
-       i) pb(), cy(), ri(), and pvc(): now  divide with the correct number of obsrvations if prior weights with zeros are used.
+       i) pb(), cy(), ri(), and pvc(): now  divide with the correct number of observations if prior weights with zeros are used.
 
-       ii) pbm() is added as a new additive function allowing montonic curve smooth fitting
+       ii) pbm() is added as a new additive function allowing monotonic curve smooth fitting
     
 
 2. gamlss.add
-       i) the function tr() is added for fitting decition tres within gamlss
+       i) the function tr() is added for fitting decision trees within gamlss
 
 3. gamlss.data
 

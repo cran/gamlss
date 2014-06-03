@@ -7,7 +7,7 @@
 The function \code{ri()} allow the user to fit a ridge regression within GAMLSS. 
 It allows the coefficients of a set of explanatory variables to be shrunk towards an overall zero, 
 where the amount of shrinking depends either on lambda, or on the equivalent degrees of freedom (df). 
-The function \code{ri()} can estimate lambda a local REML-algorithm.
+The function \code{ri()} can estimate lambda using a local REML-algorithm.
 }
 \usage{
 ridge(X, df = NULL, lambda = NULL, order = 0)
@@ -30,16 +30,20 @@ ri(X, df = NULL, lambda = NULL, order = 0, start = 10)
 Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), 
 \emph{Appl. Statist.}, \bold{54}, part 3, pp 507-554.
 
+Rigby, R. and Stasinopoulos, D. M (2013) Automatic smoothing parameter selection in GAMLSS with an application to centile estimation, \emph{Statistical methods in medical research}.
+
 Stasinopoulos D. M., Rigby R.A. and Akantziliotou C. (2006) Instructions on how to use the GAMLSS package in R.
 Accompanying documentation in the current GAMLSS  help files, (see also  \url{http://www.gamlss.org/}).
  
 Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
 \emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}. 
+
+
  }
 \author{ Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby \email{r.rigby@londonmet.ac.uk} and Paul Eilers}
 
 
-\seealso{ \code{\link{ra}},  \code{\link{gamlss}}}
+\seealso{\code{\link{gamlss}}}
 \examples{
 data(usair)
 # standarized the x's
