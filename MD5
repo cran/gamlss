@@ -1,5 +1,5 @@
-567990be32a5c278fbe138e81f65b969 *DESCRIPTION
-3d35bbafddfafcd39021603d9e4cbc88 *NAMESPACE
+059be7f798da30d98b865b2f914028cc *DESCRIPTION
+17c6fc9f0c3c7da3d9dfd5e6945bd4b1 *NAMESPACE
 5234753959ff346b56e1865d01fa6c88 *R/FitTail.R
 e0d8a7537ae2353376c1e00f1762ef63 *R/HistDist-03-10-13.R
 8421bf7675635bf9e47cee06de2a6655 *R/LR-test-12-06-2013.R
@@ -10,10 +10,10 @@ bef9f38c13730ce009335256dd705d8c *R/PS.R
 5b20f5e1b4d4a275f7a7f403bd42a7df *R/VGD03-10-13.R
 1006e324d8c603dabce05a3e0d35774b *R/acfResid.R
 cc2a42d1a219e884044ccee188487363 *R/add.r
-10f2dfba9238ab30ba849c69e505ed05 *R/centile-pred.R
-8e7345db9a1f0639f7b0eaf95ef4e0d8 *R/centilesFan.R
-954cb5b6f4199d933a919b6919aed517 *R/centilesPLOT.R
-3f786e07e678318dace48ab3ba92a528 *R/centilescom.R
+68fed2215a101f566d1bdfebabc60e76 *R/centile-pred.R
+919bb6b456db4fe64cad8561340eeb1a *R/centilesFan.R
+ee2e664ddee11eed48b7e67bb13edf8b *R/centilesPLOT.R
+09e62caf4854092fe054512f1de7eb04 *R/centilescom.R
 3ad214026f21fd969fe05411ef89b4e8 *R/confint-gamlss-03-10-13.R
 24bab1329bbdf31200bb51cacac400fa *R/cubicSplines-10-08-12.R
 426cb62a933f2b917ecbe22760f08194 *R/cy.R
@@ -25,13 +25,13 @@ cc2a42d1a219e884044ccee188487363 *R/add.r
 6752d2c9c8631d0f0f7f30c99efcd5dc *R/fitDist17-05-13.R
 495c655bc135675e67c1cee226cdd495 *R/fitted-plot.R
 9fd238396a21acdcc7e2fbf636cddf14 *R/fracpoly.R
-fe4c6424e40f91c551ea113dd0a64cba *R/gamlss-01-05-13.R
+0834f3fad21903153758e44fe1063dba *R/gamlss-01-05-13.R
 e8999b64d508cdbaba5d888ee9fa3b94 *R/gamlssML-31-10-13.R
 6c09f4e74bf8543a1b794098a445bc5c *R/gen-Likelihood-12-06-13.R
 eb8a2a8f78a8ae971cb6b02c2e470163 *R/get-K-rvcov-16-06-2913.R
 a9b7a597670fc2258983abf87191ec37 *R/getSmo-18-6-13.R
 2df80962b875692be4b81aa21c2cc797 *R/histSmo-6-03-12.R
-36581c0d96b7389160ecbe46e0826303 *R/lms-20-6-13.r
+70342312668952a6a2cf47c74e9cbda6 *R/lms.R
 bf5af95ffa26fd08a7b5365fea223b90 *R/lo_new.R
 3e04668a4507638d514eb2995fe0e574 *R/logLik.R
 d20d5e712756bcaef08ef1ce23f6f5a5 *R/lpred.R
@@ -46,10 +46,11 @@ c2aebf11b88e2d80b38ed2e851edd598 *R/powerpoly.R
 73f8a5b752bc02ddc95860813ea6d506 *R/print.R
 146530084f54eba1a85b03b34c78c2b3 *R/profterm_18_05_13.R
 6d8d1c9ddf57c68a9948c8701ae5186b *R/pvc.R
-ad363d54731abad3bf4847a41a41ba66 *R/qstats-29-12-12.R
+e376ebfddc7462bb1a795ef6f2bc80de *R/qstats-29-12-12.R
+8c569e6cc585491f0d23ff22d038c09e *R/quantSheets.R
 0bf4aa5209a481d846b2d909c17a97bb *R/random.R
 772ecbaefafc2e70b3a1e36a3af963c9 *R/re_gamlss_lme.R
-04504a70100b38b86958c90fa344644f *R/ri.R
+188b071b98b2a2f2be982248e7210090 *R/ri.R
 96b114bcdb2d058587fb235e38081fdb *R/ridge.R
 1b663794444b8d026e31f688085375a2 *R/rqres.R
 dd9374f31fcb4ac591df57fee6be8e16 *R/rqresplot03-10-13.R
@@ -62,7 +63,7 @@ b6728b2d732cdce1024b0f877e42c6ba *R/term-plot.R
 0157d39e9e664bb209a34a98aab67039 *R/vcoc-gamlss-03-10-13.R
 c9965b29196c605904707bcd7faa8962 *R/wp-18-5-13.R
 469238c97e885729eb5da9f4d9fb35e0 *inst/CITATION
-c0659ff0de77e1771feed4f14abffbb7 *inst/doc/NEWS.txt
+30eede4f01665aac9fe42452021d3a58 *inst/doc/NEWS.txt
 dd4589a5ff2ecdfb77876d0087a78a1f *inst/doc/gamlss-manual.pdf
 dc0ce53dfcb05845115b30ab85cfe594 *man/IC.Rd
 8315449dca1c2fdc4620dbab09ba2b42 *man/LR.test.Rd
@@ -73,7 +74,7 @@ dc0ce53dfcb05845115b30ab85cfe594 *man/IC.Rd
 32d1a9cc7f65b3eaefd5ac4949158c0d *man/additive.fit.Rd
 4dbb8f22e8d01c6cc46629eae42b2c7c *man/bfp.Rd
 d34b80029eb53deaa288b4d66dbe27d1 *man/calibration.Rd
-beecd6f83f7f235402a71d28a70c9474 *man/centiles.Rd
+9e988ab71ad3f8b115f24c98232d3001 *man/centiles.Rd
 917b0a7a833daf09f30319fb7e38dc2e *man/centiles.com.Rd
 40083ad836584b4fb3ed4b253b57a98b *man/centiles.pred.Rd
 1371f5f4dd72c8486f53beac00caf578 *man/centiles.split.Rd
@@ -102,7 +103,7 @@ ebf3d8860cdb5e99a335a2d4218ff665 *man/gamlss.control.Rd
 76878dec909b98e635355b4d57b77eb2 *man/glim.control.Rd
 a86acd14479a547925846595cf4b949b *man/histDist.Rd
 3c0218a7c806dc488bacccd01b319dee *man/histSmo.Rd
-61c009e83912d88f852e29aa7b48fa1d *man/lms.Rd
+b7485c5dde1090419ef3c5b5dcecf856 *man/lms.Rd
 636d550d55859787d34e3e036f72c1e6 *man/lo.Rd
 58f542a55ddefd841fb9bee2943fd0f1 *man/loglogSurv.Rd
 91db8a8083ba629aa686e357163c472d *man/lpred.Rd
@@ -118,6 +119,7 @@ e20e0f7918ace9265b5b7e13fa003f01 *man/predict.gamlss.Rd
 699c2e043e0d4428ec8a5b01d9419e5e *man/prof.dev.Rd
 0320d42d4bc6ee0b75ccada618945ae3 *man/prof.term.Rd
 946e6ebb92483e1d569ff66d6533a708 *man/ps.Rd
+46c27a7c80b3c73646f6e9c8c6872346 *man/quantSheets.Rd
 f8a1ddba028b6d6662290637cf35c602 *man/random.Rd
 3db45ec53d699a1f066fea2606dc045c *man/refit.Rd
 57ac91e53448a3ef619344a3b1194251 *man/residuals.gamlss.Rd
@@ -129,3 +131,4 @@ d5f1f3a4c4e424d4239c298ee6edad07 *man/stepGAIC.Rd
 79177e9d656594ae63c1b8dae92bd855 *man/term.plot.Rd
 a5b912a6064af53ca4ea29edff8f967b *man/update.gamlss.Rd
 bd25e226291649ede2f293fb58c77d79 *man/wp.Rd
+dd3a5a67aece45f1bdd7f00f84143d39 *man/z.scores.Rd

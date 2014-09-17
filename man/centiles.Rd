@@ -13,13 +13,13 @@ centiles(obj, xvar = NULL, cent = c(0.4, 2, 10, 25, 50, 75, 90, 98, 99.6),
          legend = TRUE, ylab = "y", xlab = "x", main = NULL, 
          main.gsub = "@", xleg = min(xvar), yleg = max(obj$y), 
          xlim = range(xvar), ylim = range(obj$y), save = FALSE, 
-         plot = TRUE, points = TRUE, pch = "+", col = "blue", 
+         plot = TRUE, points = TRUE,  pch =  15, cex = 0.5, col =  gray(0.7), 
          col.centiles = 1:length(cent) + 2, lty.centiles = 1, lwd.centiles = 1, ...)
 centiles.fan(obj, xvar = NULL, cent = c(0.4, 2, 10, 25, 50, 75, 90, 98, 99.6), 
          ylab = "y", xlab = "x", main = NULL, main.gsub = "@", 
          xleg = min(xvar), yleg = max(obj$y), xlim = range(xvar), 
-         ylim = range(obj$y), points = FALSE,  median = TRUE,  pch = "+", 
-         col = "blue", 
+         ylim = range(obj$y), points = FALSE,  median = TRUE, pch =  15, 
+         cex = 0.5, col =  gray(0.7),
          colors = c("cm", "gray", "rainbow", "heat", "terrain", "topo"), ...)
 }
 
@@ -42,6 +42,7 @@ centiles.fan(obj, xvar = NULL, cent = c(0.4, 2, 10, 25, 50, 75, 90, 98, 99.6),
             In this case the sample percentages are printed but are not saved }
   \item{plot}{whether to plot the centiles. This option is useful for \code{centile.split} } 
   \item{pch}{the character to be used as the default in plotting points see \code{par}}
+   \item{cex}{size of  character see \code{par}}
   \item{col}{plotting colour see \code{par}}
   \item{col.centiles}{Plotting colours  for the centile curves}
   \item{lty.centiles}{line type for the centile curves}

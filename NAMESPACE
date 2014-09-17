@@ -29,10 +29,11 @@ export(gamlss, gamlss.control, glim.control, is.gamlss,
         edf, edfAll,
         LR.test, dtop,
         gamlssML, fitDist, histSmo, histSmoO, histSmoC, histSmoP,
-        calibration, lms, Rsq, gen.likelihood,
+        calibration, lms, z.scores, Rsq, gen.likelihood,
         acfResid, rvcov, get.K, getSmo, 
         .gamlss.sm.list, .gamlss.bi.list, .gamlss.multin.list,
-        plot2way, loglogSurv1, loglogSurv2, loglogSurv3, loglogSurv, logSurv )
+        plot2way, loglogSurv1, loglogSurv2, loglogSurv3, loglogSurv, logSurv, 
+        quantSheets.control, quantSheets, findPower, z.scoresQS)
 
 
 
@@ -54,11 +55,11 @@ importFrom(MASS, addterm, dropterm, truehist)
 importFrom(survival, Surv, is.Surv)
 importFrom(graphics, plot)
 #importFrom(base, print)
-importFrom(splines, bs, ns, spline.des)
+importFrom(splines, bs, ns, spline.des, splineDesign)
 #importFrom(gamlss.tr, trun)
-importFrom(gamlss.data)
-importFrom(gamlss.dist)
-importFrom(nlme)
+import(gamlss.data)
+import(gamlss.dist)
+importFrom(nlme, lme, varFixed)
 
 S3method(addterm, gamlss)
 S3method(add1, gamlss)
@@ -82,6 +83,13 @@ S3method(model.matrix, gamlss)
 S3method(vcov, gamlss)
 S3method(logLik, gamlss)
 S3method(confint, gamlss)
+
+S3method(predict, lms)
+
+S3method(print, quantSheets)
+S3method(predict, quantSheets)
+S3method(fitted, quantSheets)
+S3method(residuals, quantSheets)
 
 
 S3method(fitted, gamlssML)

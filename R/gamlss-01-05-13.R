@@ -33,14 +33,14 @@ gamlssNews <- function() file.show(system.file("doc", "NEWS.txt", package="gamls
 .gamlss.multin.list<-c("MULTIN", "MN3", "MN4", "MN5")
 ##----------------------------------------------------------------------------------------
 .gamlss.sm.list<-c("cs", "scs", "vc","s",         # smoothing cubic splines  : cs, scs, vc
-                   "ps", "pb", "cy", "tp", "pvc", # penalised splines        : ps, pb, cy tp pvc pbq
-                   "pbm",                         # monotone
+                   "ps", "pb", "cy", "tp", "pvc", # penalised splines       : ps, pb, cy tp pvc pbq
+                   "pbm", "pbj",                  # monotone and jumps
                    "pbq",                         # pb using Qfunction
                    "mrf",                         # Markov random fields
                    "mrfa",                        # Markov random fields
                    "sap",                         # seperation of Anisotropic penalties
                    "sap3",                        #
-                   "kri" ,                        # kriging
+                   "krig" ,                        # kriging
                    "lo",                          # loess                    : lo
                    "random","ra","rc","rash","re",# random effect            : random, ra, rc, re (lme) rash
                    "fp","pp",                     # fractional poly          : fp, pp

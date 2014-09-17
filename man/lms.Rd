@@ -10,10 +10,11 @@ It is  applicable when only "one" explanatory variable is available (usually age
 lms(y, x, families = LMS, data = NULL, k = 2, 
         cent = 100 * pnorm((-4:4) * 2/3), 
         calibration = TRUE, trans.x = FALSE, 
-        lim.trans = c(0.001, 1.5), 
-        legend = FALSE, mu.df = NULL, 
-        sigma.df = NULL, nu.df = NULL, 
-        tau.df = NULL, method.pb = c("ML", "GAIC"), ...)
+        fix.power = NULL, lim.trans = c(0, 1.5), 
+        prof = FALSE, step = 0.1, legend = FALSE, 
+        mu.df = NULL, sigma.df = NULL, nu.df = NULL, 
+        tau.df = NULL, c.crit = 0.01, 
+        method.pb = c("ML", "GAIC"), ...)        
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -25,15 +26,19 @@ lms(y, x, families = LMS, data = NULL, k = 2,
  \item{cent}{a vector with elements the \% centile values for which the centile curves have to be evaluated} 
  \item{calibration}{whether calibration is required with default \code{TRUE}}
  \item{trans.x}{whether to check for transformation in x with default \code{FALSE}}
+  \item{fix.power}{if set it fix the power of the transformation for x}
  \item{lim.trans}{the limits for the search of the power parameter for x}
+  \item{prof}{whether to use the profile GAIC of the power tranformation}
+  \item{step}{if code{prof=TRUE} is used this determine the step for the profile GAIC }
  \item{legend}{whether a legend is required in the plot with default \code{FALSE}}
  \item{mu.df}{\code{mu} effective degrees of freedom if required otherwise are estimated}
   \item{sigma.df}{\code{sigma} effective degrees of freedom if required otherwise are estimated}
   \item{nu.df}{\code{nu} effective degrees of freedom if required otherwise are estimated}
   \item{tau.df}{\code{tau} effective degrees of freedom if required otherwise are estimated}
+   \item{c.crit}{the convergence critetion to be pass to \code{gamlss()} }
   \item{method.pb}{the method used in the \code{pb()} for estimating the smoothing 
   parameters. The default is local maximum likelihood \code{"ML"}. \code{"GAIC"} is also permitted where \code{k} is taken from the \code{k} argument of the function.}
-  \item{\dots}{extra argument which can be passed to \code{gamlss}}
+  \item{\dots}{extra argument which can be passed to \code{gamlss()}}
 }
 \details{
 This function should be used if the construction of the centile curves involves only one explanatory variable. 

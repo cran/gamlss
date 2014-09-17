@@ -17,14 +17,37 @@ Question or suggestions about GAMLSS can be send to
    d.stasinopoulos@londonmet.ac.uk
 or
    r.rigby@londonmet.ac.uk
----------------------------------------------------------------------
-Version 4.2-9
+--------------------------------------------------------------------------------
+Version 4.3-1
+
+1. gamlss
+          i)  the functions centiles(), centiles.fan() and centiles.com() had 
+              some of the ploting options changed
+          ii) the lms() the function has changed with some extra arguments added,
+              and a with an extra predict.lms() method. Now the lms object 
+              (created by lms()) can be used with centiles.pred().
+          iii) z.scores() function for lms object is added to simplify getting 
+               the z.scors for new observations
+          iv) the function quantSheets() is added. It uses the method of 
+              Schnabel and Eilers (2013) to create quantiles curves for 
+              centile estimation. The created object has print(), fitted(),
+              predict() and  resid() methods. 
+           v) the functions z.scoresQS() and findPower() are also added to 
+              assist centile estimation modelling using quantSheets().
+
+2. gamlss.dist
+          i) the function flexDist() is moved from gamlss.util to gamlss.dist
+         ii) a bug is fixed in the qZAGA() and qZAIG() functions
+  
+
+--------------------------------------------------------------------------------
+Version 4.3-0
 
 1. gamlss
           i)   kri is added as another smoother
           ii)  rvcov() the argument hessian.fun is added
           iii) fp() now saves the lm fitted models and it can be access using 
-               gerSmo()
+               getSmo()
           vi)  ra() and rc() are gone to be replaced by re() and interface for calling mle() within gamlss
 
 

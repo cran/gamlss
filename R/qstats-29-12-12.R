@@ -111,7 +111,8 @@ get.par.df <- function(obj)
          nr <- dim[1]-3
          nc <- dim[2]-2
         Mat <- obj[1:nr, 1:nc]     
-      par(mar = c(0, 0, 2, 0), bg = "white")
+         op <- par(mar = c(0, 0, 2, 0), bg = "white")
+      on.exit(par(op))  # MS 4-8-14 
   plot.new()
   plot.window(c(0, nr), c(0, nc), asp = 1)
       rname <- rownames(Mat)
