@@ -45,6 +45,12 @@ dropterm.gamlss<-function (object,
     factor.scope(attr(terms1, "factor"), list(drop = f2))$drop
   }
 #-------------------------------------------------------------------------------
+safe_pchisq <- function (q, df, ...) 
+{
+  df[df <= 0] <- NA
+  pchisq(q = q, df = df, ...)
+}
+#-------------------------------------------------------------------------------
     what <- match.arg(what)
     if (!what %in% object$par) 
         stop(paste(what, "is not a parameter in the object", "\n"))
@@ -92,7 +98,7 @@ dropterm.gamlss<-function (object,
         dev[1] <- NA
         nas <- !is.na(dev)
         P <- dev
-        P[nas] <- pchisq(dev[nas], dfs[nas], lower.tail = FALSE)
+        P[nas] <- safe_pchisq(dev[nas], dfs[nas], lower.tail = FALSE)
         aod[, c("LRT", "Pr(Chi)")] <- list(dev, P)
       }
     aod <- aod[o, ]
@@ -115,7 +121,7 @@ addterm.gamlss <- function (object,
                           trace = FALSE, 
                            ...) 
 {
-
+#-------------------------------------------------------------------------------
  add.scope <- function (terms1, terms2, what = c("mu", "sigma", "nu", "tau") ) 
     {
       what <- match.arg(what)
@@ -124,6 +130,13 @@ addterm.gamlss <- function (object,
     factor.scope(attr(terms1, "factor"), list(add = attr(terms2, 
         "factor")))$add  
    }
+#-------------------------------------------------------------------------------
+safe_pchisq <- function (q, df, ...) 
+{
+  df[df <= 0] <- NA
+  pchisq(q = q, df = df, ...)
+}
+#-------------------------------------------------------------------------------
    what <- match.arg(what)
     if (missing(scope) || is.null(scope)) 
         stop("no terms in scope")
@@ -164,7 +177,7 @@ addterm.gamlss <- function (object,
         dev[1] <- NA
         nas <- !is.na(dev)
         P <- dev
-        P[nas] <- pchisq(dev[nas], dfs[nas], lower.tail = FALSE)
+        P[nas] <- safe_pchisq(dev[nas], dfs[nas], lower.tail = FALSE)
         aod[, c("LRT", "Pr(Chi)")] <- list(dev, P)
       }
     aod <- aod[o, ]

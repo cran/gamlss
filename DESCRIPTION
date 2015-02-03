@@ -1,7 +1,7 @@
 Package: gamlss
-Description: The library for fitting GAMLSS models.
-Version: 4.3-1
-Date: 2014-09-17
+Description: The Library For Fitting GAMLSS Models
+Version: 4.3-4
+Date: 2015-02-03
 Title: Generalised Additive Models for Location Scale and Shape.
 Author: Mikis Stasinopoulos <d.stasinopoulos@londonmet.ac.uk>, Bob
         Rigby <r.rigby@londonmet.ac.uk> 
@@ -15,7 +15,7 @@ LazyLoad: yes
 Imports: MASS, survival
 License: GPL-2 | GPL-3
 URL: http://www.gamlss.org/
-Packaged: 2014-09-17 14:29:00 UTC; stasinom
+Packaged: 2015-02-03 11:45:46 UTC; stasinom
 NeedsCompilation: no
 Repository: CRAN
-Date/Publication: 2014-09-17 18:12:20
+Date/Publication: 2015-02-03 13:46:10

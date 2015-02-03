@@ -2,7 +2,7 @@
 ## Paul Eilers, Mikis Stasinopoulos, Bob Rigby and Vlasios Voudouris
 ## last modified Thursday, April 19, 2012 
 #----------------------------------------------------------------------------------------
-pb <- function(x, df = NULL, lambda = NULL, control=pb.control(...), ...) 
+pbo <- function(x, df = NULL, lambda = NULL, control=pbo.control(...), ...) 
 {
 ## this function is based on Paul Eilers' penalised beta regression splines function
 ## lambda : is the smoothing parameter
@@ -86,7 +86,7 @@ gamlss.environment <- sys.frame(position)
       attr(xvar, "D")             <- D
       attr(xvar, "X")             <- X
       attr(xvar, "df")            <- df 
-      attr(xvar, "call")          <- substitute(gamlss.pb(data[[scall]], z, w)) 
+      attr(xvar, "call")          <- substitute(gamlss.pbo(data[[scall]], z, w)) 
       attr(xvar, "lambda")        <- lambda
       attr(xvar, "gamlss.env")    <- gamlss.environment
       attr(xvar, "NameForLambda") <- startLambdaName
@@ -94,12 +94,12 @@ gamlss.environment <- sys.frame(position)
       xvar
 }
 #----------------------------------------------------------------------------------------
-# control function for pb()
+# control function for pbo()
 ##---------------------------------------------------------------------------------------
-pb.control <- function(inter = 20, degree= 3, order = 2, start=10, quantiles=FALSE, 
+pbo.control <- function(inter = 20, degree= 3, order = 2, start=10, quantiles=FALSE, 
                        method=c("ML","GAIC", "GCV", "EM", "ML-1"), k=2, ...)
 { 
-##  Control function for pb()
+##  Control function for pbo()
 ##  MS  Tuesday, March 24, 2009
 ## inter : is the number of equal space intervals in x 
 ## (unless quantiles = TRUE is used in which case the points will be at the quantiles values of x) 
@@ -128,7 +128,7 @@ method <- match.arg(method)
 }
 #----------------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------------
-gamlss.pb <- function(x, y, w, xeval = NULL, ...)
+gamlss.pbo <- function(x, y, w, xeval = NULL, ...)
 {
 # -------------------------------------------------- 
 # functions within
@@ -169,7 +169,7 @@ regpen <- function(y, X, w, lambda, D)# original
    return(fit)  
   }
 # This function was used for testing different methods for fitting weighted penalised least
-# squares in R. It is not in use in the pb() fitting 
+# squares in R. It is not in use in the pbo() fitting 
 regpenTest <- function(y, X, w, lambda, D)
 {
   # Construct penalty stuff

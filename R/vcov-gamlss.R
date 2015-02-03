@@ -40,7 +40,6 @@ vcov.gamlss <- function (object,
          
          Hessian = (Hess + t(Hess)))
   }  
-  
 ## end of local ----------------------------------------------------------------  
        type <- match.arg(type)
 hessian.fun <- match.arg(hessian.fun)
@@ -53,14 +52,15 @@ hessian.fun <- match.arg(hessian.fun)
       {
       if (!is.null(unlist(attr(terms(formula(object), specials = .gamlss.sm.list), 
                                "specials")))) 
-        warning("addive terms exists in the mu formula standard errors for the linear terms maybe are not appropriate")
+        warning("Additive terms exists in the mu formula. \n "
+                ,"Standard errors for the linear terms maybe are not appropriate")
     }
     else 
     {
       if (!is.null(unlist(attr(terms(formula(object, i), 
                                      specials = .gamlss.sm.list), "specials")))) 
-        warning(paste("addive terms exists in the ", 
-                      i, " formula standard errors for the linear terms maybe are not appropriate"))
+        warning(paste("Additive terms exists in the ", i, "formula. \n "
+                ,"Standard errors for the linear terms maybe are not appropriate"))
     }
   #    parname <- paste(i, "start", sep = ".")
     nonNAcoef <- !is.na(coef(object, i))
@@ -80,12 +80,13 @@ hessian.fun <- match.arg(hessian.fun)
        hess <- if (hessian.fun=="R" ) optimHess(betaCoef, like.fun)
                else HessianPB(betaCoef, like.fun)$Hessian
      varCov <- try(solve(hess), silent = TRUE)
-      if (any(class(varCov)%in%"try-error"))
+      if (any(class(varCov)%in%"try-error")||any(diag(varCov)<0))
         { # now if it fails try the "PB" function MS 9-2-14
         varCov <- try(solve(HessianPB(betaCoef, like.fun)$Hessian), silent = TRUE) 
         if (any(class(varCov)%in%"try-error")) # if it still fail give up
         stop("the Hessian matrix is singular probably the model is overparametrised")
         }
+     rownames(varCov) <- colnames(varCov) <- rownames(hess)
          se <- sqrt(diag(varCov))
        corr <- cov2cor(varCov) # cov/(se %o% se)
    coefBeta <- unlist(coefBeta)

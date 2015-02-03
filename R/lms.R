@@ -56,7 +56,7 @@ lms <- function(y, x,
 findPower <- function(y, x, data = NULL,  lim.trans = c(0, 1.5), prof=FALSE, k=2,  c.crit = 0.01, step=0.1)  
 {
   cat("*** Checking for transformation for x ***", "\n") 
-  pt <- function(x, p) if (p==0) log(x) else I(x^p)
+ ptrans<- function(x, p) if (abs(p)<=0.0001) log(x) else I(x^p)
   fn <- function(p) GAIC(gamlss(y~pb(pt(x,p)), c.crit = c.crit, trace=FALSE), k=k)
   if (prof) # profile dev
   {
@@ -96,7 +96,7 @@ findPower <- function(y, x, data = NULL,  lim.trans = c(0, 1.5), prof=FALSE, k=2
     {
     if (trans.x) # if x^p
     {
-      pt <- function(x, p) if (p==0) log(x) else I(x^p)
+     ptrans<- function(x, p) if (p==0) log(x) else I(x^p)
       par <- findPower(y, x,   lim.trans = lim.trans, prof=prof, k=k,  c.crit = c.crit, step=0.1)    
       ox <- x
       x <-  pt(x,par)
@@ -328,7 +328,7 @@ calibration <- function(object, xvar, cent=100*pnorm((-4:4)*2/3), legend=FALSE, 
 #       x <- if (!is.null(data)) get(deparse(substitute(x)), envir=as.environment(data)) else x
 #   ##  checking for transformation in x        
 #     cat("*** Checking for transformation for x ***", "\n") 
-#      pt <- function(x, p) if (p==0) log(x) else I(x^p)
+#     ptrans<- function(x, p) if (p==0) log(x) else I(x^p)
 #      fn <- function(p) GAIC(gamlss(y~pb(pt(x,p)),data=data, c.crit = c.crit, trace=FALSE), k=k)
 #  if (prof) # profile dev
 #  {

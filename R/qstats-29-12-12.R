@@ -16,7 +16,8 @@ Q.stats <- function(obj = NULL,
                  n.inter = 10,
                    zvals = TRUE,
                     save = TRUE,
-                    plot = TRUE,  
+                    plot = TRUE, 
+             digits.xvar = getOption("digits"),
                     ...)
 {
 # function 1 -------------------------
@@ -217,7 +218,7 @@ df <- if (is.gamlss(obj))   get.par.df(obj) else list(location= 0, scale=0, skew
         g.in <- get.intervals(xvar, xcut.points ) 
        }
      }
-    
+ g.in <- format(g.in, digits=digits.xvar) # chenging the digits if
 # finish if
      howmany <- dim(g.in)[1]
            X <- matrix(0, nrow = howmany, ncol = 6, 
@@ -234,14 +235,14 @@ df <- if (is.gamlss(obj))   get.par.df(obj) else list(location= 0, scale=0, skew
        oyvar <- var[order(xvar)] 
    for (i in 1:howmany)
        {  
-          if(i==howmany) {             ##### Include points at the end of the last interval
+          if(i==howmany) {  ##### Include points at the end of the last interval
                           yvar1 <- subset(oyvar, oxvar>=g.in[i,1]&oxvar<=g.in[i,2])
                           xvar1 <- subset(oxvar, oxvar>=g.in[i,1]&oxvar<=g.in[i,2])
                           }
           else
-          {
-          yvar1 <- subset(oyvar, oxvar>=g.in[i,1]&oxvar<g.in[i,2])
-          xvar1 <- subset(oxvar, oxvar>=g.in[i,1]&oxvar<g.in[i,2]) 
+          { 
+    yvar1 <- subset(oyvar, oxvar>=as.numeric(g.in[i,1])&xvar<as.numeric(g.in[i,2]))
+    xvar1 <- subset(oxvar, oxvar>=as.numeric(g.in[i,1])&xvar<as.numeric(g.in[i,2])) 
           }        
           nlist <- Qtest(yvar1)
            Z[i,] <- c(nlist$z1, nlist$z2, nlist$z3, nlist$z4, nlist$AgostinoK2, nlist$N)            

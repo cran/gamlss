@@ -34,7 +34,7 @@ gamlssNews <- function() file.show(system.file("doc", "NEWS.txt", package="gamls
 ##----------------------------------------------------------------------------------------
 .gamlss.sm.list<-c("cs", "scs", "vc","s",         # smoothing cubic splines  : cs, scs, vc
                    "ps", "pb", "cy", "tp", "pvc", # penalised splines       : ps, pb, cy tp pvc pbq
-                   "pbm", "pbj",                  # monotone and jumps
+                   "pbm", "pbj", "pbo",           # monotone and jumps
                    "pbq",                         # pb using Qfunction
                    "mrf",                         # Markov random fields
                    "mrfa",                        # Markov random fields
@@ -176,6 +176,8 @@ body(rqres) <-  eval(quote(body(rqres)), envir = getNamespace("gamlss"))
           d2ldp2 <- f$d2ldp2(fv) 
          d2ldp2 <-  ifelse(d2ldp2 < -1e-15, d2ldp2,-1e-15) # added 26-10-07  
               wt <- -(d2ldp2/(dr*dr))# 
+            # we need to stop the weights to go to Infty
+              wt <- ifelse(wt>1e+10,1e+10,wt) # Mikis 9-10-14    
             # wv <- (eta-os)+step*dldp/(dr*wt)
               wv <- (eta-os)+dldp/(dr*wt)
               if (family$type=="Mixed") wv <-ifelse(is.nan(wv),0,wv) ## TEST
@@ -232,7 +234,7 @@ body(rqres) <-  eval(quote(body(rqres)), envir = getNamespace("gamlss"))
             if ((dv > olddv+gd.tol ) && itn >= 2 && iterw==FALSE) 
               {
            warning("The deviance has increased in an inner iteration for ",
-       names(formals(f$valid)), "\n","If persist, try different steps or model maybe inappropriate") #
+       names(formals(f$valid)), "\n","Increase gd.tol and if persist, try different steps",  "\n", "or model maybe inappropriate") #
              iterw <-TRUE
               }                      
             if (is.na(!f$valid(fv)) ) # MS Saturday, April 6, 2002 at 18:06 
@@ -244,6 +246,7 @@ body(rqres) <-  eval(quote(body(rqres)), envir = getNamespace("gamlss"))
           d2ldp2 <- f$d2ldp2(fv)
           d2ldp2 <-  ifelse(d2ldp2 < -1e-15, d2ldp2,-1e-15) # added 26-10-07   
               wt <- -(d2ldp2/(dr*dr)) 
+              wt <- ifelse(wt>1e+10,1e+10,wt) # Mikis 9-10-14    
              # wv <- (eta-os)+step*dldp/(dr*wt)
              wv <- (eta-os)+dldp/(dr*wt)
                 if (family$type=="Mixed") wv <-ifelse(is.nan(wv),0,wv) ## TEST  

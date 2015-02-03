@@ -13,7 +13,7 @@ lpred <-function (obj,
  ## internal function 1
  ## calculates the s.e.'s for a given parameters mu, sigma, nu or tau 
  ## based on predict.lm() function 
- # --------cal.se  start here
+ # --------cal.se  start here --------------------------------------------------
  cal.se <- function(obj, what ) 
   {   
   # for some additive terms the X contains zero columns 
@@ -30,8 +30,8 @@ smo.var <- obj[[paste(what,"var",sep=".")]]
     {     vl <- vl +  rowSums(smo.var) }  
   sqrt(vl)             
   }
- #---------cal.se ends here
- #--------------------------------------
+ #---------cal.se ends here ----------------------------------------------------
+ #------------------------------------------------------------------------------
  ## internal function 2
  ## calculates the terms for a given parameters mu, sigma, nu or tau 
  ## based on predict.lm() function 
@@ -122,12 +122,14 @@ smo.var <- obj[[paste(what,"var",sep=".")]]
         list(fit = predictor, se.fit = sqrt(ip) )
    else predictor
   }
-#----------- cal.terms stops here 
+#----------- cal.terms stops here  ---------------------------------------------
+#-------------------------------------------------------------------------------
 ## the proper function lp starts here 
-  if (!is.gamlss(obj))  stop(paste("This is not an gamlss object", "\n", "")) 
+#-------------------------------------------------------------------------------
+    if (!is.gamlss(obj))  stop(paste("This is not an gamlss object", "\n", "")) 
 #what <-  as.character(what) ##problems when lpred() is calling other functions
-what <- match.arg(what) 
-type <- match.arg(type)
+    what <- match.arg(what) 
+    type <- match.arg(type)
 if (!se.fit)
   {
   pred <- switch(type, 

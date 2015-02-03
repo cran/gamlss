@@ -7,7 +7,8 @@
 }
 \usage{
 Q.stats(obj = NULL, xvar = NULL, resid = NULL, xcut.points = NULL, n.inter = 10, 
-      zvals = TRUE, save = TRUE, plot = TRUE, ...)
+      zvals = TRUE, save = TRUE, plot = TRUE, digits.xvar = getOption("digits"),
+      ...)
 }
 
 \arguments{
@@ -20,6 +21,7 @@ Q.stats(obj = NULL, xvar = NULL, resid = NULL, xcut.points = NULL, n.inter = 10,
   \item{save}{whether to save the Q-statistics or not with default equal to \code{TRUE}. 
             In this case the functions produce a matrix giving individual Q (or z) statistics and the final aggregate Q's}
  \item{plot}{whether to plot  a visual version of the Q statistics  (default is TRUE)  }
+  \item{digits.xvar}{to control the number of digits of the \code{xvar} in the plot }
    \item{\dots}{for extra arguments}
 }
 \details{

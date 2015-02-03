@@ -1,6 +1,7 @@
 \name{gamlss.ps}
 \alias{gamlss.ps}
 \alias{gamlss.pb}
+\alias{gamlss.pbo}
 \alias{gamlss.cy}
 \alias{gamlss.pvc}
 \alias{gamlss.ri}
@@ -9,11 +10,12 @@
 
 \title{Support for Functions  for smoothers}
 \description{
- Those functions  are support for the functions  \code{pb()},  \code{ps()},  \code{ridge()},  \code{ri()},  \code{cy()},  \code{pvc()},  and \code{pbm()}.
+ Those functions  are support for the functions  \code{pb()}, \code{pbo()},  \code{ps()},  \code{ridge()},  \code{ri()},  \code{cy()},  \code{pvc()},  and \code{pbm()}.
 The functions are not intended to be called directly by users. 
 }
 \usage{
 gamlss.pb(x, y, w, xeval = NULL, ...)
+gamlss.pbo(x, y, w, xeval = NULL, ...)
 gamlss.ps(x, y, w, xeval = NULL, ...)
 gamlss.ridge(x, y, w, xeval = NULL, ...)
 gamlss.ri(x, y, w, xeval = NULL, ...)

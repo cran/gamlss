@@ -44,8 +44,9 @@ quantSheets <- function(y, x,
     kronecker(X, one) * kronecker(one, X)
   }
 #-------------------------------------------------------------------------------
-   pt <- function(x, p) if (p==0) log(x) else x^p
-invpt <- function(x, p) if (p==0) exp(x) else x^(1/p)
+   ptrans <- function(x, p) if (abs(p)<=0.0001) log(x) else I(x^p)
+#   ptrans <- function(x, p) if (p==0) log(x) else x^p
+invptrans <- function(x, p) if (abs(p)<=0.0001) exp(x) else x^(1/p)
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
    scall <- deparse(sys.call())
@@ -57,7 +58,7 @@ invpt <- function(x, p) if (p==0) exp(x) else x^(1/p)
   if (!is.null(control$power))
     {
       ox <- x
-       x <-  pt(x,control$power)
+       x <-  ptrans(x,control$power)
     } 
        m <- length(x)
       xl <- min(x)
@@ -119,7 +120,7 @@ invpt <- function(x, p) if (p==0) exp(x) else x^(1/p)
 if (!is.null(control$power))
     { 
         x <- ox
-       xg <- invpt(xg, control$power)
+       xg <- invptrans(xg, control$power)
     }
  if (control$plot)
   {
@@ -323,8 +324,8 @@ findPower <- function(y, x, data = NULL,  lim.trans = c(0, 1.5), prof=FALSE, k=2
   x <- if (!is.null(data)) get(deparse(substitute(x)), envir=as.environment(data)) else x
   ##  checking for transformation in x        
   cat("*** Checking for transformation for x ***", "\n") 
-  pt <- function(x, p) if (p==0) log(x) else I(x^p)
-  fn <- function(p) GAIC(gamlss(y~pb(pt(x,p)), c.crit = c.crit, trace=FALSE), k=k)
+  ptrans <- function(x, p) if (abs(p)<=0.0001) log(x) else I(x^p) 
+  fn <- function(p) GAIC(gamlss(y~pb(ptrans(x,p)), c.crit = c.crit, trace=FALSE), k=k)
   if (prof) # profile dev
   {
     pp <- seq(lim.trans[1],lim.trans[2], step) 
@@ -340,9 +341,9 @@ findPower <- function(y, x, data = NULL,  lim.trans = c(0, 1.5), prof=FALSE, k=2
     cat('*** power parameters ', par,"***"," \n") 
   } else
   {
-    #     fn <- function(p) GAIC(gamlss(y~pb(pt(x,p)),sigma.fo=~pb(pt(x,p)),nu.fo=~pb(pt(x,p)), data=data,tau.fo=~pb(pt(x,p)), c.crit = c.crit, trace=FALSE, family=BCT), k=k)
-    #    fn <- function(p) GAIC(gamlss(y~pb(pt(x,p)),sigma.fo=~pb(pt(x,p)), data=data, c.crit = c.crit, trace=FALSE), k=k)
-    fn <- function(p) GAIC(gamlss(y~pb(pt(x,p)),  c.crit = c.crit, trace=FALSE), k=k)
+    #     fn <- function(p) GAIC(gamlss(y~pb(ptrans(x,p)),sigma.fo=~pb(ptrans(x,p)),nu.fo=~pb(ptrans(x,p)), data=data,tau.fo=~pb(ptrans(x,p)), c.crit = c.crit, trace=FALSE, family=BCT), k=k)
+    #    fn <- function(p) GAIC(gamlss(y~pb(ptrans(x,p)),sigma.fo=~pb(ptrans(x,p)), data=data, c.crit = c.crit, trace=FALSE), k=k)
+    fn <- function(p) GAIC(gamlss(y~pb(ptrans(x,p)),  c.crit = c.crit, trace=FALSE), k=k)
     par <- optimise(fn, lower=lim.trans[1], upper=lim.trans[2])$minimum
     # browser()
     #  par <- optim(.5, fn, lower=lim.trans[1], upper=lim.trans[2], method="L-BFGS-B")$par

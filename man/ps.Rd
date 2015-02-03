@@ -1,7 +1,9 @@
 \name{ps}
 \alias{ps}
 \alias{pb}
+\alias{pbo}
 \alias{pb.control}
+\alias{pbo.control}
 \alias{pvc}
 \alias{pvc.control}
 \alias{cy}
@@ -12,12 +14,12 @@
 \title{Specify a Penalised  B-Spline Fits in a GAMLSS Formula}
 
 \description{
-There are several function operating using penalised B-splines: \code{pb()}, \code{cy()}, \code{pvc()}, \code{pbm()} and \code{ps()}.
+There are several function operating using penalised B-splines: \code{pb()}, \code{pbo()}, \code{cy()}, \code{pvc()}, \code{pbm()} and \code{ps()}.
 
 The functions take a vector and return it with several attributes. The vector is used in the construction of the design matrix X used in the fitting. The functions  do not do the  smoothing, but assign the attributes to the vector to aid gamlss in the smoothing.
-The functions doing the smoothing are   \code{\link{gamlss.pb}()}, \code{\link{gamlss.cy}()} and \code{\link{gamlss.pvc}()},  \code{\link{gamlss.pbm}()} and \code{\link{gamlss.ps}()} which are used in the backfitting  function \code{\link{additive.fit}}.
+The functions doing the smoothing are   \code{\link{gamlss.pb}()}, \code{\link{gamlss.pbo}()}, \code{\link{gamlss.cy}()} and \code{\link{gamlss.pvc}()},  \code{\link{gamlss.pbm}()} and \code{\link{gamlss.ps}()} which are used in the backfitting  function \code{\link{additive.fit}}.
 
-The function \code{pb()} is more efficient and faster than the original penalized smoothing function \code{ps()}. 
+The function \code{pb()} is more efficient and faster than the original penalized smoothing function \code{ps()}. After December 2014 the  \code{pb()} has changed radically to improved performance. The older version of the function \code{pb()} is called now \code{pbo()}. 
 \code{pb()} allows the estimation of the smoothing parameters using different local (performance iterations) methods.
 The method are "ML", "ML-1", "EM", "GAIC" and "GCV". The function \code{cy()} fits a cycle penalised beta regression spline such as 
 the last fitted value of the smoother is equal to the first fitted value.
@@ -26,8 +28,11 @@ The function \code{pvc()} fits  varying coefficient models see Hastie and Tibshi
 }
 \usage{
 pb(x, df = NULL, lambda = NULL, control = pb.control(...), ...)
-pb.control(inter = 20, degree = 3, order = 2, start = 10, quantiles = FALSE, 
+pbo(x, df = NULL, lambda = NULL, control = pbo.control(...), ...)
+pbo.control(inter = 20, degree = 3, order = 2, start = 10, quantiles = FALSE, 
                method = c("ML", "GAIC", "GCV", "EM", "ML-1"), k = 2, ...)
+pb.control(inter = 20, degree = 3, order = 2, start = 10, quantiles = FALSE, 
+          method = c("ML", "GAIC", "GCV"), k = 2, ...)
 cy(x, df = NULL, lambda = NULL, control = cy.control(...), ...)
 cy.control(inter = 20, degree = 3, order = 2, start = 10, 
           method = c("ML", "GAIC", "GCV", "EM", "ML-1"), k = 2, ts=FALSE, ...)

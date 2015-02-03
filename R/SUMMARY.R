@@ -5,6 +5,7 @@ summary.gamlss<- function (object,
                            type = c("vcov", "qr"), robust = FALSE,
                            save = FALSE, 
                     hessian.fun = c("R", "PB"), 
+                         digits = max(3, getOption("digits") - 3),
                            ...) 
 {
 type <- match.arg(type)
@@ -12,7 +13,7 @@ type <- match.arg(type)
 if (type=="vcov")
  {
 ## this will be moved  
-      covmat <- try(vcov(object, type="all", robust=robust,  hessian.fun = hessian.fun), silent = TRUE) 
+      covmat <- try(suppressWarnings(vcov(object, type="all", robust=robust,  hessian.fun = hessian.fun)), silent = TRUE) 
              if (any(class(covmat)%in%"try-error"||any(is.na(covmat$se))))
                  { 
                    warning(paste("summary: vcov has failed, option qr is used instead\n"))
@@ -20,7 +21,8 @@ if (type=="vcov")
                  }
 ## if try fails call old summary
  }      
-if (type=="vcov")
+ifWarning <- rep(FALSE, length(object$parameters))# to create warnings
+if (type=="vcov")#  type vcov --------------------------------------------------
  {
         coef <- covmat$coef
           se <- covmat$se
@@ -29,8 +31,9 @@ if (type=="vcov")
   coef.table <- cbind(coef, se, tvalue, pvalue)
   dimnames(coef.table) <- list(names(coef), c("Estimate" , "Std. Error" ,"t value","Pr(>|t|)"))  
 #now the table contains all informatio I need 
+#browser()
+#printCoefmat(coef.table, digits = digits, signif.stars = TRUE)
 # to print use   coef.table[1:3,] 
-      digits <- max(3, getOption("digits") - 3)
       cat("*******************************************************************")
     cat("\nFamily: ", deparse(object$family), "\n") 
     cat("\nCall: ", deparse(object$call),  "\n", fill=TRUE)
@@ -40,6 +43,9 @@ if (type=="vcov")
 #================ mu ESTIMATES ========================
     if ("mu"%in%object$parameters)   
     {
+      
+      ifWarning[1]  <- (!is.null(unlist(attr(terms(formula(object, "mu"), 
+                  specials = .gamlss.sm.list), "specials")))) 
         if (object$mu.df != 0)   
         {          
                         pm <- object$mu.qr$rank 
@@ -52,7 +58,8 @@ if (type=="vcov")
                 cat("  [contrasts: ", apply(cbind(names(co), co), 1, 
                     paste, collapse = "="), "]")
             cat("\n")
-            print.default(coef.table[p1,], digits = digits, print.gap = 2, quote = FALSE)
+            printCoefmat(coef.table[p1,,drop=FALSE], digits = digits, signif.stars = TRUE)
+     #       print.default(coef.table[p1,], digits = digits, print.gap = 2, quote = FALSE)
             cat("\n")
         }
         else
@@ -69,6 +76,8 @@ if (type=="vcov")
     }
     if ("sigma"%in%object$parameters) 
     {
+      ifWarning[2]  <- (!is.null(unlist(attr(terms(formula(object, "sigma"), 
+                     specials = .gamlss.sm.list), "specials")))) 
          if (object$sigma.df != 0)   
         {
                      ps <- object$sigma.qr$rank 
@@ -78,8 +87,9 @@ if (type=="vcov")
         cat("Sigma link function: ", object$sigma.link)
         cat("\n")
         cat("Sigma Coefficients:")
-        cat("\n")
-        print.default(coef.table[p1,], digits = digits, print.gap = 2,  quote = FALSE)
+        cat("\n")    
+        printCoefmat(coef.table[p1,, drop=FALSE], digits = digits, signif.stars = TRUE)
+       # print.default(coef.table[p1,], digits = digits, print.gap = 2,  quote = FALSE)
         cat("\n")
         }
         else 
@@ -96,6 +106,8 @@ if (type=="vcov")
     }
     if ("nu"%in%object$parameters) 
     {
+      ifWarning[3]  <- (!is.null(unlist(attr(terms(formula(object, "nu"), 
+                      specials = .gamlss.sm.list), "specials")))) 
          if (object$nu.df != 0)   
         {
                    
@@ -105,7 +117,8 @@ if (type=="vcov")
         cat("Nu link function: ", object$nu.link,"\n")
         cat("Nu Coefficients:")
         cat("\n")
-        print.default(coef.table[p1,], digits = digits, print.gap = 2,  quote = FALSE)
+        printCoefmat(coef.table[p1,, drop=FALSE], digits = digits, signif.stars = TRUE)
+       # print.default(coef.table[p1,], digits = digits, print.gap = 2,  quote = FALSE)
         cat("\n")
         }
         else
@@ -121,6 +134,8 @@ if (type=="vcov")
     }
     if ("tau"%in%object$parameters) 
     {
+      ifWarning[4]  <- (!is.null(unlist(attr(terms(formula(object, "tau"), 
+                     specials = .gamlss.sm.list), "specials")))) 
          if (object$tau.df != 0)   
         {
                     
@@ -130,7 +145,8 @@ if (type=="vcov")
         cat("Tau link function: ", object$tau.link,"\n")
         cat("Tau Coefficients:")
         cat("\n")
-        print.default(coef.table[p1,], digits = digits, print.gap = 2,  quote = FALSE)
+        printCoefmat(coef.table[p1,, drop=FALSE], digits = digits, signif.stars = TRUE)
+       # print.default(coef.table[p1,], digits = digits, print.gap = 2,  quote = FALSE)
         cat("\n")
         }
         else
@@ -144,6 +160,13 @@ if (type=="vcov")
                 cat("Tau is equal with the vector (", object$tau.fv[1], ",",object$tau.fv[2], ",",object$tau.fv[3], ",",object$tau.fv[4], ", ...) \n")
             }
     }
+if (any(ifWarning))
+{
+  cat("-------------------------------------------------------------------\n")
+  cat("NOTE: Additive smoothing terms exist in the formulas: \n")
+  cat(" i) Std. Error for smoothers are for the linear effect only. \n")
+  cat("ii) Std. Error for the linear terms maybe are not accurate. \n")
+}
    cat("-------------------------------------------------------------------\n")
    cat("No. of observations in the fit: ", object$noObs, "\n")
    cat("Degrees of Freedom for the fit: ", object$df.fit)
@@ -156,7 +179,7 @@ if (type=="vcov")
     cat("*******************************************************************")
     cat("\n")
   } 
-if (type=="qr")
+if (type=="qr")#     TYPE qr ---------------------------------------------------
   {
 # local function definition
 #-------------------------------------------------------------------------------
@@ -194,7 +217,7 @@ if (type=="qr")
 # here for the proper function
 ##------------------------------------------------------------------------------
       dispersion <- NULL
-      digits <- max(3, getOption("digits") - 3)
+ #     digits <- max(3, getOption("digits") - 3)
       cat("*******************************************************************")
     cat("\nFamily: ", deparse(object$family), "\n") 
       cat("\nCall: ", deparse(object$call),  "\n", fill=TRUE)
@@ -204,6 +227,8 @@ if (type=="qr")
 #================ mu ESTIMATES ========================
     if ("mu"%in%object$parameters)   
     {
+      ifWarning[1]  <- (!is.null(unlist(attr(terms(formula(object, "mu"), 
+                             specials = .gamlss.sm.list), "specials")))) 
         if (object$mu.df != 0)   
         {
             Qr <- object$mu.qr 
@@ -236,7 +261,8 @@ if (type=="qr")
                 cat("  [contrasts: ", apply(cbind(names(co), co), 1, 
                     paste, collapse = "="), "]")
             cat("\n")
-            print.default(mu.coef.table, digits = digits, print.gap = 2, quote = FALSE)
+            printCoefmat(mu.coef.table, digits = digits, signif.stars = TRUE)
+           # print.default(mu.coef.table, digits = digits, print.gap = 2, quote = FALSE)
             cat("\n")
         }
         else
@@ -264,6 +290,8 @@ if (type=="qr")
     }
     if ("sigma"%in%object$parameters) 
     {
+      ifWarning[2]  <- (!is.null(unlist(attr(terms(formula(object, "sigma"), 
+                        specials = .gamlss.sm.list), "specials")))) 
          if (object$sigma.df != 0)   
         {
                       Qr <- object$sigma.qr 
@@ -281,7 +309,8 @@ if (type=="qr")
         cat("\n")
         cat("Sigma Coefficients:")
         cat("\n")
-        print.default(sigma.coef.table, digits = digits, print.gap = 2,  quote = FALSE)
+        printCoefmat(sigma.coef.table, digits = digits, signif.stars = TRUE)
+        #print.default(sigma.coef.table, digits = digits, print.gap = 2,  quote = FALSE)
         cat("\n")
         }
         else 
@@ -298,6 +327,8 @@ if (type=="qr")
     }
     if ("nu"%in%object$parameters) 
     {
+      ifWarning[3]  <- (!is.null(unlist(attr(terms(formula(object, "nu"), 
+                             specials = .gamlss.sm.list), "specials")))) 
          if (object$nu.df != 0)   
         {
                      Qr <- object$nu.qr 
@@ -313,7 +344,8 @@ if (type=="qr")
         cat("Nu link function: ", object$nu.link,"\n")
         cat("Nu Coefficients:")
         cat("\n")
-        print.default(nu.coef.table, digits = digits, print.gap = 2,  quote = FALSE)
+        printCoefmat(nu.coef.table, digits = digits, signif.stars = TRUE)
+        #print.default(nu.coef.table, digits = digits, print.gap = 2,  quote = FALSE)
         cat("\n")
         }
         else
@@ -331,6 +363,8 @@ if (type=="qr")
 
     if ("tau"%in%object$parameters) 
    {
+      ifWarning[4]  <- (!is.null(unlist(attr(terms(formula(object, "tau"), 
+                             specials = .gamlss.sm.list), "specials")))) 
          if (object$tau.df != 0)   
         {
                      Qr <- object$tau.qr 
@@ -346,7 +380,8 @@ if (type=="qr")
         cat("Tau link function: ", object$tau.link,"\n")
         cat("Tau Coefficients:")
         cat("\n")
-        print.default(tau.coef.table, digits = digits, print.gap = 2,  quote = FALSE)
+        printCoefmat(tau.coef.table, digits = digits, signif.stars = TRUE)
+        #print.default(tau.coef.table, digits = digits, print.gap = 2,  quote = FALSE)
         cat("\n")
         }
         else
@@ -361,6 +396,14 @@ if (type=="qr")
             }
          coef.table <- rbind(mu.coef.table, sigma.coef.table, nu.coef.table, tau.coef.table)    
    }
+if (any(ifWarning))
+{
+  cat("-------------------------------------------------------------------\n")
+  cat("NOTE: Additive smoothing terms exist in the formulas: \n")
+  cat(" i) Std. Error for smoothers are for the linear effect only. \n")
+  cat("ii) Std. Error for the linear terms may not be reliable. \n")
+}
+
    cat("-------------------------------------------------------------------\n")
    cat("No. of observations in the fit: ", object$noObs, "\n")
    cat("Degrees of Freedom for the fit: ", object$df.fit)

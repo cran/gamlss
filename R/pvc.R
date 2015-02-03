@@ -2,7 +2,7 @@
 ## Paul Eilers, Mikis Stasinopoulos and Bob Rigby
 ## last modified Saturday, May 8, 2010 
 ## the pvc() function is a varying coefficients function
-#----------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 pvc<-function(x, df = NULL, lambda = NULL, by = NULL, control=pvc.control(...), ...) 
 {
 ## this function is based on Paul Eilers' penalised beta regression splines function
@@ -35,7 +35,7 @@ pvc<-function(x, df = NULL, lambda = NULL, by = NULL, control=pvc.control(...), 
       B <- (-1) ^ (deg + 1) * P %*% t(D) 
       B 
   }
-#---------------------------------------------------
+#-------------------------------------------------------------------------------
 # the main function starts here
          scall <- deparse(sys.call())
             lx <- length(x)
@@ -122,9 +122,9 @@ if(is.null(by))
       attr(xvar, "class")         <- "smooth"
       xvar
 }
-#----------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 # control function for pvc()
-##---------------------------------------------------------------------------------------
+##------------------------------------------------------------------------------
 pvc.control <- function(inter = 20, degree= 3, order = 2, start=10, quantiles=FALSE, 
                        method=c("ML","GAIC", "GCV", "EM", "ML-1"), k=2, ...)
 { 
@@ -155,10 +155,10 @@ method <- match.arg(method)
         list(inter = inter, degree = degree,  order = order, start=start, 
                    quantiles = as.logical(quantiles)[1], method= method, k=k)
 }
-#----------------------------------------------------------------------------------------
-#----------------------------------------------------------------------------------------
-#----------------------------------------------------------------------------------------
-#----------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 gamlss.pvc <- function(x, y, w, xeval = NULL, ...)
 {
 # -------------------------------------------------- 
@@ -664,6 +664,7 @@ else  # here is if.Factor==TRUE     -----------------------------FACTOR---FACTOR
      }
      else
      {# Mikis 27-6-11
+       browser()
         ll <- dim(as.matrix(attr(x,"X")))[1]                # length of original X
         nx <- as.matrix(attr(x,"X"))[seq(length(y)+1,ll),]  # the x-values matrix
        fac <- attr(x,"by")[seq(length(y)+1,ll)]             # get the new values of the factor 

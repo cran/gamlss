@@ -239,7 +239,7 @@ attr(new.m, "class") <- NULL
        for(TT in smooth.labels)
          { 
             if (is.matrix(m[[TT]])) # the problem is that for some smoother the m[[TT]] is a matrix (for example pvc())
-             { # MS 27-6-11         # in this case  we have tp protect the dim attributes of data[[tt]]
+             { # MS 27-6-11         # in this case  we have to protect the dim attributes of data[[tt]]
               nm <- names(attributes(m[[TT]])) # first we get the names of all attributes 
               attributes(data[[TT]]) <- attributes(m[[TT]])[nm[-c(1,2)]]# then we pass all but
              }                                 # 1 and 2 i.e. dim and names
