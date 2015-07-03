@@ -11,8 +11,11 @@
 ### Author: Mikis Stasinopoulos
 ### bugs: if the additve terms depends on more that one variable 
 ###       i.e. loess(x1,x2) produces rubish
+### bug fixed :  no warning is given when nn and ga  are used and common is 
+### used
 term.plot <- function (object, 
                         what = c("mu","sigma","nu","tau"),  
+                        parameter = NULL, 
                         data = NULL, 
                        envir = environment(formula(object)), 
                partial.resid = FALSE, 
@@ -38,12 +41,137 @@ term.plot <- function (object,
                          ask = interactive() && nb.fig < n.tms &&.Device != "postscript", #dev.interactive() && nb.fig < n.tms
            use.factor.levels = TRUE, 
                  surface.gam = FALSE, 
+                       polys = NULL, 
+               polys.scheme = "topo",
 #                 gam.scheme = 3,
                              ...) 
 {
 #-------------------------------------------------------------------------------
 # Local functions
 # i) CheckSmoList() to chech whether they are smoothers in terms
+#-------------------------------------------------------------------------------
+
+draw.polys.in <-function( polys, 
+                       object = NULL, 
+                       scheme = NULL,
+                       swapcolors = FALSE,
+                       n.col = 100,...)
+{
+  ## to get the range of all polygons    
+  for (i in 1:length(polys)) {
+    yr <- range(polys[[i]][, 2], na.rm = TRUE)
+    xr <- range(polys[[i]][, 1], na.rm = TRUE)
+    if (i == 1) {
+      ylim <- yr
+      xlim <- xr
+    }
+    else {
+      if (yr[1] < ylim[1]) 
+        ylim[1] <- yr[1]
+      if (yr[2] > ylim[2]) 
+        ylim[2] <- yr[2]
+      if (xr[1] < xlim[1]) 
+        xlim[1] <- xr[1]
+      if (xr[2] > xlim[2]) 
+        xlim[2] <- xr[2]
+    }
+  }
+  ## of no object just plot the polygons
+  mar <- par("mar")
+  oldpar <- par(mar = c(2, mar[2], 2, 1))
+  if (is.null(object)) {
+    plot(0, 0, ylim = ylim, xlim = xlim, xaxt = "n", yaxt = "n", 
+         type = "n", bty = "n", ylab = "", xlab = "",...)
+    for (i in 1:length(polys)) {
+      polygon(polys[[i]], col = NA)
+    }
+  }
+  else 
+  { # if object is defined  we must two alternatives
+    ## i) it is MRF object
+    ## ii) a list which defines the values and the areas    
+    if(class(object)=="MRF")
+    {
+      y.y <- object$beta 
+      #  x.x <- object$x
+    }
+    else
+    {
+      if (!is.vector(object))  stop("object class should be MRF or a vector with names matching the areas in the polys")
+      else
+      { 
+        y.y <- object
+        # x.x <- object[[2]]  
+      }
+      
+    }
+    
+    npolys <- names(polys)
+    nobject <- names(y.y)
+    if (is.null(nobject)) stop("the object do not have names")
+    else (!is.null(nobject) && !is.null(npolys)) 
+{
+      if (!all(sort(nobject)%in% sort(npolys))) 
+        stop("object names and polys names must match")
+    }
+
+y.y <- y.y[npolys]
+#fv1 <- tapply(y, x, mean)
+#fv <- object$beta  
+xmin <- xlim[1]
+xlim[1] <- xlim[1] - 0.1 * (xlim[2] - xlim[1])
+n.col <- n.col
+if (is.null(scheme)||scheme=="gray")
+  newscheme <- gray(0:n.col/n.col)
+else if (scheme == "heat"){
+  newscheme <- heat.colors(n.col + 1)
+}
+else if (scheme == "rainbow")
+  newscheme <- rainbow(n.col+1)
+else if(scheme == "terrain")
+  newscheme <- terrain.colors(n.col+1)
+else if(scheme == "topo")
+  newscheme <- topo.colors(n.col+1)
+else if(scheme=="cm")
+  newscheme <- cm.colors(n.col+1)
+else {scheme=scheme
+      ramp <- colorRamp(c(scheme, "white"))
+      newscheme <-  rgb(ramp(seq(0, 1, length = n.col)), maxColorValue = 255)
+}
+
+if(swapcolors==TRUE){
+  if((scheme=="heat")||(scheme=="rainbow")||(scheme=="terrain")||(scheme=="topo")||(scheme=="cm")) 
+    newscheme=rev(newscheme)
+  else stop("swapcolors just work for few options. Please, see help file.")
+}
+zlim <- range(pretty(y.y))
+for (i in 1:length(polys)) polys[[i]][, 2] <- zlim[1] + (zlim[2] - 
+                                                           zlim[1]) * (polys[[i]][, 2] - ylim[1])/(ylim[2] - ylim[1])
+ylim <- zlim
+plot(0, 0, ylim = ylim, xlim = xlim, type = "n", xaxt = "n", 
+     bty = "n", xlab = "", ylab = "",...)
+for (i in 1:length(polys)) {
+  coli <- round((y.y[i] - zlim[1])/(zlim[2] - zlim[1]) * 
+                  n.col) + 1
+  polygon(polys[[i]], col = newscheme[coli])
+}
+xmin <- min(c(axTicks(1), xlim[1]))
+dx <- (xlim[2] - xlim[1]) * 0.05
+x0 <- xmin - 2 * dx
+x1 <- xmin + dx
+dy <- (ylim[2] - ylim[1])/n.col
+poly <- matrix(c(x0, x0, x1, x1, ylim[1], ylim[1] + 
+                   dy, ylim[1] + dy, ylim[1]), 4, 2)
+for (i in 1:n.col) {
+  polygon(poly, col = newscheme[i], border = NA)
+  poly[, 2] <- poly[, 2] + dy
+}
+poly <- matrix(c(x0, x0, x1, x1, ylim[1], ylim[2], ylim[2], 
+                 ylim[1]), 4, 2)
+polygon(poly, border = "black")
+  }
+par(oldpar)
+}
 #-------------------------------------------------------------------------------
 # the results is something like 
 #     c(0,0,1,2,2,2,3,4) if smootherrs where used in positions
@@ -53,12 +181,12 @@ CheckSmoList <- function(termList)
     gamlss.sm.list1 <- c( "cs","scs", "ps", "pb", "cy", "pvc", "pbm",  "pbj",   
                          "mrf",   "mrfa", "sap",  "krig",   "lo", "random",
                          "re",  "fp", "pp", "nl","ri","ridge","fk", "la",     
-                         "tr",  "ga",   "nn" )
+                         "tr",  "ga",   "nn", "own" )
     # ideally this should be done autonmatically
     gamlss.sm.list2 <- c( "cs(","scs(", "ps(", "pb(", "cy(", "pvc(", "pbm(",  "pbj(",   
                          "mrf(",   "mrfa(", "sap(",  "krig(",   "lo(", "random(",
                          "re(",  "fp(", "pp(", "nl(","ri(","ridge(","fk(", "la(",     
-                         "tr(",  "ga(",   "nn(" )
+                         "tr(",  "ga(",   "nn(", "own(" )
     lgamsmol  <- length(gamlss.sm.list1)
          lsm  <- length(termList)
           res <- rep(0, lsm) 
@@ -77,7 +205,7 @@ CheckSmoList <- function(termList)
 CheckSmoWithPlot <- function(termList)
 {
   #gamlss.Smo.plot.list <- c( "tr", "ga")
-  gamlss.Smo.plot.list1 <- c( "tr(", "ga(", "nn(")
+  gamlss.Smo.plot.list1 <- c( "tr(", "ga(", "nn(", "pvc(", "mrf(", "mrfa(", "own(")
   lgamsmol  <- length(gamlss.Smo.plot.list1)
   lsm  <- length(termList)
   res <- rep(0, lsm) 
@@ -124,7 +252,8 @@ se.shaded <- function(x, iy, i, ff = 2)
 #-------------------------------------------------------------------------------
 ## only for gamlss objects 
     if (!is.gamlss(object))  stop(paste("This is not an gamlss object", "\n", "")) 
-           what <- match.arg(what)
+           what <- if (!is.null(parameter))  {
+    match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
            ylim <- match.arg(ylim)
          scheme <- match.arg(scheme)
 ## checking the parameter
@@ -177,7 +306,7 @@ se.shaded <- function(x, iy, i, ff = 2)
           warning("interactions have been taken out from the plots")
        }
 #-------------------------------------------------------------------------------
-             cn <- parse(text = nmt) # as expression
+           cn <- parse(text = nmt) # as expression
 ifSpecialSmo  <- CheckSmoWithPlot(nmt) #????????????????????????????????????????
 whichValueSmo <- CheckSmoList(nmt)
 # if (!is.null(smooth)) # I do not need this but match.fun() is very interesting 
@@ -209,7 +338,6 @@ whichValueSmo <- CheckSmoList(nmt)
        }
         is.fac <- sapply(nmt, function(i) is.factor(mf[, i])) # whether factors
 
-
         nb.fig <- prod(par("mfcol")) # the number of figures
     if (ask) {
             op <- par(ask = TRUE)
@@ -218,10 +346,10 @@ whichValueSmo <- CheckSmoList(nmt)
          ylims <- ylim # default "common"
     if (identical(ylims, "common"))  # whether common limit in y
     {
-         ylims <- if (!se) 
-        range(tms, na.rm = TRUE)
-      else range(tms + 1.05 * 2 * terms$se.fit, tms - 1.05 * 
-                   2 * terms$se.fit, na.rm = TRUE)
+        suppressWarnings(        ylims <- if (!se) # this has to go here because nn and
+                      range(tms, na.rm = TRUE)       # ga have se NA MS 16-5-15
+                  else range(tms + 1.05 * 2 * terms$se.fit, tms - 1.05 * 
+                        2 * terms$se.fit, na.rm = TRUE))
       if (partial.resid) 
         ylims <- range(ylims, pres, na.rm = TRUE)
       if (rug) 
@@ -375,6 +503,17 @@ whichValueSmo <- CheckSmoList(nmt)
           {
             plot(getSmo(object, what, which=whichValueSmo[i]), y.lab=expression(eta))
           } 
+          if (attr(whichValueSmo, "whichSmo")[i]=="mrf"||attr(whichValueSmo, "whichSmo")[i]=="mrfa") 
+          { 
+            if (is.null(polys)) 
+              { warning("no polygon information is given, null plot is produced")
+            #plot(x=c(0,1), y=c(0,1), type="n")
+              } else
+              {
+                draw.polys.in(polys, getSmo(object, what, which=whichValueSmo[i]), scheme=polys.scheme)
+              }
+            
+          }
           else
           {
             plot(getSmo(object, what, which=whichValueSmo[i]))

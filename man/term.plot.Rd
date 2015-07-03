@@ -8,7 +8,8 @@
 
 }
 \usage{
-term.plot(object, what = c("mu", "sigma", "nu", "tau"), data = NULL, 
+term.plot(object, what = c("mu", "sigma", "nu", "tau"), 
+         parameter= NULL, data = NULL, 
          envir = environment(formula(object)), partial.resid = FALSE, 
          rug = FALSE, terms = NULL, se = TRUE, ylim = c("common", "free"), 
          scheme = c("shaded", "lines"), xlabs = NULL, ylabs = NULL, 
@@ -17,13 +18,15 @@ term.plot(object, what = c("mu", "sigma", "nu", "tau"), data = NULL,
          col.rug = "gray", lwd.term = 1.5, lty.se = 2, lwd.se = 1, 
          cex.res = 1, pch.res = par("pch"), 
          ask = interactive() && nb.fig < n.tms && .Device != "postscript", 
-         use.factor.levels = TRUE, surface.gam = FALSE, ...)
+         use.factor.levels = TRUE, surface.gam = FALSE,     
+         polys = NULL, polys.scheme = "topo",...)
 
 }
 
 \arguments{
   \item{object}{a fitted GAMLSS object}
   \item{what}{the required parameter of the GAMLSS distribution i.e. "mu"}
+  \item{parameter}{equivalent to \code{what}}
   \item{data}{data frame in which variables in \code{object} can be found}
   \item{envir}{environment in which variables in \code{object} can be found }
   \item{partial.resid}{logical; should partial residuals be plotted or not}
@@ -58,6 +61,8 @@ term.plot(object, what = c("mu", "sigma", "nu", "tau"), data = NULL,
   \item{use.factor.levels}{Should x-axis ticks use factor levels or numbers for
           factor terms? }
   \item{surface.gam}{whether to use surface plot if a \code{ga()} term is fitted}
+  \item{polys}{The polygone nformation filr for MRF models}
+   \item{polys.scheme}{Color scheme for polygones for RMF models}
   \item{\dots}{other graphical parameters}
 }
 \details{

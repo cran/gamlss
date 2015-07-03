@@ -6,7 +6,7 @@ export(gamlss, gamlss.control, glim.control, is.gamlss,
        pdf.plot, prof.dev, prof.term, refit, rqres.plot, wp,
        IC, Q.stats, par.plot, histDist,
        stepGAIC.VR, stepGAIC.CH, stepGAIC, gamlss.scope, stepGAICAll.A,
-       stepGAICAll.B, stepTGD, term.plot,
+       stepGAICAll.B,  drop1All, add1All, term.plot,# stepTGD,
        cs, gamlss.cs, cs.control,
        scs,
        ps, gamlss.ps,
@@ -23,10 +23,10 @@ export(gamlss, gamlss.control, glim.control, is.gamlss,
        lo, gamlss.lo,
    random, gamlss.random,
         ri, gamlss.ri,
-     ridge, gamlss.ridge,
        GAIC, .hat.WX,  gamlssNews,
        predictAll, #own.linkfun, own.linkinv, own.mu.eta,own.valideta,
-        VGD, VGD1, VGD2, TGD,
+  #      VGD, VGD1, VGD2, TGD,
+      gamlssVGD, VGD,  getTGD, TGD, gamlssCV, CV,
         edf, edfAll,
         LR.test, dtop,
         gamlssML, fitDist, histSmo, histSmoO, histSmoC, histSmoP,
@@ -49,18 +49,24 @@ export(gamlss, gamlss.control, glim.control, is.gamlss,
 
 
 #importFrom(graphics, pairs, plot)
-importFrom(stats, AIC, deviance, coef, extractAIC, family, fitted,
-           formula, logLik, model.frame,  predict, residuals, terms, update,
-           loess)
+#importFrom(stats, AIC, deviance, coef, extractAIC, family, fitted,
+#          formula, logLik, model.frame,  predict, residuals, terms, update,
+#           loess)
 importFrom(MASS, addterm, dropterm, truehist)
 importFrom(survival, Surv, is.Surv)
-importFrom(graphics, plot)
+importFrom("methods", "is")
+#importFrom(graphics, plot)
 #importFrom(base, print)
 importFrom(splines, bs, ns, spline.des, splineDesign)
 #importFrom(gamlss.tr, trun)
+import(stats)
+import(graphics)
 import(gamlss.data)
 import(gamlss.dist)
 importFrom(nlme, lme, varFixed)
+import(parallel)
+import(utils)
+import(grDevices)
 
 S3method(addterm, gamlss)
 S3method(add1, gamlss)
@@ -97,3 +103,7 @@ S3method(fitted, gamlssML)
 S3method(vcov, gamlssML)
 S3method(summary, gamlssML)
 S3method(plot, histSmo)
+S3method(plot, pvc)
+S3method(plot, ri)
+S3method(coef, ri)
+S3method(fitted, ri)

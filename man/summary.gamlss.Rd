@@ -27,7 +27,7 @@
 \item{\dots}{for extra arguments}
 }
 \details{Using the  default value \code{type="vcov"}, the \code{vcov()} method for gamlss is used to get  
-  the variance covariance matrix (and consequently the standard errors)of the beta parameters. 
+  the variance covariance matrix (and consequently the standard errors) of the beta parameters. 
   The variance covariance matrix is  calculated using the inverse of the numerical second derivatives
   of the observed information matrix. This is a more reliable method since it take into the account the 
   inter-correlation between the all the parameters. The \code{type="qr"} assumes that the parameters are fixed 

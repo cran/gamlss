@@ -18,6 +18,67 @@ Question or suggestions about GAMLSS can be send to
 or
    r.rigby@londonmet.ac.uk
 --------------------------------------------------------------------------------
+Version 4.3-5
+1. gamlss  i) the functions   VGD(), VGD1(), VGD2(), TGD() have been removed and 
+               replaced by the functions 
+                   1) gamlssVGD,  
+                   2) VGD(),  
+                   3) getTGD(), 
+                   4) TGD(),
+                   5) gamlssCV(), 
+                   6) CV(). 
+               The function gamlssVGD() fits a gamlss model to the training data. 
+               The results is a gamlss objects with three extra components: 
+                  a) VGD the global deviance applied to the validation data sets. 
+                  b) predictError  
+                  c) residVal the residuals for the  validation  data set. 
+               The function VGD() extract the validated global deviance. 
+               The function getTGD() assumes that the users already have fitted 
+                a models and now he/she interested  to evaluate the global deviance 
+                at a new (validation or test) data set. 
+               TGD()}  extracts the validated/test global deviance,
+               The function gamlssCV() performs a k-fold cross validation on a 
+               gamlss models. 
+               The function CV()} extract the cross validated  global deviance. 
+
+          ii)  The functions dropterm.gamlss(), addterm.gamlss() and stepGAIC() can 
+               use parallel computing. stepGAIC() no longer has the argument additive.
+                
+         iii) The functions drop1All() and add1All() are added while the function 
+              stepGAICAll.B() works now with parallel. 
+
+         iv)  The functon rqres.plot() has modified to allow  arguments for the wp()
+              function.
+      
+          v) pb(): an extra condition was added if the number of distict points of the   
+              x-variable  is less the number of interval (in control) then the number of 
+              intervals is set  to number of   distict values of x (thanks to Juliane Manitz 
+              for point out the problem) 
+          
+         vi) rqres() function is modified to produce the correct randomised residuals for 
+             mass point 1 in the INFBE and INFBE1 distributions. 
+             Also rqres1() (a hiden function as rqres()) is created  for allowing to fix the 
+             seed in the randomsation. To use the function use gamlss:::rqres1(). 
+               
+        vii) pbm(): is using svd now like pb() 
+
+        viii) term.plot() the  warning when nn() or ga() was used (when ylim is calculated for 
+               "common") is supressed.
+
+         ix) A lot of functions within gamlss have the arguments "what" as a way to refer to a specific
+            parameter of the distribution. We decide to include also the argument "parameter" as more
+            intuitive way of refering to a specific parameter. In his version if say `parameter="mu"' 
+            is set then take over from the  "what" argument. The function effected are 
+             fitted.gamlss(), coef.gamlss(), lp(), fv(), model.frame.gamlss(), terms.gamlss(),
+             model.matrix.gamlss(), formula.gamlss(), update.gamlss(), dropterm.gamlss(),
+             addterm.gamlsss(), stepGAIC(), edf(), lpred(), confint.gamlss(), fitted.gamlssML(),
+             getSmo(), predict,lms(), plot2way(), predict.gamlss(),stepGAIC.VR(), stepGAIC.CH().
+
+          x) The function ri() (for ridge regression) is rewriten. Now the function allows different type of penalties. For example using the argument "Lp=1" or "Lp=0" a lasso or a selection of linear terms can be done respectivelly.    
+
+1. gamlss.dist A bug in is pBB() is fixed thanks to Jonatan Kallus.
+
+
 Version 4.3-3
 
 1. gamlss
@@ -26,7 +87,7 @@ Version 4.3-3
           ii) The tp() function within lms() and quantSheets() has changed name
               and modified slightly 
          iii) The vcoc.gamlss() has the warnings changed and allows if the 
-              inverse of the Hessian (R) fails to recalucated using different 
+              inverse of the Hessian (R) fails to recalculated using different 
               ().
           iv) The output of the term.plot() function has changed.  
            v) IMPORTANT: pb() has a new version which is faster than the old one.
@@ -43,8 +104,8 @@ Version 4.3-3
           ii) The function demo.LocalRegression() is added
 
 3. gamlss.dist
-            i) The discrete distribution double Poisson DPO() is added.
-            ii) a modififiacion on plotZAGA() is added 
+            i) The discrete distribution double Poison DPO() is added.
+            ii) a modification on plotZAGA() is added 
 
 4. gamlss.util 
            i) garmaFit() is modified to allow binomial (and binary) fits 
@@ -54,7 +115,7 @@ Version 4.3-3
               the package colorspace even though the plot is not looking as good.
               If you have the colorspace in you version of R you can still use 
               the old scheme, see the example in scattersmooth().
-          iii) plotSimpleGamlss() : had a minor ammentment thanks to Michael Guan. 
+          iii) plotSimpleGamlss() : had a minor amendment thanks to Michael Guan. 
 5. gamlss.add
             i) the function plotNN() is added for plotting fitted neural netwarks 
 --------------------------------------------------------------------------------

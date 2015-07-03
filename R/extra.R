@@ -43,9 +43,10 @@ refit <- function (object, ...)
 ################################################################################
 #                         fitted.gamlss
 ################################################################################
-fitted.gamlss<-function (object, what = c("mu", "sigma", "nu", "tau"), ... ) 
+fitted.gamlss<-function (object, what = c("mu", "sigma", "nu", "tau"), parameter= NULL, ... ) 
 {
-what <- match.arg(what)
+  what <- if (!is.null(parameter))  {
+    match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
 if (!what%in%object$par) stop(paste(what,"is not a parameter in the gamlss object","\n"))
 x <-  if (is.null(object$na.action)) object[[paste(what,"fv",sep=".")]]
       else napredict(object$na.action, object[[paste(what,"fv",sep=".")]])
@@ -54,9 +55,10 @@ x
 ################################################################################
 #                         coef.gamlss
 ################################################################################
-coef.gamlss<-function (object, what = c("mu", "sigma", "nu", "tau"), ... ) 
+coef.gamlss<-function (object, what = c("mu", "sigma", "nu", "tau"), parameter= NULL, ... ) 
 {
-what <- match.arg(what)
+  what <- if (!is.null(parameter))  {
+    match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
 if (!what%in%object$par) stop(paste(what,"is not a parameter in the object","\n"))
 x <- object[[paste(what,"coefficients",sep=".")]]
 x
@@ -138,9 +140,10 @@ deviance.gamlss<-function(object, what = c("G", "P"), ...)
 #                   lp
 ################################################################################
 ## lm  see also lpred()
-lp <-function (obj, what = "mu", ... ) 
+lp <-function (obj, what = c("mu", "sigma", "nu", "tau"), parameter= NULL, ... ) 
 {
-what <- as.character(substitute(what))
+  what <- if (!is.null(parameter))  {
+    match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
 if (!what%in%obj$par) stop(paste(what,"is not a parameter in the object","\n"))
 x <- obj[[paste(what,"lp",sep=".")]]
 x
@@ -149,9 +152,10 @@ x
 #                   fv
 ################################################################################
 ## fv  see also fitted and lpred()
-fv <-function (obj, what = "mu", ... ) 
+fv <-function (obj, what = c("mu", "sigma", "nu", "tau"), parameter= NULL, ... ) 
 {
-what <- as.character(substitute(what))
+  what <- if (!is.null(parameter))  {
+    match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
 if (!what%in%obj$par) stop(paste(what,"is not a parameter in the object","\n"))
 x <- obj[[paste(what,"fv",sep=".")]]
 x
@@ -160,11 +164,12 @@ x
 #                 model.frame.gamlss
 ################################################################################
 # new MS Thursday, June 24, 2004 at 13:45
-model.frame.gamlss <-function (formula, what = c("mu", "sigma", "nu", "tau"), ...) 
+model.frame.gamlss <-function (formula, what = c("mu", "sigma", "nu", "tau"), parameter= NULL, ...) 
 {
   object <- formula
     dots <- list(...)
-    what <- match.arg(what) 
+    what <- if (!is.null(parameter))  {
+    match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
     Call <- object$call
      parform <- formula(object, what)
     #parform <- object[[paste(what, "formula", sep=".")]]
@@ -177,9 +182,10 @@ model.frame.gamlss <-function (formula, what = c("mu", "sigma", "nu", "tau"), ..
 ################################################################################
 #                 terms.gamlss
 ################################################################################
-terms.gamlss <- function (x, what = c("mu", "sigma", "nu", "tau"), ...) 
+terms.gamlss <- function (x, what = c("mu", "sigma", "nu", "tau"), parameter= NULL, ...) 
 {
-what <- match.arg(what)
+  what <- if (!is.null(parameter))  {
+    match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
 if (!what%in%x$par) stop(paste(what,"is not a parameter in the object","\n"))
     v <- x[[paste(what,"terms",sep=".")]]
     if (is.null(v)) 
@@ -189,9 +195,10 @@ if (!what%in%x$par) stop(paste(what,"is not a parameter in the object","\n"))
 ################################################################################
 #                  model.matrix
 ################################################################################
-model.matrix.gamlss <- function (object, what = c("mu", "sigma", "nu", "tau"), ...) 
+model.matrix.gamlss <- function (object, what = c("mu", "sigma", "nu", "tau"), parameter= NULL, ...) 
 {
-what <- match.arg(what)
+  what <- if (!is.null(parameter))  {
+    match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
 if (!what%in%object$par) stop(paste(what,"is not a parameter in the object","\n"))
     v <- object[[paste(what,"x",sep=".")]]
     if (is.null(v)) 
@@ -201,9 +208,10 @@ if (!what%in%object$par) stop(paste(what,"is not a parameter in the object","\n"
 ################################################################################
 #                 formula.gamlss
 ################################################################################
-formula.gamlss<-function (x, what = c("mu", "sigma", "nu", "tau"), ... ) 
+formula.gamlss<-function (x, what = c("mu", "sigma", "nu", "tau"), parameter= NULL, ... ) 
 {
- what <- match.arg(what)
+  what <- if (!is.null(parameter))  {
+    match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
  if (!what%in%x$par) stop(paste(what,"is not a parameter in the object","\n")) 
     fo <- x[[paste(what,"formula",sep=".")]]
  ## the problem is when "." is in the formula, if true get formula from terms
@@ -259,7 +267,7 @@ AIC.gamlss <- function (object, ..., k = 2, c = FALSE)
        val 
       }
 }
-
+################################################################################
 GAIC <- function(object,..., k = 2, c = FALSE ) #UseMethod("AIC")
 {
  if (length(list(...))) 
@@ -286,7 +294,7 @@ GAIC <- function(object,..., k = 2, c = FALSE ) #UseMethod("AIC")
        val 
       }
 }
-
+################################################################################
 ## a small utility function to get the hat matrix from a weighted regression
 ## used in cs() and other additive terms 
 ## MS Tuesday, June 22, 2004 at 21:26

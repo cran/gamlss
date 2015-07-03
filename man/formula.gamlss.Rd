@@ -6,12 +6,14 @@
      from objects returned by modelling functions.  
      }
 \usage{
-\method{formula}{gamlss}(x, what = c("mu", "sigma", "nu", "tau"), ... )
+\method{formula}{gamlss}(x, what = c("mu", "sigma", "nu", "tau"), 
+                parameter= NULL, ... )
 }
 
 \arguments{
   \item{x}{a GAMLSS fitted model }
   \item{what}{which parameter coefficient is required, default \code{what="mu"} }
+  \item{parameter}{equivalent to \code{what}}
   \item{\dots}{for extra arguments }
 }
 

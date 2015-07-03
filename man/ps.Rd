@@ -38,11 +38,11 @@ cy.control(inter = 20, degree = 3, order = 2, start = 10,
           method = c("ML", "GAIC", "GCV", "EM", "ML-1"), k = 2, ts=FALSE, ...)
 pvc(x, df = NULL, lambda = NULL, by = NULL, control = pvc.control(...), ...)          
 pvc.control(inter = 20, degree = 3, order = 2, start = 10, quantiles = FALSE, 
-             method = c("ML", "GAIC", "GCV", "EM", "ML-1"), k = 2, ...) 
+             method = c("ML", "GAIC", "GCV"), k = 2, ...) 
 pbm(x, df = NULL, lambda = NULL, mono=c("up", "down"), 
             control = pbm.control(...), ...)
 pbm.control(inter = 20, degree = 3, order = 2, start = 10, quantiles = FALSE, 
-            method = c("ML", "GAIC"), k = 2, ...)
+            method=c("ML","GAIC", "GCV"), k=2, kappa = 1e10, ...)
 ps(x, df = 3, lambda = NULL, ps.intervals = 20, degree = 3, order = 3)
 }
 
@@ -63,6 +63,7 @@ ps(x, df = 3, lambda = NULL, ps.intervals = 20, degree = 3, order = 3)
   \item{method}{The method used in the (local) performance iterations. Available methods are "ML", "ML-1", "EM", "GAIC" and "GCV"}
   \item{k}{the penalty used in "GAIC" and "GCV"}
   \item{mono}{for monotonic P-splines whether going "up"  or "down"}
+  \item{kappa}{the smoothing hyper-parameter for the monotonic part of smoothing}
   \item{ps.intervals}{the no of break points in the x-axis}
 } 
 \details{
@@ -80,7 +81,7 @@ The local (or performance iterations) methods available are:
 
 The  function \code{pb()} fits a P-spline smoother.
 
-The  function \code{pbm()} fits a monotonic (going up) P-spline smoother.
+The  function \code{pbm()} fits a monotonic (going up or down) P-spline smoother.
 
 The  function \code{cy()} fits a P-spline smoother where the beginning and end are the same.  
 
@@ -114,7 +115,7 @@ Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location s
 \author{ Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby \email{r.rigby@londonmet.ac.uk } and Paul Eilers}
 
 \section{Warning}{There are occasions where the automatic local methods do not work. One accusation which came to our attention is  when 
-the range of the response variable values is very large. Calling the response variable will solve the problem.} 
+the range of the response variable values is very large. Scalling the response variable will solve the problem.} 
 
 \seealso{ \code{\link{gamlss}}, \code{\link{gamlss.ps}}, \code{\link{cs}}}
 \examples{

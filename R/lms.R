@@ -237,11 +237,13 @@ class(m0) <- c("lms", class(m0))
 # se ??
 predict.lms <- function(object, 
                         what = c("all","mu", "sigma", "nu", "tau"),
+                        parameter= NULL,
                      newdata = NULL,
                      ...
                      )
 {
-  what <- match.arg(what)
+  what <- if (!is.null(parameter))  {
+    match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
  # if newdata is not null check the class
  # if data.frame check for  object$xlab
  # other if vector use it 

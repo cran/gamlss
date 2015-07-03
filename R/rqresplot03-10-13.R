@@ -63,7 +63,7 @@
                            } 
               if (type=="wp"){
                 rs[,i] <- res
-                wp(resid=res)
+                wp(resid=res, ...)
               }     
             }
         invisible(rs)     
@@ -95,7 +95,7 @@
                 lines(rmean, rmean, col="red" , lwd=.4, cex=.4 )
             }
           if (type=="wp"){
-            wp(resid=rmean)
+            wp(resid=rmean, ...)
           }
                 invisible(rmean)     
         }) 

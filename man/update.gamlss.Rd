@@ -6,18 +6,19 @@
 which updates and (by default) refits a GAMLSS model.
 }
 \usage{
-\method{update}{gamlss}(object, formula., ..., what = c("mu", "sigma", "nu", "tau", "All"), 
-              evaluate = TRUE)
+\method{update}{gamlss}(object, formula., ..., 
+               what = c("mu", "sigma", "nu", "tau", "All"), 
+               parameter= NULL, evaluate = TRUE)
 }
 
 \arguments{
   \item{object}{a GAMLSS fitted model}
   \item{formula.}{the formula to update}
   \item{\dots}{for updating argument in \code{gamlss()}}
-  \item{what}{the parameter in which the formula needs updating for example "mu", "sigma", "nu" "tau" or "All".
-   If "All" all the formulae are updated. Note that the \code{what} argument has an effect only if only if the 
+  \item{what}{the parameter in which the formula needs updating for example "mu", "sigma", "nu" "tau" or "All". If "All" all the formulae are updated. Note that the \code{what} argument has an effect only if only if the 
    argument \code{formula.} is set}
-  \item{evaluate}{whether to evaluate the call or not}
+\item{parameter}{equivalent to \code{what}}
+\item{evaluate}{whether to evaluate the call or not}
 }
 
 \value{

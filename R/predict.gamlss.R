@@ -26,6 +26,7 @@
 ### 4) NA coefficients are not working yet : should be OK
 predict.gamlss <- function(object, 
                            what = c("mu", "sigma", "nu", "tau"), 
+                            parameter = NULL,
                            newdata = NULL, 
                            type = c("link", "response", "terms"), # terms not working 
                            terms = NULL, 
@@ -79,7 +80,8 @@ if (se.fit)
   if (!(inherits(newdata, "data.frame")))
     stop("newdata must be a data frame ") # or a frame mumber
 ## getting which parameter and type   
-       what <- match.arg(what)
+       what <- if (!is.null(parameter))  {
+    match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
        type <- match.arg(type)
 ## get the original call 
        Call <- object$call

@@ -15,7 +15,7 @@ rqres.plot(obj = NULL, howmany = 6, plot = c("all", "average"),
   \item{howmany}{The number of QQ-plots required up to ten i.e. \code{howmany=6}}
    \item{plot}{whether to plot all plots all the residual realisations  \code{"all"} or just the mean \code{"average"}}
      \item{type}{whether to plot worm plots \code{"wp"}or QQ plots \code{"QQ"} with default worm plots}
-   \item{\dots}{for extra arguments}
+   \item{\dots}{for extra arguments tp be passed to \code{wp()}}
 }
 \details{For discrete family distributions, the \code{\link{gamlss}()} function saves on exit one realization of randomized quantile residuals which 
 can be plotted using the generic function \code{plot} which calls the \code{plot.gamlss}. Looking at only one realization can be misleading, so the 

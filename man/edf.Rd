@@ -10,13 +10,15 @@ The functions \code{edf()} and \code{edfAll()} can be used to obtained the effec
 different additive terms for the distribution parameters in a gamlss model. 
 }
 \usage{
-edf(obj, what = c("mu", "sigma", "nu", "tau"), print = TRUE, ...)
+edf(obj, what = c("mu", "sigma", "nu", "tau"),
+    parameter= NULL, print = TRUE, ...)
 edfAll(obj, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{obj}{A gamlss fitted model}
   \item{what}{which of the four parameters \code{mu}, \code{sigma}, \code{nu} or \code{tau}.}
+  \item{parameter}{equivalent to \code{what}}
   \item{print}{whether to print the label}
   \item{\dots}{for extra arguments}
 }

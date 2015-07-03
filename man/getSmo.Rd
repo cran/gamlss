@@ -9,7 +9,7 @@ The function \code{getSmo()} extracts information from a fitted smoothing additi
 }
 \usage{
 getSmo(object, what = c("mu", "sigma", "nu", "tau"), 
-       which = 1)
+       parameter= NULL, which = 1)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -19,6 +19,7 @@ a GAMLSS fitted model
   \item{what}{
 which distribution parameter is required, default what="mu"
 }
+\item{parameter}{equivalent to \code{what}}
   \item{which}{
 which smoothing term
 }
@@ -51,7 +52,7 @@ Mikis Stasinopoulos and Bob Rigby
 data(usair)
 t1<-gamlss(y~x1+pb(x5)+pb(x6), data=usair, family=GA)
 # get the value for lambda for the second fitted term in mu
-getSmo(t1, "mu", 2)$lambda
+getSmo(t1, parameter="mu", 2)$lambda
   }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

@@ -9,7 +9,7 @@ This function is designed to plot a factor to factor interaction in a GAMLSS mod
 }
 \usage{
 plot2way(obj, terms = list(), what = c("mu", "sigma", "nu", "tau"), 
-        show.legend = TRUE, ...)
+        parameter= NULL, show.legend = TRUE, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -17,6 +17,7 @@ plot2way(obj, terms = list(), what = c("mu", "sigma", "nu", "tau"),
 }
   \item{terms}{this should be a character vector with the names of the two factors to be plotted}
   \item{what}{which parameters? \code{mu}, \code{sigma}, \code{nu}, or \code{tau} }
+ \item{parameter}{equivalent to \code{what}}
   \item{show.legend}{
 whether to show the legend in the two way plot 
 }

@@ -167,19 +167,19 @@ body(rqres) <-  eval(quote(body(rqres)), envir = getNamespace("gamlss"))
         bf.trace <- control$bf.trace
              itn <- 0
               lp <- eta <- f$linkfun(fv)
-              dr <- f$dr(eta)
-              dr <- 1/dr
-              di <- f$G.di(fv)  
+              dr <- f$dr(eta)    # dmu/deta
+              dr <- 1/dr         # deta/dmu = 1 / (dmu/deta)
+              di <- f$G.di(fv)   # deviance increment
               dv <- sum(w*di)    # the global deviance
            olddv <- dv+1         # the old global deviance
-            dldp <- f$dldp(fv)   
-          d2ldp2 <- f$d2ldp2(fv) 
+            dldp <- f$dldp(fv)   # u score
+          d2ldp2 <- f$d2ldp2(fv) # second derivative of log-Likelihood
          d2ldp2 <-  ifelse(d2ldp2 < -1e-15, d2ldp2,-1e-15) # added 26-10-07  
-              wt <- -(d2ldp2/(dr*dr))# 
+              wt <- -(d2ldp2/(dr*dr))#  -(d2l/dp2)/(1/(dmu/deta))^2=- (d2l/dp2)(dmu/eta)^2
             # we need to stop the weights to go to Infty
               wt <- ifelse(wt>1e+10,1e+10,wt) # Mikis 9-10-14    
             # wv <- (eta-os)+step*dldp/(dr*wt)
-              wv <- (eta-os)+dldp/(dr*wt)
+              wv <- (eta-os)+dldp/(dr*wt) # eta 
               if (family$type=="Mixed") wv <-ifelse(is.nan(wv),0,wv) ## TEST
            iterw <- FALSE
              who <- f$who

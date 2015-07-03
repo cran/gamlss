@@ -15,16 +15,18 @@ data values can also be extracted using the function \code{lpred()} (which is ca
 }
 \usage{
 \method{predict}{gamlss}(object, what = c("mu", "sigma", "nu", "tau"), 
-               newdata = NULL, type = c("link", "response", "terms"), 
-               terms = NULL, se.fit = FALSE, data = NULL, ...)
+                parameter= NULL,
+                newdata = NULL, type = c("link", "response", "terms"), 
+                terms = NULL, se.fit = FALSE, data = NULL, ...)
 predictAll(object, newdata = NULL, type = c("response", "link", "terms"), 
-               terms = NULL, se.fit = FALSE, ...)
+                terms = NULL, se.fit = FALSE, ...)
 
 }
 
 \arguments{
   \item{object}{a GAMLSS fitted model}
   \item{what}{ which distribution parameter is required, default \code{what="mu"}}
+  \item{parameter}{equivalent to \code{what}}
   \item{newdata}{a data frame containing new values for the explanatory variables used in the model}
   \item{type}{the default, gets the linear predictor for the specified distribution parameter. 
              \code{type="response"} gets the fitted values for the parameter while \code{type="terms"} gets the fitted terms contribution}

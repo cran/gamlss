@@ -394,9 +394,10 @@ names(sigma.coefficients) <- "sigma.coefficients"
 ######################################################################################
 # methods for gamlssML    
 ######################################################################################
-fitted.gamlssML<-function (object, what = c("mu", "sigma", "nu", "tau"), ... ) 
+fitted.gamlssML<-function (object, what = c("mu", "sigma", "nu", "tau"), parameter= NULL, ... ) 
 {
-what <- match.arg(what)
+what <- if (!is.null(parameter))  {
+    match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
 if (! what%in%object$par) stop(paste(what,"is not a parameter in the gamlss object","\n"))
 x <- rep(object[[what]], object$N)
 x

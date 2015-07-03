@@ -13,15 +13,16 @@ The function \code{lp} extract only the linear predictor. If prediction is requi
 function \code{predict.gamlss()}.
 }
 \usage{
-lpred(obj, what = c("mu", "sigma", "nu", "tau"), 
+lpred(obj, what = c("mu", "sigma", "nu", "tau"), parameter= NULL,
            type = c("link", "response", "terms"), 
            terms = NULL, se.fit = FALSE, ...)
-lp(obj, what = "mu", ...)
+lp(obj, what = c("mu", "sigma", "nu", "tau"), parameter= NULL, ... ) 
 }
 
 \arguments{
  \item{obj}{a GAMLSS fitted model}
  \item{what}{which distribution parameter is required, default \code{what="mu"} }
+ \item{parameter}{equivalent to \code{what}}
  \item{type}{\code{type="link"} (the default) gets the linear predictor for the specified distribution parameter. 
              \code{type="response"} gets the fitted values for the parameter while \code{type="terms"} gets the fitted terms contribution}
  \item{terms}{if \code{type="terms"}, which terms to be selected (default is all terms) }

@@ -8,14 +8,16 @@
      alias for it. The function \code{fv()} is similar to \code{fitted.gamlls()} but allows the argument \code{what} not to be character
 }
 \usage{
-\method{fitted}{gamlss}(object, what = c("mu", "sigma", "nu", "tau"), ...)
-fv(obj, what = "mu", ...)
+\method{fitted}{gamlss}(object, what = c("mu", "sigma", "nu", "tau"),
+                parameter= NULL, ...)
+fv(obj, what = c("mu", "sigma", "nu", "tau"), parameter= NULL, ... )
 }
 
 \arguments{
   \item{object}{a GAMLSS fitted model}
   \item{obj}{a GAMLSS fitted model}
   \item{what}{which parameter fitted values  are required, default \code{what="mu"} }
+  \item{parameter}{equivalent to \code{what}}
   \item{\dots}{for extra arguments}
 }
 

@@ -9,15 +9,19 @@
   \code{model.frame}, \code{model.matrix} and \code{terms} respectively. 
 }
 \usage{
-\method{model.frame}{gamlss}(formula, what = c("mu", "sigma", "nu", "tau"), ...)
-\method{terms}{gamlss}(x, what = c("mu", "sigma", "nu", "tau"), ...)
-\method{model.matrix}{gamlss}(object, what = c("mu", "sigma", "nu", "tau"), ...)
+\method{model.frame}{gamlss}(formula, what = c("mu", "sigma", "nu", "tau"),
+                     parameter= NULL, ...)
+\method{terms}{gamlss}(x, what = c("mu", "sigma", "nu", "tau"), 
+                     parameter= NULL,  ...)
+\method{model.matrix}{gamlss}(object, what = c("mu", "sigma", "nu", "tau"), 
+                      parameter= NULL, ...)
 }
 \arguments{
   \item{formula}{a gamlss object}
   \item{x}{a gamlss object}
   \item{object}{a gamlss object}
   \item{what}{for which parameter to extract the model.frame, terms or model.frame }
+  \item{parameter}{equivalent to \code{what}}
   \item{\dots}{for extra arguments}
 }
 

@@ -5,6 +5,7 @@
 ### MS Tuesday, June 15, 2004 at 11:23
 lpred <-function (obj, 
                   what = c("mu","sigma","nu","tau"), 
+                  parameter= NULL,
                   type = c("link", "response", "terms"), 
                  terms = NULL, 
                 se.fit = FALSE, 
@@ -128,7 +129,8 @@ smo.var <- obj[[paste(what,"var",sep=".")]]
 #-------------------------------------------------------------------------------
     if (!is.gamlss(obj))  stop(paste("This is not an gamlss object", "\n", "")) 
 #what <-  as.character(what) ##problems when lpred() is calling other functions
-    what <- match.arg(what) 
+     what <- if (!is.null(parameter))  {
+    match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
     type <- match.arg(type)
 if (!se.fit)
   {
