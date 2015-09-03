@@ -77,7 +77,9 @@ stepGAIC.CH(object, scope = gamlss.scope(model.frame(object)),
 
 stepGAICAll.A(object, scope = NULL, sigma.scope = NULL, nu.scope = NULL, 
               tau.scope = NULL, mu.try = TRUE, sigma.try = TRUE, 
-              nu.try = TRUE, tau.try = TRUE, ...)
+              nu.try = TRUE, tau.try = TRUE,  
+              parallel = c("no", "multicore", "snow"), ncpus = 1L, 
+              cl = NULL,  ...)
 
                
 stepGAICAll.B(object, scope, direction = c("both", "backward", "forward"), 

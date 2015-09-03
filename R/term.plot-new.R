@@ -8,6 +8,11 @@
 ###    i) to allow having plots in one screen the "pages" option  OK
 ###   ii) to allow plotting as shades the "scheme" option         OK
 ###  iii) to allow plotting class object   Partial OK it needs to go trought all smoothers
+# ACTION NEEDED
+# the way thet gamlss fits smoother is by reordred then in alphabatical order
+# this means thatbthe position of the smoothers in say s[] are not what you would expect
+# we need to rew think and write term.plot (probably rewriting CheckSmoList() see also in the end)
+
 ### Author: Mikis Stasinopoulos
 ### bugs: if the additve terms depends on more that one variable 
 ###       i.e. loess(x1,x2) produces rubish
@@ -114,7 +119,6 @@ draw.polys.in <-function( polys,
       if (!all(sort(nobject)%in% sort(npolys))) 
         stop("object names and polys names must match")
     }
-
 y.y <- y.y[npolys]
 #fv1 <- tapply(y, x, mean)
 #fv <- object$beta  
@@ -193,7 +197,7 @@ CheckSmoList <- function(termList)
           att <- rep(0, lsm)
     for (i in 1:length(gamlss.sm.list2))
     {
-           LL <-   grepl(gamlss.sm.list2[i], termList, fixed=TRUE)
+           LL <-grepl(gamlss.sm.list2[i], termList, fixed=TRUE)
          res  <- res+LL
       att[LL] <- gamlss.sm.list1[i]
     }
@@ -205,7 +209,8 @@ CheckSmoList <- function(termList)
 CheckSmoWithPlot <- function(termList)
 {
   #gamlss.Smo.plot.list <- c( "tr", "ga")
-  gamlss.Smo.plot.list1 <- c( "tr(", "ga(", "nn(", "pvc(", "mrf(", "mrfa(", "own(")
+  gamlss.Smo.plot.list1 <- c( "tr(", "ga(", "nn(", "pvc(", "mrf(", "mrfa(", "ri(",
+                             "own(" )
   lgamsmol  <- length(gamlss.Smo.plot.list1)
   lsm  <- length(termList)
   res <- rep(0, lsm) 
@@ -492,7 +497,7 @@ whichValueSmo <- CheckSmoList(nmt)
               lines(rep.int(xlims[1] + c(0, 0.05, NA) * diff(xlims), 
                             n), rep.int(pres[, i], rep.int(3, n)),  col=col.rug)
           }  
-        } # end of all normal smoother 
+        } # end of all normal smoother ---------------------------------------
         else
         { # the special smoothers who have a plotting function 
           if (attr(whichValueSmo, "whichSmo")[i]=="ga"&&surface.gam==TRUE)
@@ -500,9 +505,9 @@ whichValueSmo <- CheckSmoList(nmt)
             plot(getSmo(object, what, which=whichValueSmo[i]), scheme=1)
            } 
           if (attr(whichValueSmo, "whichSmo")[i]=="nn")
-          {
-            plot(getSmo(object, what, which=whichValueSmo[i]), y.lab=expression(eta))
-          } 
+           {
+             plot(getSmo(object, what, which=whichValueSmo[i]), y.lab=expression(eta))
+           } 
           if (attr(whichValueSmo, "whichSmo")[i]=="mrf"||attr(whichValueSmo, "whichSmo")[i]=="mrfa") 
           { 
             if (is.null(polys)) 
@@ -511,15 +516,27 @@ whichValueSmo <- CheckSmoList(nmt)
               } else
               {
                 draw.polys.in(polys, getSmo(object, what, which=whichValueSmo[i]), scheme=polys.scheme)
-              }
-            
+              }         
           }
-          else
+          if (attr(whichValueSmo, "whichSmo")[i]=="tr")
           {
             plot(getSmo(object, what, which=whichValueSmo[i]))
-          }  
-          if (attr(whichValueSmo, "whichSmo")[i]=="tr") 
-             text(getSmo(object, what, which=whichValueSmo[i]))
+            text(getSmo(object, what, which=whichValueSmo[i]))
+          }
+          if (attr(whichValueSmo, "whichSmo")[i]=="ri")
+          {
+            plot(getSmo(object, what, which=whichValueSmo[i]))
+          }
+          if (attr(whichValueSmo, "whichSmo")[i]=="pvc")
+          {
+            plot(getSmo(object, what, which=whichValueSmo[i]))
+          }
+#           else
+#           {       
+#             plot(getSmo(object, what, which=whichValueSmo[i]))
+#           }  
+#           if (attr(whichValueSmo, "whichSmo")[i]=="tr") 
+#              text(getSmo(object, what, which=whichValueSmo[i]))
         }
     } # end of the  1:n.tms lop -----------------------------------------------
     if (pages > 0) par(oldpar)
@@ -549,5 +566,32 @@ whichValueSmo <- CheckSmoList(nmt)
 
 
 
+# THIS FUNCTION IS MORE GENERAL THAN THE EXISTING ONE
+# CheckSmoList <- function(termList)
+# {
+#   gamlss.sm.list1 <- .gamlss.sm.list
+#   # ideally this should be done autonmatically
+#   gamlss.sm.list2 <- character(length = length(.gamlss.sm.list))
+#   for (i in 1:length(.gamlss.sm.list))
+#   {
+#     gamlss.sm.list2[i] <- paste(gamlss.sm.list1[i],"(", sep="")
+#   }
+#   #gamlss.sm.list2 <- c( "cs(","scs(", "ps(", "pb(", "cy(", "pvc(", "pbm(",  "pbj(",   
+#   #                      "mrf(",   "mrfa(", "sap(",  "krig(",   "lo(", "random(",
+#   #                      "re(",  "fp(", "pp(", "nl(","ri(","ridge(","fk(", "la(",     
+#   #                      "tr(",  "ga(",   "nn(", "own(" )
+#   lgamsmol  <- length(gamlss.sm.list1)
+#   lsm  <- length(termList)
+#   res <- rep(0, lsm) 
+#   att <- rep(0, lsm)
+#   for (i in 1:length(gamlss.sm.list2))
+#   {
+#     LL <-   grepl(gamlss.sm.list2[i], termList, fixed=TRUE)
+#     res  <- res+LL
+#     att[LL] <- gamlss.sm.list1[i]
+#   }
+#   res <- cumsum(res)
+#   attr(res, "whichSmo") <- att
+#   res
+# }
 
-  

@@ -33,8 +33,8 @@ gamlssNews <- function() file.show(system.file("doc", "NEWS.txt", package="gamls
 .gamlss.multin.list<-c("MULTIN", "MN3", "MN4", "MN5")
 ##----------------------------------------------------------------------------------------
 .gamlss.sm.list<-c("cs", "scs", "vc","s",         # smoothing cubic splines  : cs, scs, vc
-                   "ps", "pb", "cy", "tp", "pvc", # penalised splines       : ps, pb, cy tp pvc pbq
-                   "pbm", "pbj", "pbo",           # monotone and jumps
+                   "ps", "pb", "cy", "tp", "pvc", # penalised splines : ps, pb, cy tp pvc pbq
+                   "pbm", "pbj", "pbo", "pbz",     # monotone going to zero and jumps
                    "pbq",                         # pb using Qfunction
                    "mrf",                         # Markov random fields
                    "mrfa",                        # Markov random fields
@@ -64,6 +64,22 @@ gamlssNews <- function() file.show(system.file("doc", "NEWS.txt", package="gamls
                    
 # note that predict only read 2 characters Monday, May 4, 2009 at 11:27
 ##----------------------------------------------------------------------------------------
+# .gamlss.sm.list<-c( "ar", "arma",
+#                    "cs", "cy", 
+#                    "fk","fp",
+#                    "ga",
+#                    "krig",
+#                    "la","lo",  
+#                   "mrf", "mrfa", 
+#                   "nl","nn",
+#                   "ri", "rw", 
+#                    "pb",  "pbj", "pbm", "pbo", "pbq","pbz",
+#                    "pp","ps", "pvc", 
+#                    "random","re",# random effect
+#                    "sap", "sap3",  "seas",                      
+#                   "test", "test0","test1","tr",                     
+#                   "own")
+
 ##========================================================================================
 ##  Generalised Additive Models for Location Scale and Shape 
 ##   R-functions created 
@@ -801,6 +817,7 @@ smoothers <- a$specials #S convert variable pointers to term pointers
          smoothers[[i]] <- if(any(ff)) seq(along = ff)[a$order == 1 & ff]
                            else NULL
           }
+       if(length(smoothers) > 0) smoothers <-smoothers[order(unlist(smoothers))] # MS 1-9-15
        }
    smoothers
    }

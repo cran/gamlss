@@ -1,4 +1,15 @@
-# This is my attempt make parallel the computation in dropterm()
+# This is an attempt make parallel the computation in dropterm(),
+# addterm() and stepGAIC()
+# Mikis Stasinopoulos  wrote the original with some help from Fernanda
+# An amendment by Daniil Kosie is added to avoid the failure of the function if
+# gamlss() fails
+# This file contains
+# i)   dropterm.gamlss()
+# ii)  addterm.gamlss()
+# iii) stepGAIC()
+# 
+#-------------------------------------------------------------------------------
+# this refers to how the function histrorically was developled and can be ingnore now 
 # The approach is as follows
 #  i) STEP 1: trying to rewrite the dropterm.gamlss() function having 
 #      instead of the loop 
@@ -35,7 +46,7 @@ dropterm.gamlss <- function (object,
                    sorted = FALSE, 
                     trace = FALSE, 
                  parallel = c("no", "multicore", "snow"), #The type of parallel operation to be used (if any). If missing, the default is taken from the option "boot.parallel" (and if that is not set, "no")
-                    ncpus = 1L, #nteger: number of processes to be used in parallel operation: typically one would chose this to the number of available CPUs
+                    ncpus = 1L, #integer: number of processes to be used in parallel operation: typically one would chose this to the number of available CPUs
                        cl = NULL, # An optional parallel or snow cluster for use if parallel = "snow". If not supplied, a cluster on the local machine is created for the duration of the boot call.
                      ...) 
 {
@@ -108,7 +119,7 @@ if (missing(parallel))
     if (any(class(nfit)%in%"try-error"))
     { 
       cat("Model with term ", term, "has failed \n")       
-      NA# extractAIC(object, scale, k = k, ...)          
+      c(NA,NA) # Daniil: prevents execution to stop when fitting of term fails, returns c(df=NA, GAIC = NA)    
     }
     else  extractAIC(nfit, scale, k = k,   ...)
   }
@@ -132,9 +143,9 @@ ans[-1,] <- if (ncpus > 1L && (have_mc || have_snow))
       cl <- parallel::makeForkCluster(ncpus)
       if (RNGkind()[1L] == "L'Ecuyer-CMRG") 
         parallel::clusterSetRNGStream(cl)
-      res <- t(parallel::parSapply(cl, scope, fn))
-      parallel::stopCluster(cl)
-      res
+        res <- t(parallel::parSapply(cl, scope, fn))
+        parallel::stopCluster(cl)
+        res
     }
     else t(parallel::parSapply(cl, scope, fn))
   }
@@ -244,7 +255,7 @@ fn <- function(term)
   if (any(class(nfit)%in%"try-error"))
   { 
     cat("Model with term ", term, "has failed \n")       
-    NA# extractAIC(object, scale, k = k, ...)          
+    c(NA,NA) # Daniil: prevents execution to stop when fitting of term fails, returns c(df=NA, GAIC = NA)       
   }
   else  extractAIC(nfit, scale, k = k,   ...)
 }
@@ -344,8 +355,17 @@ stepGAIC <-function(object,
 
 {
 #-----------------------------------------------------------------------------
-#-----------------------------------------------------------------------------
-  mydeviance <- function(x, ...) 
+# local functions 
+#  1)    mydevianc()
+#  2)    cut.string()
+#  3)    re.arrange()
+#  4)    step.results() 
+#  5)    droptermP()
+#  6)    addtermP()
+#------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
+#  1 
+mydeviance <- function(x, ...) 
   {
     dev <- deviance(x)
     if (!is.null(dev)) 
@@ -354,6 +374,7 @@ stepGAIC <-function(object,
   }
 #-----------------------------------------------------------------------------
 #-----------------------------------------------------------------------------
+# 2 
   cut.string <- function(string) 
   {
     if (length(string) > 1) 
@@ -362,7 +383,8 @@ stepGAIC <-function(object,
   }
 #-----------------------------------------------------------------------------
 #-----------------------------------------------------------------------------
-  re.arrange <- function(keep) 
+# 3 
+ re.arrange <- function(keep) 
   {
     namr <- names(k1 <- keep[[1]])
     namc <- names(keep)
@@ -373,6 +395,7 @@ stepGAIC <-function(object,
   }
 #-----------------------------------------------------------------------------
 #-----------------------------------------------------------------------------
+# 4 
   step.results <- function(models, fit, object, usingCp = FALSE) #
   {
     change <- sapply(models, "[[", "change")
@@ -397,8 +420,9 @@ stepGAIC <-function(object,
     fit$anova <- aod
     fit
   }
-#---------------------------------------==-------------------------------------
 #------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
+# 5
 droptermP <- function (object, 
                        scope, 
                        what = c("mu", "sigma", "nu", "tau"),
@@ -462,7 +486,7 @@ droptermP <- function (object,
       if (any(class(nfit)%in%"try-error"))
       { 
         cat("Model with term ", term, "has failed \n")       
-        NA# extractAIC(object, scale, k = k, ...)          
+        c(NA, NA)# Daniil        
       }
       else  extractAIC(nfit, scale, k = k,   ...)
     }
@@ -520,6 +544,7 @@ droptermP <- function (object,
   }
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
+#  6 
 #  addterm
 addtermP<- function (object, 
                      scope,
@@ -552,8 +577,9 @@ addtermP<- function (object,
     pchisq(q = q, df = df, ...)
   }
   #-----------------------------------------------------------------------------
+  #-----------------------------------------------------------------------------
   what <- if (!is.null(parameter))  {
-    match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)  
+  match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)  
     if (!what %in% object$par) 
     stop(paste(what, "is not a parameter in the object", "\n"))
   if (missing(scope) || is.null(scope)) 
@@ -566,7 +592,7 @@ addtermP<- function (object,
   ans <- matrix(nrow = ns + 1, ncol = 2, dimnames = list(c("<none>", scope), 
                                                          c("df", "AIC")))
   ans[1, ] <- extractAIC(object, scale, k = k,   ...)
-  #  function for parallel apply
+  #  function for parallel apply------------------------------------------------
   fn <- function(term)
   {
     if (trace) 
@@ -576,7 +602,7 @@ addtermP<- function (object,
     if (any(class(nfit)%in%"try-error"))
     { 
       cat("Model with term ", term, "has failed \n")       
-      NA# extractAIC(object, scale, k = k, ...)          
+      c(NA, NA)# extractAIC(object, scale, k = k, ...)          
     }
     else  extractAIC(nfit, scale, k = k,   ...)
   }
@@ -640,34 +666,34 @@ addtermP<- function (object,
 #--------------- PARALLEL-------------------------------------------------------
 #----------------SET UP PART---------------------------------------------------
 if (missing(parallel)) 
-  parallel <- "no"
-parallel <- match.arg(parallel)
-have_mc <- have_snow <- FALSE
+    parallel <- "no"
+    parallel <- match.arg(parallel)
+     have_mc <- have_snow <- FALSE
 if (parallel != "no" && ncpus > 1L) 
 {
   if (parallel == "multicore") 
-    have_mc <- .Platform$OS.type != "windows"
+     have_mc <- .Platform$OS.type != "windows"
   else if (parallel == "snow") 
-    have_snow <- TRUE
+   have_snow <- TRUE
   if (!have_mc && !have_snow) 
-    ncpus <- 1L
+       ncpus <- 1L
   loadNamespace("parallel")
 }
 if (have_snow)
 {
-  cl <- parallel::makeForkCluster(ncpus)
+         cl <- parallel::makeForkCluster(ncpus)
   if (RNGkind()[1L] == "L'Ecuyer-CMRG") 
     parallel::clusterSetRNGStream(cl)
       on.exit(parallel::stopCluster(cl))
 }         
 # -------------- finish parallel------------------------------------------------
 #-------------------------------------------------------------------------------
- what <- if (!is.null(parameter))  {
+      what <- if (!is.null(parameter))  {
     match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
-Terms <- terms(object, what)
+     Terms <- terms(object, what)
 if (what=="mu")
 {
-  object$formula <- Terms 
+       object$formula <- Terms 
   object$call$formula <- Terms
 } 
 else

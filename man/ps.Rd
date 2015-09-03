@@ -10,21 +10,32 @@
 \alias{cy.control}
 \alias{pbm}
 \alias{pbm.control}
+\alias{pbz}
+\alias{pbz.control}
+
 
 \title{Specify a Penalised  B-Spline Fits in a GAMLSS Formula}
 
 \description{
-There are several function operating using penalised B-splines: \code{pb()}, \code{pbo()}, \code{cy()}, \code{pvc()}, \code{pbm()} and \code{ps()}.
+There are several function operating using penalised B-splines: \code{pb()}, \code{pbo()}, \code{cy()}, \code{pvc()}, \code{pbm()}, \code{pbz()} and \code{ps()}.
 
 The functions take a vector and return it with several attributes. The vector is used in the construction of the design matrix X used in the fitting. The functions  do not do the  smoothing, but assign the attributes to the vector to aid gamlss in the smoothing.
-The functions doing the smoothing are   \code{\link{gamlss.pb}()}, \code{\link{gamlss.pbo}()}, \code{\link{gamlss.cy}()} and \code{\link{gamlss.pvc}()},  \code{\link{gamlss.pbm}()} and \code{\link{gamlss.ps}()} which are used in the backfitting  function \code{\link{additive.fit}}.
+The functions doing the smoothing are   \code{\link{gamlss.pb}()}, \code{\link{gamlss.pbo}()}, \code{\link{gamlss.cy}()}  \code{\link{gamlss.pvc}()},  \code{\link{gamlss.pbm}()}, \code{\link{gamlss.pbz}} and \code{\link{gamlss.ps}()} which are used in the backfitting  function \code{\link{additive.fit}}.
 
-The function \code{pb()} is more efficient and faster than the original penalized smoothing function \code{ps()}. After December 2014 the  \code{pb()} has changed radically to improved performance. The older version of the function \code{pb()} is called now \code{pbo()}. 
+
+The function \code{pb()} is more efficient and faster than the original penalised smoothing function \code{ps()}. After December 2014 the  \code{pb()} has changed radically to improved performance. The older version of the \code{pb()} function is called now \code{pbo()}. 
 \code{pb()} allows the estimation of the smoothing parameters using different local (performance iterations) methods.
-The method are "ML", "ML-1", "EM", "GAIC" and "GCV". The function \code{cy()} fits a cycle penalised beta regression spline such as 
+The method are "ML", "ML-1", "EM", "GAIC" and "GCV". 
+
+The function \code{pbm()} fits monotonic smooth functions, that is functions which increase or decrease monotonically depending on the value of the argument \code{mono} which takes the values \code{"up"} or \code{"down"}.
+
+The function \code{pbz()} is similar to \code{pb()} with the extra property that when lambda becomes very large the resulting smooth function  goes to a constant rather than to a linear function. This is very useful for model selection. The function is based on Maria Durban idea of  using double penalties, one of order 2 and one of order 1. The second penalty only applies if the effective df are close to 2 (that is if a linear is selected). 
+  
+The function \code{cy()} fits a cycle penalised beta regression spline such as 
 the last fitted value of the smoother is equal to the first fitted value.
-The function \code{pvc()} fits  varying coefficient models see Hastie and Tibshirani(1993) and it is more general and flexible than the old 
-\code{vc()} function which is based on cubic splines.
+
+The function \code{pvc()} fits  varying coefficient models see Hastie and Tibshirani(1993) and it is more general and flexible than the old \code{vc()} function which is based on cubic splines.
+
 }
 \usage{
 pb(x, df = NULL, lambda = NULL, control = pb.control(...), ...)
@@ -43,6 +54,10 @@ pbm(x, df = NULL, lambda = NULL, mono=c("up", "down"),
             control = pbm.control(...), ...)
 pbm.control(inter = 20, degree = 3, order = 2, start = 10, quantiles = FALSE, 
             method=c("ML","GAIC", "GCV"), k=2, kappa = 1e10, ...)
+pbz(x, df = NULL, lambda = NULL, control = pbz.control(...), ...)
+pbz.control(inter = 20, degree = 3, order = 2, start = 1e-05, quantiles = FALSE, 
+            method = c("ML", "GAIC", "GCV"), k = 2, ...)
+
 ps(x, df = 3, lambda = NULL, ps.intervals = 20, degree = 3, order = 3)
 }
 
@@ -216,7 +231,58 @@ yy <- -y
 plot(yy~x)
 m2 <- gamlss(yy~pbm(x, mono="down"))
 points(fitted(m2)~x, col="red")
+#==========================================
+# the pbz() function
+# creating uncorrelated data
+set.seed(123)
+y<-rNO(100)
+x<-1:100
+plot(y~x)
+#----------------------
+# ML estimation
+m1<-gamlss(y~pbz(x))
+m2 <-gamlss(y~pb(x))
+AIC(m1,m2)
+op <- par( mfrow=c(1,2))
+term.plot(m1, partial=T)
+term.plot(m2, partial=T)
+par(op)
+# GAIC estimation
+m11<-gamlss(y~pbz(x, method="GAIC", k=2))
+m21 <-gamlss(y~pb(x, method="GAIC", k=2))
+AIC(m11,m21)
+op <- par( mfrow=c(1,2))
+term.plot(m11, partial=T)
+term.plot(m21, partial=T)
+par(op)
+# GCV estimation
+m12<-gamlss(y~pbz(x, method="GCV"))
+m22 <-gamlss(y~pb(x, method="GCV"))
+AIC(m12,m22)
+op <- par( mfrow=c(1,2))
+term.plot(m12, partial=T)
+term.plot(m22, partial=T)
+par(op)
+# fixing df is more trycky since df are the extra df 
+m13<-gamlss(y~pbz(x, df=0))
+m23 <-gamlss(y~pb(x, df=0))
+AIC(m13,m23)
+# here the second penalty is not take effect therefore identcal results 
+m14<-gamlss(y~pbz(x, df=1))
+m24 <-gamlss(y~pb(x, df=1))
+AIC(m14,m24)
+# fixing lambda
+m15<-gamlss(y~pbz(x, lambda=1000))
+m25 <-gamlss(y~pb(x, lambda=1000))
+AIC(m15,m25)
+#--------------------------------------------------
+# prediction 
+m1<-gamlss(y~pbz(x), data=data.frame(y,x))
+m2 <-gamlss(y~pb(x), data=data.frame(y,x))
+AIC(m1,m2)
+predict(m1, newdata=data.frame(x=c(80, 90, 100, 110)))
+predict(m2, newdata=data.frame(x=c(80, 90, 100, 110)))
+#---------------------------------------------------
 }
-#==================================
 }
 \keyword{regression}% 

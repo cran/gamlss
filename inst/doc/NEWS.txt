@@ -18,6 +18,18 @@ Question or suggestions about GAMLSS can be send to
 or
    r.rigby@londonmet.ac.uk
 --------------------------------------------------------------------------------
+Version 4.3-6
+1. gamlss i) the functions add1TGD() drop1TGD() and stepTGD() are added to the namespace
+             (someting which was missed with the version Version 4.3-5)
+          ii) the function stepGAICAll.A() can use parallel computations
+          iii) the function get.smoothers() within gamlss() has been modifyied to 
+               preserve the order of the terms in the formula (previouly it was taking
+               the order of the .gamlss.sm.list). This was rather confusing when you are
+               trying to retreve information on the smoothers using for example 
+               the function getSmoo().
+          iv) The function pbz() is introduced. The function is similar to pb() 
+              but allows the fitted smoother to go to a constant rather than linear
+              curve which is usefull for model selection
 Version 4.3-5
 1. gamlss  i) the functions   VGD(), VGD1(), VGD2(), TGD() have been removed and 
                replaced by the functions 

@@ -57,7 +57,7 @@ else { # if gamlss() is used
 	#stop("the option data in gamlss() is required for lo() to work")
      if (is.null(get("gamlsscall", envir=gamlss.env)$data)) 
          { # if no data argument but the formula can be interpreted
-      stop("use of re wihing gamlss required the data argument")	
+      stop("use of re within gamlss requires the data argument")	
          }
      else
          {# data argument in gamlss 
@@ -66,7 +66,6 @@ else { # if gamlss() is used
      }
    Data <- if (any(attributes(eval(substitute(Data)))$class=="groupedData")) eval(substitute(Data))
 else data.frame(eval(substitute(Data))) 
-
      #===== 
       len <- dim(Data)[1] # get the lenth of the data
 ## out

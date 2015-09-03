@@ -144,7 +144,7 @@ l1 <- lme(pixel~ day+I(day^2), data=Pixel, random=list(Dog=~day, Side=~1),
 # but this  is working 
 t1<-gamlss(pixel~re(fixed=~day+I(day^2), random=list(Dog=~day, Side=~1), 
                     opt="optim"), data=Pixel)
-plot(fitted(l1)~fitted(t2))
+plot(fitted(l1)~fitted(t1))
 #---------------Example 4 from Pinheiro and Bates (2000)page 146----------------
 data(Orthodont)
 l1 <- lme(distance~ I(age-11), data=Orthodont, random=~I(age-11)|Subject,
