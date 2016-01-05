@@ -362,10 +362,22 @@ startLambdaName <- as.character(attr(x, "NameForLambda"))
          var <- lev/w              # the variance of the smootherz
 #         browser()
 #      # se <-  sqrt(diag(solve(XWX + lambda * t(D) %*% D)))
+
+
+coefSmo <- list(   coef = fit$beta,
+                     fv = fv, 
+                 lambda = lambda, 
+                    edf = fit$edf, 
+                  sigb2 = tau2, 
+                  sige2 = sig2,
+                   sigb = if (is.null(tau2)) NA else sqrt(tau2),
+                   sige = if (is.null(sig2)) NA else sqrt(sig2),
+                 method = control$method)
+class(coefSmo) <- "pb"
   if (is.null(xeval)) # if no prediction 
     {
      list(fitted.values=fv, residuals=y-fv, var=var, nl.df =fit$edf-2,
-          lambda=lambda, coefSmo=list(coef=fit$beta, lambda=lambda, edf=fit$edf, tau2=tau2, sig2=sig2, method=control$method) )
+          lambda=lambda, coefSmo=coefSmo )
     }                            
 else # for prediction 
     { 
@@ -376,3 +388,26 @@ else # for prediction
     }    
 }
 #-------------------------------------------------------------------------------
+plot.pb <- function(x,...)
+{
+  plot(x$coef, type="h", xlab="knots", ylab="coefficients")
+  abline(h=0)
+}
+
+coef.pb <- function(object, ...)
+{
+  as.vector(object$coef)
+}
+
+fitted.pb<- function(object, ...)
+{
+  as.vector(object$fv)
+}
+
+print.pb  <- function (x, digits = max(3, getOption("digits") - 3), ...) 
+{   
+  cat("P-spline fit using the gamlss function pb() \n")
+  cat("Degrees of Freedom for the fit :", x$edf, "\n")
+  cat("Random effect parameter sigma_b:", format(signif(x$sigb)), "\n")  
+  cat("Smoothing parameter lambda     :", format(signif(x$lambda)), "\n") 
+}

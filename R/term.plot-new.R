@@ -55,7 +55,14 @@ term.plot <- function (object,
 # Local functions
 # i) CheckSmoList() to chech whether they are smoothers in terms
 #-------------------------------------------------------------------------------
-
+plotLME <- function(obj)
+{
+  OBJ <- unclass(ranef(obj))
+  sizelist <- length(OBJ)
+  #  for (i in 1:sizelist) 
+  plot(OBJ[[1]],type="h", ylab=names(OBJ)[1], main="lme fit 1st random coeff.")
+}
+#-------------------------------------------------------------------------------
 draw.polys.in <-function( polys, 
                        object = NULL, 
                        scheme = NULL,
@@ -182,15 +189,17 @@ par(oldpar)
 #     c(0,0,1,1,0,0,1,1) 
 CheckSmoList <- function(termList)
   {
-    gamlss.sm.list1 <- c( "cs","scs", "ps", "pb", "cy", "pvc", "pbm",  "pbj",   
-                         "mrf",   "mrfa", "sap",  "krig",   "lo", "random",
-                         "re",  "fp", "pp", "nl","ri","ridge","fk", "la",     
-                         "tr",  "ga",   "nn", "own" )
+#     gamlss.sm.list1 <- c( "cs","scs", "ps", "pb", "cy", "pvc", "pbm",  "pbj",   
+#                          "mrf",   "mrfa", "sap",  "krig",   "lo", "random",
+#                          "re",  "fp", "pp", "nl","ri","ridge","fk", "la",     
+#                          "tr",  "ga",   "nn", "own" )
+    gamlss.sm.list1 <- .gamlss.sm.list
+    gamlss.sm.list2  <- paste(gamlss.sm.list1,"(", sep="")   
     # ideally this should be done autonmatically
-    gamlss.sm.list2 <- c( "cs(","scs(", "ps(", "pb(", "cy(", "pvc(", "pbm(",  "pbj(",   
-                         "mrf(",   "mrfa(", "sap(",  "krig(",   "lo(", "random(",
-                         "re(",  "fp(", "pp(", "nl(","ri(","ridge(","fk(", "la(",     
-                         "tr(",  "ga(",   "nn(", "own(" )
+#     gamlss.sm.list2 <- c( "cs(","scs(", "ps(", "pb(", "cy(", "pvc(", "pbm(",  "pbj(",   
+#                          "mrf(",   "mrfa(", "sap(",  "krig(",   "lo(", "random(",
+#                          "re(",  "fp(", "pp(", "nl(","ri(","ridge(","fk(", "la(",     
+#                          "tr(",  "ga(",   "nn(", "own(" )
     lgamsmol  <- length(gamlss.sm.list1)
          lsm  <- length(termList)
           res <- rep(0, lsm) 
@@ -210,7 +219,7 @@ CheckSmoWithPlot <- function(termList)
 {
   #gamlss.Smo.plot.list <- c( "tr", "ga")
   gamlss.Smo.plot.list1 <- c( "tr(", "ga(", "nn(", "pvc(", "mrf(", "mrfa(", "ri(",
-                             "own(" )
+                             "own(" , "re(")
   lgamsmol  <- length(gamlss.Smo.plot.list1)
   lsm  <- length(termList)
   res <- rep(0, lsm) 
@@ -351,10 +360,13 @@ whichValueSmo <- CheckSmoList(nmt)
          ylims <- ylim # default "common"
     if (identical(ylims, "common"))  # whether common limit in y
     {
-        suppressWarnings(        ylims <- if (!se) # this has to go here because nn and
-                      range(tms, na.rm = TRUE)       # ga have se NA MS 16-5-15
-                  else range(tms + 1.05 * 2 * terms$se.fit, tms - 1.05 * 
-                        2 * terms$se.fit, na.rm = TRUE))
+        suppressWarnings(   if (!se) # this has to go here because nn and
+          ylims <-   range(tms, na.rm = TRUE)       # ga have se NA MS 16-5-15
+                  else {
+                    terms$se.fit <- ifelse(terms$se.fit==Inf, NA, terms$se.fit)
+                     ylims <-  range(tms + 1.05 * 2 * terms$se.fit, tms - 1.05 * 
+                        2 * terms$se.fit, na.rm = TRUE)
+                      })
       if (partial.resid) 
         ylims <- range(ylims, pres, na.rm = TRUE)
       if (rug) 
@@ -508,6 +520,10 @@ whichValueSmo <- CheckSmoList(nmt)
            {
              plot(getSmo(object, what, which=whichValueSmo[i]), y.lab=expression(eta))
            } 
+          if (attr(whichValueSmo, "whichSmo")[i]=="re")
+          {
+            plotLME(getSmo(object, what, which=whichValueSmo[i])) 
+          } 
           if (attr(whichValueSmo, "whichSmo")[i]=="mrf"||attr(whichValueSmo, "whichSmo")[i]=="mrfa") 
           { 
             if (is.null(polys)) 

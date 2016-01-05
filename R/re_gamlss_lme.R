@@ -1,7 +1,7 @@
 #-------------------------------------------------------------------------------
 # This is an the interface to use the lme() function of 
 # Pinheiro and Bates (2000)  within gamlss()
-# fit smoothing terms using the lme() function of nlme 
+# fit random effect  terms using the lme() function of nlme 
 # which is used in the backfitting 
 #-------------------------------------------------------------------------------
 # Authors Mikis Stasinopoulos, Marco Enea
@@ -20,7 +20,8 @@
 #      f) corStruct Classes page 233
 #          look at table 5.3 page 234 can we fit any of those??
 # formula, random = NULL, correlation = NULL,
-#-----------------------------------------
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 re <-function(fixed=~1, random = NULL, correlation = NULL, method = "ML", ...) 
 { 
 #------------------------------------------
@@ -53,17 +54,18 @@ if (sys.call(position)[1]=="predict.gamlss()")
      { # if predict is used 
       Data <- get("data", envir=gamlss.env)
      }
-else { # if gamlss() is used
-	#stop("the option data in gamlss() is required for lo() to work")
+else if (sys.call(position)[1]=="gamlss()") 
+     { # if gamlss() is used
      if (is.null(get("gamlsscall", envir=gamlss.env)$data)) 
          { # if no data argument but the formula can be interpreted
-      stop("use of re within gamlss requires the data argument")	
+     Data <- model.frame(formula)	
          }
      else
          {# data argument in gamlss 
      Data <- get("gamlsscall", envir=gamlss.env)$data
          }
      }
+else  {Data <- get("data", envir=gamlss.env)}
    Data <- if (any(attributes(eval(substitute(Data)))$class=="groupedData")) eval(substitute(Data))
 else data.frame(eval(substitute(Data))) 
      #===== 

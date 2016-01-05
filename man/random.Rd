@@ -2,7 +2,7 @@
 \alias{random}
 \alias{re}
 
-\title{Specify random effects in a GAMLSS formula}
+\title{Specify a random intercept model in a GAMLSS formula}
 
 \description{They are two functions for fitting random effects wthin a  GAMLSS model, \code{random()} and \code{re()}. 
 

@@ -18,18 +18,32 @@ Question or suggestions about GAMLSS can be send to
 or
    r.rigby@londonmet.ac.uk
 --------------------------------------------------------------------------------
+Version 4.3-7
+
+1. gamlss i) the fuctionn random() had a bug which did not take the df's. This is now     corrected
+          ii) when the functions pb(), pbm(), pbz(), cy() and random() were used a list was created. Now R object are created of class "pb", "pbm", "pbz", "cy" and"random" rspectively. Those objects can be accessed after the fit using the function getSmo(). The methods print(), plot(), fitted() and coef() can be applied to them
+         iii) the function histSmo() has been revised
+          iv) the function getZmatrix() is created to facilitate fitting smoother using the re() function.
+           v) The function lo()  has been revised (it was failling under 3.2.3 (2015-12-10)) 
+
+2. gamlss.data i) the glasses data set, a nice example of a mixture distribution, is added
+               ii) the respInf data set: an example of  binary random effects
+               iii) the meta data set: an example of binomial non=parametric random effect model
+
+
+
+
 Version 4.3-6
 1. gamlss i) the functions add1TGD() drop1TGD() and stepTGD() are added to the namespace
-             (someting which was missed with the version Version 4.3-5)
+             (something which was missed with the version Version 4.3-5)
           ii) the function stepGAICAll.A() can use parallel computations
-          iii) the function get.smoothers() within gamlss() has been modifyied to 
-               preserve the order of the terms in the formula (previouly it was taking
+          iii) the function get.smoothers() within gamlss() has been modified to 
+               preserve the order of the terms in the formula (previously it was taking
                the order of the .gamlss.sm.list). This was rather confusing when you are
-               trying to retreve information on the smoothers using for example 
+               trying to retrieve information on the smoothers using for example 
                the function getSmoo().
           iv) The function pbz() is introduced. The function is similar to pb() 
-              but allows the fitted smoother to go to a constant rather than linear
-              curve which is usefull for model selection
+              but allows the fitted smoother to go to a constant rather than    linear curve which is useful for model selection
 Version 4.3-5
 1. gamlss  i) the functions   VGD(), VGD1(), VGD2(), TGD() have been removed and 
                replaced by the functions 
@@ -59,34 +73,34 @@ Version 4.3-5
          iii) The functions drop1All() and add1All() are added while the function 
               stepGAICAll.B() works now with parallel. 
 
-         iv)  The functon rqres.plot() has modified to allow  arguments for the wp()
+         iv)  The function rqres.plot() has modified to allow  arguments for the wp()
               function.
       
-          v) pb(): an extra condition was added if the number of distict points of the   
+          v) pb(): an extra condition was added if the number of distinct points of the   
               x-variable  is less the number of interval (in control) then the number of 
-              intervals is set  to number of   distict values of x (thanks to Juliane Manitz 
+              intervals is set  to number of   distinct values of x (thanks to Juliane Manitz 
               for point out the problem) 
           
          vi) rqres() function is modified to produce the correct randomised residuals for 
              mass point 1 in the INFBE and INFBE1 distributions. 
-             Also rqres1() (a hiden function as rqres()) is created  for allowing to fix the 
-             seed in the randomsation. To use the function use gamlss:::rqres1(). 
+             Also rqres1() (a hidden function as rqres()) is created  for allowing to fix the 
+             seed in the randomisation. To use the function use gamlss:::rqres1(). 
                
         vii) pbm(): is using svd now like pb() 
 
         viii) term.plot() the  warning when nn() or ga() was used (when ylim is calculated for 
-               "common") is supressed.
+               "common") is suppressed.
 
          ix) A lot of functions within gamlss have the arguments "what" as a way to refer to a specific
             parameter of the distribution. We decide to include also the argument "parameter" as more
-            intuitive way of refering to a specific parameter. In his version if say `parameter="mu"' 
+            intuitive way of referring to a specific parameter. In his version if say `parameter="mu"' 
             is set then take over from the  "what" argument. The function effected are 
              fitted.gamlss(), coef.gamlss(), lp(), fv(), model.frame.gamlss(), terms.gamlss(),
              model.matrix.gamlss(), formula.gamlss(), update.gamlss(), dropterm.gamlss(),
              addterm.gamlsss(), stepGAIC(), edf(), lpred(), confint.gamlss(), fitted.gamlssML(),
              getSmo(), predict,lms(), plot2way(), predict.gamlss(),stepGAIC.VR(), stepGAIC.CH().
 
-          x) The function ri() (for ridge regression) is rewriten. Now the function allows different type of penalties. For example using the argument "Lp=1" or "Lp=0" a lasso or a selection of linear terms can be done respectivelly.    
+          x) The function ri() (for ridge regression) is rewriten. Now the function allows different type of penalties. For example using the argument "Lp=1" or "Lp=0" a lasso or a selection of linear terms can be done respectively.    
 
 1. gamlss.dist A bug in is pBB() is fixed thanks to Jonatan Kallus.
 

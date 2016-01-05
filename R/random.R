@@ -1,5 +1,5 @@
 #-------------------------------------------------------------------------------
-# this function is a modifyied version of  Hastie's S-plus gam random function
+# this function is a modifyied version of  Hastie's S-plus gam test function
 # it allows a random effect fit for a factor
 # TO DO:  i) check for weighted out obseervations
 #        ii) put prediction
@@ -11,8 +11,9 @@ random <- function(x, df = NULL, lambda = NULL, start=10)
     stop("random() expects a factor as its first argument")
  if (!is.null(df))
    {
-     nlevelsMinusOne <- nlevels(x)-1
-     df <- if(df>=nlevelsMinusOne) nlevelsMinusOne 
+     nlevelsM <- nlevels(x)
+     df <- if(df>=nlevelsM) nlevelsM  else df
+     df <- if(df<=0) 0.001  else df
    }
    xvar <- C(x, rep(0, length(levels(x))), 1) # puts zero in the X matrix 
  attr(xvar, "call") <- substitute( gamlss.random(data[[scall]], z, w))
@@ -95,6 +96,47 @@ if (!is.null(df)&&is.null(lambda)) # case 3 : if df are required----------------
       fv <-   fit$beta[x]
      var <- as.vector(w/(nw[x] + lambda))
     residuals <- as.vector(y -fv )
+coefSmo <- list(  coef = fit$beta,
+                lambda = lambda, 
+                   edf = fit$edf, 
+                 sigb2 = tau2, 
+                 sige2 = sig2,
+                sigb = if (is.null(tau2)) NA else sqrt(tau2),
+                sige = if (is.null(sig2)) NA else sqrt(sig2),
+                    fv = fv,  
+                factor = x,
+                    se = sqrt(var))
+class(coefSmo) <- "random"
     list(x = seq(along = nw), y = fv, residuals = residuals, var = var, 
-         nl.df = fit$edf, lambda=lambda, coefSmo=list(beta=beta, lambda=lambda, edf=fit$edf, sig2=sig2, tau2=tau2)) # MS 
+         nl.df = fit$edf, lambda=lambda, coefSmo=coefSmo) # MS 
+}
+
+plot.random <- function(x,...)
+{
+  plot(levels(x$factor), x$coef, type="h", xlab="levels", ylab="coefficients")
+  abline(h=0)
+}
+
+coef.random <- function(object, ...)
+{
+  as.vector(object$coef)
+}
+
+fitted.random<- function(object, ...)
+{
+  as.vector(object$fv)
+}
+
+print.random  <- function (x, digits = max(3, getOption("digits") - 3), ...) 
+{   
+  cat("Randon effects fit using the gamlss function random() \n")
+#  cat("\nCall: ", deparse(x$call), "\n", fill = TRUE)
+#  cat("Coefficients \n")
+#  co <- coef(x)
+#  cat("\n  ", names(co), "\n")
+#  cc <-simplify2array(co, higher=TRUE)
+#  cat(cc, " \n")
+  cat("Degrees of Freedom for the fit :", x$edf, "\n")
+  cat("Random effect parameter sigma_b:", format(signif(x$sigb)), "\n")  
+  cat("Smoothing parameter lambda     :", format(signif(x$lambda)), "\n") 
 }

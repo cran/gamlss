@@ -239,7 +239,7 @@ regpenEM <- function(y, X, w, lambda, order, D)
     I.lambda.D <- (1+lambda*UDU$values)
            edf <- sum(1/I.lambda.D)
          y_Hy2 <- y.y-2*sum((yy^2)/I.lambda.D)+sum((yy^2)/((I.lambda.D)^2))
-           GCV <- (n*y_Hy2)/(n-k*edf)
+           GCV <- (n*y_Hy2)/(n-k*edf)^2
            GCV
            }  
 #--------------------------------------------------

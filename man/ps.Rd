@@ -12,6 +12,7 @@
 \alias{pbm.control}
 \alias{pbz}
 \alias{pbz.control}
+\alias{getZmatrix}
 
 
 \title{Specify a Penalised  B-Spline Fits in a GAMLSS Formula}
@@ -36,6 +37,7 @@ the last fitted value of the smoother is equal to the first fitted value.
 
 The function \code{pvc()} fits  varying coefficient models see Hastie and Tibshirani(1993) and it is more general and flexible than the old \code{vc()} function which is based on cubic splines.
 
+The function \code{getZmatrix()} creates a (random effect) design matrix \code{Z} which cane be  used to fit a P-splines smoother using the \code{re())} function. (The \code{re()}  is an interface with the random effect function \code{lme} of the package \pkg{nlme}. 
 }
 \usage{
 pb(x, df = NULL, lambda = NULL, control = pb.control(...), ...)
@@ -59,6 +61,8 @@ pbz.control(inter = 20, degree = 3, order = 2, start = 1e-05, quantiles = FALSE,
             method = c("ML", "GAIC", "GCV"), k = 2, ...)
 
 ps(x, df = 3, lambda = NULL, ps.intervals = 20, degree = 3, order = 3)
+
+getZmatrix(x, xmin = NULL, xmax = NULL, inter = 20, degree = 3, order = 2)
 }
 
 \arguments{
@@ -80,6 +84,8 @@ ps(x, df = 3, lambda = NULL, ps.intervals = 20, degree = 3, order = 3)
   \item{mono}{for monotonic P-splines whether going "up"  or "down"}
   \item{kappa}{the smoothing hyper-parameter for the monotonic part of smoothing}
   \item{ps.intervals}{the no of break points in the x-axis}
+  \item{xmin}{minimum value for creating the B-spline}
+  \item{xmax}{maximum value for creating the B-spline}
 } 
 \details{
 The \code{ps()} function is based on Brian Marx function which can be found in \url{http://www.stat.lsu.edu/faculty/marx/}.
@@ -130,7 +136,7 @@ Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location s
 \author{ Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby \email{r.rigby@londonmet.ac.uk } and Paul Eilers}
 
 \section{Warning}{There are occasions where the automatic local methods do not work. One accusation which came to our attention is  when 
-the range of the response variable values is very large. Scalling the response variable will solve the problem.} 
+the range of the response variable values is very large. Scaling the response variable will solve the problem.} 
 
 \seealso{ \code{\link{gamlss}}, \code{\link{gamlss.ps}}, \code{\link{cs}}}
 \examples{

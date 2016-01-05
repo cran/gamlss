@@ -13,7 +13,7 @@ lo <-function(formula, control=lo.control(...), ...)
 #------------------------------------------
 # function starts here
 #------------------------------------------
-    scall <- deparse(sys.call())
+    scall <- deparse(sys.call(), width.cutoff = 500L)
 if (!is(formula, "formula")) stop("lo() needs a formula starting with ~")
 # get where "gamlss" is in system call
 # it can be in gamlss() or predict.gamlss()  
@@ -26,24 +26,27 @@ for (i in length(rexpr):1)
   # 
 gamlss.env <- sys.frame(position) #gamlss or predict.gamlss
 ##---
-## get the data
 if (sys.call(position)[1]=="predict.gamlss()")
-     { # if predict is used 
-      Data <- get("data", envir=gamlss.env)
-     }
-else { # if gamlss() is used
-	#stop("the option data in gamlss() is required for lo() to work")
-     if (is.null(get("gamlsscall", envir=gamlss.env)$data)) 
-         { # if no data argument but the formula can be interpreted
-     Data <- model.frame(formula)	
-         }
-     else
-         {# data argument in gamlss 
-     Data <- get("gamlsscall", envir=gamlss.env)$data
-         }
-     }
-     Data <- data.frame(eval(substitute(Data)))
-     #===== 
+{ # if predict is used 
+  Data <- get("data", envir=gamlss.env)
+}
+else if (sys.call(position)[1]=="gamlss()") 
+{ # if gamlss() is used
+  if (is.null(get("gamlsscall", envir=gamlss.env)$data)) 
+  { # if no data argument but the formula can be interpreted
+    Data <- model.frame(formula)  
+  }
+  else
+  {# data argument in gamlss 
+    Data <- get("gamlsscall", envir=gamlss.env)$data
+  }
+}
+else  {Data <- get("data", envir=gamlss.env)}
+Data <- data.frame(eval(substitute(Data)))
+#===== 
+len <- dim(Data)[1] # get the lenth of the data
+## out
+
       len <- dim(Data)[1] # get the lenth of the data
     #  get the free arguments 
     alist <- list(...)
@@ -66,15 +69,15 @@ lo.control <-  function (span = 0.75, enp.target=NULL, degree = 2,
       family = c("gaussian", "symmetric"),
       method = c("loess", "model.frame"),
       surface = c("interpolate", "direct"), 
-      statistics = c("approximate", "exact"), 
+      statistics = c("approximate", "exact", "none"), 
       trace.hat = c("exact", "approximate"), 
       cell = 0.2, 
-      iterations = 4, ...) 
+      iterations = 4,  iterTrace = FALSE, se=TRUE,...) 
 {
        list(span = span, enp.target=enp.target, degree=degree,
          parametric = parametric, drop.square = drop.square, normalize = normalize, family=family,
          method=method, surface = surface, statistics = statistics, trace.hat = trace.hat, 
-         cell = cell, iterations = iterations)
+         cell = cell, iterations = iterations, iterTrace = FALSE,se=se)
 }
 #--------------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------------
@@ -100,7 +103,8 @@ gamlss.lo <-function(x, y, w, xeval = NULL, ...)
                      control=loess.control(surface=control$surface,
                      statistics=control$statistics,
                      trace.hat=control$trace.hat,
-                      iterations= control$iterations)) 
+                     iterations= control$iterations, 
+                     iterTrace = control$iterTrace)) 
          }
        else 
          { 
@@ -111,16 +115,18 @@ gamlss.lo <-function(x, y, w, xeval = NULL, ...)
                      control=loess.control(surface=control$surface,
                      statistics=control$statistics,
                      trace.hat=control$trace.hat,
-                      iterations= control$iterations)) 
+                     iterations= control$iterations,
+                     iterTrace = control$iterTrace)) 
          } 
         df <- fit$trace.hat-1 
         fv <- fitted(fit) 
  residuals <- Y.var-fv
+       var <- if(control$se) (predict(fit, se=T)$se.fit)^2 else NA
   if (is.null(xeval))
     {
    list(fitted.values=fv, residuals=residuals,
      nl.df = df, lambda=fit$pars[["span"]], ## we nead df's here 
-     coefSmo = fit, var=NA)    # var=fv has to fixed
+     coefSmo = fit, var=var) # for more than one  
     }
 else 
     {

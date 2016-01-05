@@ -376,10 +376,21 @@ startLambdaName <- as.character(attr(x, "NameForLambda"))
          var <- lev/w              # the variance of the smootherz
 #         browser()
 #      # se <-  sqrt(diag(solve(XWX + lambda * t(D) %*% D)))
+
+coefSmo <- list(   coef = fit$beta,
+                     fv = fv, 
+                 lambda = lambda, 
+                    edf = fit$edf, 
+                  sigb2 = tau2, 
+                  sige2 = sig2,
+                   sigb = if (is.null(tau2)) NA else sqrt(tau2),
+                   sige = if (is.null(sig2)) NA else sqrt(sig2),
+                 method = control$method)
+class(coefSmo) <- c("pb", "pbm")                         
   if (is.null(xeval)) # if no prediction 
     {
      list(fitted.values=fv, residuals=y-fv, var=var, nl.df =fit$edf-2,
-          lambda=lambda, coefSmo=list(coef=fit$beta, lambda=lambda, edf=fit$edf, tau2=tau2, sig2=sig2, method=control$method) )
+          lambda=lambda, coefSmo=coefSmo )
     }                            
 else # for prediction 
     { 
@@ -390,3 +401,63 @@ else # for prediction
     }    
 }
 #-------------------------------------------------------------------------------
+
+print.pbm  <- function (x, digits = max(3, getOption("digits") - 3), ...) 
+{   
+  cat("Monotone P-spline fit using the gamlss function pbm() \n")
+  cat("Degrees of Freedom for the fit :", x$edf, "\n")
+  cat("Random effect parameter sigma_b:", format(signif(x$sigb)), "\n")  
+  cat("Smoothing parameter lambda     :", format(signif(x$lambda)), "\n") 
+}
+#-------------------------------------------------------------------------------
+getZmatrix<-function (x,xmin=NULL,xmax=NULL,inter=20,degree=3,order=2) 
+{
+  #-----------------------local function------------------------------------------
+  bbase <- function(x, xl, xr, ndx, deg, quantiles=FALSE)
+  {
+    tpower <- function(x, t, p)
+      # Truncated p-th power function
+      (x - t) ^ p * (x > t)
+    # DS xl= min, xr=max, ndx= number of points within 
+    # Construct B-spline basis
+    # if quantiles=TRUE use different bases
+    dx <- (xr - xl) / ndx # DS increment 
+    if (quantiles) # if true use splineDesign
+    { 
+      knots <-  sort(c(seq(xl-deg*dx, xl, dx),quantile(x, prob=seq(0, 1, length=ndx)), seq(xr, xr+deg*dx, dx))) 
+      B <- splineDesign(knots, x = x, outer.ok = TRUE, ord=deg+1)
+      return(B)    
+    }
+    else # if false use Paul's
+    { 
+      knots <- seq(xl - deg * dx, xr + deg * dx, by = dx)
+      P <- outer(x, knots, tpower, deg)# calculate the power in the knots
+      n <- dim(P)[2]
+      D <- diff(diag(n), diff = deg + 1) / (gamma(deg + 1) * dx ^ deg) # 
+      B <- (-1) ^ (deg + 1) * P %*% t(D) 
+      B 
+    }
+  }
+  #-------------------------------------------------------------------------------
+  #------------------------------------------------------------------------------
+  #-------------------------------------------------------------------------------
+  no.dist.val <-  length(table(x))
+  lx <- length(x)
+  inter <- if (lx<99) 10 else inter # this is to prevent singularities when length(x) is small
+  inter <- if (no.dist.val<=inter)  no.dist.val else inter 
+  if (is.null(xmin)) xl <- min(x)
+  if (is.null(xmax)) xr <- max(x) 
+  xmin <- if (is.null(xmin))  xl - 0.01 * (xr - xl) else xmin  
+  xmax <- if (is.null(xmax))  xr + 0.01 * (xr - xl) else xmax 
+  B <- bbase(x, xmin, xmax, inter, degree, FALSE) # 
+  r <- ncol(B)
+  D <- if(order==0) diag(r) else diff(diag(r), diff=order)
+  P.svd <- svd(t(D)%*%D)
+  U <- (P.svd$u)[,1:(r-order)]
+  d <- (P.svd$d)[1:(r-order)]
+  Delta <- diag(1/sqrt(d))
+  Z <- B%*%U%*%Delta
+  Z
+}
+#-------------------------------------------------------------------------------
+

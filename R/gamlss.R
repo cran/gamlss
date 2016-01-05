@@ -32,29 +32,30 @@ gamlssNews <- function() file.show(system.file("doc", "NEWS.txt", package="gamls
 .gamlss.bi.list<-c("BI", "Binomial", "BB", "Beta Binomial", "ZIBI", "ZIBB", "ZABI", "ZABB") # binomial denominators
 .gamlss.multin.list<-c("MULTIN", "MN3", "MN4", "MN5")
 ##----------------------------------------------------------------------------------------
-.gamlss.sm.list<-c("cs", "scs", "vc","s",         # smoothing cubic splines  : cs, scs, vc
+.gamlss.sm.list<-c("cs", "scs",                   # smoothing cubic splines  "s" vc"
                    "ps", "pb", "cy", "tp", "pvc", # penalised splines : ps, pb, cy tp pvc pbq
-                   "pbm", "pbj", "pbo", "pbz",     # monotone going to zero and jumps
+                   "pbm", "pbj", "pbo", "pbz",    # monotone jumps and going to zero
+                   "pbr",                         # pb rendom effect
+                   "pcat",                        # for categorical to reduce levels 
                    "pbq",                         # pb using Qfunction
-                   "mrf",                         # Markov random fields
-                   "mrfa",                        # Markov random fields
-                   "sap",                         # seperation of Anisotropic penalties
-                   "sap3",                        #
-                   "krig" ,                        # kriging
-                   "lo",                          # loess                    : lo
-                   "random","ra","rc","rash","re",# random effect            : random, ra, rc, re (lme) rash
-                   "fp","pp",                     # fractional poly          : fp, pp
-                   "nl",                          # non-linear (.nl)         : nl
-                   "ri", "ridge",                 # ridge regression         : ri, ridge
-                   "boost",                       # boosting                 : boost
-                   "fk",                          # free knot smoothing      : fk
-                   "own", "test", "test0","test1",# for testing new          : own test test0 test1 
-                   "arma",                        # time series              : arma
-                   "rw", "ar", "seas",            # time series              : random walk, ar, sesonality, 
-                   "srw", "sar",                  # time series              : seasonal rw, seasonal ar, 
-                   "la",                          # time series              : penalised lags, 
-                   "tr",                          # decision trees           : tr
-                   "ga", "cr",                    # gam - Simon Wood         : ga, cr (cubic regression splines) 
+                   "gmrf",                        # Gaussian Markov random fields
+                   "mrfa",  "mrf",                # Markov random fields
+                   "sap", "sap3",                 # seperation of Anisotropic penalties
+                   "krig" ,                       # kriging
+                   "lo",                          # loess                   
+                   "random","re",                 # random effect     "ra","rc","rash"
+                   "fp","pp",                     # fractional poly         
+                   "nl",                          # non-linear (.nl)         
+                   "ri",                          # ridge regression      "ridge",
+                   "boost",                       # boosting              
+                   "fk",                          # free knot smoothing   
+                   "own", "test", "test0","test1",# for testing new   
+                   "arma",                        # time series  
+                   "rw", "ar", "seas",            # time series             
+                   "srw", "sar",                  # time series seasonal  
+                   "la",                          # time series penalised lags, 
+                   "tr",                          # decision trees  
+                   "ga", "mm",                    # gam - Simon Wood      
                    "nn",                          # neural netwoks           : nn
                    "sv",                          # suppor vector machines   : sv 
                    "ma",                          # mars                     : ma

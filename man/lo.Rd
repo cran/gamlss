@@ -12,9 +12,9 @@ lo.control(span = 0.75, enp.target = NULL,
           normalize = TRUE, family = c("gaussian", "symmetric"), 
           method = c("loess", "model.frame"), 
           surface = c("interpolate", "direct"), 
-          statistics = c("approximate", "exact"), 
+          statistics = c("approximate", "exact", "none"), 
           trace.hat = c("exact", "approximate"), 
-          cell = 0.2, iterations = 4, ...)
+          cell = 0.2, iterations = 4,iterTrace = FALSE, se=TRUE, ...)
 }
 
 \arguments{
@@ -35,6 +35,8 @@ lo.control(span = 0.75, enp.target = NULL,
   \item{trace.hat}{should the trace of the smoother matrix be computed exactly or approximately? See the help file of \code{loess.control}}
   \item{cell}{if interpolation is used this controls the accuracy of the approximation via the maximum number of points in a cell in the kd tree. See the help file of \code{loess.control}}
   \item{iterations}{the number of iterations used in robust fitting. See the help file of \code{loess.control}}
+\item{iterTrace}{logical (or integer) determining if tracing information during the robust iterations (iterations>= 2) is produced. See the help file of \code{loess.control}}
+\item{se}{logical, indicating whether the estimation of the standard errors for the smooth function should be estimated within the gamlss backfitting or not. NOTE that \code{se=TRUE} increases considerably the fitting time especialy if surfaces are fitted i.e. \code{lo(~x1+x2)}.}
 }
 \details{
  Note that \code{lo} itself does no smoothing; it simply sets things up for the function \code{gamlss.lo()} which is used by the backfitting function  \code{gamlss.add()}.
@@ -43,7 +45,6 @@ lo.control(span = 0.75, enp.target = NULL,
  a loess object is returned.  
 }
 \references{
-
 Chambers, J. M. and Hastie, T. J. (1991). \emph{Statistical Models in S}, Chapman and Hall, London. 
 
 Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), 

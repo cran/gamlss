@@ -2,24 +2,33 @@
 # Paul Eilers' density estimation
 #--------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------
-histSmo <- function(y, lambda=NULL, df=NULL, order=3, lower=NULL, upper=NULL, type=c("freq", "prob"), save=FALSE, plot=TRUE, breaks=NULL,  discrete = FALSE, ...)
+histSmo <- function(y, 
+                lambda = NULL, 
+                    df = NULL, 
+                 order = 3, 
+                 lower = NULL,  
+                 upper = NULL, 
+                  type = c("freq", "prob"),  
+                  plot = FALSE, 
+                breaks = NULL,  
+              discrete = FALSE, ...)
 {
+histSmocall <- match.call() 
        type <- match.arg(type) 
      if (is.null(lambda)&&is.null(df))# estimate lambda
      {
-m1 <- histSmoP(y=y, lambda=lambda, df=df, order=order, lower=lower, upper=upper, type=type, save=save, plot=plot, breaks = breaks, discrete = discrete, ...)  
-if (save) return(m1)
+m1 <- histSmoP(y=y, lambda=lambda, df=df, order=order, lower=lower, upper=upper, type=type, plot=plot, breaks = breaks, discrete = discrete, ...) 
      }
        if (!is.null(lambda))# specify lambda
      {
-m1 <- histSmoO(y=y, lambda=lambda,order=order, lower=lower, upper=upper, type=type, save=save, plot=plot, breaks = breaks, discrete = discrete, ...)  
-if (save) return(m1)
+m1 <- histSmoO(y=y, lambda=lambda,order=order, lower=lower, upper=upper, type=type, plot=plot, breaks = breaks, discrete = discrete, ...)  
      }   
        if (!is.null(df))# specify df's
      {
-m1 <- histSmoC(y=y, df=df, lower=lower, upper=upper, type=type, save=save, plot=plot, breaks = breaks, discrete = discrete, ...)  
-if (save) return(m1)
-     }       
+m1 <- histSmoC(y=y, df=df, lower=lower, upper=upper, type=type, plot=plot, breaks = breaks, discrete = discrete, ...)  
+     } 
+ m1$call <- histSmocall
+invisible(m1)
 }
 #--------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------
@@ -31,8 +40,7 @@ histSmoO <- function(y,
                      lower = NULL, 
                      upper = NULL, 
                       type = c("freq", "prob"), 
-                      save = FALSE, 
-                      plot = TRUE, 
+                      plot = FALSE, 
                     breaks = NULL,
                   discrete = FALSE,
                      ...)
@@ -65,7 +73,7 @@ histSmoO <- function(y,
 # it take a discrete variable and creates values and frequencies 	
 getTabs <- function(y, freq=NULL, lower=min(y), upper=max(y))
 {
-        x1 <- seq(lower, upper, step=1)
+        x1 <- seq(lower, upper, by=1)
 	      fy <- if (is.null(freq)) factor(y,levels=x1) else factor(rep(y,freq),levels=x1)
 	  tabley <- xtabs(~fy)
 	#notresy <- if (is.null(freq)) factor(y) else factor(rep(y,freq)) 
@@ -74,6 +82,7 @@ out
 }  
 #--------------------------------
 # main function starts here 	
+   histSmocall <- match.call() 
           type <- match.arg(type)
             Ry <- range(y) #ok
             ly <- length(y) # ok
@@ -110,19 +119,21 @@ if (plot)
   if (discrete)
    {
   switch(type, "freq"={ 
-  	                    r<-barplot(Y, fg = "blue", col="gray", axis.lty=1, 
-                                    border="blue", col.axis = "blue4",col.main = "blue4", 
-                                    col.lab = "blue4",  ylab="Frequency", names.arg=as.character(x),
-                                    ...)
-                                    lines(r, mu, col = 'red', lty = 1, lwd = 1, type="h")
-                                    points(r, mu, col="red")},
-                "prob"= { r <- barplot(Y/sum(Y), fg = "blue", col="gray", axis.lty=1, 
-                                    border="blue", col.axis = "blue4",col.main = "blue4", 
-                                    col.lab = "blue4",   ylab="Density", names.arg=as.character(x),
-                                    ...)
-                                    lines(r, (mu/sum(mu)), col = 'red', lty = 1, lwd = 3)
-                                    points(r, mu, col="red")
-                                    }) 		
+  	     r<-barplot(Y, fg = "blue", col="gray", axis.lty=1, 
+            border="blue", col.axis = "blue4",col.main = "blue4", 
+            col.lab = "blue4",  ylab="Frequency", names.arg=as.character(x),
+            ...)
+            lines(r, mu, col = 'red', lty = 1, lwd = 1, type="h")
+            points(r, mu, col="red")
+                      },
+                  "prob"= { 
+        r <- barplot(Y/sum(Y), fg = "blue", col="gray", axis.lty=1, 
+             border="blue", col.axis = "blue4",col.main = "blue4", 
+            col.lab = "blue4",   ylab="Density", names.arg=as.character(x),
+                ...)
+            lines(r, (mu/sum(mu)), col = 'red', lty = 1, lwd = 3)
+            points(r, (mu/sum(mu)), col="red")
+                      }) 		
    }	
   else
    {
@@ -130,13 +141,12 @@ if (plot)
                 "prob"= {plot(hst, freq=FALSE,...); lines(x, (mu/sum(mu))/dx, col = 'red', lty = 1, lwd = 3)}) 	
    }
  }
-if (save)
-  {
+
          density <- if (discrete) (mu/sum(mu)) else (mu/sum(mu))/dx	
-             out <- list(x=x, counts=Y, density=density, hist=hst, cdf=cdfFun, invcdf=invcdfFun, discrete=discrete)
+             out <- list(x=x, counts=Y, density=density, hist=hst, cdf=cdfFun, invcdf=invcdfFun, call= histSmocall, discrete=discrete)
       class(out) <- "histSmo"
-  return(out) 
-  }
+  invisible(out) 
+
 }    
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
@@ -150,8 +160,7 @@ histSmoC <- function(y,
                    lower = NULL, 
                    upper = NULL, 
                     type = c("freq", "prob"), 
-                    save = FALSE, 
-                    plot = TRUE, 
+                    plot = FALSE, 
                   breaks = NULL, 
                 discrete = FALSE,
                      ...)
@@ -163,7 +172,7 @@ histSmoC <- function(y,
 # it take a descrete variable and creates values and frequencies 	
 getTabs <- function(y, freq=NULL, lower=min(y), upper=max(y))
 {
-          x1 <- seq(lower, upper, step=1)
+          x1 <- seq(lower, upper, by=1)
 	      fy <- if (is.null(freq)) factor(y,levels=x1) else factor(rep(y,freq),levels=x1)
 	  tabley <- xtabs(~fy)
 	#notresy <- if (is.null(freq)) factor(y) else factor(rep(y,freq)) 
@@ -172,7 +181,8 @@ out
 }  
 #------------------------------
 # main function starts here 	
-        require(gamlss)    
+ histSmocall <- match.call() 
+#        require(gamlss)    
           type <- match.arg(type)
             Ry <- range(y)
             ly <- length(y) 
@@ -207,17 +217,18 @@ if (plot)
  {
   if (discrete)
    {
-  switch(type, "freq"={ 
-  	                    r<-barplot(Y, fg = "blue", col="gray", axis.lty=1, 
-                                    border="blue", col.axis = "blue4",col.main = "blue4", 
-                                    col.lab = "blue4",  ylab="Frequency", names.arg=as.character(x), ...)
-                                    lines(r, mu, col = 'red', lty = 1, lwd = 1, type="h")
-                                    points(r, mu, col="red")},
-                "prob"= { r <- barplot(Y/sum(Y), fg = "blue", col="gray", axis.lty=1, 
-                                    border="blue", col.axis = "blue4",col.main = "blue4", 
-                                    col.lab = "blue4",   ylab="Density", names.arg=as.character(x), ...)
-                                    lines(r, (mu/sum(mu)), col = 'red', lty = 1, lwd = 3)
+  switch(type, 
+         "freq"={ r<-barplot(Y, fg = "blue", col="gray", axis.lty=1, 
+          border="blue", col.axis = "blue4",col.main = "blue4", 
+          col.lab = "blue4",  ylab="Frequency", names.arg=as.character(x), ...)
+          lines(r, mu, col = 'red', lty = 1, lwd = 1, type="h")
                                     points(r, mu, col="red")
+                },
+          "prob"= { r <- barplot(Y/sum(Y), fg = "blue", col="gray", axis.lty=1, 
+              border="blue", col.axis = "blue4",col.main = "blue4", 
+            col.lab = "blue4",   ylab="Density", names.arg=as.character(x), ...)
+            lines(r, (mu/sum(mu)), col = 'red', lty = 1, lwd = 3)
+                                   points(r, (mu/sum(mu)), col="red")
                                     }) 		
    }	
   else
@@ -226,12 +237,11 @@ if (plot)
                 "prob"= {plot(hst, freq=FALSE, ...); lines(x, (mu/sum(mu))/dx, col = 'red', lty = 1, lwd = 3)}) 	
    }
  }
-if (save)
   {
          density <- if (discrete) (mu/sum(mu)) else (mu/sum(mu))/dx	
-             out <- list(x=x, counts=Y, density=density, hist=hst, cdf=cdfFun, invcdf=invcdfFun, model=m1, discrete=discrete)
+             out <- list(x=x, counts=Y, density=density, hist=hst, cdf=cdfFun, invcdf=invcdfFun, model=m1, call= histSmocall, discrete=discrete)
       class(out) <- "histSmo"
-  return(out) 
+      invisible(out) 
   }       
 }
 #---------------------------------------------------------------#--------------------------------------------------------------------------------
@@ -249,8 +259,7 @@ histSmoP <- function(y,
                    lower = NULL, 
                    upper = NULL, 
                     type = c("freq", "prob"), 
-                    save = FALSE, 
-                    plot = TRUE, 
+                    plot = FALSE, 
                   breaks = NULL, 
                 discrete = FALSE, ...)
 {
@@ -260,7 +269,7 @@ histSmoP <- function(y,
 # it take a descrete variable and creates values and frequencies 	
 getTabs <- function(y, freq=NULL, lower=min(y), upper=max(y))
 {
-        x1 <- seq(lower, upper, step=1)
+        x1 <- seq(lower, upper, by=1)
 	      fy <- if (is.null(freq)) factor(y,levels=x1) else factor(rep(y,freq),levels=x1)
 	  tabley <- xtabs(~fy)
 	#notresy <- if (is.null(freq)) factor(y) else factor(rep(y,freq)) 
@@ -269,7 +278,8 @@ out
 }  
 #------------------------------
 # main function starts here 	
-        require(gamlss)    
+#        require(gamlss)    
+   histSmocall <- match.call() 
           type <- match.arg(type)
             Ry <- range(y)
             ly <- length(y)
@@ -306,18 +316,20 @@ if (plot)
   if (discrete)
    {
   switch(type, "freq"={ 
-  	                    r<-barplot(Y, fg = "blue", col="gray", axis.lty=1, 
-                                    border="blue", col.axis = "blue4",col.main = "blue4", 
-                                    col.lab = "blue4",  ylab="Frequency", names.arg=as.character(x),
+  	     r<-barplot(Y, fg = "blue", col="gray", axis.lty=1, 
+            border="blue", col.axis = "blue4",col.main = "blue4", 
+            col.lab = "blue4",  ylab="Frequency", names.arg=as.character(x),
+            ...)
+          lines(r, mu, col = 'red', lty = 1, lwd = 1, type="h")
+          points(r, mu, col="red")
+                        },
+                "prob"= { 
+        r <- barplot(Y/sum(Y), fg = "blue", col="gray", axis.lty=1, 
+             border="blue", col.axis = "blue4",col.main = "blue4", 
+            col.lab = "blue4",   ylab="Density", names.arg=as.character(x),
                                     ...)
-                                    lines(r, mu, col = 'red', lty = 1, lwd = 1, type="h")
-                                    points(r, mu, col="red")},
-                "prob"= { r <- barplot(Y/sum(Y), fg = "blue", col="gray", axis.lty=1, 
-                                    border="blue", col.axis = "blue4",col.main = "blue4", 
-                                    col.lab = "blue4",   ylab="Density", names.arg=as.character(x),
-                                    ...)
-                                    lines(r, (mu/sum(mu)), col = 'red', lty = 1, lwd = 3)
-                                    points(r, mu, col="red")
+            lines(r, (mu/sum(mu)), col = 'red', lty = 1, lwd = 3)
+            points(r, (mu/sum(mu)), col="red")
                                     }) 		
    }	
   else
@@ -326,13 +338,12 @@ if (plot)
                 "prob"= {plot(hst, freq=FALSE, ...); lines(x, (mu/sum(mu))/dx, col = 'red', lty = 1, lwd = 3)}) 	
    }
  }
-if (save)
-  {
+ 
          density <- if (discrete) (mu/sum(mu)) else (mu/sum(mu))/dx	
-             out <- list(x=x, counts=Y, density=density, hist=hst, cdf=cdfFun, invcdf=invcdfFun, model=m1, discrete=discrete)
+             out <- list(x=x, counts=Y, density=density, hist=hst, cdf=cdfFun, invcdf=invcdfFun, model=m1, call= histSmocall, discrete=discrete)
       class(out) <- "histSmo"
-  return(out) 
-  }       
+      invisible(out) 
+         
 }
 #---------------------------------------------------------------
 #---------------------------------------------------------------
@@ -342,11 +353,10 @@ plot.histSmo <- function(x, type=c("hist", "cdf", "invcdf"), ...)
 	 discrete <- x$discrete
 	if (discrete)
    {
-   		switch(type,"hist"={r<-barplot(x$counts/(sum(x$counts)), fg = "blue", col="gray", axis.lty=1, 
-                                    border="blue", col.axis = "blue4",col.main = "blue4", 
-                                    col.lab = "blue4",  ylab="Frequency", names.arg=as.character(x$x))
-                                    lines(r, x$density, col = 'red', lty = 1, lwd = 1, type="h")
-                                    points(r, x$density, col="red")}, 
+   		switch(type,"hist"={r<-barplot(x$counts/(sum(x$counts)), fg = "blue", col="gray", axis.lty=1,  border="blue", col.axis = "blue4",col.main = "blue4", 
+  col.lab = "blue4",  ylab="Frequency", names.arg=as.character(x$x))
+          lines(r, x$density, col = 'red', lty = 1, lwd = 1, type="h")
+          points(r, x$density, col="red")}, 
 	                "cdf"={plot(x$cdf, ylab="cdf")},
 	            "invcdf"={plot(x$invcdf, ylab="invcdf", xlab="p")}
 	        ) 
@@ -359,6 +369,41 @@ plot.histSmo <- function(x, type=c("hist", "cdf", "invcdf"), ...)
 	        )   
     } 	 
 }
+#-----------------------------------------------------------------------------
+#------------------------------------------------------------------------------
+lines.histSmo <- function(x, type=c("hist", "cdf", "invcdf"), ...) 
+{
+  type <- match.arg(type)
+  discrete <- x$discrete
+  if (discrete)
+  {
+    stop("lines is only for continuous data fitted histSmo objects")
+#     r<-barplot(x$counts/(sum(x$counts)))
+#     switch(type,"hist"={lines(r, x$density, col = 'red',  ...)},
+#                 "cdf"={lines(x$cdf, ylab="cdf")},
+#              "invcdf"={lines(x$invcdf, ylab="invcdf", xlab="p")}) 
+  }
+  else
+  {
+    switch(type,"hist"={lines(x$x, x$density, ...)}, 
+           "cdf"={lines(x$cdf, ylab="cdf")},
+           "invcdf"={lines(x$invcdf, 0, 1, ylab="invcdf", xlab="p")}
+    )   
+  } 	 
+}
+
+#-------------------------------------------------------------------------------
+print.histSmo <- function (x, digits = NULL, ...) 
+{
+  cat("\nCall:\n\t", deparse(x$call), "\n\n", sep = "")
+      #"\n\nData: ", x$data.name, 
+ #    " (", length, " obs.);", "\tBandwidth 'bw' = ", formatC(x$bw, 
+#                                                           digits = digits), 
+ # print(summary(as.data.frame(x[c("x", "y")])), digits = digits, 
+ #       ...)
+  invisible(x)
+}
+#-------------------------------------------------------------------------------
 #Data = read.csv(path1,header = T)   
 #x11()
 
