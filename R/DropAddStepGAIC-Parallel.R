@@ -1,8 +1,7 @@
 # This is an attempt make parallel the computation in dropterm(),
 # addterm() and stepGAIC()
-# Mikis Stasinopoulos  wrote the original with some help from Fernanda
-# An amendment by Daniil Kosie is added to avoid the failure of the function if
-# gamlss() fails
+# Mikis Stasinopoulos  wrote the original with some help from Fernanda de Bastiani
+# Aendment by Daniil Kosie to avoid the failure of the funcion 
 # This file contains
 # i)   dropterm.gamlss()
 # ii)  addterm.gamlss()
@@ -121,7 +120,17 @@ if (missing(parallel))
       cat("Model with term ", term, "has failed \n")       
       c(NA,NA) # Daniil: prevents execution to stop when fitting of term fails, returns c(df=NA, GAIC = NA)    
     }
-    else  extractAIC(nfit, scale, k = k,   ...)
+       else
+    {
+        gaic=try(extractAIC(nfit, scale, k = k,   ...),silent=TRUE)
+        if (any(class(gaic)%in%"try-error"))
+        {
+            cat("GAIC for term ", term, "has failed \n")
+            c(NA,NA)#
+        }
+        else
+        {gaic}
+    }
   }
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
@@ -257,7 +266,17 @@ fn <- function(term)
     cat("Model with term ", term, "has failed \n")       
     c(NA,NA) # Daniil: prevents execution to stop when fitting of term fails, returns c(df=NA, GAIC = NA)       
   }
-  else  extractAIC(nfit, scale, k = k,   ...)
+    else
+  {
+      gaic=try(extractAIC(nfit, scale, k = k,   ...),silent=TRUE)
+      if (any(class(gaic)%in%"try-error"))
+      {
+          cat("GAIC for term ", term, "has failed \n")
+          c(NA,NA)#
+      }
+      else
+      {gaic}
+  }
 }
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
@@ -488,7 +507,17 @@ droptermP <- function (object,
         cat("Model with term ", term, "has failed \n")       
         c(NA, NA)# Daniil        
       }
-      else  extractAIC(nfit, scale, k = k,   ...)
+     else
+      {
+          gaic=try(extractAIC(nfit, scale, k = k,   ...),silent=TRUE)
+          if (any(class(gaic)%in%"try-error"))
+          {
+              cat("GAIC for term ", term, "has failed \n")
+              c(NA,NA)#
+          }
+          else
+          {gaic}
+      }
     }
 #-------------------------------------------------------------------------------
 # --------  parallel -----------------------------------------------------------
@@ -604,7 +633,17 @@ addtermP<- function (object,
       cat("Model with term ", term, "has failed \n")       
       c(NA, NA)# extractAIC(object, scale, k = k, ...)          
     }
-    else  extractAIC(nfit, scale, k = k,   ...)
+       else
+    {
+        gaic=try(extractAIC(nfit, scale, k = k,   ...),silent=TRUE)
+        if (any(class(gaic)%in%"try-error"))
+        {
+            cat("GAIC for term ", term, "has failed \n")
+            c(NA,NA)#
+        }
+        else
+        {gaic}
+    }
   }
 #-------------------------------------------------------------------------------
 # --------  parallel ----------------------------------------------------------- 

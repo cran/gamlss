@@ -1,6 +1,8 @@
 # trying to make the function parallel
 #-------------------------------------------------------------------------------
-stepGAICAll.A <- function(object, scope = NULL, 
+stepTGDAll.A <- function(object, scope = NULL,
+                                 newdata=NULL,
+                                 steps=1000,
                             sigma.scope = NULL, 
                                nu.scope = NULL, 
                               tau.scope =  NULL, 
@@ -30,31 +32,6 @@ if (parallel != "no" && ncpus > 1L)
          ncpus <- 1L
   loadNamespace("parallel")
 }
-#--------------- PARALLEL-------------------------------------------------------
-#----------------SET UP PART---------------------------------------------------
-if (missing(parallel)) 
-  parallel <- "no"
-parallel <- match.arg(parallel)
-have_mc <- have_snow <- FALSE
-if (parallel != "no" && ncpus > 1L) 
-{
-  if (parallel == "multicore") 
-    have_mc <- .Platform$OS.type != "windows"
-  else if (parallel == "snow") 
-    have_snow <- TRUE
-  if (!have_mc && !have_snow) 
-    ncpus <- 1L
-  loadNamespace("parallel")
-}
-if (have_snow)
-{
-  cl <- parallel::makeForkCluster(ncpus)
-  if (RNGkind()[1L] == "L'Ecuyer-CMRG") 
-    parallel::clusterSetRNGStream(cl)
-  on.exit(parallel::stopCluster(cl))
-}         
-# -------------- finish parallel------------------------------------------------
-#-------------------------------------------------------------------------------
 # -------------- finish parallel------------------------------------------------
 #------------------------------------------------------------------------------- 
 #-------------------------------------------------------------------------------
@@ -75,7 +52,7 @@ if (have_snow)
      if ("mu" %in% object$par && mu.try==TRUE)
          {
      current.par <- "mu"
-         iferror <- try( assign("objectAll", stepGAIC(objectAll, scope=scope, direction="forward", what = "mu",  parallel = parallel,  ncpus = ncpus, cl = cl, ...)), silent = TRUE) 
+         iferror <- try( assign("objectAll", stepTGD(objectAll, scope=scope, newdata=newdata, direction="forward", parameter = "mu",  parallel = parallel,  ncpus = ncpus, cl = cl, ...)), silent = TRUE)
              if (any(class(iferror)%in%"try-error"))
                  { 
                  cat("---------------------------------------------------", "\n")
@@ -95,7 +72,7 @@ if (have_snow)
         {
          cat("---------------------------------------------------", "\n")
           current.par <- "sigma"
-        iferror <- try( assign("objectAll", stepGAIC(objectAll, scope=sigma.scope, direction="forward", what = "sigma", parallel = parallel,  ncpus = ncpus, cl = cl, ...))  , silent = TRUE) 
+        iferror <- try( assign("objectAll", stepTGD(objectAll, scope=sigma.scope, newdata=newdata, direction="forward", parameter = "sigma", parallel = parallel,  ncpus = ncpus, cl = cl, ...))  , silent = TRUE)
              if (any(class(iferror)%in%"try-error"))
                  {
                   cat("---------------------------------------------------", "\n") 
@@ -113,7 +90,7 @@ if (have_snow)
         {
          cat("---------------------------------------------------", "\n") 
           current.par <- "nu"
-        iferror <- try( assign("objectAll", obj <- stepGAIC(objectAll, scope=nu.scope, direction="forward", what = "nu",parallel = parallel,  ncpus = ncpus, cl = cl, ...)), silent = TRUE)           
+        iferror <- try( assign("objectAll", stepTGD(objectAll, scope=nu.scope, newdata=newdata,direction="forward", parameter = "nu",parallel = parallel,  ncpus = ncpus, cl = cl, ...)), silent = TRUE)
              if (any(class(iferror)%in%"try-error"))
                  { 
                     cat("---------------------------------------------------", "\n")
@@ -131,7 +108,7 @@ if (have_snow)
         {
         cat("---------------------------------------------------", "\n") 
            current.par <- "tau"
-        iferror <- try( assign("objectAll", stepGAIC(objectAll, scope=tau.scope, direction="both", what = "tau", parallel = parallel,  ncpus = ncpus, cl = cl, ...)), silent = TRUE) 
+        iferror <- try( assign("objectAll", stepTGD(objectAll, scope=tau.scope,newdata=newdata, direction="both", parameter = "tau", parallel = parallel,  ncpus = ncpus, cl = cl, ...)), silent = TRUE)
              if (any(class(iferror)%in%"try-error"))
                  { 
                    cat("---------------------------------------------------", "\n")
@@ -149,7 +126,7 @@ if (have_snow)
         { 
          cat("---------------------------------------------------", "\n") 
           current.par <- "nu"
-        iferror <- try(assign("objectAll", stepGAIC(objectAll, scope=nu.scope, direction="backward", what = "nu", parallel = parallel,  ncpus = ncpus, cl = cl, ...))  , silent = TRUE) 
+        iferror <- try(assign("objectAll", stepTGD(objectAll, scope=nu.scope, newdata=newdata, direction="backward", parameter = "nu", parallel = parallel,  ncpus = ncpus, cl = cl, ...))  , silent = TRUE)
              if (any(class(iferror)%in%"try-error"))
                  { 
                  cat("---------------------------------------------------", "\n")
@@ -167,7 +144,7 @@ if (have_snow)
         {
          cat("---------------------------------------------------", "\n")
           current.par <- "sigma"
-        iferror <- try( assign("objectAll", stepGAIC(objectAll, scope=sigma.scope, direction="backward", what = "sigma", parallel = parallel,  ncpus = ncpus, cl = cl, ...)) , silent = TRUE) 
+        iferror <- try( assign("objectAll", stepTGD(objectAll, scope=sigma.scope, newdata=newdata, direction="backward", parameter = "sigma", parallel = parallel,  ncpus = ncpus, cl = cl, ...)) , silent = TRUE)
              if (any(class(iferror)%in%"try-error"))
                  { cat("---------------------------------------------------", "\n")
                    cat(paste("ERROR: stepGAICAll has failed trying to fit the model for sigma backward.", "\n",
@@ -184,7 +161,7 @@ if (have_snow)
          {
           cat("---------------------------------------------------", "\n")  
            current.par <- "mu"
-      iferror <- try( assign("objectAll", stepGAIC(objectAll, scope=scope, direction="backward",  what = "mu", parallel = parallel,  ncpus = ncpus, cl = cl, ...))  , silent = TRUE) 
+      iferror <- try( assign("objectAll", stepTGD(objectAll, scope=scope, newdata=newdata,  direction="backward",  parameter = "mu", parallel = parallel,  ncpus = ncpus, cl = cl, ...))  , silent = TRUE)
              if (any(class(iferror)%in%"try-error"))
                  { 
                   cat("---------------------------------------------------", "\n") 

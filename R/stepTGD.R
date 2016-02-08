@@ -22,7 +22,7 @@ extractTGD <- function (fit, newdata, ...)
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-drop1TGD<-function (object, 
+drop1TGD<-function (object,
                            scope, 
                            newdata,
                            parameter = c("mu", "sigma", "nu", "tau"), 
@@ -93,10 +93,20 @@ fn <- function(term)
   nfit <- try(eval.parent(nfit), silent=TRUE)
   if (any(class(nfit)%in%"try-error"))
   { 
-    cat("Model with term ", term, "has failed \n")       
-    NA#          
+     cat("Model with term ", term, "has failed \n")       
+    c(NA,NA)#
+       
   }
-  else  extractTGD(nfit, newdata=newdata,  ...)
+   else{
+      tgd=try(extractTGD(nfit, newdata=newdata,  ...),silent=TRUE)
+      if (any(class(tgd)%in%"try-error"))
+      {
+          cat("TGD for term ", term, "has failed \n")
+          c(NA,NA)#
+      }
+      else
+      {tgd}
+  }
 }
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
@@ -215,10 +225,18 @@ fn <- function(term)
   nfit <- try(eval.parent(nfit), silent=TRUE)
   if (any(class(nfit)%in%"try-error"))
   { 
-    cat("Model with term ", term, "has failed \n")       
-    NA#          
+     cat("Model with term ", term, "has failed \n")       
+    c(NA,NA)        
   }
-  else  extractTGD(nfit, newdata=newdata,  ...)
+    else{
+      tgd=try(extractTGD(nfit, newdata=newdata,  ...),silent=TRUE)
+      if (any(class(tgd)%in%"try-error"))
+      {
+          cat("TGD for term ", term, "has failed \n")
+          c(NA,NA)#
+      }
+      else {tgd}
+  }
 }
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
@@ -382,9 +400,18 @@ drop1TGDP<-function (object,
     if (any(class(nfit)%in%"try-error"))
     { 
       cat("Model with term ", term, "has failed \n")       
-      NA#          
+      c(NA,NA)#         
     }
-    else  extractTGD(nfit, newdata=newdata,  ...)
+    else{
+        tgd=try(extractTGD(nfit, newdata=newdata,  ...),silent=TRUE)
+        if (any(class(tgd)%in%"try-error"))
+        {
+            cat("TGD for term ", term, "has failed \n")
+            c(NA,NA)#
+        }
+        else
+        {tgd}
+    }
   }
   #-------------------------------------------------------------------------------
   #-------------------------------------------------------------------------------
@@ -469,10 +496,19 @@ add1TGDP<- function (object,
     nfit <- try(eval.parent(nfit), silent=TRUE)
     if (any(class(nfit)%in%"try-error"))
     { 
-      cat("Model with term ", term, "has failed \n")       
-      NA#          
+    cat("Model with term ", term, "has failed \n")       
+      c(NA,NA)#        
     }
-    else  extractTGD(nfit, newdata=newdata,  ...)
+    else{
+        tgd=try(extractTGD(nfit, newdata=newdata,  ...),silent=TRUE)
+        if (any(class(tgd)%in%"try-error"))
+        {
+            cat("TGD for term ", term, "has failed \n")
+            c(NA,NA)#
+        }
+        else
+        {tgd}
+    }
   }
   #-------------------------------------------------------------------------------
   #-------------------------------------------------------------------------------

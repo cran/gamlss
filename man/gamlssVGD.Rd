@@ -8,13 +8,21 @@
 \alias{drop1TGD}
 \alias{add1TGD}
 \alias{stepTGD}
+\alias{stepTGDAll.A}
 
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{A  Set of Functions for selecting Models using Validation or Test Data Sets and Cross =Validation 
 }
 \description{
 This is a set of function useful for selecting appropriate models. 
-The functions \code{gamlssVGD}, \code{VGD}, \code{getTGD}, \code{TGD} can be used when a subset of the data is used for validation or testing. The functions \code{gamlssCV}, \code{CV} can be used for a k-fold cross validation.  
+
+The functions \code{gamlssVGD}, \code{VGD}, \code{getTGD}, \code{TGD} can be used when a subset of the data is used for validation or testing. 
+
+The function \code{stepVGD()} is a stepwise procedure for selecting an appropriate model for any of the parameters of the model minimising the test global deviance. The function   \code{stepVGDAll.A()} can select a model using strategy A for all the parameters. 
+
+The functions \code{gamlssCV}, \code{CV} can be used for a k-fold cross validation.  
+
+
 }
 \usage{
 gamlssVGD(formula = NULL, sigma.formula = ~1, nu.formula = ~1, 
@@ -53,6 +61,13 @@ stepTGD(object, scope, newdata,
         parameter = c("mu", "sigma", "nu", "tau"), 
         parallel = c("no", "multicore", "snow"), 
         ncpus = 1L, cl = NULL, ...)
+        
+stepTGDAll.A(object, scope = NULL, newdata = NULL, 
+        steps = 1000, sigma.scope = NULL, nu.scope = NULL, 
+        tau.scope = NULL, mu.try = TRUE, sigma.try = TRUE, 
+        nu.try = TRUE, tau.try = TRUE,
+        parallel = c("no", "multicore", "snow"), 
+        ncpus = 1L, cl = NULL, ...)        
 
 }
 %- maybe also 'usage' for other objects documented here.
@@ -68,6 +83,13 @@ stepTGD(object, scope, newdata,
   \item{newdata}{The new data set (validation or test) for prediction.}
   \item{object}{A relevant R object.}
   \item{scope}{defines the range of models examined in the stepwise selection similar to \code{stepGAIC()} where you can see examples}
+  \item{sigma.scope}{defines the range of models examined in the stepwise selection for \code{sigma}} 
+  \item{nu.scope}{defines the range of models examined in the stepwise selection for \code{nu}} 
+  \item{tau.scope}{defines the range of models examined in the stepwise selection for \code{tau}} 
+  \item{mu.try}{whether should try fitting models for \code{mu}} 
+  \item{sigma.try}{whether should try fitting models for \code{sigma}} 
+  \item{nu.try}{whether should try fitting models for \code{nu}} 
+  \item{tau.try}{whether should try fitting models for \code{tau}} 
   \item{parameter}{which distribution parameter is required, default \code{what="mu"}}
   \item{sorted}{should the results be sorted on the value of TGD}
   \item{trace}{f \code{TRUE} additional information may be given on the fits as they are tried.}
@@ -97,7 +119,7 @@ The \code{gamlssCV()} performs a k-fold cross validation on a gamlss models.
 
 The function \code{CV()} extract the cross validated  global deviance from one or more fitted  \code{gamlssCV} objects and can be use to compare models.
 
-The functions \code{add1TGD()}, \code{drop1TGD()} anf \code{stepTGD} behave similare to  \code{add1()}, \code{drop1()} and \code{stepGAIC()} functions respectively  but they used  validation or test deviance as the selection criterion rather than the GAIC.
+The functions \code{add1TGD()}, \code{drop1TGD()} and \code{stepTGD} behave similar to  \code{add1()}, \code{drop1()} and \code{stepGAIC()} functions respectively  but they used  validation or test deviance as the selection criterion rather than the GAIC.
 
 
 

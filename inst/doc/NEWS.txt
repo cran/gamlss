@@ -18,6 +18,15 @@ Question or suggestions about GAMLSS can be send to
 or
    r.rigby@londonmet.ac.uk
 --------------------------------------------------------------------------------
+Version 4.3-8
+
+1. gamlss i) the term.plot() did not plot (by mistake) a gam object. This is now corrected 
+          ii) the vis.lo() is introduve for plotting fitted loess curves 
+          iii) VC.test() for Vuong and Clarke tets is introduced 
+          iv) the function stepVGDAll.A() is introduced. 
+2. gamlss.mx
+          i) the function plotMP() is added
+
 Version 4.3-7
 
 1. gamlss i) the fuctionn random() had a bug which did not take the df's. This is now     corrected
@@ -29,7 +38,6 @@ Version 4.3-7
 2. gamlss.data i) the glasses data set, a nice example of a mixture distribution, is added
                ii) the respInf data set: an example of  binary random effects
                iii) the meta data set: an example of binomial non=parametric random effect model
-
 
 
 

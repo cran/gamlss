@@ -20,7 +20,7 @@
 ### used
 term.plot <- function (object, 
                         what = c("mu","sigma","nu","tau"),  
-                        parameter = NULL, 
+                   parameter = NULL, 
                         data = NULL, 
                        envir = environment(formula(object)), 
                partial.resid = FALSE, 
@@ -35,7 +35,7 @@ term.plot <- function (object,
                        pages = 0, #  New 
                     col.term = "darkred",
                       col.se = "orange", 
-                   col.shaded = "gray", 
+                  col.shaded = "gray", 
                      col.res = "lightblue", 
                      col.rug = "gray",
                     lwd.term = 1.5,   
@@ -192,7 +192,7 @@ CheckSmoList <- function(termList)
 #     gamlss.sm.list1 <- c( "cs","scs", "ps", "pb", "cy", "pvc", "pbm",  "pbj",   
 #                          "mrf",   "mrfa", "sap",  "krig",   "lo", "random",
 #                          "re",  "fp", "pp", "nl","ri","ridge","fk", "la",     
-#                          "tr",  "ga",   "nn", "own" )
+#                          "tr",  "ga",   "nn", "lo","own" )
     gamlss.sm.list1 <- .gamlss.sm.list
     gamlss.sm.list2  <- paste(gamlss.sm.list1,"(", sep="")   
     # ideally this should be done autonmatically
@@ -219,7 +219,7 @@ CheckSmoWithPlot <- function(termList)
 {
   #gamlss.Smo.plot.list <- c( "tr", "ga")
   gamlss.Smo.plot.list1 <- c( "tr(", "ga(", "nn(", "pvc(", "mrf(", "mrfa(", "ri(",
-                             "own(" , "re(")
+                             "own(" , "re(", "lo(")
   lgamsmol  <- length(gamlss.Smo.plot.list1)
   lsm  <- length(termList)
   res <- rep(0, lsm) 
@@ -509,13 +509,17 @@ whichValueSmo <- CheckSmoList(nmt)
               lines(rep.int(xlims[1] + c(0, 0.05, NA) * diff(xlims), 
                             n), rep.int(pres[, i], rep.int(3, n)),  col=col.rug)
           }  
-        } # end of all normal smoother ---------------------------------------
-        else
+        } # end of all normal smoother -Now the special ones which have their own plotting function
+        else  # -Now the special ones which have their own plotting function
         { # the special smoothers who have a plotting function 
           if (attr(whichValueSmo, "whichSmo")[i]=="ga"&&surface.gam==TRUE)
            {
             plot(getSmo(object, what, which=whichValueSmo[i]), scheme=1)
            } 
+          if (attr(whichValueSmo, "whichSmo")[i]=="ga"&&surface.gam==FALSE)
+          {
+            plot(getSmo(object, what, which=whichValueSmo[i]))
+          } 
           if (attr(whichValueSmo, "whichSmo")[i]=="nn")
            {
              plot(getSmo(object, what, which=whichValueSmo[i]), y.lab=expression(eta))
@@ -547,12 +551,16 @@ whichValueSmo <- CheckSmoList(nmt)
           {
             plot(getSmo(object, what, which=whichValueSmo[i]))
           }
-#           else
-#           {       
-#             plot(getSmo(object, what, which=whichValueSmo[i]))
-#           }  
-#           if (attr(whichValueSmo, "whichSmo")[i]=="tr") 
-#              text(getSmo(object, what, which=whichValueSmo[i]))
+          if (attr(whichValueSmo, "whichSmo")[i]=="lo")
+          {
+            vis.lo(getSmo(object, what, which=whichValueSmo[i]))
+          }
+#            else
+#            {       
+#              plot(getSmo(object, what, which=whichValueSmo[i]))
+#            }  
+           if (attr(whichValueSmo, "whichSmo")[i]=="tr") 
+              text(getSmo(object, what, which=whichValueSmo[i]))
         }
     } # end of the  1:n.tms lop -----------------------------------------------
     if (pages > 0) par(oldpar)

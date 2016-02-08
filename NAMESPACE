@@ -7,7 +7,7 @@ export(gamlss, gamlss.control, glim.control, is.gamlss,
        IC, Q.stats, par.plot, histDist,
        stepGAIC.VR, stepGAIC.CH, stepGAIC, gamlss.scope, stepGAICAll.A,
        stepGAICAll.B,  drop1All, add1All, term.plot,# stepTGD,
-       drop1TGD, add1TGD, stepTGD,
+       drop1TGD, add1TGD, stepTGD,stepTGDAll.A,
        cs, gamlss.cs, cs.control,
        scs,
        ps, gamlss.ps,
@@ -37,7 +37,7 @@ export(gamlss, gamlss.control, glim.control, is.gamlss,
         .gamlss.sm.list, .gamlss.bi.list, .gamlss.multin.list,
         plot2way, loglogSurv1, loglogSurv2, loglogSurv3, loglogSurv, logSurv, 
         quantSheets.control, quantSheets, findPower, z.scoresQS,
-        getZmatrix)
+        getZmatrix, vis.lo, VC.test)
 
 
 
