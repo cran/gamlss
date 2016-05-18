@@ -35,7 +35,7 @@ gamlssNews <- function() file.show(system.file("doc", "NEWS.txt", package="gamls
 .gamlss.sm.list<-c("cs", "scs",                   # smoothing cubic splines  "s" vc"
                    "ps", "pb", "cy", "tp", "pvc", # penalised splines : ps, pb, cy tp pvc pbq
                    "pbm", "pbj", "pbo", "pbz",    # monotone jumps and going to zero
-                   "pbr",                         # pb rendom effect
+                   "pbc",                         # pb cycle 
                    "pcat",                        # for categorical to reduce levels 
                    "pbq",                         # pb using Qfunction
                    "gmrf",                        # Gaussian Markov random fields

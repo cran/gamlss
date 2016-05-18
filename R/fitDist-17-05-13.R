@@ -7,9 +7,12 @@
 #-------------------------------------------------------------------------------
 .realline <- c( 
   "NO", "GU", "RG" ,"LO", "NET", # 2 par
-  "TF", "PE", "SN1", "SN2",  # 3 par
-  "SHASHo", "EGB2", "JSU", "SEP1", "SEP2", "SEP3", "SEP4", # 4 par
-   "ST1", "ST2", "ST3", "ST4", "ST5", "GT")  # 4 par 
+  "TF", "TF2", "PE","PE2", "SN1", "SN2", "exGAUS", # 3 par
+  "SHASH", "SHASHo","SHASHo2", 
+  "EGB2", "JSU", "JSUo",
+  "SEP1", "SEP2", "SEP3", "SEP4", # 4 par
+   "ST1", "ST2", "ST3", "ST4", "ST5", "SST", 
+  "GT")  # 4 par 
 #--------------------------------------------------------------------------------
 .realplus <- c( "EXP", # 1 par
   "GA","IG","LOGNO", "WEI3", "IGAMMA","PARETO2", # 2 par
@@ -27,6 +30,7 @@
   "SHASHo", "EGB2", "JSU", "SEP1", "SEP2", "SEP3", "SEP4", # 4 par
    "ST1", "ST2", "ST3", "ST4", "ST5", "GT"             
               )  # 4 par
+
 #--------------------------------------------------------------------------------               
 #--------------------------------------------------------------------------------
 .counts <- c("PO", "GEOM", "LG", "YULE", "WARING", "NBI", "NBII", "PIG", "DEL", "SICHEL", "ZIP","ZIP2", "ZAP", "ZALG", "ZINBI", "ZANBI", "ZIPIG")
@@ -53,7 +57,7 @@ fitDist <- function(y,
                           "counts"=.counts,
                            "binom"=.binom 
                   )
-if  (!is.null(extra)) DIST <- c(DIST, extra)
+if  (!is.null(extra)) DIST <- unique(c(DIST, extra))
     m0 <- switch(type,  "realAll"= gamlssML(y, family=NO),
                        "realline"= gamlssML(y, family=NO), 
                        "realplus"= gamlssML(y, family=EXP),

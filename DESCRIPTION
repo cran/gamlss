@@ -1,7 +1,7 @@
 Package: gamlss
 Description: Functions for fitting, displaying and checking GAMLSS Models.
-Version: 4.3-8
-Date: 2016-02-08
+Version: 4.4-0
+Date: 2016-05-18
 Authors@R: c(person("Mikis", "Stasinopoulos", role = c("aut", "cre", "cph"), 
              email = "d.stasinopoulos@londonmet.ac.uk"),
            person("Bob", "Rigby", role = c("aut"),  
@@ -19,8 +19,8 @@ LazyLoad: yes
 Imports: MASS, survival, methods
 License: GPL-2 | GPL-3
 URL: http://www.gamlss.org/
-NeedsCompilation: no
-Packaged: 2016-02-08 08:30:38 UTC; stasinom
+NeedsCompilation: yes
+Packaged: 2016-05-18 08:07:42 UTC; stasinom
 Author: Mikis Stasinopoulos [aut, cre, cph],
   Bob Rigby [aut],
   Vlasios Voudouris [ctb],
@@ -28,4 +28,4 @@ Author: Mikis Stasinopoulos [aut, cre, cph],
   Marco Enea [ctb],
   Daniil Kiose [ctb]
 Repository: CRAN
-Date/Publication: 2016-02-08 17:32:07
+Date/Publication: 2016-05-18 10:36:36

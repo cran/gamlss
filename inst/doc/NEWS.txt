@@ -18,22 +18,33 @@ Question or suggestions about GAMLSS can be send to
 or
    r.rigby@londonmet.ac.uk
 --------------------------------------------------------------------------------
-Version 4.3-8
+Version 4.4-0
 
-1. gamlss i) the term.plot() did not plot (by mistake) a gam object. This is now corrected 
-          ii) the vis.lo() is introduve for plotting fitted loess curves 
-          iii) VC.test() for Vuong and Clarke tets is introduced 
-          iv) the function stepVGDAll.A() is introduced. 
+1. gamlss   i) the term.plot() did not plot (by mistake) a gam object. 
+               This is now corrected 
+           ii) the vis.lo() is introduced for plotting fitted loess curves 
+          iii) VC.test() for Vuong and Clarke test is introduced (use with caution) 
+           iv) the function stepVGDAll.A() is introduced. 
+            v) Q.stats() function is amended so the number of observations in each intervals add up to                the total number of observations (that was a bug)
+           vi) the pcat() function for reducing the levels of a categorical 
+               variable is introduced.
+          vii) the pbc() a more robust version of cy() is introduced.
 2. gamlss.mx
-          i) the function plotMP() is added
+            i) the function plotMP() is added
+3. gamlss.data
+            i) the Tokyo rainfall data is included in gamlss now as an example of cycle 
+               P-spline  smoothing
+           ii) the data set grip (hand grip strength) is added (for centile estimation)
+          iii) the data set leukemia is added (for random effect analysis)
+            v) the data oil is included
 
 Version 4.3-7
 
-1. gamlss i) the fuctionn random() had a bug which did not take the df's. This is now     corrected
-          ii) when the functions pb(), pbm(), pbz(), cy() and random() were used a list was created. Now R object are created of class "pb", "pbm", "pbz", "cy" and"random" rspectively. Those objects can be accessed after the fit using the function getSmo(). The methods print(), plot(), fitted() and coef() can be applied to them
+1. gamlss i) the function random() had a bug which did not take the df's. This is now     corrected
+          ii) when the functions pb(), pbm(), pbz(), cy() and random() were used a list was created. Now R object are created of class "pb", "pbm", "pbz", "cy" and"random" respectively. Those objects can be accessed after the fit using the function getSmo(). The methods print(), plot(), fitted() and coef() can be applied to them
          iii) the function histSmo() has been revised
           iv) the function getZmatrix() is created to facilitate fitting smoother using the re() function.
-           v) The function lo()  has been revised (it was failling under 3.2.3 (2015-12-10)) 
+           v) The function lo()  has been revised (it was failing under 3.2.3 (2015-12-10)) 
 
 2. gamlss.data i) the glasses data set, a nice example of a mixture distribution, is added
                ii) the respInf data set: an example of  binary random effects

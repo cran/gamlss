@@ -40,7 +40,7 @@ The type of penalty required, \code{Lp=2} a proper ridge regression is the defau
 }
 }
 \details{
-This implementation of ridge and related regressions is based on an idea of Paul Eilers which used weights in the penalty matrix. The type of weights are defined by the argument \code{Lp}. \code{Lp=2} is the standard ridge regression,  \code{Lp=1} fir a lasso regression while  \code{Lp=0} allows a "best subset"" regression see Hastie et al (2009) page 71.
+This implementation of ridge and related regressions is based on an idea of Paul Eilers which used weights in the penalty matrix. The type of weights are defined by the argument \code{Lp}. \code{Lp=2} is the standard ridge regression,  \code{Lp=1} fits a lasso regression while  \code{Lp=0} allows a "best subset"" regression see Hastie et al (2009) page 71.
 }
 \value{
 x is returned with class "smooth", with an attribute named "call" which is to be evaluated in the backfitting  \code{additive.fit()} called by \code{gamlss()}

@@ -1,6 +1,7 @@
 # Authors Mikis Stasinopoulos and Bob Rigby with contribution from Elaine Borghie
 # modification wendesday, Nov 27 2012 MS the label of the plot is modified 
-# modification on the 28-12-12 MS the argument resid is introduced 
+# modification on the 28-12-12 MS the argument resid is introduced
+# modification on the 11-04-2016 
 # TO DO 
 # i)   what happends if the data are small ? The solution is to use the argument resid where only the z-stats are shown
 # ii) what hapends if data fit OK  in all case and square should not appear (OK fixed MS 11-12-12)
@@ -13,7 +14,7 @@ Q.stats <- function(obj = NULL,
                     xvar = NULL, 
                    resid = NULL,
              xcut.points = NULL, 
-                 n.inter = 10,
+                 n.inter = 10L,
                    zvals = TRUE,
                     save = TRUE,
                     plot = TRUE, 
@@ -35,7 +36,7 @@ stop(paste("The interval specified is not a valid matrix.\nThe number of columns
     }
     return(interval)
   }
-#------------------------------------------
+#-------------------------------------------------------------------------------
 # function 2 
   get.intervals <- function (xvar, xcut.points ) 
 {
@@ -51,10 +52,10 @@ stop(paste("The interval specified is not a valid matrix.\nThe number of columns
      if (any(x1>xr)) {stop(paste("The interval is are not in a increasing order."))}
     cbind(x1,xr)
 }
-#------------------------------------------
+#-------------------------------------------------------------------------------
 # function 3
 Qtest <- function(x)
- {
+ {     x <- na.omit(x)
        N <- length(x)
       mx <- mean(x)
       m2 <- sum((x-mx)^2)/N
@@ -81,16 +82,16 @@ Qtest <- function(x)
      zb2 <- zb2/sqrt(2/(9*A))
       K2 <- (zb1*zb1)+(zb2*zb2)
       Q1 <- N*(mx^2)
-      sdy <- sqrt(m2)
-      Q2  <- ((sdy^(2/3)-(1-(2/(9*N-9))))^2)/(2/(9*N-9))
-      Q3  <- zb1^2
-      Q4  <- zb2^2
+     sdy <- sqrt(m2)
+     Q2  <- ((sdy^(2/3)-(1-(2/(9*N-9))))^2)/(2/(9*N-9))
+     Q3  <- zb1^2
+     Q4  <- zb2^2
       
-      z1  <- sqrt(N)*mx
-      z2  <-  sqrt(Q2)*sign(sdy^(2/3)-(1-(2/(9*N-9))))
+     z1  <- sqrt(N)*mx
+     z2  <-  sqrt(Q2)*sign(sdy^(2/3)-(1-(2/(9*N-9))))
     list(Q1=Q1,  Q2=Q2, Q3=Q3, Q4=Q4, z1=z1, z2=z2, z3=zb1, z4=zb2, AgostinoK2=K2, N=N )      
  }
-#---------------------------
+#-------------------------------------------------------------------------------
 # function 4
 get.par.df <- function(obj)
       {
@@ -137,19 +138,21 @@ get.par.df <- function(obj)
 #terrain.colors(n, alpha = 1)
 #topo.colors(n, alpha = 1)
  ## pick up color scheme
-         col <- colorRampPalette(c("blue","red"))(100)#colorRampPalette(c("blue","white","red"))(100)
-        lcol <- length(col)
+    col <- colorRampPalette(c("blue","red"))(2)
+     bg <-  col[as.numeric(as.vector(Mat)<0)+1]
+#         col <- colorRampPalette(c("blue","red"))(100)#colorRampPalette(c("blue","white","red"))(100)
+#        lcol <- length(col)
  ##    this depends of the values 
  ##     for Z min(Mat) max(Mat) 
  #       for Q 0 to max(Mat)
-          ff <- if (zvals)  seq(min(Mat),max(Mat), length=lcol+1) else seq(0,max(Mat), length=lcol+1)
-         bg2 <- rep(0, nr * nc)
-        for (i in 1:(nr * nc))
-        {
-            bg2[i] <- rank(c(ff[2:lcol], as.vector(Mat)[i]), 
-                            ties.method = "random")[lcol]
-        }
-        bg <- (col[1:lcol])[bg2]
+ #         ff <- if (zvals)  seq(min(Mat),max(Mat), length=lcol+1) else seq(0,max(Mat), length=lcol+1)
+ #         bg2 <- rep(0, nr * nc)
+        # for (i in 1:(nr * nc))
+        # {
+        #     bg2[i] <- rank(c(ff[2:lcol], as.vector(Mat)[i]), 
+        #                     ties.method = "random")[lcol]
+        # }
+        # bg <- (col[1:lcol])[bg2]
        
        if (zvals)
        {
@@ -171,7 +174,7 @@ get.par.df <- function(obj)
  }
 #-------------------------------------------------------------------------------
 # main function starts here
-## checking whether obj or resid is defined  
+## checking whether obj or resid is defined
   if (is.null(obj)&&is.null(resid))  
    stop(paste("A fitted object with resid() method or the argument resid should be used ", "\n", ""))
 only.zvals <- if (!is.null(resid))  TRUE else FALSE# if resid use only z.stats 
@@ -187,7 +190,8 @@ df <- if (is.gamlss(obj))   get.par.df(obj) else list(location= 0, scale=0, skew
     {
       if(is.null(xcut.points))
       {
-        g.in <- co.intervals(xvar, number=n.inter, overlap=overlap)
+                g.in <- co.intervals(xvar, number=n.inter, overlap=overlap)
+if (overlap==0) g.in <- check.overlap(g.in)   
       }
       else
       {
@@ -198,15 +202,13 @@ df <- if (is.gamlss(obj))   get.par.df(obj) else list(location= 0, scale=0, skew
     {
       if(is.null(xcut.points)) 
        { # getting the intervals automatic
-        # this should not happent if we need onl
         if (n.inter < df$maximum+1.9) 
          {
           n.inter <- ceiling(df$maximum+1.9)
           warning("the number of intervals have change to ", n.inter,"\n ")
          } 
-        g.in <- co.intervals(xvar, number=n.inter, overlap=overlap)
-        # I am not sure why we do that     
-        if (overlap==0) g.in <- check.overlap(g.in) 
+                g.in <- co.intervals(xvar, number=n.inter, overlap=overlap)
+if (overlap==0) g.in <- check.overlap(g.in) 
        }                 
       else
        {
@@ -218,9 +220,10 @@ df <- if (is.gamlss(obj))   get.par.df(obj) else list(location= 0, scale=0, skew
         g.in <- get.intervals(xvar, xcut.points ) 
        }
      }
- g.in <- format(g.in, digits=digits.xvar) # chenging the digits if
-# finish if
-     howmany <- dim(g.in)[1]
+       g.in <- format(g.in, digits=digits.xvar) # changing the digits if
+    howmany <- dim(g.in)[1]
+  cutPoints <-  c(g.in[,1], g.in[howmany,2])
+   # m.g.in <- matrix(as.numeric(g.in), ncol=2)
            X <- matrix(0, nrow = howmany, ncol = 6, 
                        dimnames=list(as.character(seq(1,howmany)),
                                      as.character(seq(1,6))))
@@ -233,21 +236,32 @@ df <- if (is.gamlss(obj))   get.par.df(obj) else list(location= 0, scale=0, skew
      dimnames(Z)[[1]] <- paste(substr(as.character(g.in[1:howmany,1]),1,7),"to",substr(as.character(g.in[1:howmany,2]),1,7))
        oxvar <- xvar[order(xvar)]
        oyvar <- var[order(xvar)] 
-   for (i in 1:howmany)
-       {  
-          if(i==howmany) {  ##### Include points at the end of the last interval
-                          yvar1 <- subset(oyvar, oxvar>=g.in[i,1]&oxvar<=g.in[i,2])
-                          xvar1 <- subset(oxvar, oxvar>=g.in[i,1]&oxvar<=g.in[i,2])
-                          }
-          else
-          { 
-    yvar1 <- subset(oyvar, oxvar>=as.numeric(g.in[i,1])&xvar<as.numeric(g.in[i,2]))
-    xvar1 <- subset(oxvar, oxvar>=as.numeric(g.in[i,1])&xvar<as.numeric(g.in[i,2])) 
-          }        
-          nlist <- Qtest(yvar1)
-           Z[i,] <- c(nlist$z1, nlist$z2, nlist$z3, nlist$z4, nlist$AgostinoK2, nlist$N)            
-           X[i,] <- c(nlist$Q1, nlist$Q2, nlist$Q3, nlist$Q4, nlist$AgostinoK2, nlist$N)
+      levcut <- cut(oxvar, cutPoints, include.lowest = TRUE) #, cut(oxvar, howmany)
+     levelCut <-  levels(levcut)  
+       for (i in 1:howmany)
+       {
+        yvar1  <-  oyvar[ levcut== levelCut[i]]
+        xvar1 <-   oxvar[ levcut== levelCut[i]]
+         nlist <- Qtest(yvar1)
+         Z[i,] <- c(nlist$z1, nlist$z2, nlist$z3, nlist$z4, nlist$AgostinoK2, nlist$N)            
+         X[i,] <- c(nlist$Q1, nlist$Q2, nlist$Q3, nlist$Q4, nlist$AgostinoK2, nlist$N)
        }
+   # for (i in 1:howmany)
+   #     {  
+   #        if(i==howmany) {  ##### Include points at the end of the last interval
+   #                        yvar1 <- subset(oyvar, oxvar>=g.in[i,1]&oxvar<=g.in[i,2])
+   #                        xvar1 <- subset(oxvar, oxvar>=g.in[i,1]&oxvar<=g.in[i,2])
+   #                        }
+   #        else
+   #        { 
+   #          cat (sum(oxvar>= m.g.in[i,1] & oxvar < m.g.in[i,2]), "\n")
+   #  yvar1 <- oyvar[oxvar>= m.g.in[i,1] & oxvar < m.g.in[i,2]]
+   #  xvar1 <- oxvar[oxvar>= m.g.in[i,1] & oxvar < m.g.in[i,2]]
+   #        }        
+   #        nlist <- Qtest(yvar1)
+   #         Z[i,] <- c(nlist$z1, nlist$z2, nlist$z3, nlist$z4, nlist$AgostinoK2, nlist$N)            
+   #         X[i,] <- c(nlist$Q1, nlist$Q2, nlist$Q3, nlist$Q4, nlist$AgostinoK2, nlist$N)
+   #     }
           Q1 <- sum(X[,1])
           Q2 <- sum(X[,2])
           Q3 <- sum(X[,3])

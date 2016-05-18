@@ -240,7 +240,7 @@ startLambdaName <- as.character(attr(x, "NameForLambda"))
              fv <- X %*% fit$beta             # fitted values
            sig2 <- sum(w * (y - fv) ^ 2) / (N - fit$edf) # DS+FDB 3-2-14
            tau2 <- sum(gamma. ^ 2) / (fit$edf-order)# see LNP page 279
-           if(tau2<1e-7) tau2 <- 1.0e-7 # MS 19-4-12
+         if(tau2<1e-7) tau2 <- 1.0e-7 # MS 19-4-12
      lambda.old <- lambda
          lambda <- sig2 / tau2 # maybe only 1/tau2 will do since it gives exactly the EM results see LM-1
      if (lambda<1.0e-7) lambda<-1.0e-7 # DS Saturday, April 11, 2009 at 14:18

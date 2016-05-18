@@ -5,10 +5,9 @@
 \alias{gamlss.cy}
 \alias{gamlss.pvc}
 \alias{gamlss.ri}
-\alias{gamlss.ridge}
 \alias{gamlss.pbm}
 \alias{gamlss.pbz}
-
+\alias{gamlss.pbc}
 
 \title{Support for Functions  for smoothers}
 \description{
@@ -19,12 +18,12 @@ The functions are not intended to be called directly by users.
 gamlss.pb(x, y, w, xeval = NULL, ...)
 gamlss.pbo(x, y, w, xeval = NULL, ...)
 gamlss.ps(x, y, w, xeval = NULL, ...)
-gamlss.ridge(x, y, w, xeval = NULL, ...)
 gamlss.ri(x, y, w, xeval = NULL, ...)
 gamlss.cy(x, y, w, xeval = NULL, ...)
 gamlss.pvc(x, y, w, xeval = NULL, ...)
 gamlss.pbm(x, y, w, xeval = NULL, ...)
 gamlss.pbz(x, y, w, xeval = NULL, ...)
+gamlss.pbc(x, y, w, xeval = NULL, ...)
 }
 
 \arguments{

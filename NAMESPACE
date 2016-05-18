@@ -1,4 +1,3 @@
-# functions
 export(gamlss, gamlss.control, glim.control, is.gamlss,
        centiles, centiles.com, centiles.split, centiles.pred,
        centiles.fan,
@@ -17,6 +16,7 @@ export(gamlss, gamlss.control, glim.control, is.gamlss,
        pbz, gamlss.pbz, pbz.control,
        cy, gamlss.cy, cy.control,
        pvc, gamlss.pvc, pvc.control,
+       pbc, gamlss.pbc, pbc.control,
        fp, gamlss.fp,
        bfp,
        re, gamlss.re,
@@ -37,7 +37,8 @@ export(gamlss, gamlss.control, glim.control, is.gamlss,
         .gamlss.sm.list, .gamlss.bi.list, .gamlss.multin.list,
         plot2way, loglogSurv1, loglogSurv2, loglogSurv3, loglogSurv, logSurv, 
         quantSheets.control, quantSheets, findPower, z.scoresQS,
-        getZmatrix, vis.lo, VC.test)
+        getZmatrix, vis.lo, VC.test,
+        pcat, gamlss.pcat, plotDF, plotLambda)
 
 
 
@@ -101,6 +102,11 @@ S3method(predict, quantSheets)
 S3method(fitted, quantSheets)
 S3method(residuals, quantSheets)
 
+S3method(print, pcat)
+S3method(fitted, pcat)
+S3method(coef, pcat)
+S3method(plot, pcat)
+S3method(coef, pcat)
 
 S3method(fitted, gamlssML)
 S3method(vcov, gamlssML)
@@ -124,4 +130,7 @@ S3method(fitted, pb)
 S3method(print, pb)
 S3method(print, pbm)
 S3method(print, pbz)
+S3method(print, pbc)
 S3method(print, cy)
+
+useDynLib(gamlss)

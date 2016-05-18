@@ -55,17 +55,8 @@ pbz <- function(x, df = NULL, lambda = NULL, control=pbz.control(...), ...)
 ##                create the basis
                 X <- bbase(x, xmin, xmax, control$inter, control$degree, control$quantiles) # 
                 r <- ncol(X)
-##                the penalty matrix
-##  if order < 2 ignore since D1 is of order 1
-#                if (control$order<2)  
-#                  { control$order<-2
-#                    warning("the order is set to 2")
-#                  }
                 D <- diff(diag(r), diff=control$order)
                D1 <- diff(diag(r))              
-#             n <- nrow(X) # the no of observations
-#             p <- ncol(D) # the rows of the penalty matrix
-## ------      if df are set                
              if(!is.null(df)) # degrees of freedom
              {
              if (df>(dim(X)[2]-2)) 
@@ -94,7 +85,7 @@ gamlss.environment <- sys.frame(position)
 #--------
    assign(startLambdaName, control$start, envir=gamlss.environment)
 #--------
-          xvar <- rep(0,length(x)) # only the linear part in the design matrix the rest pass as artributes
+          xvar <- rep(0,length(x)) # zero in the design matrix the rest pass as artributes
       attr(xvar, "control")       <- control
       attr(xvar, "D")             <- D
       attr(xvar, "D1")            <- D1
@@ -111,20 +102,10 @@ gamlss.environment <- sys.frame(position)
 #-------------------------------------------------------------------------------
 # control function for pb()
 ##------------------------------------------------------------------------------
-pbz.control <- function(inter = 20, degree= 3, order = 2, start=0.00001, quantiles=FALSE, 
-                       method=c("ML","GAIC", "GCV"), k=2, ...)
+pbz.control <- function(inter = 20, degree= 3, order = 2, start=c(0.0001,0.0001), 
+                      quantiles=FALSE, method=c("ML","GAIC", "GCV"), k=2, 
+                      lim=3,  ...)
 { 
-##  Control function for pb()
-##  MS  Tuesday, March 24, 2009
-## inter : is the number of equal space intervals in x 
-## (unless quantiles = TRUE is used in which case the points will be at the quantiles values of x) 
-## degree: is the degree of the polynomial 
-## order refers to differences in the penalty for the coeficients 
-## order = 0 : white noise random effects
-## order = 1 : random walk
-## order = 2 : random walk of order 2
-## order = 3 : random walk of order 3
-# inter = 20, degree= 3, order = 2, start=10, quantiles=FALSE, method="loML"
         if(inter <= 0) {
 warning("the value of inter supplied is less than 0, the value of 10 was used instead")
                 inter <- 10 }
@@ -137,9 +118,10 @@ warning("the value of order supplied is less than 2 the default value of 2 was u
         if(k <= 0) {
 warning("the value of GAIC/GCV penalty supplied is less than zero the default value of 2 was used instead")
                 k <- 2}   
-method <- match.arg(method)                          
+method <- match.arg(method)    
         list(inter = inter, degree = degree,  order = order, start=start, 
-                   quantiles = as.logical(quantiles)[1], method= method, k=k)
+                   quantiles = as.logical(quantiles)[1], method= method, 
+                  k=k, lim=lim)
 }
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
@@ -149,52 +131,48 @@ gamlss.pbz <- function(x, y, w, xeval = NULL, ...)
 # functions within
 # a simple penalised regression
 # this is the original matrix manipulation version but it swiches to QR if it fails
-# regpen <- function(y, X, w, lambda)# original
-  # { 
-       # Dinv  <- 1/(1+lambda*Di)
-        # DU   <- Dinv*t(U)
-    # betaDass <-   U%*%DU%*%Qy
-        # beta <- Rinv%*%betaDass
-        # df <- sum(Dinv)
-            # fit <- list(beta = beta, edf = df)
-   # return(fit)  
-  # }
 #------------------------------------------------------------------------------
-regpen <- function(y, X, w, lambda)# original
+regpen <- function(y, X, w)# original
 {
-      RD <- rbind(R,sqrt(lambda)*D) # matrix 
-  svdRD <- svd(RD)                 # U 2pxp D pxp V pxp
+       RD <- rbind(R,sqrt(lambda)*D) # matrix 
+    svdRD <- svd(RD)                 # U 2pxp D pxp V pxp
   ##             take only the important values    
-  rank <- sum(svdRD$d>max(svdRD$d)*.Machine$double.eps^.8)
-  U1 <- svdRD$u[1:p,1:rank]     # U1 p x rank 
+     rank <- sum(svdRD$d>max(svdRD$d)*.Machine$double.eps^.8)
+       U1 <- svdRD$u[1:p,1:rank]     # U1 p x rank 
   # I am not sure what are consequances in introducing this ???
-  y1 <- t(U1)%*%Qy #  t(Q)%*%(sqrt(w)*y)        # rankxp pxn nx1 => rank x 1 vector 
+       y1 <- t(U1)%*%Qy #  t(Q)%*%(sqrt(w)*y)        # rankxp pxn nx1 => rank x 1 vector 
   #     beta <- svdRD$v[,1:rank] %*%diag(1/svdRD$d[1:rank])%*%y1 
-  beta <- svdRD$v[,1:rank] %*%(y1/svdRD$d[1:rank])
+     beta <- svdRD$v[,1:rank] %*%(y1/svdRD$d[1:rank])
   #        1/(svdRD$d^2)
   #print((svdRD$v)%*%t(svdRD$v), digits=1)
-  HH <- (svdRD$u)[1:p,1:rank]%*%t(svdRD$u[1:p,1:rank])
-  df <- sum(diag(HH))
+       HH <- (svdRD$u)[1:p,1:rank]%*%t(svdRD$u[1:p,1:rank])
+       df <- sum(diag(HH))
   #cat("df", df, "\n")
-  if (df<=3)
+      df1 <- df2 <- 0
+ do1order <- FALSE    
+  if (df<=lim) # this is crucial for the cut of point
   {
-    RD <- rbind(R,sqrt(lambda)*D,sqrt(lambda)*D1) # matrix  
-    svdRD <- svd(RD)                 # U 2pxp D pxp V pxp
+       RD <- rbind(R,sqrt(lambda)*D,sqrt(lambda2)*D1) # matrix  
+       RD1 <- rbind(R,sqrt(lambda)*D)
+       RD2 <- rbind(R,sqrt(lambda2)*D1)
+     svdRD <- svd(RD)                 # U 2pxp D pxp V pxp
+    svdRD1 <- svd(RD1)
+    svdRD2 <- svd(RD2)
     ##             take only the important values    
-    rank <- sum(svdRD$d>max(svdRD$d)*.Machine$double.eps^.8)
-    U1 <- svdRD$u[1:p,1:rank]     # U1 p x rank 
+     rank <- sum(svdRD$d>max(svdRD$d)*.Machine$double.eps^.8)
+       U1 <- svdRD$u[1:p,1:rank]     # U1 p x rank 
     # I am not sure what are consequances in introducing this ???
-    y1 <- t(U1)%*%Qy #  t(Q)%*%(sqrt(w)*y)        # rankxp pxn nx1 => rank x 1 vector 
-    #     beta <- svdRD$v[,1:rank] %*%diag(1/svdRD$d[1:rank])%*%y1 
-    beta <- svdRD$v[,1:rank] %*%(y1/svdRD$d[1:rank])
-    #        1/(svdRD$d^2)
-    #print((svdRD$v)%*%t(svdRD$v), digits=1)
-    HH <- (svdRD$u)[1:p,1:rank]%*%t(svdRD$u[1:p,1:rank])
-    df <- sum(diag(HH))
-  #  cat("new df", df, "\n")
+        y1 <- t(U1)%*%Qy #  t(Q)%*%(sqrt(w)*y)        # rankxp pxn nx1 => rank x 1 vector 
+      beta <- svdRD$v[,1:rank] %*%(y1/svdRD$d[1:rank])
+        HH <- (svdRD$u)[1:p,1:rank]%*%t(svdRD$u[1:p,1:rank])
+       HH1 <- (svdRD1$u)[1:p,1:rank]%*%t(svdRD1$u[1:p,1:rank]) 
+       HH2 <- (svdRD2$u)[1:p,1:rank]%*%t(svdRD2$u[1:p,1:rank]) 
+        df <- sum(diag(HH))
+       df1 <- sum(diag(HH1))
+       df2 <- sum(diag(HH2))
+  do1order <- TRUE  
   }
-  
-  fit <- list(beta = beta, edf = df)
+  fit <- list(beta = beta, edf = df,  df1=df1, df2=df2, do1order=do1order)
   return(fit)  
 }
 # #-------------------------------------------------------------------------------
@@ -218,16 +196,6 @@ regpen <- function(y, X, w, lambda)# original
            GCV
            }  
 # #-------------------------------------------------------------------------------
-# ## local function to get edf from lambda 
-# #   edf_df <- function(lambda)
-# #         {
-# #             G <- lambda * t(D) %*% D
-# #             H <- solve(XWX + G, XWX)
-# #           edf <- sum(diag(H))
-# #          # cat("edf", edf, "\n")
-# #           (edf-df)
-# #          }
-# ## local function to get df using eigen values
     edf1_df <- function(lambda)
            {
            edf <-  sum(1/(1+lambda*UDU$values))
@@ -240,13 +208,15 @@ regpen <- function(y, X, w, lambda)# original
               X <-  if (is.null(xeval)) as.matrix(attr(x,"X")) #the trick is for prediction
                     else  as.matrix(attr(x,"X"))[seq(1,length(y)),]
               D <- as.matrix(attr(x,"D")) # main penalty
-             D1 <- as.matrix(attr(x,"D1")) # main penalty   
+             D1 <- as.matrix(attr(x,"D1")) # order 1 penalty   
          lambda <- as.vector(attr(x,"lambda")) # lambda 
              df <- as.vector(attr(x,"df")) # degrees of freedom
         control <- as.list(attr(x, "control")) 
      gamlss.env <- as.environment(attr(x, "gamlss.env"))
 startLambdaName <- as.character(attr(x, "NameForLambda")) 
           order <- control$order # the order of the penalty matrix
+        lambda2 <- control$start[2]
+            lim <- control$lim 
               N <- sum(w!=0) # DS+FDB 3-2-14
               n <- nrow(X) # the no of observations
               p <- ncol(D) # the rows of the penalty matrix
@@ -254,89 +224,69 @@ startLambdaName <- as.character(attr(x, "NameForLambda"))
               R <- qr.R(qrX)
               Q <- qr.Q(qrX) 
              Qy <- t(Q)%*%(sqrt(w)*y)
-#zapsmall(Q) 
-#           Rinv <- chol2inv(R) # solve(R)  
-#            G   <- t(D)%*%D
-#            UDU <- eigen(t(Rinv)%*%G%*%Rinv) 
-#             Di <- UDU$values
-#            lDi <- length(Di)
-#Di[lDi] <- Di[lDi-2]*0.1 #<- Di[lDi-2]# set no zorothe last eigrn values
-#              U <- UDU$vectors
-           tau2 <- sig2 <- NULL
+           tau2 <- sig2 <- tau2_2 <- NULL
+            df1 <- df2 <- 0
 # now the action depends on the values of lambda and df
 #------------------------------------------------------------------------------- 
         lambdaS <- get(startLambdaName, envir=gamlss.env) ## geting the starting value
- if (lambdaS>=1e+07) lambda <- 1e+07 # MS 19-4-12
- if (lambdaS<=1e-07) lambda <- 1e-07 # MS 19-4-12
- # cat(lambda, "\n")
- # case 1: if lambda is known just fit -----------------------------------------
+ if (lambdaS[1]>=1e+07) lambda  <- 1e+07 # MS 19-4-12
+ if (lambdaS[1]<=1e-07) lambda  <- 1e-07 # MS 19-4-12
+ if (lambdaS[2]>=1e+07) lambda2 <- 1e+07 # MS 19-4-12
+ if (lambdaS[2]<=1e-07) lambda2  <- 1e-07 # MS 19-4-12
+# case 1: if lambda is known just fit -----------------------------------------
  if (is.null(df)&&!is.null(lambda)||!is.null(df)&&!is.null(lambda))
  {
-          fit <- regpen(y, X, w, lambda)
+          fit <- regpen(y, X, w)
            fv <- X %*% fit$beta        
  } # case 2: if lambda is estimated -------------------------------------------- 
  else if (is.null(df)&&is.null(lambda)) 
  { #   
   # cat("----------------------------","\n")
-     lambda <- lambdaS  # MS 19-4-12
+     lambda <- lambdaS[1]  
+    lambda2 <- lambdaS[2] 
   # if ML --------------------------------------------------------------------ML     
   switch(control$method,
   "ML"={
+#    cat("----", "\n")
        for (it in 1:50) 
          {
-           fit  <- regpen(y, X, w, lambda=lambda) # fit model
-         gamma. <- D %*% as.vector(fit$beta)  # get the gamma differences
+           fit  <- regpen(y, X, w) # fit model
              fv <- X %*% fit$beta             # fitted values
-           sig2 <- sum(w * (y - fv) ^ 2) / (N - fit$edf) # DS+FDB 3-2-14
-           tau2 <- sum(gamma. ^ 2) / (fit$edf-order)# see LNP page 279
-           if(tau2<1e-7) tau2 <- 1.0e-7 # MS 19-4-12
-     lambda.old <- lambda
-         lambda <- sig2 / tau2 # maybe only 1/tau2 will do since it gives exactly the EM results see LM-1
-     if (lambda<1.0e-7) lambda<-1.0e-7 # DS Saturday, April 11, 2009 at 14:18
-     if (lambda>1.0e+7) lambda<-1.0e+7 # DS 29 3 2012
-      #    cat("iter tau2 sig2",it,tau2, sig2, '\n')
-     if (abs(lambda-lambda.old) < 1.0e-7||lambda>1.0e10) break
-      assign(startLambdaName, lambda, envir=gamlss.env)
-     #cat("lambda",lambda, '\n')
-         }
+#cat(fit$do1order, "\n")
+          if (fit$do1order)
+          {
+      gamma. <- D %*% as.vector(fit$beta)  # get the gamma differences
+     gamma2. <- D1 %*% as.vector(fit$beta)   
+        sig2 <- sum(w * (y - fv) ^ 2) / (N - fit$edf) # DS+FDB 3-2-14
+        tau2 <- sum(gamma. ^ 2) / (fit$df1-1)
+      tau2_2 <- sum(gamma2. ^ 2) / (fit$df2-1)
+                if(tau2<1e-7)     tau2 <- 1.0e-7 # lower limit
+                if(tau2_2<1e-7) tau2_2 <- 1.0e-7 
+  lambda.old <- lambda
+      lambda <- sig2 / tau2 
+                if (lambda<1.0e-7) lambda<-1.0e-7 #
+                if (lambda>1.0e+7) lambda<-1.0e+7 # DS 29 3 2012
+  lambda2.old <- lambda2
+     lambda2 <- sig2 / tau2_2     
+                if (lambda2<1.0e-7) lambda2<-1.0e-7 #
+                if (lambda2>1.0e+7) lambda2<-1.0e+7 # 
+     if (abs(lambda-lambda.old) < 1.0e-7||lambda>1.0e10) break     
+#     cat("lambda",lambda,lambda2, fit$edf, '\n')
+          } else
+          { # the standard pb()
+      gamma. <- D %*% as.vector(fit$beta)  # get the gamma differences
+          fv <- X %*% fit$beta             # fitted values
+        sig2 <- sum(w * (y - fv) ^ 2) / (N - fit$edf) # DS+FDB 3-2-14
+        tau2 <- sum(gamma. ^ 2) / (fit$edf-order)# see LNP page 279
+        if(tau2<1e-7) tau2 <- 1.0e-7 # MS 19-4-12
+  lambda.old <- lambda
+      lambda <- sig2 / tau2 
+                if (lambda<1.0e-7) lambda<-1.0e-7 # 
+                if (lambda>1.0e+7) lambda<-1.0e+7 # DS 29 3 2012
+  if (abs(lambda-lambda.old) < 1.0e-7||lambda>1.0e10) break         }  
+       }
+    assign(startLambdaName, c(lambda, lambda2), envir=gamlss.env) 
        },
-#   "ML-1"={ #------------------------------------------------------------ML-1
-#        for (it in 1:50) 
-#          {
-#            fit  <- regpen(y, X, w, lambda) # fit model
-#          gamma. <- D %*% as.vector(fit$beta)  # get the gamma differences
-#              fv <- X %*% fit$beta             # fitted values
-#            sig2 <- 1 # sum(w * (y - fv) ^ 2) / (N - fit$edf)
-#            tau2 <- sum(gamma. ^ 2) / (fit$edf-order)# Monday, March 16, 2009 at 20:00 see LNP page 279
-#      if(tau2<1e-7) tau2 <- 1.0e-7
-#      lambda.old <- lambda
-#          lambda <- sig2 / tau2 # 1/tau2 
-#      if (lambda<1.0e-7) lambda<-1.0e-7 # DS Saturday, April 11, 2009 at 14:18
-#      if (lambda>1.0e+7) lambda<-1.0e+7 # DS 29 3 2012
-#      if (abs(lambda-lambda.old) < 1.0e-7||lambda>1.0e7) break
-#       assign(startLambdaName, lambda, envir=gamlss.env)
-#          }
-#        },
-#   "EM"={ #------------------------------------------------------------ EM
-#       for (it in 1:500) 
-#          {
-#              fit  <- regpenEM(y, X, w, lambda, order)
-#            gamma. <- D %*% as.vector(fit$beta)
-#            vgamma <- sum(diag(D%*%fit$V%*%t(D))) # this is crucial for estimating the variance of gamma Monday, March 23, 2009
-#                fv <- X %*% fit$beta
-#              tau2 <- ((sum(gamma.^ 2))+vgamma)/length(gamma.) 
-#              if(tau2<1e-7) tau2 <- 1.0e-7
-#        lambda.old <- lambda
-#            lambda <- 1 / tau2
-#          #if (lambda<1.0e-7) lambda<-1.0e-7 # DS Saturday, April 11, 2009    
-#          if (lambda<1.0e-7) lambda<-1.0e-7 # DS Saturday, April 11, 2009 at 14:18
-#          if (lambda>1.0e+7) lambda<-1.0e+7 # DS 29 3 2012 
-#        #    cat("iter sigma_t^2",it, tau2, "lambda",lambda, '\n')
-#        if (abs(lambda-lambda.old) < 1.0e-7||lambda>1.0e7) break
-#          }
-#     #cat("lambda",lambda, '\n')
-#       assign(startLambdaName, lambda, envir=gamlss.env)
-#        },
   "GAIC"=  #--------------------------------------------------------------- GAIC
        {
         lambda <- nlminb(lambda, fnGAIC,  lower = 1.0e-7, upper = 1.0e7, k=control$k)$par 

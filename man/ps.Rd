@@ -2,6 +2,8 @@
 \alias{ps}
 \alias{pb}
 \alias{pbo}
+\alias{pbc}
+\alias{pbc.control}
 \alias{pb.control}
 \alias{pbo.control}
 \alias{pvc}
@@ -15,29 +17,44 @@
 \alias{getZmatrix}
 
 
-\title{Specify a Penalised  B-Spline Fits in a GAMLSS Formula}
+\title{P-Splines Fits in a GAMLSS Formula}
 
 \description{
-There are several function operating using penalised B-splines: \code{pb()}, \code{pbo()}, \code{cy()}, \code{pvc()}, \code{pbm()}, \code{pbz()} and \code{ps()}.
+There are several function which use P-spline methodology:
 
-The functions take a vector and return it with several attributes. The vector is used in the construction of the design matrix X used in the fitting. The functions  do not do the  smoothing, but assign the attributes to the vector to aid gamlss in the smoothing.
-The functions doing the smoothing are   \code{\link{gamlss.pb}()}, \code{\link{gamlss.pbo}()}, \code{\link{gamlss.cy}()}  \code{\link{gamlss.pvc}()},  \code{\link{gamlss.pbm}()}, \code{\link{gamlss.pbz}} and \code{\link{gamlss.ps}()} which are used in the backfitting  function \code{\link{additive.fit}}.
+a) \code{pb()}, the current version of P-splines which uses SVD in the fitting and therefore is the most reliable 
+
+b) \code{pbo()}, an older version of P-splines which uses simple matrix algebra in the fits.
+
+c) \code{pbc()} the new vwrsion of cycle P-splines (using SVD)
+
+d) \code{cy()} the older version of cycle P-splines.
+
+e) \code{pbm()} for fitting monotonic  P-splines (using SVD)
+
+f) \code{pbz()} for fitting  P-splines which allow the fitted curve to shrink to zero degrees of freedom 
+
+g) \code{ps()} the original P-splines with no facility of estimating the smoothing parameters and 
+
+j) \code{pvc()} penelised varying coefficient models.
+
+Theoretical explanation of the above P-splines can be found in Eilers \emph{et al.} (2016)
+
+The functions take a vector and return it with several attributes. The vector is used in the construction of the design matrix X used in the fitting. The functions do not do the  smoothing, but assign the attributes to the vector to aid gamlss in the smoothing. The functions doing the smoothing are   \code{\link{gamlss.pb}()}, \code{\link{gamlss.pbo}()}, \code{\link{gamlss.pbc}()}  \code{\link{gamlss.cy}()}  \code{\link{gamlss.pvc}()},  \code{\link{gamlss.pbm}()}, \code{\link{gamlss.pbz}} and \code{\link{gamlss.ps}()} which are used in the backfitting  function \code{\link{additive.fit}}.
 
 
 The function \code{pb()} is more efficient and faster than the original penalised smoothing function \code{ps()}. After December 2014 the  \code{pb()} has changed radically to improved performance. The older version of the \code{pb()} function is called now \code{pbo()}. 
-\code{pb()} allows the estimation of the smoothing parameters using different local (performance iterations) methods.
-The method are "ML", "ML-1", "EM", "GAIC" and "GCV". 
+\code{pb()} allows the estimation of the smoothing parameters using different local (performance iterations) methods. The method are "ML", "ML-1", "EM", "GAIC" and "GCV". 
 
 The function \code{pbm()} fits monotonic smooth functions, that is functions which increase or decrease monotonically depending on the value of the argument \code{mono} which takes the values \code{"up"} or \code{"down"}.
 
-The function \code{pbz()} is similar to \code{pb()} with the extra property that when lambda becomes very large the resulting smooth function  goes to a constant rather than to a linear function. This is very useful for model selection. The function is based on Maria Durban idea of  using double penalties, one of order 2 and one of order 1. The second penalty only applies if the effective df are close to 2 (that is if a linear is selected). 
+The function \code{pbz()} is similar to \code{pb()} with the extra property that when lambda becomes very large the resulting smooth function  goes to a constant rather than to a linear function. This is very useful for model selection. The function is based on Maria Durban idea of using a double penalty, one of order 2 and one of order 1. The second penalty only applies if the effective df are close to 2 (that is if a linear is already selected). 
   
-The function \code{cy()} fits a cycle penalised beta regression spline such as 
-the last fitted value of the smoother is equal to the first fitted value.
+The function \code{pbc()} fits a cycle penalised beta regression spline such as  the last fitted value of the smoother is equal to the first fitted value. \code{cy()} is the older version.
 
-The function \code{pvc()} fits  varying coefficient models see Hastie and Tibshirani(1993) and it is more general and flexible than the old \code{vc()} function which is based on cubic splines.
+The function \code{pvc()} fits  varying coefficient models see Hastie and Tibshirani(1993) and it is more general and flexible than the old \code{vc()} function which was based on cubic splines.
 
-The function \code{getZmatrix()} creates a (random effect) design matrix \code{Z} which cane be  used to fit a P-splines smoother using the \code{re())} function. (The \code{re()}  is an interface with the random effect function \code{lme} of the package \pkg{nlme}. 
+The function \code{getZmatrix()} creates a (random effect) design matrix \code{Z} which can be  used to fit a P-splines smoother using the \code{re())} function. (The \code{re()}  is an interface with the random effect function \code{lme} of the package \pkg{nlme}. 
 }
 \usage{
 pb(x, df = NULL, lambda = NULL, control = pb.control(...), ...)
@@ -46,6 +63,9 @@ pbo.control(inter = 20, degree = 3, order = 2, start = 10, quantiles = FALSE,
                method = c("ML", "GAIC", "GCV", "EM", "ML-1"), k = 2, ...)
 pb.control(inter = 20, degree = 3, order = 2, start = 10, quantiles = FALSE, 
           method = c("ML", "GAIC", "GCV"), k = 2, ...)
+pbc(x, df = NULL, lambda = NULL, control = pbc.control(...), ...)
+pbc.control(inter = 20, degree = 3, order = 2, start = 10, 
+          method = c("ML", "GAIC", "GCV"), k = 2, sin = TRUE, ...)
 cy(x, df = NULL, lambda = NULL, control = cy.control(...), ...)
 cy.control(inter = 20, degree = 3, order = 2, start = 10, 
           method = c("ML", "GAIC", "GCV", "EM", "ML-1"), k = 2, ts=FALSE, ...)
@@ -57,8 +77,8 @@ pbm(x, df = NULL, lambda = NULL, mono=c("up", "down"),
 pbm.control(inter = 20, degree = 3, order = 2, start = 10, quantiles = FALSE, 
             method=c("ML","GAIC", "GCV"), k=2, kappa = 1e10, ...)
 pbz(x, df = NULL, lambda = NULL, control = pbz.control(...), ...)
-pbz.control(inter = 20, degree = 3, order = 2, start = 1e-05, quantiles = FALSE, 
-            method = c("ML", "GAIC", "GCV"), k = 2, ...)
+pbz.control(inter = 20, degree = 3, order = 2, start = c(1e-04, 1e-04), 
+     quantiles = FALSE, method = c("ML", "GAIC", "GCV"), k = 2, lim = 3, ...)
 
 ps(x, df = 3, lambda = NULL, ps.intervals = 20, degree = 3, order = 3)
 
@@ -86,6 +106,8 @@ getZmatrix(x, xmin = NULL, xmax = NULL, inter = 20, degree = 3, order = 2)
   \item{ps.intervals}{the no of break points in the x-axis}
   \item{xmin}{minimum value for creating the B-spline}
   \item{xmax}{maximum value for creating the B-spline}
+  \item{sin}{whether to use the sin penaltry or not}
+  \item{lim}{at which level the seconnd penaltly of order 1 should start}
 } 
 \details{
 The \code{ps()} function is based on Brian Marx function which can be found in \url{http://www.stat.lsu.edu/faculty/marx/}.
@@ -104,11 +126,11 @@ The  function \code{pb()} fits a P-spline smoother.
 
 The  function \code{pbm()} fits a monotonic (going up or down) P-spline smoother.
 
-The  function \code{cy()} fits a P-spline smoother where the beginning and end are the same.  
+The  function \code{pbc()} fits a P-spline smoother where the beginning and end are the same.  
 
 The \code{pvc()} fits a varying coefficient model.  
 
-Note that the local (or performance iterations) methods can occasionally  make the convergence of gamlss less stable compared to  models where the degrees of freedom are fixed.           
+Note that the local (or performance iterations) methods can occasionally  make the convergence of gamlss less stable compared to models where the degrees of freedom are fixed.           
 }
 
 \value{
@@ -122,6 +144,9 @@ Note that the local (or performance iterations) methods can occasionally  make t
 Eilers, P. H. C. and Marx, B. D. (1996). Flexible smoothing with
 B-splines and penalties (with comments and rejoinder). \emph{Statist. Sci},
 \bold{11}, 89-121.
+
+Eilers, Paul HC, Marx, Brian D and Durban, Maria, (2016) Twenty years of P-splines. \emph{SORT-Statistics and Operations Research Transactions}, \bold{39}, 149--186.
+
 
 Hastie, T. J. and Tibshirani, R. J. (1993), Varying coefficient models (with discussion),J. R. Statist. Soc. B., \bold{55},
     757-796.
@@ -155,13 +180,13 @@ with(aids, lines(x,fitted(aids1),col="yellow"))
 rm(aids1, aids2, aids3)
 #=============================
 \dontrun{
-# cy()
+# pbc()
 # simulate data
 set.seed(555)
 x = seq(0, 1, length = 100)
 y = sign(cos(1 * x * 2 * pi + pi / 4)) + rnorm(length(x)) * 0.2
 plot(y~x)
-m1<-gamlss(y~cy(x)) 
+m1<-gamlss(y~pbc(x)) 
 lines(fitted(m1)~x)
 rm(y,x,m1)
 #=============================

@@ -219,7 +219,7 @@ CheckSmoWithPlot <- function(termList)
 {
   #gamlss.Smo.plot.list <- c( "tr", "ga")
   gamlss.Smo.plot.list1 <- c( "tr(", "ga(", "nn(", "pvc(", "mrf(", "mrfa(", "ri(",
-                             "own(" , "re(", "lo(")
+                             "own(" , "re(", "lo(", "pcat(")
   lgamsmol  <- length(gamlss.Smo.plot.list1)
   lsm  <- length(termList)
   res <- rep(0, lsm) 
@@ -544,6 +544,10 @@ whichValueSmo <- CheckSmoList(nmt)
             text(getSmo(object, what, which=whichValueSmo[i]))
           }
           if (attr(whichValueSmo, "whichSmo")[i]=="ri")
+          {
+            plot(getSmo(object, what, which=whichValueSmo[i]))
+          }
+          if (attr(whichValueSmo, "whichSmo")[i]=="pcat")
           {
             plot(getSmo(object, what, which=whichValueSmo[i]))
           }
