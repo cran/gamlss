@@ -14,33 +14,35 @@ vcov.gamlss <- function (object,
   HessianPB<-function (pars, fun, ..., .relStep = (.Machine$double.eps)^(1/3), 
                        minAbsPar = 0) 
   {
-    pars <- as.numeric(pars)
-    npar <- length(pars)
-    incr <- ifelse(abs(pars) <= minAbsPar, minAbsPar * .relStep, 
+       pars <- as.numeric(pars)
+       npar <- length(pars)
+       incr <- ifelse(abs(pars) <= minAbsPar, minAbsPar * .relStep, 
                    abs(pars) * .relStep)
     baseInd <- diag(npar)
-    frac <- c(1, incr, incr^2)
-    cols <- list(0, baseInd, -baseInd)
-    for (i in seq_along(pars)[-npar]) {
+       frac <- c(1, incr, incr^2)
+       cols <- list(0, baseInd, -baseInd)
+    for (i in seq_along(pars)[-npar]) 
+      {
       cols <- c(cols, list(baseInd[, i] + baseInd[, -(1:i)]))
       frac <- c(frac, incr[i] * incr[-(1:i)])
-    }
+      }
     indMat <- do.call("cbind", cols)
-    shifted <- pars + incr * indMat
+   shifted <- pars + incr * indMat
     indMat <- t(indMat)
-    Xcols <- list(1, indMat, indMat^2)
-    for (i in seq_along(pars)[-npar]) {
+     Xcols <- list(1, indMat, indMat^2)
+    for (i in seq_along(pars)[-npar]) 
+      {
       Xcols <- c(Xcols, list(indMat[, i] * indMat[, -(1:i)]))
-    }
-    coefs <- solve(do.call("cbind", Xcols), apply(shifted, 2, 
+      }
+     coefs <- solve(do.call("cbind", Xcols), apply(shifted, 2, 
                                                   fun, ...))/frac
-    Hess <- diag(coefs[1 + npar + seq_along(pars)], ncol = npar)
+      Hess <- diag(coefs[1 + npar + seq_along(pars)], ncol = npar)
     Hess[row(Hess) > col(Hess)] <- coefs[-(1:(1 + 2 * npar))]
     list(mean = coefs[1], gradient = coefs[1 + seq_along(pars)], 
-         
          Hessian = (Hess + t(Hess)))
   }  
-## end of local ----------------------------------------------------------------  
+## end of local ---------------------------------------------------------------- 
+
        type <- match.arg(type)
 hessian.fun <- match.arg(hessian.fun)
   if (!is.gamlss(object)) 
@@ -48,26 +50,26 @@ hessian.fun <- match.arg(hessian.fun)
   coefBeta <- list()
   for (i in object$par) 
   {
-    if (i == "mu") 
-      {
-      if (!is.null(unlist(attr(terms(formula(object), specials = .gamlss.sm.list), 
-                               "specials")))) 
-        warning("Additive terms exists in the mu formula. \n "
-                ,"Standard errors for the linear terms maybe are not appropriate")
-    }
-    else 
+    if (length(eval(parse(text=paste(paste("object$",i, sep=""),".fix==TRUE", sep=""))))!=0)
+    {
+             ff <- eval(parse(text=paste(paste(paste(object$family[1],"()$", sep=""), i, sep=""),".linkfun", sep="")))
+       fixvalue <- ff( fitted(object,i)[1])
+names(fixvalue) <- paste("fixed",i, sep=" ")
+       coefBeta <- c(coefBeta, fixvalue) 
+    } else
     {
       if (!is.null(unlist(attr(terms(formula(object, i), 
                                      specials = .gamlss.sm.list), "specials")))) 
         warning(paste("Additive terms exists in the ", i, "formula. \n "
-                ,"Standard errors for the linear terms maybe are not appropriate"))
+                      ,"Standard errors for the linear terms maybe are not appropriate"))
+      # }
+      #   parname <- paste(i, "start", sep = ".")
+      nonNAcoef <- !is.na(coef(object, i))
+      coefBeta <- c(coefBeta, coef(object, i)[nonNAcoef]) 
     }
-  #    parname <- paste(i, "start", sep = ".")
-    nonNAcoef <- !is.na(coef(object, i))
-     coefBeta <- c(coefBeta, coef(object, i)[nonNAcoef])
   }
-   betaCoef <- unlist(coefBeta)      
-   like.fun <- gen.likelihood(object)
+     betaCoef <- unlist(coefBeta)      
+     like.fun <- gen.likelihood(object)
 ## we have a problem here if the likelihood has a lot of parameter for example 
 ## a lot of factors with large number of levels as in BAT data where 
 ##  system.time(H <- HessianPB(betaCoef, like.fun))
@@ -93,10 +95,10 @@ hessian.fun <- match.arg(hessian.fun)
   #names(coefBeta) <- attr(a$se, "names")
     if (robust)
     {
-      K <- get.K(object)
+           K <- get.K(object)
       varCov <- varCov%*%K%*%varCov
-      se <- sqrt(diag(varCov))
-      corr <- cov2cor(varCov)
+          se <- sqrt(diag(varCov))
+        corr <- cov2cor(varCov)
     }
   switch(type, vcov = varCov, cor = corr, se = se, coef = coefBeta, 
          all = list(coef = coefBeta, se = se, vcov = varCov, 

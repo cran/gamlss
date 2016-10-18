@@ -54,7 +54,7 @@ Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location s
 }
 
 
-\author{Calliope Akantziliotou, Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk} and Bob Rigby \email{r.rigby@londonmet.ac.uk} }
+\author{Calliope Akantziliotou, Mikis Stasinopoulos \email{mikis.stasinopoulos@gamlss.org} and Bob Rigby}
 \section{Warning }{A dense grid (i.e. small step) evaluation of the global deviance can take a long time, so start with a sparse grid (i.e. large step) 
 and decrease  gradually the step length for more accuracy. }  
 \seealso{ \code{\link{gamlss}},  \code{\link{prof.term}} }

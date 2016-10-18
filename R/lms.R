@@ -3,7 +3,7 @@
 # upadated  8--6-14
 #-------------------------------------------------------------------------------
 # what is new June 2014
-# i)  the power transformation (x^p) function pt() now is defined to include 
+# i)  the power transformation (x^p) function ptrans() now is defined to include 
 #      zero as log(x)
 # ii) the power transformation uses GAIC instead GD which was not reliable 
 #      since different transformation will use differt effective df's 
@@ -57,14 +57,14 @@ findPower <- function(y, x, data = NULL,  lim.trans = c(0, 1.5), prof=FALSE, k=2
 {
   cat("*** Checking for transformation for x ***", "\n") 
  ptrans<- function(x, p) if (abs(p)<=0.0001) log(x) else I(x^p)
-  fn <- function(p) GAIC(gamlss(y~pb(pt(x,p)), c.crit = c.crit, trace=FALSE), k=k)
+      fn <- function(p) GAIC(gamlss(y~pb(ptrans(x,p)), c.crit = c.crit, trace=FALSE), k=k)
   if (prof) # profile dev
   {
-    pp <- seq(lim.trans[1],lim.trans[2], step) 
-    pdev <- rep(0, length(pp)) 
+       pp <- seq(lim.trans[1],lim.trans[2], step) 
+     pdev <- rep(0, length(pp)) 
     for (i in 1:length(pp)) 
     {
-      pdev[i] <- fn(pp[i])  
+  pdev[i] <- fn(pp[i])  
       #   cat(pp[i], pdev[i], "\n")
     }
     plot(pdev~pp, type="l")
@@ -73,12 +73,15 @@ findPower <- function(y, x, data = NULL,  lim.trans = c(0, 1.5), prof=FALSE, k=2
     cat('*** power parameters ', par,"***"," \n") 
   } else
   {
-    fn <- function(p) GAIC(gamlss(y~pb(pt(x,p)), c.crit = c.crit, trace=FALSE), k=k)
+     fn <- function(p) GAIC(gamlss(y~pb(ptrans(x,p)), c.crit = c.crit, trace=FALSE), k=k)
     par <- optimise(fn, lower=lim.trans[1], upper=lim.trans[2])$minimum
     cat('*** power parameters ', par,"***"," \n") 
   }  
   par
 }
+#-------------------------------------------------------------------------------
+ptrans<- function(x, p) if (p==0) log(x) else I(x^p)
+#-------------------------------------------------------------------------------
 # end of local function
 #-------------------------------------------------------------------------------
 ## the families to fit
@@ -96,21 +99,20 @@ findPower <- function(y, x, data = NULL,  lim.trans = c(0, 1.5), prof=FALSE, k=2
     {
     if (trans.x) # if x^p
     {
-     ptrans<- function(x, p) if (p==0) log(x) else I(x^p)
       par <- findPower(y, x,   lim.trans = lim.trans, prof=prof, k=k,  c.crit = c.crit, step=0.1)    
       ox <- x
-      x <-  pt(x,par)
+      x <-  ptrans(x,par)
     } 
     } else
     { par <- fix.power
       cat('*** power parameters fixed at ', par,"***"," \n")  
        ox <- x
-        x <-  pt(x,par)
-    }  
+        x <-  ptrans(x,par)
+    }
 ##  starting  model for fitted values for mu (we assuming that this will work).
 ##  Note no sigma is fitted here
 ##  fit the model -------------------------------------------------------------- 
-    cat('*** Initial  fit***'," \n")       
+    cat('*** Initial  fit***'," \n")   
     switch(method.pb, 
         "ML"= {m0 <- gamlss(y~pb(x), sigma.formula=~1, data=data, c.crit = 0.01)},
       "GAIC"= {m0 <- gamlss(y~pb(x, method="GAIC", k=k), sigma.formula=~1, data=data, c.crit = 0.01)}) ## initial fit  finish
@@ -169,6 +171,11 @@ if(whichdist==0)
 m0$call$mu.start <- NULL # this works OK
     m0$call$data <- substitute(data) # this is OK
   m0$call$family <- if(whichdist==0) "NO" else FAM[whichdist] # this is OK
+  browser
+  if (is.null(mu.df))    m0$call$formula <- formula(y~pb(x))
+  if (is.null(sigma.df)) m0$call$sigma.formula <- formula(~pb(x))
+  if (is.null(nu.df))    m0$call$nu.formula <- formula(~pb(x))
+  if (is.null(tau.df))   m0$call$tau.formula <- formula(~pb(x))
 # I am stack here
 #m0$call$formula[3] 
 #if (is.null(mu.df)) 
@@ -322,41 +329,6 @@ calibration <- function(object, xvar, cent=100*pnorm((-4:4)*2/3), legend=FALSE, 
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 #------------------------------------------------------------------------------- 
-# findPower <- function(y, x, data = NULL,  lim.trans = c(0, 1.5), prof=FALSE, k=2,  c.crit = 0.01, step=0.1)  
-# {
-#    ylab <- deparse(substitute(y))
-#    xlab <- deparse(substitute(x))
-#       y <- if (!is.null(data)) get(deparse(substitute(y)), envir=as.environment(data)) else y
-#       x <- if (!is.null(data)) get(deparse(substitute(x)), envir=as.environment(data)) else x
-#   ##  checking for transformation in x        
-#     cat("*** Checking for transformation for x ***", "\n") 
-#     ptrans<- function(x, p) if (p==0) log(x) else I(x^p)
-#      fn <- function(p) GAIC(gamlss(y~pb(pt(x,p)),data=data, c.crit = c.crit, trace=FALSE), k=k)
-#  if (prof) # profile dev
-#  {
-#    pp <- seq(lim.trans[1],lim.trans[2], step) 
-#  pdev <- rep(0, length(pp)) 
-#    for (i in 1:length(pp)) 
-#      {
-#      pdev[i] <- fn(pp[i])  
-#   #   cat(pp[i], pdev[i], "\n")
-#      }
-#    plot(pdev~pp, type="l")
-#    points(pdev~pp,col="blue")
-#  par <- pp[which.min(pdev)]
-#  cat('*** power parameters ', par,"***"," \n") 
-#  } else
-#  {
-# #     fn <- function(p) GAIC(gamlss(y~pb(pt(x,p)),sigma.fo=~pb(pt(x,p)),nu.fo=~pb(pt(x,p)), data=data,tau.fo=~pb(pt(x,p)), c.crit = c.crit, trace=FALSE, family=BCT), k=k)
-# #    fn <- function(p) GAIC(gamlss(y~pb(pt(x,p)),sigma.fo=~pb(pt(x,p)), data=data, c.crit = c.crit, trace=FALSE), k=k)
-#        fn <- function(p) GAIC(gamlss(y~pb(pt(x,p)), data=data, c.crit = c.crit, trace=FALSE), k=k)
-#    par <- optimise(fn, lower=lim.trans[1], upper=lim.trans[2])$minimum
-#   # browser()
-#  #  par <- optim(.5, fn, lower=lim.trans[1], upper=lim.trans[2], method="L-BFGS-B")$par
-#    cat('*** power parameters ', par,"***"," \n") 
-#  }  
-#    par
-#   }  
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 z.scores <- function(object, y,x)

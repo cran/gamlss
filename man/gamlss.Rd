@@ -150,7 +150,7 @@ Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location s
 }
 
 
-\author{ Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby \email{r.rigby@londonmet.ac.uk}, Calliope Akantziliotou and Vlasios Voudouris \email{vlasios.voudouris@abm-analytics.com>}}
+\author{ Mikis Stasinopoulos \email{mikis.stasinopoulos@gamlss.org}, Bob Rigby, Calliope Akantziliotou and Vlasios Voudouris \email{vlasios.voudouris@abm-analytics.com>}}
 
 \note{The following generic functions can be used with a GAMLSS object: \code{print}, \code{summary},  \code{fitted},  \code{coef},  
           \code{residuals}, \code{update},  \code{plot}, \code{deviance}, \code{formula}   }

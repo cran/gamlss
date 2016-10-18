@@ -4,179 +4,194 @@
 summary.gamlss<- function (object,
                            type = c("vcov", "qr"), robust = FALSE,
                            save = FALSE, 
-                    hessian.fun = c("R", "PB"), 
-                         digits = max(3, getOption("digits") - 3),
+                           hessian.fun = c("R", "PB"), 
+                           digits = max(3, getOption("digits") - 3),
                            ...) 
 {
-type <- match.arg(type)
-## if use the vcov for se's
-if (type=="vcov")
- {
-## this will be moved  
-      covmat <- try(suppressWarnings(vcov(object, type="all", robust=robust,  hessian.fun = hessian.fun)), silent = TRUE) 
-             if (any(class(covmat)%in%"try-error"||any(is.na(covmat$se))))
-                 { 
-                   warning(paste("summary: vcov has failed, option qr is used instead\n"))
-                   type <- "qr"
-                 }
-## if try fails call old summary
- }      
-ifWarning <- rep(FALSE, length(object$parameters))# to create warnings
-if (type=="vcov")#  type vcov --------------------------------------------------
- {
-        coef <- covmat$coef
-          se <- covmat$se
-      tvalue <- coef/se
-      pvalue <-  2 * pt(-abs(tvalue), object$df.res)  #if (est.disp) 2 * pt(-abs(tvalue), df.r) else   2 * pnorm(-abs(tvalue)) 
-  coef.table <- cbind(coef, se, tvalue, pvalue)
-  dimnames(coef.table) <- list(names(coef), c("Estimate" , "Std. Error" ,"t value","Pr(>|t|)"))  
-#now the table contains all informatio I need 
-#browser()
-#printCoefmat(coef.table, digits = digits, signif.stars = TRUE)
-# to print use   coef.table[1:3,] 
-      cat("*******************************************************************")
+  type <- match.arg(type)
+  ## if use the vcov for se's
+  if (type=="vcov")
+  {
+    ## this will be moved  
+    covmat <- try(suppressWarnings(vcov(object, type="all", robust=robust,  hessian.fun = hessian.fun)), silent = TRUE) 
+    if (any(class(covmat)%in%"try-error"||any(is.na(covmat$se))))
+    { 
+      warning(paste("summary: vcov has failed, option qr is used instead\n"))
+      type <- "qr"
+    }
+    ## if try fails call old summary
+  }      
+  ifWarning <- rep(FALSE, length(object$parameters))# to create warnings
+  if (type=="vcov")#  type vcov --------------------------------------------------
+  {
+    coef <- covmat$coef
+    se <- covmat$se
+    tvalue <- coef/se
+    pvalue <-  2 * pt(-abs(tvalue), object$df.res)  #if (est.disp) 2 * pt(-abs(tvalue), df.r) else   2 * pnorm(-abs(tvalue)) 
+    coef.table <- cbind(coef, se, tvalue, pvalue)
+    dimnames(coef.table) <- list(names(coef), c("Estimate" , "Std. Error" ,"t value","Pr(>|t|)"))  
+    #now the table contains all informatio I need 
+    #browser()
+    #printCoefmat(coef.table, digits = digits, signif.stars = TRUE)
+    # to print use   coef.table[1:3,] 
+    cat("******************************************************************")
     cat("\nFamily: ", deparse(object$family), "\n") 
-    cat("\nCall: ", deparse(object$call),  "\n", fill=TRUE)
+    cat("\nCall: ", deparse(object$call,width.cutoff=50),  "\n", fill=TRUE)
     cat("Fitting method:", deparse(object$method), "\n\n") 
     est.disp <- FALSE
-       # df.r <- object$noObs - object$mu.df
-#================ mu ESTIMATES ========================
+    # df.r <- object$noObs - object$mu.df
+    #================ mu ESTIMATES ========================
     if ("mu"%in%object$parameters)   
     {
-      
-      ifWarning[1]  <- (!is.null(unlist(attr(terms(formula(object, "mu"), 
-                  specials = .gamlss.sm.list), "specials")))) 
+      #  if (length(eval(parse(text=paste(paste("object$","mu", sep=""),".fix==TRUE", sep=""))))!=0)
+      if (length(eval(parse(text=paste(paste("object$","mu", sep=""),".fix==TRUE", sep=""))))!=0) 
+      {
+        pm <- 1 
+        p1 <- 1:pm
+        #warning(paste("mu parameter is fixed"))
+        cat("------------------------------------------------------------------\n")
+        cat("Mu parameter is fixed \n")
+        if (all(object$mu.fv == object$mu.fv[1]))
+          cat("Mu = ", object$mu.fv[1], "\n")
+        else
+          cat("Mu is equal with the vector (", object$mu.fv[1], ",",object$mu.fv[2], ",",object$mu.fv[3], ",",object$mu.fv[4], ", ...) \n")
+      } else
+      {
+        ifWarning[1]  <- (!is.null(unlist(attr(terms(formula(object, "mu"), 
+                                                     specials = .gamlss.sm.list), "specials")))) 
         if (object$mu.df != 0)   
         {          
-                        pm <- object$mu.qr$rank 
-                        p1 <- 1:pm
-            cat("-------------------------------------------------------------------\n")
-            cat("Mu link function: ", object$mu.link)
-            cat("\n")
-            cat("Mu Coefficients:")
-            if (is.character(co <- object$contrasts)) 
-                cat("  [contrasts: ", apply(cbind(names(co), co), 1, 
-                    paste, collapse = "="), "]")
-            cat("\n")
-            printCoefmat(coef.table[p1,,drop=FALSE], digits = digits, signif.stars = TRUE)
-     #       print.default(coef.table[p1,], digits = digits, print.gap = 2, quote = FALSE)
-            cat("\n")
+          pm <- object$mu.qr$rank 
+          p1 <- 1:pm
+          cat("------------------------------------------------------------------\n")
+          cat("Mu link function: ", object$mu.link)
+          cat("\n")
+          cat("Mu Coefficients:")
+          if (is.character(co <- object$contrasts)) 
+            cat("  [contrasts: ", apply(cbind(names(co), co), 1, 
+                                        paste, collapse = "="), "]")
+          cat("\n")
+          printCoefmat(coef.table[p1,,drop=FALSE], digits = digits, signif.stars = TRUE)
+          #       print.default(coef.table[p1,], digits = digits, print.gap = 2, quote = FALSE)
+          cat("\n")
         }
-        else
-            if(object$mu.fix == TRUE) 
-            {
-            #warning(paste("mu parameter is fixed"))
-            cat("-------------------------------------------------------------------\n")
-            cat("Mu parameter is fixed \n")
-            if (all(object$mu.fv == object$mu.fv[1]))
-                cat("Mu = ", object$mu.fv[1], "\n")
-            else
-                cat("Mu is equal with the vector (", object$mu.fv[1], ",",object$mu.fv[2], ",",object$mu.fv[3], ",",object$mu.fv[4], ", ...) \n")
-            }
+        
+      }
     }
     if ("sigma"%in%object$parameters) 
     {
-      ifWarning[2]  <- (!is.null(unlist(attr(terms(formula(object, "sigma"), 
-                     specials = .gamlss.sm.list), "specials")))) 
-         if (object$sigma.df != 0)   
+      if (length(eval(parse(text=paste(paste("object$","sigma", sep=""),".fix==TRUE", sep=""))))!=0) 
+      {
+        ps <- 1 
+        p1 <- (pm+1):(pm+ps)
+        #warning(paste("mu parameter is fixed"))
+        cat("------------------------------------------------------------------\n")
+        cat("Sigma parameter is fixed \n")
+        if (all(object$sigma.fv == object$sigma.fv[1]))
+          cat("Sigma = ", object$sigma.fv[1], "\n")
+        else
+          cat("Sigma is equal with the vector (", object$sigma.fv[1], ",",object$sigma.fv[2], ",",object$sigma.fv[3], ",",object$sigma.fv[4], ", ...) \n")
+      } else
+      {      
+        ifWarning[2]  <- (!is.null(unlist(attr(terms(formula(object, "sigma"), 
+                                                     specials = .gamlss.sm.list), "specials")))) 
+        if (object$sigma.df != 0)   
         {
-                     ps <- object$sigma.qr$rank 
-                     p1 <- (pm+1):(pm+ps)
-        #cat("\n")
-        cat("-------------------------------------------------------------------\n")
-        cat("Sigma link function: ", object$sigma.link)
-        cat("\n")
-        cat("Sigma Coefficients:")
-        cat("\n")    
-        printCoefmat(coef.table[p1,, drop=FALSE], digits = digits, signif.stars = TRUE)
-       # print.default(coef.table[p1,], digits = digits, print.gap = 2,  quote = FALSE)
-        cat("\n")
+          ps <- object$sigma.qr$rank 
+          p1 <- (pm+1):(pm+ps)
+          #cat("\n")
+          cat("------------------------------------------------------------------\n")
+          cat("Sigma link function: ", object$sigma.link)
+          cat("\n")
+          cat("Sigma Coefficients:")
+          cat("\n")    
+          printCoefmat(coef.table[p1,, drop=FALSE], digits = digits, signif.stars = TRUE)
+          # print.default(coef.table[p1,], digits = digits, print.gap = 2,  quote = FALSE)
+          cat("\n")
         }
-        else 
-            if(object$sigma.fix == TRUE) 
-            {
-            cat("-------------------------------------------------------------------\n")
-            cat("Sigma parameter is fixed")
-            cat("\n")
-            if (all(object$sigma.fv == object$sigma.fv[1]))
-                cat("Sigma = ", object$sigma.fv[1], "\n")
-            else
-                cat("Sigma is equal with the vector (", object$sigma.fv[1], ",",object$sigma.fv[2], ",",object$sigma.fv[3], ",",object$sigma.fv[4], ", ...) \n")
-            }
+      }
     }
     if ("nu"%in%object$parameters) 
     {
-      ifWarning[3]  <- (!is.null(unlist(attr(terms(formula(object, "nu"), 
-                      specials = .gamlss.sm.list), "specials")))) 
-         if (object$nu.df != 0)   
-        {
-                   
-                     pn <- object$nu.qr$rank 
-                     p1 <- (pm+ps+1):(pm+ps+pn)
-        cat("-------------------------------------------------------------------\n")
-        cat("Nu link function: ", object$nu.link,"\n")
-        cat("Nu Coefficients:")
-        cat("\n")
-        printCoefmat(coef.table[p1,, drop=FALSE], digits = digits, signif.stars = TRUE)
-       # print.default(coef.table[p1,], digits = digits, print.gap = 2,  quote = FALSE)
-        cat("\n")
-        }
+      if (length(eval(parse(text=paste(paste("object$","nu", sep=""),".fix==TRUE", sep=""))))!=0) 
+      {
+        pn <- 1 
+        p1 <- (pm+ps+1):(pm+ps+pn)
+        #warning(paste("mu parameter is fixed"))
+        cat("------------------------------------------------------------------\n")
+        cat("Nu parameter is fixed \n")
+        if (all(object$nu.fv == object$nu.fv[1]))
+          cat("Nu = ", object$nu.fv[1], "\n")
         else
-            if(object$nu.fix == TRUE) {
-            cat("-------------------------------------------------------------------\n")
-            cat("Nu parameter is fixed")
-            cat("\n")
-            if (all(object$nu.fv == object$nu.fv[1]))
-                cat("Nu = ", object$nu.fv[1], "\n")
-            else
-                cat("Nu is equal with the vector (", object$nu.fv[1], ",",object$nu.fv[2], ",",object$nu.fv[3], ",",object$nu.fv[4], ", ...) \n")
-            }
+          cat("nu is equal with the vector (", object$nu.fv[1], ",",object$nu.fv[2], ",",object$nu.fv[3], ",",object$nu.fv[4], ", ...) \n")
+      } else
+      {
+        ifWarning[3]  <- (!is.null(unlist(attr(terms(formula(object, "nu"), 
+                                                     specials = .gamlss.sm.list), "specials")))) 
+        if (object$nu.df != 0)   
+        {
+          
+          pn <- object$nu.qr$rank 
+          p1 <- (pm+ps+1):(pm+ps+pn)
+          cat("------------------------------------------------------------------\n")
+          cat("Nu link function: ", object$nu.link,"\n")
+          cat("Nu Coefficients:")
+          cat("\n")
+          printCoefmat(coef.table[p1,, drop=FALSE], digits = digits, signif.stars = TRUE)
+          # print.default(coef.table[p1,], digits = digits, print.gap = 2,  quote = FALSE)
+          cat("\n")
+        }
+      }  
     }
     if ("tau"%in%object$parameters) 
     {
-      ifWarning[4]  <- (!is.null(unlist(attr(terms(formula(object, "tau"), 
-                     specials = .gamlss.sm.list), "specials")))) 
-         if (object$tau.df != 0)   
-        {
-                    
-                     pt <- object$tau.qr$rank 
-                     p1 <- (pm+ps+pn+1):(pm+ps+pn+pt)
-        cat("-------------------------------------------------------------------\n")
-        cat("Tau link function: ", object$tau.link,"\n")
-        cat("Tau Coefficients:")
-        cat("\n")
-        printCoefmat(coef.table[p1,, drop=FALSE], digits = digits, signif.stars = TRUE)
-       # print.default(coef.table[p1,], digits = digits, print.gap = 2,  quote = FALSE)
-        cat("\n")
-        }
+      if (length(eval(parse(text=paste(paste("object$","tau", sep=""),".fix==TRUE", sep=""))))!=0) 
+      {
+        pt <- 1 
+        p1 <- (pm+ps+pn+1):(pm+ps+pn+pt)
+        #warning(paste("mu parameter is fixed"))
+        cat("------------------------------------------------------------------\n")
+        cat("Tau parameter is fixed \n")
+        if (all(object$tau.fv == object$tau.fv[1]))
+          cat("Tau = ", object$tau.fv[1], "\n")
         else
-            if(object$tau.fix == TRUE) {
-            cat("-------------------------------------------------------------------\n")
-            cat("Tau parameter is fixed")
-            cat("\n")
-            if (all(object$tau.fv == object$tau.fv[1]))
-                cat("Tau = ", object$tau.fv[1], "\n")
-            else
-                cat("Tau is equal with the vector (", object$tau.fv[1], ",",object$tau.fv[2], ",",object$tau.fv[3], ",",object$tau.fv[4], ", ...) \n")
-            }
+          cat("Tau is equal with the vector (", object$tau.fv[1], ",",object$tau.fv[2], ",",object$tau.fv[3], ",",object$tau.fv[4], ", ...) \n")
+      } else
+      {  
+        ifWarning[4]  <- (!is.null(unlist(attr(terms(formula(object, "tau"), 
+                                                     specials = .gamlss.sm.list), "specials")))) 
+        if (object$tau.df != 0)   
+        {
+          
+          pt <- object$tau.qr$rank 
+          p1 <- (pm+ps+pn+1):(pm+ps+pn+pt)
+          cat("------------------------------------------------------------------\n")
+          cat("Tau link function: ", object$tau.link,"\n")
+          cat("Tau Coefficients:")
+          cat("\n")
+          printCoefmat(coef.table[p1,, drop=FALSE], digits = digits, signif.stars = TRUE)
+          # print.default(coef.table[p1,], digits = digits, print.gap = 2,  quote = FALSE)
+          cat("\n")
+        }
+      }
     }
-if (any(ifWarning))
-{
-  cat("-------------------------------------------------------------------\n")
-  cat("NOTE: Additive smoothing terms exist in the formulas: \n")
-  cat(" i) Std. Error for smoothers are for the linear effect only. \n")
-  cat("ii) Std. Error for the linear terms maybe are not accurate. \n")
-}
-   cat("-------------------------------------------------------------------\n")
-   cat("No. of observations in the fit: ", object$noObs, "\n")
-   cat("Degrees of Freedom for the fit: ", object$df.fit)
-   cat("\n")
-   cat("      Residual Deg. of Freedom: ", object$df.residual, "\n")
-   cat("                      at cycle: ", object$iter, "\n \n")
-   cat("Global Deviance:    ", object$G.deviance,#format(signif(object$G.deviance, digits)), 
+    if (any(ifWarning))
+    {
+      cat("------------------------------------------------------------------\n")
+      cat("NOTE: Additive smoothing terms exist in the formulas: \n")
+      cat(" i) Std. Error for smoothers are for the linear effect only. \n")
+      cat("ii) Std. Error for the linear terms maybe are not accurate. \n")
+    }
+    cat("------------------------------------------------------------------\n")
+    cat("No. of observations in the fit: ", object$noObs, "\n")
+    cat("Degrees of Freedom for the fit: ", object$df.fit)
+    cat("\n")
+    cat("      Residual Deg. of Freedom: ", object$df.residual, "\n")
+    cat("                      at cycle: ", object$iter, "\n \n")
+    cat("Global Deviance:    ", object$G.deviance,#format(signif(object$G.deviance, digits)), 
         "\n            AIC:    ",object$aic, #format(signif(object$aic, digits)), 
         "\n            SBC:    ",object$sbc, "\n") #format(signif(object$sbc, digits)), "\n")
-    cat("*******************************************************************")
+    cat("******************************************************************")
     cat("\n")
   } 
 if (type=="qr")#     TYPE qr ---------------------------------------------------
@@ -218,7 +233,7 @@ if (type=="qr")#     TYPE qr ---------------------------------------------------
 ##------------------------------------------------------------------------------
       dispersion <- NULL
  #     digits <- max(3, getOption("digits") - 3)
-      cat("*******************************************************************")
+      cat("******************************************************************")
     cat("\nFamily: ", deparse(object$family), "\n") 
       cat("\nCall: ", deparse(object$call),  "\n", fill=TRUE)
     cat("Fitting method:", deparse(object$method), "\n\n") 
@@ -253,7 +268,7 @@ if (type=="qr")#     TYPE qr ---------------------------------------------------
                                         coef.p=object$mu.coefficients[Qr$pivot[p1]], 
                                         est.disp =est.disp, df.r=df.r,
                                         covmat.unscaled =covmat.unscaled )
-            cat("-------------------------------------------------------------------\n")
+            cat("------------------------------------------------------------------\n")
             cat("Mu link function: ", object$mu.link)
             cat("\n")
             cat("Mu Coefficients:")
@@ -269,7 +284,7 @@ if (type=="qr")#     TYPE qr ---------------------------------------------------
             if(object$mu.fix == TRUE) 
             {
             #warning(paste("mu parameter is fixed"))
-            cat("-------------------------------------------------------------------\n")
+            cat("------------------------------------------------------------------\n")
             cat("Mu parameter is fixed")
             cat("\n")
             if (all(object$mu.fv == object$mu.fv[1]))
@@ -304,7 +319,7 @@ if (type=="qr")#     TYPE qr ---------------------------------------------------
                                        est.disp =est.disp, df.r=df.r,
                                        covmat.unscaled =covmat.unscaled )
         #cat("\n")
-        cat("-------------------------------------------------------------------\n")
+        cat("------------------------------------------------------------------\n")
         cat("Sigma link function: ", object$sigma.link)
         cat("\n")
         cat("Sigma Coefficients:")
@@ -315,7 +330,7 @@ if (type=="qr")#     TYPE qr ---------------------------------------------------
         }
         else 
             if(object$sigma.fix == TRUE) {
-            cat("-------------------------------------------------------------------\n")
+            cat("------------------------------------------------------------------\n")
             cat("Sigma parameter is fixed")
             cat("\n")
             if (all(object$sigma.fv == object$sigma.fv[1]))
@@ -340,7 +355,7 @@ if (type=="qr")#     TYPE qr ---------------------------------------------------
                                        coef.p=object$nu.coefficients[Qr$pivot[p1]], 
                                        est.disp =est.disp, df.r=df.r,
                                        covmat.unscaled =covmat.unscaled )
-        cat("-------------------------------------------------------------------\n")
+        cat("------------------------------------------------------------------\n")
         cat("Nu link function: ", object$nu.link,"\n")
         cat("Nu Coefficients:")
         cat("\n")
@@ -350,7 +365,7 @@ if (type=="qr")#     TYPE qr ---------------------------------------------------
         }
         else
             if(object$nu.fix == TRUE) {
-            cat("-------------------------------------------------------------------\n")
+            cat("------------------------------------------------------------------\n")
             cat("Nu parameter is fixed")
             cat("\n")
             if (all(object$nu.fv == object$nu.fv[1]))
@@ -376,7 +391,7 @@ if (type=="qr")#     TYPE qr ---------------------------------------------------
                                        coef.p=object$tau.coefficients[Qr$pivot[p1]], 
                                        est.disp =est.disp, df.r=df.r,
                                        covmat.unscaled =covmat.unscaled )
-        cat("-------------------------------------------------------------------\n")
+        cat("------------------------------------------------------------------\n")
         cat("Tau link function: ", object$tau.link,"\n")
         cat("Tau Coefficients:")
         cat("\n")
@@ -386,7 +401,7 @@ if (type=="qr")#     TYPE qr ---------------------------------------------------
         }
         else
             if(object$tau.fix == TRUE) {
-            cat("-------------------------------------------------------------------\n")
+            cat("------------------------------------------------------------------\n")
             cat("Tau parameter is fixed")
             cat("\n")
             if (all(object$tau.fv == object$tau.fv[1]))
@@ -398,13 +413,13 @@ if (type=="qr")#     TYPE qr ---------------------------------------------------
    }
 if (any(ifWarning))
 {
-  cat("-------------------------------------------------------------------\n")
+  cat("------------------------------------------------------------------\n")
   cat("NOTE: Additive smoothing terms exist in the formulas: \n")
   cat(" i) Std. Error for smoothers are for the linear effect only. \n")
   cat("ii) Std. Error for the linear terms may not be reliable. \n")
 }
 
-   cat("-------------------------------------------------------------------\n")
+   cat("------------------------------------------------------------------\n")
    cat("No. of observations in the fit: ", object$noObs, "\n")
    cat("Degrees of Freedom for the fit: ", object$df.fit)
    cat("\n")
@@ -413,7 +428,7 @@ if (any(ifWarning))
    cat("Global Deviance:    ", object$G.deviance,#format(signif(object$G.deviance, digits)), 
         "\n            AIC:    ",object$aic, #format(signif(object$aic, digits)), 
         "\n            SBC:    ",object$sbc, "\n") #format(signif(object$sbc, digits)), "\n")
-    cat("*******************************************************************")
+    cat("******************************************************************")
     cat("\n")
     
   }

@@ -55,12 +55,13 @@ gamlssNews <- function() file.show(system.file("doc", "NEWS.txt", package="gamls
                    "srw", "sar",                  # time series seasonal  
                    "la",                          # time series penalised lags, 
                    "tr",                          # decision trees  
-                   "ga", "mm",                    # gam - Simon Wood      
+                   "ga", "ba", "mm",              # gam - bam Simon Wood      
                    "nn",                          # neural netwoks           : nn
                    "sv",                          # suppor vector machines   : sv 
                    "ma",                          # mars                     : ma
                    "pr",                          # projection pursuit Reg   : pr
 				           "pc",                          # principal component regr : pc
+				           "h2o",                         # h2o project 
 				           "pa")                          # partial regression       : pr
                    
 # note that predict only read 2 characters Monday, May 4, 2009 at 11:27
@@ -1213,7 +1214,7 @@ out$df.residual <- noObs-out$mu.df-out$sigma.df- out$nu.df -out$tau.df
 ##                         control gamlss                                            
 #########################################################################################
 gamlss.control <- function(c.crit = 0.001, n.cyc = 20, mu.step = 1, sigma.step=1, 
-                           nu.step=1, tau.step=1, gd.tol = 5, iter=0, trace = TRUE, 
+                           nu.step=1, tau.step=1, gd.tol = Inf, iter=0, trace = TRUE, 
                            autostep = TRUE, save = TRUE,  ...)
 {
 ##  Control iteration for GAMLSS
@@ -1242,8 +1243,8 @@ warning("the value of nu.step supplied is less than zero or more than one the de
 warning("the value of tau.step supplied is less than zero or more than one the default value of 1 was used instead")
                 tau.step <- 1} 
                     if(gd.tol < 0) {
-warning("the value of gd.tol supplied is less than zero the default value of 0.1 was used instead")
-                gd.tol <- 0.1}                            
+warning("the value of gd.tol supplied is less than zero the default value of Inf was used instead")
+                gd.tol <- Inf}                            
         list(c.crit = c.crit, n.cyc = n.cyc, mu.step = mu.step, sigma.step = sigma.step, nu.step=nu.step, 
              tau.step = tau.step, gd.tol = gd.tol, iter = iter, trace = as.logical(trace)[1],
               autostep = as.logical(autostep)[1], save = as.logical(save)[1] )

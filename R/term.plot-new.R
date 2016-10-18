@@ -219,7 +219,7 @@ CheckSmoWithPlot <- function(termList)
 {
   #gamlss.Smo.plot.list <- c( "tr", "ga")
   gamlss.Smo.plot.list1 <- c( "tr(", "ga(", "nn(", "pvc(", "mrf(", "mrfa(", "ri(",
-                             "own(" , "re(", "lo(", "pcat(")
+                             "own(" , "re(", "lo(", "pcat(",  "ba(")# "ma(",
   lgamsmol  <- length(gamlss.Smo.plot.list1)
   lsm  <- length(termList)
   res <- rep(0, lsm) 
@@ -504,7 +504,7 @@ whichValueSmo <- CheckSmoList(nmt)
           {
                 n <- length(xx)
             lines(rep.int(jitter(xx), rep.int(3, n)), rep.int(ylims[1] + 
-                                                                c(0, 0.05, NA) * diff(ylims), n), col=col.rug)
+                              c(0, 0.05, NA) * diff(ylims), n), col=col.rug)
             if (partial.resid) 
               lines(rep.int(xlims[1] + c(0, 0.05, NA) * diff(xlims), 
                             n), rep.int(pres[, i], rep.int(3, n)),  col=col.rug)
@@ -520,10 +520,22 @@ whichValueSmo <- CheckSmoList(nmt)
           {
             plot(getSmo(object, what, which=whichValueSmo[i]))
           } 
+          if (attr(whichValueSmo, "whichSmo")[i]=="ba"&&surface.gam==TRUE)
+          {
+            plot(getSmo(object, what, which=whichValueSmo[i]), scheme=1)
+          } 
+          if (attr(whichValueSmo, "whichSmo")[i]=="ba"&&surface.gam==FALSE)
+          {
+            plot(getSmo(object, what, which=whichValueSmo[i]))
+          } 
           if (attr(whichValueSmo, "whichSmo")[i]=="nn")
-           {
+          {
              plot(getSmo(object, what, which=whichValueSmo[i]), y.lab=expression(eta))
-           } 
+          } 
+          # if (attr(whichValueSmo, "whichSmo")[i]=="ma")
+          # {
+          #   plotmo(getSmo(object, what, which=whichValueSmo[i]), y.lab=expression(eta))
+          # } 
           if (attr(whichValueSmo, "whichSmo")[i]=="re")
           {
             plotLME(getSmo(object, what, which=whichValueSmo[i])) 

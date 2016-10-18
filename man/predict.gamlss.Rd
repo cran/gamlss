@@ -3,7 +3,6 @@
 \alias{predictAll}
 
 
-
 \title{Extract Predictor Values and Standard Errors For New Data In a GAMLSS Model }
 \description{
  \code{predict.gamlss} is the GAMLSS specific method which produce predictors for a new data set   
@@ -19,8 +18,10 @@ data values can also be extracted using the function \code{lpred()} (which is ca
                 newdata = NULL, type = c("link", "response", "terms"), 
                 terms = NULL, se.fit = FALSE, data = NULL, ...)
 predictAll(object, newdata = NULL, type = c("response", "link", "terms"), 
-                terms = NULL, se.fit = FALSE, ...)
-
+                terms = NULL, se.fit = FALSE, use.weights = FALSE, 
+                data = NULL, y.value = "median", 
+                set.to = .Machine$double.xmin,
+                output = c("list", "matrix"), ...)
 }
 
 \arguments{
@@ -32,7 +33,11 @@ predictAll(object, newdata = NULL, type = c("response", "link", "terms"),
              \code{type="response"} gets the fitted values for the parameter while \code{type="terms"} gets the fitted terms contribution}
   \item{terms}{if \code{type="terms"}, which terms to be selected (default is all terms)}
    \item{se.fit}{if TRUE the approximate standard errors of the appropriate type are extracted if exist}
+    \item{use.weights}{if \code{use.weights=TRUE} the old data and the \code{newdata} are merged and the model is refitted with weights equal to the prior weights for the old data  observationa and   equal to a very small value (see option \code{set.to}) for the .\code{newdata} values. This trick allows to obtain standard errors for all parameters} 
   \item{data}{ the data frame used in the original fit if is not defined in the call}
+  \item{y.value}{how to get  the response values for the \code{newdata} if they do not exist. The default is taking the median, \code{y.value="median"}. Other function like "max", "min" are alloed. Also numerical values.}
+  \item{set.to}{what values the weights for the \code{newdata} should take}
+  \item{output}{whether the output to be a `list' (default) or a 'matrix'}
   \item{\dots}{ for extra arguments }
 }
 

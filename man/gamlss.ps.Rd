@@ -47,7 +47,7 @@ Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location s
 \emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
 }
 
-\author{ Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby \email{r.rigby@londonmet.ac.uk} }
+\author{ Mikis Stasinopoulos \email{mikis.stasinopoulos@gamlss.org}, Bob Rigby}
 
 \seealso{ \code{\link{gamlss}}, \code{\link{pb}},  \code{\link{ps}}, \code{\link{ri}},\code{\link{ridge}},\code{\link{cy}},\code{\link{pvc}},\code{\link{pbm}} }
 

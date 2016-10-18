@@ -32,7 +32,7 @@ plotLambda(y, factor = NULL, formula = NULL, data, along = seq(-2, 2, 0.1),
   \item{method}{which method is used for the estimation of the smoothing parameter, \code{"ML"} or \code{"GAIC"} are allowed.}
   \item{start}{ starting value for \code{lambda} if it estimated using \code{"ML"} or \code{"GAIC"}}
   \item{Lp}{
-The type of penalty required, \code{Lp=2} is the default. Use \code{Lp=1} for lasso type and different values for different required penalty.
+The type of penalty required, \code{Lp=0} is the default. Use \code{Lp=1} for lasso type and different values for different required penalty.
 }
   \item{kappa}{a regulation parameters used for the weights in the penalties.}
   \item{iter}{
@@ -63,7 +63,7 @@ Tutz G. (2013) Regularization and Sparsity in Discrete Structures in the \emph{P
 29th International Workshop on Statistical Modelling}, Volume 1, p 29-42, Gottingen, Germany
 
 }
-\author{Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk},  Paul Eilers and Marco Enea}
+\author{Mikis Stasinopoulos \email{mikis.stasinopoulos@gamlss.org},  Paul Eilers and Marco Enea}
 \note{Note that \code{pcat} itself does no smoothing; it simply sets things up for \code{gamlss.pcat()} to do the smoothing within the backfitting.}
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~

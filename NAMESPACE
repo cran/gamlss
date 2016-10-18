@@ -38,7 +38,8 @@ export(gamlss, gamlss.control, glim.control, is.gamlss,
         plot2way, loglogSurv1, loglogSurv2, loglogSurv3, loglogSurv, logSurv, 
         quantSheets.control, quantSheets, findPower, z.scoresQS,
         getZmatrix, vis.lo, VC.test,
-        pcat, gamlss.pcat, plotDF, plotLambda)
+        pcat, gamlss.pcat, plotDF, plotLambda,
+        getPEF)
 
 
 

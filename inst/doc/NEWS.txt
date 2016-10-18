@@ -14,10 +14,46 @@ http://www.gamlss.org/
 
 Question or suggestions about GAMLSS can be send to
 
-   d.stasinopoulos@londonmet.ac.uk
+   mikis.stasinopoulos@gamlss.org
 or
    r.rigby@londonmet.ac.uk
 --------------------------------------------------------------------------------
+Version 5.0-0
+1. gamlss i) gen.likelihood() :a bug in the function gen.likelihood() which was failing                for binomial family distribution has been corrected 
+             (Thanks to Jason Martinez who point it out) 
+             Also the function now can cope with fixed distribution parameters
+             (Thanks to Tim Cole and Lynn Sleeper)
+        ii)  lms(): a bug in the lms() function which effect the transformation of the 
+             x-variable is corrected.
+       iii)  fitted.plot() the condition for line.type has been amended 
+        iv)  gen.likelihood(): The function did not work with "data=an.omit(data)" 
+             (Thanks to Jonathan Williams)
+         v)  dtop() the formula of Jager and Wellner (2004) was added on.
+         vi) the function getPEF() for getting the partial effect of continuous variables              is introduced
+        vii) predictAll() has changed. Now it includes the method of obtain the predictive
+              values (and its se's) using weights
+       viii) histDist() more argumnts are added for changing the color, type and width of              the fitted distribution line.
+         x) pb() fixing the degrees of freedom is amended it now works with log-lambda and             also gives a warning if the df desired df's are not acheive.
+        xi) the global deviance torerance has noe set to infinity in gamlss.control(), 
+             i.e gd.tol=Inf. This allows models with estimated smoothing parameters to be                  more flexible in each iterartion.  
+        xii) vcov() and summarry() now can cope with fixed distribution parameters. Note that 
+             robust variance covariance i.e. rvcov() is not working with fixed parameters.
+        
+2.  gamlss.dist 
+        i) the  EGB2 and  GB2 distribution had the link function for sigma changed from                 identity to log 
+        ii) the Negative Binomial Family (NBF) has been added
+        
+3.   gamlss.data 
+        i) the film90 data are changed to preserve anonymity  
+       ii) the eu15 data set is added.
+       
+4.   gamlss.add
+        i) the ga() have changed (thanks to Daniil) and it lot faster
+       ii) the ba() function is added interfacing with bam() of package mgcv of Simon Wood
+       
+5.   gamlss.add2 is created for extra smoothing terms within GAMLSS.
+        i) the ma() for fitting MARS models using the earth packages is introduced.
+        
 Version 4.4-0
 
 1. gamlss   i) the term.plot() did not plot (by mistake) a gam object. 

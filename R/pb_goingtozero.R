@@ -152,15 +152,15 @@ regpen <- function(y, X, w)# original
  do1order <- FALSE    
   if (df<=lim) # this is crucial for the cut of point
   {
-       RD <- rbind(R,sqrt(lambda)*D,sqrt(lambda2)*D1) # matrix  
+        RD <- rbind(R,sqrt(lambda)*D,sqrt(lambda2)*D1) # matrix  
        RD1 <- rbind(R,sqrt(lambda)*D)
        RD2 <- rbind(R,sqrt(lambda2)*D1)
      svdRD <- svd(RD)                 # U 2pxp D pxp V pxp
     svdRD1 <- svd(RD1)
     svdRD2 <- svd(RD2)
     ##             take only the important values    
-     rank <- sum(svdRD$d>max(svdRD$d)*.Machine$double.eps^.8)
-       U1 <- svdRD$u[1:p,1:rank]     # U1 p x rank 
+      rank <- sum(svdRD$d>max(svdRD$d)*.Machine$double.eps^.8)
+        U1 <- svdRD$u[1:p,1:rank]     # U1 p x rank 
     # I am not sure what are consequances in introducing this ???
         y1 <- t(U1)%*%Qy #  t(Q)%*%(sqrt(w)*y)        # rankxp pxn nx1 => rank x 1 vector 
       beta <- svdRD$v[,1:rank] %*%(y1/svdRD$d[1:rank])

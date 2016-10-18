@@ -41,7 +41,7 @@ Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location s
 }
 
 
-\author{Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby \email{r.rigby@londonmet.ac.uk}}
+\author{Mikis Stasinopoulos \email{mikis.stasinopoulos@gamlss.org}, Bob Rigby}
 \note{The "weighted" residuals of a specified parameter can be zero and one if the square of first derivative 
      have been used in the fitting of this parameter}
 \seealso{ \code{\link{print.gamlss}}, \code{\link{summary.gamlss}},  \code{\link{fitted.gamlss}},  \code{\link{coef.gamlss}},  

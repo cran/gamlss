@@ -10,7 +10,8 @@
 histDist(y, family = NO, freq = NULL, 
         density = FALSE, nbins = 10, xlim = NULL, 
         ylim = NULL, main = NULL, xlab = NULL, 
-        ylab = NULL, data = NULL, ...)
+        ylab = NULL, data = NULL, line.wd = 2,line.ty = 1, 
+        line.col = "red",...)
         }
 \arguments{
   \item{y}{a vector for the response variable}
@@ -27,6 +28,9 @@ histDist(y, family = NO, freq = NULL,
   \item{xlab}{the label in the x-axis}
   \item{ylab}{the label in the y-axis}
   \item{data}{the data.frame}
+  \item{line.wd}{the line width of the fitted distribution}
+  \item{line.ty}{the line type of the fitted distribution}
+  \item{line.col}{the line color of the fitted distribution}
  \item{\dots}{for extra arguments to be passed to the \code{gamlss} function}
 }
 \details{
@@ -58,7 +62,7 @@ histDist(y,family="NO", data=abdom)
 # use the ylim 
 histDist(y,family="NO", ylim=c(0,0.005), data=abdom)
 # bad fit use PE
-histDist(y,family="PE",ymax=0.005, data=abdom)
+histDist(y,family="PE",ymax=0.005, data=abdom, line.col="blue")
 # discere data counts 
 #  Hand at al. p150  Leptinotarsa decemlineata
 y <- c(0,1,2,3,4,6,7,8,10,11)

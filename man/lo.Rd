@@ -83,7 +83,7 @@ Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location s
 \emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
 }
 
-\author{Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby \email{r.rigby@londonmet.ac.uk}, (The original \code{lo()} function was based on the Trevor Hastie's S-plus \code{lo()} function. See also the documentation of the \code{loess} function for the authorship of the function.}
+\author{Mikis Stasinopoulos \email{mikis.stasinopoulos@gamlss.org}, Bob Rigby, (The original \code{lo()} function was based on the Trevor Hastie's S-plus \code{lo()} function. See also the documentation of the \code{loess} function for the authorship of the function.}
 \note{Note that \code{lo} itself does no smoothing; it simply sets things up for \code{gamlss.lo()} to do the backfitting.}
 
 \section{Warning }{In this version the first argument is a formula NOT a list as in the previous one} 

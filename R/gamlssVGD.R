@@ -44,7 +44,7 @@ if (!is.null(rand))
   {
   if ( any(!rand%in%c(1,2))) stop("rand values should be 1 or 2")
   dataTraining <- subset(data, rand==1)
-  dataValid <- subset(data, rand==2)   
+     dataValid <- subset(data, rand==2)   
   }  
        fname <- as.gamlss.family(family)
         dfun <- paste("d", fname$family[[1]],sep="")
@@ -125,7 +125,7 @@ if (!is.null(rand))
    m1$VGD <- dev
    m1$predictError  <- dev/dim(dataValid)[1]#  end of if rand-------------------
    m1$residVal <-  Vresid 
- } else # if the newdata is set do this-----------------------------------------
+ } else # if the 'newdata' is set do this-----------------------------------------
  { # 
    m1 <- gamlss(formula = formula, sigma.formula = sigma.formula, nu.formula = nu.formula, 
                 tau.formula = tau.formula, data = data, family = family, control = control, 

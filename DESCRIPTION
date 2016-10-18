@@ -1,26 +1,26 @@
 Package: gamlss
 Description: Functions for fitting, displaying and checking GAMLSS Models.
-Version: 4.4-0
-Date: 2016-05-18
+Version: 5.0-0
+Date: 2016-09-13
 Authors@R: c(person("Mikis", "Stasinopoulos", role = c("aut", "cre", "cph"), 
-             email = "d.stasinopoulos@londonmet.ac.uk"),
-           person("Bob", "Rigby", role = c("aut"),  
-           email = "r.rigby@londonmet.ac.uk" ), 
-           person("Vlasios", "Voudouris", role = "ctb"),
+             email = "mikis.stasinopoulos@gamlss.org"),
+           person("Bob", "Rigby", role = c("aut")), 
+           person("Vlasios", "Voudouris", role = "ctb",  
+           email= "vlasios.voudouris@abm-analytics.com"),
            person("Calliope", "Akantziliotou", role = "ctb"),
            person("Marco", "Enea", role = "ctb"),
            person("Daniil", "Kiose", role = "ctb") 
            )
 Title: Generalised Additive Models for Location Scale and Shape
-Maintainer: Mikis Stasinopoulos <d.stasinopoulos@londonmet.ac.uk>
+Maintainer: Mikis Stasinopoulos <mikis.stasinopoulos@gamlss.org>
 Depends: R (>= 3.2.0), graphics, stats, splines, utils, grDevices,
-        gamlss.data, gamlss.dist (>= 4.3.1), nlme, parallel
+        gamlss.data (>= 5.0-0), gamlss.dist (>= 4.3.1), nlme, parallel
 LazyLoad: yes
 Imports: MASS, survival, methods
 License: GPL-2 | GPL-3
 URL: http://www.gamlss.org/
 NeedsCompilation: yes
-Packaged: 2016-05-18 08:07:42 UTC; stasinom
+Packaged: 2016-10-18 13:26:39 UTC; MikisStasinopoulos
 Author: Mikis Stasinopoulos [aut, cre, cph],
   Bob Rigby [aut],
   Vlasios Voudouris [ctb],
@@ -28,4 +28,4 @@ Author: Mikis Stasinopoulos [aut, cre, cph],
   Marco Enea [ctb],
   Daniil Kiose [ctb]
 Repository: CRAN
-Date/Publication: 2016-05-18 10:36:36
+Date/Publication: 2016-10-18 23:49:16

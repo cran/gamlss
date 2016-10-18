@@ -46,7 +46,7 @@ Stasinopoulos D. M., Rigby R.A. and Akantziliotou C. (2006) Instructions on how 
 Accompanying documentation in the current GAMLSS  help files, (see also  \url{http://www.gamlss.org/}).   
 }
 \author{
-Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk} and Bob Rigby \email{r.rigby@londonmet.ac.uk}}
+Mikis Stasinopoulos \email{mikis.stasinopoulos@gamlss.org} and Bob Rigby \email{r.rigby@londonmet.ac.uk}}
 
 \section{Warning }{This function is appropriate only when one continuous explanatory variable is fitted in the model} 
 

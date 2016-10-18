@@ -76,7 +76,7 @@ Bob Rigby, Mikis Stasinopoulos and Vlassios Voudouris
 %\seealso{}
 \examples{
 data(film90)
-F90 <- film90$borev0
+F90 <- film90$lborev1
 op<-par(mfrow=c(3,1))
 loglogSurv1(F90)
 loglogSurv2(F90)

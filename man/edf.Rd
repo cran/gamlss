@@ -37,7 +37,7 @@ Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location s
 \emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
 }
 \author{
-Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}
+Mikis Stasinopoulos \email{mikis.stasinopoulos@gamlss.org}
 }
 \note{The edf given are the ones fitted in the backfitting so the usually contained (depending on the additive term)
 the contatnt and the linear part.

@@ -42,10 +42,10 @@ splines, penalized splines, varying coefficients, fractional
 polynomials and random effects. Other additive terms can be easily
 added.  
 }
-\author{Mikis Stasinopoulos <d.stasinopoulos@londonmet.ac.uk>, Bob Rigby <r.rigby@londonmet.ac.uk> with
+\author{Mikis Stasinopoulos <mikis.stasinopoulos@gamlss.org>, Bob Rigby  with
         contributions from Calliope Akantziliotou.
 
-Maintainer: Mikis Stasinopoulos <d.stasinopoulos@londonmet.ac.uk>
+Maintainer: Mikis Stasinopoulos <mikis.stasinopoulos@gamlss.org>
 }
 \references{
 

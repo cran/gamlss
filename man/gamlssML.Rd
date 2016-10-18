@@ -53,7 +53,7 @@ Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location s
 
 }
 \author{
-Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby \email{r.rigby@londonmet.ac.uk}, Vlasis Voudouris \email{v.voiudouris@londonmet.ac.uk} and Majid Djennad \email{m.djennad.londonmet.ac.uk}
+Mikis Stasinopoulos \email{mikis.stasinopoulos@gamlss.org}, Bob Rigby, Vlasis Voudouris and Majid Djennad 
 }
 
 \seealso{

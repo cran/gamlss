@@ -1,6 +1,7 @@
 ## this is the new implementation of the Penalized B-splines smoother
 ## Mikis Stasinopoulos, Bob Rigby based on Simon Woods's idea
 ## created  19-12-2012 
+## fixing df is ammended on 3-10-16 MS
 #-------------------------------------------------------------------------------
 pb <- function(x, df = NULL, lambda = NULL, control=pb.control(...), ...) 
 {
@@ -188,12 +189,14 @@ regpen <- function(y, X, w, lambda, D)# original
 # #           (edf-df)
 # #          }
 # ## local function to get df using eigen values
-    edf1_df <- function(lambda)
-           {
-           edf <-  sum(1/(1+lambda*UDU$values))
-           (edf-df)
-           }  
-#-------------------------------------------------------------------------------
+edf1_df <- function(loglambda)
+      {
+        lambda <- exp(loglambda)
+        I.lambda.D <- (1+lambda*UDU$values)
+        edf <- sum(1/I.lambda.D)
+        (edf-df)
+      }  
+# #-------------------------------------------------------------------------------
 # the main function starts here
 # get the attributes
 #w <- ifelse(w>.Machine$double.xmax^.5,.Machine$double.xmax^.5,w )
@@ -313,11 +316,15 @@ startLambdaName <- as.character(attr(x, "NameForLambda"))
   { 
          Rinv <- solve(R)
           S   <- t(D)%*%D
-          UDU <- eigen(t(Rinv)%*%S%*%Rinv)           
-       lambda <- if (sign(edf1_df(0))==sign(edf1_df(100000))) 100000  # in case they have the some sign
-                 else  uniroot(edf1_df, c(0,100000))$root
-      # if (any(class(lambda)%in%"try-error")) {lambda<-100000}   
+          UDU <- eigen(t(Rinv)%*%S%*%Rinv, symmetric=TRUE, only.values=TRUE) 
+    loglambda <- if (sign(edf1_df(-30))==sign(edf1_df(30))) 30  
+                 else   uniroot(edf1_df, c(-30,30))$root          
+       # lambda <- if (sign(edf1_df(0))==sign(edf1_df(100000))) 100000  # in case they have the some sign
+       #           else  uniroot(edf1_df, c(0,100000))$root
+       # if (any(class(lambda)%in%"try-error")) {lambda<-100000}
+        lambda <-  exp(loglambda)
            fit <- regpen(y, X, w, lambda, D)
+      if (abs(fit$edf-df)>0.1) warning("the target df's are not acheived, try to reduce the no. of knot intervals \n in pb(). eg. inter=10")
             fv <- X %*% fit$beta
   }#end of case 3 --------------------------------------------------------------
   # I need to calculate the hat matrix here for the variance of the smoother
