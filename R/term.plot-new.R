@@ -569,7 +569,8 @@ whichValueSmo <- CheckSmoList(nmt)
           }
           if (attr(whichValueSmo, "whichSmo")[i]=="lo")
           {
-            vis.lo(getSmo(object, what, which=whichValueSmo[i]))
+            vis.lo(getSmo(object, what, which=whichValueSmo[i]),  col.term=col.term,
+                   col.shaded = col.shaded, col.res = col.res )
           }
 #            else
 #            {       

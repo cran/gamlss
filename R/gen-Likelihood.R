@@ -13,6 +13,7 @@
 # iv)  what happents with cencored/ truncated/ log logit distributions???
 # v)   what we do is the inverse fails? 
 # vi) fixed distribution parameters fails
+# vii) what happends if x+pb(x) or 
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 gen.likelihood <- function(object)
@@ -20,7 +21,7 @@ gen.likelihood <- function(object)
   if (!is.gamlss(object)) stop("needs a gamlss object")
   #    fam <- as.gamlss.family(object$family) this is changed to get the right link functions
     fam <-  if(is.null(object$call$family)) as.gamlss.family(NO) 
-  else as.gamlss.family(object$call$family)
+          else as.gamlss.family(object$call$family)
   fname <- object$family[1]
    dfun <- paste("d",fname,sep="")
   #pfun <- paste("p",fname,sep="")
@@ -43,7 +44,7 @@ gen.likelihood <- function(object)
   if (any(grepl("data", names(object$call)))) 
   {
     exitData <- TRUE
-##    DS The idea here is if na,omit(data) is used to do the correct thing    
+##    DS The idea here is if na.omit(data) is used to do the correct thing    
    DaTa <- if (startsWith(as.character(object$call["data"]), "na.omit"))
                 eval(parse(text=as.character(object$call["data"]))) else 
                 get(as.character(object$call["data"]))	
@@ -69,9 +70,9 @@ names(fixvalue) <- paste("fixed",i, sep=" ")
     else
     {
       coefs[[i]] <- eval(parse(text=paste(paste("object$", i, sep=""), ".coefficients", sep="")))
-      notNAcoef <- !is.na(coefs[[1]])
+      notNAcoef <- !is.na(coefs[[i]])
       X[[i]] <- eval(parse(text=paste(paste("object$", i, sep=""), ".x", sep="")))  
-      if (any(is.na(coefs[[1]])))
+      if (any(is.na(coefs[[i]])))
       { # this is to ensure that are non NA
         coefs[[i]] <- coefs[[i]][notNAcoef]
         X[[i]] <- as.matrix(X[[i]][,notNAcoef])

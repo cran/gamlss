@@ -171,7 +171,6 @@ if(whichdist==0)
 m0$call$mu.start <- NULL # this works OK
     m0$call$data <- substitute(data) # this is OK
   m0$call$family <- if(whichdist==0) "NO" else FAM[whichdist] # this is OK
-  browser
   if (is.null(mu.df))    m0$call$formula <- formula(y~pb(x))
   if (is.null(sigma.df)) m0$call$sigma.formula <- formula(~pb(x))
   if (is.null(nu.df))    m0$call$nu.formula <- formula(~pb(x))

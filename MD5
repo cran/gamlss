@@ -1,4 +1,4 @@
-abe29e9c0215653396f3bd537e71864e *DESCRIPTION
+82606c430333d9a42080a060ed117b34 *DESCRIPTION
 a6a4fd9c6911894b36d07812fece70d3 *NAMESPACE
 b8ae959a78d68aeb2a15ecfe75336300 *R/DropAddStepGAIC-Parallel.R
 5234753959ff346b56e1865d01fa6c88 *R/FitTail.R
@@ -28,12 +28,12 @@ b6c22ecd1f915931319f0625cabc3e9b *R/fitted-plot.R
 115d0e9b522f9445fff21b7f8dbfbe55 *R/gamlss.R
 5f842fbffb2fe54b9ee6b87e980c79c5 *R/gamlssML-31-10-13.R
 b892681a881a1889d8424a28dbcf50c5 *R/gamlssVGD.R
-25aa695b2a8bed1120f888519e3f5603 *R/gen-Likelihood.R
+9051aedb5b8a6cdc04af9a563c08041a *R/gen-Likelihood.R
 eb8a2a8f78a8ae971cb6b02c2e470163 *R/get-K-rvcov-16-06-2913.R
 1ac983241c50fba417f67624fc4bca87 *R/getPEF.R
 14f0412c431e27e6da05456103c2567f *R/getSmo-18-6-13.R
 0138621433d0ee11af9114e0ba53b158 *R/histSmo.R
-487e2a64c6c08d4a65c76010cf12a686 *R/lms.R
+9aadd873af7a1fb0ee2cfc7ba3c98e90 *R/lms.R
 ec8a84039c344fe277333abfe11be23d *R/lo_new.R
 3e04668a4507638d514eb2995fe0e574 *R/logLik.R
 9520cecf3bcd309b8f32c91364e29082 *R/lpred.R
@@ -66,12 +66,12 @@ a0a524a999dbf349c429c789bfa8b8a7 *R/rqresplot03-10-13.R
 fbc064d81b8857d2209eb4741d2b79b1 *R/stepGAICAll-B-Parallel.R
 8c7c8d373728179efe3df73fca6abfd1 *R/stepTGD.R
 bd546373676a98a2e170bd7adfe5637a *R/stepTGDAll-A-parallel.R
-f15d303a6b921d5ec314e4cc29d28a80 *R/term.plot-new.R
+b76a54add3d8fd68e182905917a581c7 *R/term.plot-new.R
 704b0b579cb9e498a9f61d2a2a9e8d21 *R/update.R
 d60d02692ed989f1f4f39dbca2445dd3 *R/vcov-gamlss.R
 c9965b29196c605904707bcd7faa8962 *R/wp-18-5-13.R
 469238c97e885729eb5da9f4d9fb35e0 *inst/CITATION
-defcbfb67b62c401bad90ce41cbf01ed *inst/doc/NEWS.txt
+d42d28aeb107bf744abf128ca16e56b3 *inst/doc/NEWS.txt
 dd4589a5ff2ecdfb77876d0087a78a1f *inst/doc/gamlss-manual.pdf
 ee46758d37a6379208843e030217b52c *man/IC.Rd
 f0e2e02d75b8bab83b818cec0c931e07 *man/LR.test.Rd

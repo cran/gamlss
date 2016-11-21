@@ -18,6 +18,12 @@ Question or suggestions about GAMLSS can be send to
 or
    r.rigby@londonmet.ac.uk
 --------------------------------------------------------------------------------
+Version 5.0-1
+1. gamlss i)  term.plot() is ammended when call vis.lo()
+          ii) gen.likelihood(): a bug prevening the function to work for NA                       coefficient is corrected 
+          iii) dependence is now from R version 3.3.0 since the function 
+               startsWith() used by both gen.likelihood() and getPEF()  is new on                 the R 3.3.0 version as pointed out by Uwe Ligges.   
+
 Version 5.0-0
 1. gamlss i) gen.likelihood() :a bug in the function gen.likelihood() which was failing                for binomial family distribution has been corrected 
              (Thanks to Jason Martinez who point it out) 
