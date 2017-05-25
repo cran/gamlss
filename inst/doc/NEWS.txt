@@ -18,11 +18,36 @@ Question or suggestions about GAMLSS can be send to
 or
    r.rigby@londonmet.ac.uk
 --------------------------------------------------------------------------------
+
+Version 5.0-2
+1. gamlss  i) The function lms() has been changed.  
+              Now the different fittings do not start from the previous values of               the normal model. This was found to fail in cases where the number                of observations was relative small (thanks Tanmay Nath for point                  out to us).
+          ii) ri() is amended so it can be used when the number of variables are                larger than the number of observations. In such case we found that                maybe the starting value for lambda (argument start) may have to                  change from 10 to a bigger value say 1000?.   
+          iii) gamlssML() accepts both Y or formula Y~1 (and some bug which had to               do with not using the foruma when used within another function is                 corrected)
+2. gamlss.add i) Marco Enea done some adjustments on the way data is dealt by  
+                 ga() and ba()
+             ii) the degrees of freedom of tr() function now are corrected. They                   are the number of leaves + the number of beak points. This                        effects the results on the page 309 of the book.
+3. gamlss.dist i) The discrete distribution BNB() (Beta negative binomial) is  
+                  introduced together with its zero adjusted and zero inflated 
+                  versions ZABNB() and ZIBNB().
+              ii) The zero adjusted and zero inflated versions  of the Sichel 
+                   (SICHEL) distribution are introduced ZASICHEL() and ZISICHEL().
+             iii) The zero adjusted PIG is introduced ZAPIG()
+
+
 Version 5.0-1
-1. gamlss i)  term.plot() is ammended when call vis.lo()
-          ii) gen.likelihood(): a bug prevening the function to work for NA                       coefficient is corrected 
+1. gamlss i)  term.plot() is amended when call vis.lo()
+          ii) gen.likelihood(): a bug preening the function to work for NA                       coefficient is corrected 
           iii) dependence is now from R version 3.3.0 since the function 
-               startsWith() used by both gen.likelihood() and getPEF()  is new on                 the R 3.3.0 version as pointed out by Uwe Ligges.   
+               startsWith() used by both gen.likelihood() and getPEF()  is new on                 the R 3.3.0 version as pointed out by Uwe Ligges.
+          iv) fitDist() A bug when weights were used is corrected 
+           v) gamlss() the iterative weights (wt) and fitted values (fv)
+              in glim.fit are prevented to go to Inf or very extreme values.
+          vi) gamlssML() the weights arguments is fixed. Now the beginning of 
+              the function is similar to gamlss()
+             
+2. gamlss.add i) Marco Enea done some adjustments on the way data is dealt by ga()               and ba()
+              ii) the degrees of freedom of tr() function now are corrected. They               are the number of leaves + the number of beak points. 
 
 Version 5.0-0
 1. gamlss i) gen.likelihood() :a bug in the function gen.likelihood() which was failing                for binomial family distribution has been corrected 
@@ -38,10 +63,10 @@ Version 5.0-0
          vi) the function getPEF() for getting the partial effect of continuous variables              is introduced
         vii) predictAll() has changed. Now it includes the method of obtain the predictive
               values (and its se's) using weights
-       viii) histDist() more argumnts are added for changing the color, type and width of              the fitted distribution line.
+       viii) histDist() more arguments are added for changing the colour, type and width of              the fitted distribution line.
          x) pb() fixing the degrees of freedom is amended it now works with log-lambda and             also gives a warning if the df desired df's are not acheive.
-        xi) the global deviance torerance has noe set to infinity in gamlss.control(), 
-             i.e gd.tol=Inf. This allows models with estimated smoothing parameters to be                  more flexible in each iterartion.  
+        xi) the global deviance tolerance has now set to infinity in gamlss.control(), 
+             i.e gd.tol=Inf. This allows models with estimated smoothing parameters to be                  more flexible in each iteration.  
         xii) vcov() and summarry() now can cope with fixed distribution parameters. Note that 
              robust variance covariance i.e. rvcov() is not working with fixed parameters.
         

@@ -31,6 +31,7 @@ For the Vuong test it returns its value and the decision and for the Clarke test
 Clarke K. (2007), A Simple Distribution-Free Test for Non-Nested Model Selection. \emph{Political Analysis}, 15, 347-363.
 
 Vuong Q.H. (1989), Likelihood Ratio Tests for Model Selection and Non-Nested Hypotheses. \emph{Econometrica}, 57(2), 307-333.
+
 }
 \author{
 Mikis Stasinopoulos and Giampierro Marra

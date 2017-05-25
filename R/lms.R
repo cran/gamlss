@@ -132,13 +132,13 @@ ptrans<- function(x, p) if (p==0) log(x) else I(x^p)
                  nu.formula = ~pb(x, df=nu.df), 
                 tau.formula = ~pb(x, df=tau.df), 
                 family = FAM[i], data = data,
-               mu.start = fitted(m0), ...), silent=TRUE)},
+               ...), silent=TRUE)}, #mu.start = fitted(m0), 
         "GAIC"= { m1 <- try(gamlss(y ~ pb(x,  method="GAIC", k=k, df=mu.df),
               sigma.formula = ~pb(x,  method="GAIC", k=k, df=sigma.df),
                  nu.formula = ~pb(x,  method="GAIC", k=k, df=nu.df), 
                 tau.formula = ~pb(x,  method="GAIC", k=k, df=tau.df), 
                 family = FAM[i], data = data,
-               mu.start = fitted(m0), ...), silent=TRUE)
+               ...), silent=TRUE)#  mu.start = fitted(m0), taken out 11-05-17 Mikis
          })      
     if (any(class(m1)%in%"try-error")) # if fitting failed
     {

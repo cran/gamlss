@@ -105,7 +105,6 @@ if (is.null(newdata)) # if no new data then give all the fitted from the old pre
    }
   if (output=="matrix")
    {
-    browser()
             prematrix <- matrix(0, ncol=length(object$parameters)+1, nrow=N)
   colnames(prematrix) <- c("y", object$parameters)
         prematrix[,1] <- object$y
@@ -171,7 +170,7 @@ colnames(prematrix) <- c("y", object$parameters)
 colnames(prematrix) <- object$parameters
      }
      for (i in object$parameters)
-     { prematrix[,i] <-  predict(object, newdata=newdata, parameter=i, type=type)}
+     { prematrix[,i] <-  predict(object,newdata=newdata, what = i, type = type, terms = terms, se.fit = se.fit, data=DatA )}
      attr(prematrix, "family") <- object$family 
   return(prematrix) 
    }
@@ -396,7 +395,6 @@ predictAll2 <-function(object,
                              ...)
  {
   type <- match.arg(type)
-  browser()
 ## if no new data then give all the fitted from the old
  if (is.null(newdata))  #
     {

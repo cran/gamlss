@@ -520,8 +520,10 @@ if (!is.Factor)  # not a factor
      	coefSmo <- list(coef = fit$beta, 
                    lambda = lambda, 
                       edf = fit$edf, 
-                     tau2 = tau2, 
-                     sig2 = sig2, 
+                    sigb2 = tau2, 
+                    sige2 = sig2,
+                    sigb = if (is.null(tau2)) NA else sqrt(tau2),
+                     sige = if (is.null(sig2)) NA else sqrt(sig2),
                         x = x.orig, 
                        by = by.var, 
                    beta.x = fv, 
@@ -705,8 +707,10 @@ else  # here is if.Factor==TRUE     -----------------------------FACTOR---FACTOR
        coefSmo <- list(coef = fit$beta, 
                     lambda = lambda, 
                        edf = edf, 
-                      tau2 = tau2, 
-                      sig2 = sig2, 
+                     sigb2 = tau2, 
+                     sige2 = sig2,
+                      sigb = if (is.null(tau2)) NA else sqrt(tau2),
+                      sige = if (is.null(sig2)) NA else sqrt(sig2),
                          x = x.orig, 
                         by = by.var, 
                         fv = fv,  
@@ -742,6 +746,24 @@ else  # here is if.Factor==TRUE     -----------------------------FACTOR---FACTOR
 }
 #------------------------------------------------------------------------------
 #------------------------------------------------------------------------------
+coef.pvc <- function(object, ...)
+{
+  as.vector(object$coef)
+}
+#-----------------------------------------------------------------------------
+fitted.pvc<- function(object, ...)
+{
+  as.vector(object$fv)
+}
+#-----------------------------------------------------------------------------
+print.pvc  <- function (x, digits = max(3, getOption("digits") - 3), ...) 
+{   
+  cat("P-varying coef. fit using the gamlss function pvc() \n")
+  cat("Degrees of Freedom for the fit :", x$edf, "\n")
+  cat("Random effect parameter sigma_b:", format(signif(x$sigb)), "\n")  
+  cat("Smoothing parameter lambda     :", format(signif(x$lambda)), "\n") 
+}
+#-----------------------------------------------------------------------------
 plot.pvc <- function(x,  
                 scheme = c( "shaded", "lines"),
               col.term = "darkred",  

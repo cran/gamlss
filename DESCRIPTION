@@ -1,7 +1,7 @@
 Package: gamlss
-Description: Functions for fitting, displaying and checking GAMLSS Models.
-Version: 5.0-1
-Date: 2016-11-21
+Description: Functions for fitting Generalized Additive Models for Location Scale and Shape.
+Version: 5.0-2
+Date: 2017-05-24
 Authors@R: c(person("Mikis", "Stasinopoulos", role = c("aut", "cre", "cph"), 
              email = "mikis.stasinopoulos@gamlss.org"),
            person("Bob", "Rigby", role = c("aut")), 
@@ -20,7 +20,7 @@ Imports: MASS, survival, methods
 License: GPL-2 | GPL-3
 URL: http://www.gamlss.org/
 NeedsCompilation: yes
-Packaged: 2016-11-21 08:46:22 UTC; MikisStasinopoulos
+Packaged: 2017-05-24 12:43:10 UTC; MikisStasinopoulos
 Author: Mikis Stasinopoulos [aut, cre, cph],
   Bob Rigby [aut],
   Vlasios Voudouris [ctb],
@@ -28,4 +28,4 @@ Author: Mikis Stasinopoulos [aut, cre, cph],
   Marco Enea [ctb],
   Daniil Kiose [ctb]
 Repository: CRAN
-Date/Publication: 2016-11-21 12:01:45
+Date/Publication: 2017-05-25 08:27:03 UTC

@@ -23,7 +23,7 @@
 #===============================================================================
 ################################################################################
 #===============================================================================
-ri <- function(X,
+ri <- function(X, 
               df = NULL, 
           lambda = NULL,
           method = c("ML","GAIC"),
@@ -78,12 +78,11 @@ ri <- function(X,
   #--------
   assign(startLambdaName, start, envir=gamlss.environment)
   #--------
-  
   # this is included here for generality  
                          D <- if(order==0) diag(p) else diff(diag(p), diff=order)
                          x <- rep(0, n)
               attr(x, "X") <- X
-           attr(x, "call") <-  substitute(gamlss.ri(data[[scall]], z, w)) 
+           attr(x, "call") <- substitute(gamlss.ri(data[[scall]], z, w)) 
          attr(x, "namesX") <- namesX
               attr(x, "D") <- D
          attr(x, "lambda") <- lambda
@@ -109,13 +108,13 @@ gamlss.ri <- function(x, y, w, xeval = NULL, ...)
 #-------------------------------------------------------------------------------
   regpen <- function(sm,  D,  P0, lambda)
   {
-    
     for (it in 1: iter) 
     {  
          RD <- rbind(R,sqrt(lambda)*sqrt(omega.)*D) #
       svdRD <- svd(RD)  
        rank <- sum(svdRD$d>max(svdRD$d)*.Machine$double.eps^.8)
-         U1 <- svdRD$u[1:p,1:rank]  
+         np <- min(p,N)# new MS 7-5-17
+         U1 <- svdRD$u[1:np,1:rank] # new MS 7-5-17
          y1 <- t(U1)%*%Qy
        beta <- svdRD$v[,1:rank] %*%(y1/svdRD$d[1:rank])
          dm <- max(abs(sm - beta))
@@ -255,9 +254,11 @@ else # case 3 : if df are required
       var <- lev/w # the variance of the smoother
   coefSmo <- list(coef = fit$beta, 
                 lambda = lambda, 
-                edf = fit$edf, 
-                tau2 = tau2, 
-                sig2 = sig2, 
+                   edf = fit$edf, 
+                 sigb2 = tau2, 
+                 sige2 = sig2,
+                  sigb = if (is.null(tau2)) NA else sqrt(tau2),
+                  sige = if (is.null(sig2)) NA else sqrt(sig2),
                 fv = as.vector(fv),  
                 se = sqrt(var),
                 Lp = Lp)
@@ -296,6 +297,14 @@ coef.ri <- function(object, ...)
 fitted.ri<- function(object, ...)
 {
   as.vector(object$fv)
+}
+#------------------------------------------------------------------------------
+print.ri  <- function (x, digits = max(3, getOption("digits") - 3), ...) 
+{   
+  cat("P-spline fit using the gamlss function pb() \n")
+  cat("Degrees of Freedom for the fit :", x$edf, "\n")
+  cat("Random effect parameter sigma_b:", format(signif(x$sigb)), "\n")  
+  cat("Smoothing parameter lambda     :", format(signif(x$lambda)), "\n") 
 }
 #===============================================================================
 ################################################################################

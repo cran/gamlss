@@ -62,6 +62,9 @@ The vector itself is used in the construction of the model matrix, while the att
 Tutz G. (2013) Regularization and Sparsity in Discrete Structures in the \emph{Proceedings of the
 29th International Workshop on Statistical Modelling}, Volume 1, p 29-42, Gottingen, Germany
 
+Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
+
+(see also \url{http://www.gamlss.org/}).
 }
 \author{Mikis Stasinopoulos \email{mikis.stasinopoulos@gamlss.org},  Paul Eilers and Marco Enea}
 \note{Note that \code{pcat} itself does no smoothing; it simply sets things up for \code{gamlss.pcat()} to do the smoothing within the backfitting.}

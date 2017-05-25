@@ -94,6 +94,10 @@ Schnabel, S. K and Eilers, P. H. C.(2013) Simultaneous estimation of quantile cu
 
 Schnabel, S. K and Eilers, P. H. (2013) A location-scale model for non-crossing 
 expectile curves, \emph{Stat}, \bold{2}, 1, pp 171-183.
+
+Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
+
+(see also \url{http://www.gamlss.org/}).
  }
 
 \author{Mikis Stasinopoulos based on function provided by Paul Eiler and Sabine

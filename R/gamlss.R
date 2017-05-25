@@ -35,7 +35,7 @@ gamlssNews <- function() file.show(system.file("doc", "NEWS.txt", package="gamls
 .gamlss.sm.list<-c("cs", "scs",                   # smoothing cubic splines  "s" vc"
                    "ps", "pb", "cy", "tp", "pvc", # penalised splines : ps, pb, cy tp pvc pbq
                    "pbm", "pbj", "pbo", "pbz",    # monotone jumps and going to zero
-                   "pbc",                         # pb cycle 
+                   "pbc", "pbts",                  # pb cycle 
                    "pcat",                        # for categorical to reduce levels 
                    "pbq",                         # pb using Qfunction
                    "gmrf",                        # Gaussian Markov random fields
@@ -84,10 +84,7 @@ gamlssNews <- function() file.show(system.file("doc", "NEWS.txt", package="gamls
 
 ##========================================================================================
 ##  Generalised Additive Models for Location Scale and Shape 
-##   R-functions created 
-##   by  Mikis Stasinopoulos, Bob Rigby  and  Kalliope Akantziliotou
-##   London Metropolitan University, 
-##   contact : d.stasinopoulos@londonmet.ac.uk 
+##   R-functions created
 ##   originaly created 6  Feb  2002. 
 ##   Last maijor revision  Saturday, Thursday, January 9, 2003 at 09:48
 ##   
@@ -195,7 +192,8 @@ body(rqres) <-  eval(quote(body(rqres)), envir = getNamespace("gamlss"))
          d2ldp2 <-  ifelse(d2ldp2 < -1e-15, d2ldp2,-1e-15) # added 26-10-07  
               wt <- -(d2ldp2/(dr*dr))#  -(d2l/dp2)/(1/(dmu/deta))^2=- (d2l/dp2)(dmu/eta)^2
             # we need to stop the weights to go to Infty
-              wt <- ifelse(wt>1e+10,1e+10,wt) # Mikis 9-10-14    
+              wt <- ifelse(wt>1e+10,1e+10,wt) # Mikis 9-10-14 
+              wt <- ifelse(wt<1e-10,1e-10,wt) 
             # wv <- (eta-os)+step*dldp/(dr*wt)
               wv <- (eta-os)+dldp/(dr*wt) # eta 
               if (family$type=="Mixed") wv <-ifelse(is.nan(wv),0,wv) ## TEST
@@ -227,7 +225,7 @@ body(rqres) <-  eval(quote(body(rqres)), envir = getNamespace("gamlss"))
               # lp <- fit$fitted.values
                }
              ## method 1
-              eta <- lp+os # fixed Wednesday, September 4, 2002 at 09:45 DS           
+              eta <- lp+os # fixed Wednesday, September 4, 2002 at 09:45 DS  
              ## own link
                fv <- f$linkinv(eta)
                          ## own dist
@@ -265,6 +263,7 @@ body(rqres) <-  eval(quote(body(rqres)), envir = getNamespace("gamlss"))
           d2ldp2 <-  ifelse(d2ldp2 < -1e-15, d2ldp2,-1e-15) # added 26-10-07   
               wt <- -(d2ldp2/(dr*dr)) 
               wt <- ifelse(wt>1e+10,1e+10,wt) # Mikis 9-10-14    
+              wt <- ifelse(wt<1e-10,1e-10,wt) 
              # wv <- (eta-os)+step*dldp/(dr*wt)
              wv <- (eta-os)+dldp/(dr*wt)
                 if (family$type=="Mixed") wv <-ifelse(is.nan(wv),0,wv) ## TEST  

@@ -33,7 +33,9 @@
 
 #--------------------------------------------------------------------------------               
 #--------------------------------------------------------------------------------
-.counts <- c("PO", "GEOM", "LG", "YULE", "WARING", "NBI", "NBII", "PIG", "DEL", "SICHEL", "ZIP","ZIP2", "ZAP", "ZALG", "ZINBI", "ZANBI", "ZIPIG")
+.counts <- c("PO", "GEOM", "LG", "YULE", 
+             "WARING", "NBI", "NBII", "PIG", "ZIP","ZIP2", "ZAP", "ZALG",
+             "DEL", "SICHEL", "ZINBI", "ZANBI", "ZIPIG")
 #--------------------------------------------------------------------------------
 .binom <- c("BI", "BB", "ZIBI", "ZIBB", "ZABI", "ZABB" )
 #-------------------------------------------------------------------------------------
@@ -43,27 +45,30 @@ fitDist <- function(y,
                     k = 2, # for the AIC
                  type = c("realAll", "realline", "realplus","real0to1","counts", "binom" ), 
            try.gamlss = FALSE,  # whether to try the gamlss() if gamlssML() fails
-                extra = NULL,
-                 data = NULL, ...) # for extra distributions to include 
+                extra = NULL,  # for extra distributions to include 
+                 data = NULL, ...)
 {
   # if (!is.null(data)) {attach(data); on.exit(detach(data))}
   #if (!is.null(data)) {attach(data, name="TheDatA"); on.exit(detach(TheDatA))}
-  y <- if (!is.null(data)) get(deparse(substitute(y)), envir=as.environment(data)) else y
-  type <- match.arg(type)
+       y <- if (!is.null(data)) get(deparse(substitute(y)), envir=as.environment(data)) else y
+    type <- match.arg(type)
     DIST <- switch(type, "realAll"=.realAll, 
                         "realline"=.realline, 
                         "realplus"=.realplus,
-                         "real0to1"=.real0to1,
+                        "real0to1"=.real0to1,
                           "counts"=.counts,
                            "binom"=.binom 
                   )
 if  (!is.null(extra)) DIST <- unique(c(DIST, extra))
-    m0 <- switch(type,  "realAll"= gamlssML(y, family=NO),
-                       "realline"= gamlssML(y, family=NO), 
-                       "realplus"= gamlssML(y, family=EXP),
-                       "real0to1"= gamlssML(y, family=BE),
-                         "counts"= gamlssML(y, family=PO),
-                          "binom"= gamlssML(y, family=BI) 
+    # we need weights here 
+#if  ("weights"%in%names(list(...))) wlist(...)$weights else rep()
+    
+    m0 <- switch(type,  "realAll"= gamlssML(y, family=NO, ...),
+                       "realline"= gamlssML(y, family=NO, ...), 
+                       "realplus"= gamlssML(y, family=EXP, ...),
+                       "real0to1"= gamlssML(y, family=BE, ...),
+                         "counts"= gamlssML(y, family=PO, ...),
+                          "binom"= gamlssML(y, family=BI, ...) 
                  ) 
   failed <- list() 
     fits <- list()
