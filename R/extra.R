@@ -71,22 +71,22 @@ x
 residuals.gamlss<-function (object, what = c("z-scores", "mu", "sigma", "nu", "tau"), 
                             type=c("simple","weighted","partial"), terms = NULL, ...) 
 {
-# Possible residuals
-#  I)  z-scores  i) simpe or weighted
-#                       simple just take the original:  object$residuals
-#               ii) weighted   
-#       
-#                   a) "zero ones"  or "frequencies" 
-#                               a1) Continuous rep(object$residuals, w)
-#                               a2) discrete
-#                   b) other    warning + object$residuals
-#                                                                    
-#  II)           "simple",  "weighted",  "partial"                   
-# 
-#  if what mu sigma nu tau  (the question here is whether w is needed) 
-#type   simple       
-#       weighted
-#       partial
+## Possible residuals
+##  I)  z-scores  i) simpe or weighted
+##                       simple just take the original:  object$residuals
+##               ii) weighted   
+##       
+##                   a) "zero ones"  or "frequencies" 
+##                               a1) Continuous rep(object$residuals, w)
+##                               a2) discrete
+##                   b) other    warning + object$residuals
+##                                                                    
+##  II)           "simple",  "weighted",  "partial"                   
+## 
+##  if what mu sigma nu tau  (the question here is whether w is needed) 
+## type   simple       
+##       weighted
+##       partial
 type <- match.arg(type)
 what <- match.arg(what)
    w <- object$weights
@@ -97,13 +97,13 @@ if(what=="z-scores")                            #      if z-scores  (I)
   else if (all(trunc(w)==w))                    # a) "zero ones"  or  "frequencies" 
         { if (object$type== "Continuous")     x <- rep(object$residuals, w) # a1 continuous
           else{                                     # a2  discrete case
-               y  <- rep(object$y, w)
-               if ("mu"%in%object$parameters) mu <- rep(fitted(object, "mu"),w)
-               if ("sigma"%in%object$parameters)  sigma <- rep(fitted(object,"sigma"),w)
-               if ("nu"%in%object$parameters)        nu <- rep(fitted(object,"nu"),w)
-               if ("tau"%in%object$parameters)      tau <- rep(fitted(object,"tau"),w)
-               if(any(object$family%in%.gamlss.bi.list)){ bd <- rep(object$bd,w)} # MS Wednesday, July 23, 2003 at 12:03   
-               x <- eval(object$rqres)
+          y  <- rep(object$y, w)
+      if ("mu"%in%object$parameters)        mu <- rep(fitted(object, "mu"),w)
+      if ("sigma"%in%object$parameters)  sigma <- rep(fitted(object,"sigma"),w)
+      if ("nu"%in%object$parameters)        nu <- rep(fitted(object,"nu"),w)
+      if ("tau"%in%object$parameters)      tau <- rep(fitted(object,"tau"),w)
+      if(any(object$family%in%.gamlss.bi.list)){ bd <- rep(object$bd,w)} # MS Wednesday, July 23, 2003 at 12:03   
+          x <- eval(object$rqres)
               }  
          }  # now weights NOT "zero ones"  or  "frequencies"                             
 else { warning("weights which are not frequencies are used: residuals remain unweighted")
@@ -208,18 +208,32 @@ if (!what%in%object$par) stop(paste(what,"is not a parameter in the object","\n"
 ################################################################################
 #                 formula.gamlss
 ################################################################################
+# formula.gamlss<-function (x, what = c("mu", "sigma", "nu", "tau"), parameter= NULL, ... ) 
+# {
+#   what <- if (!is.null(parameter))  {
+#     match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
+#  if (!what%in%x$par) stop(paste(what,"is not a parameter in the object","\n")) 
+#     fo <- x[[paste(what,"formula",sep=".")]]
+#  ## the problem is when "." is in the formula, if true get formula from terms
+#  if (length(fo)==2 && "."%in%strsplit(as.character(fo),split="")[[2]])# no resp 
+#     fo <- formula(x[[paste(what,"terms",sep=".")]])
+#  if (length(fo)==3 &&  "."%in%strsplit(as.character(fo), split = "")[[3]])# "."%in%strsplit(as.character(fo), split = "")[[3]]
+#     fo <- formula(x[[paste(what,"terms",sep=".")]])
+#     fo
+# }
 formula.gamlss<-function (x, what = c("mu", "sigma", "nu", "tau"), parameter= NULL, ... ) 
 {
   what <- if (!is.null(parameter))  {
     match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
- if (!what%in%x$par) stop(paste(what,"is not a parameter in the object","\n")) 
-    fo <- x[[paste(what,"formula",sep=".")]]
- ## the problem is when "." is in the formula, if true get formula from terms
- if (length(fo)==2 && "."%in%strsplit(as.character(fo),split="")[[2]])# no resp 
+  if (!what%in%x$par) stop(paste(what,"is not a parameter in the object","\n"))
+  fo <- x[[paste(what,"formula",sep=".")]]
+  # Making it not a "formula" to prevent incompatibility with package:formula.tools when using as.character()
+  class(fo) = "formula_"
+  ## the problem is when "." is in the formula, if true get formula from terms
+  if ((length(fo)==2 && "."%in%strsplit(as.character(fo),split="")[[2]]) || (length(fo)==3 &&  "."%in%strsplit(as.character(fo), split = "")[[3]]))
     fo <- formula(x[[paste(what,"terms",sep=".")]])
- if (length(fo)==3 &&  "."%in%strsplit(as.character(fo), split = "")[[3]])# "."%in%strsplit(as.character(fo), split = "")[[3]]
-    fo <- formula(x[[paste(what,"terms",sep=".")]])
-    fo
+  class(fo) = "formula"
+  fo
 }
 ################################################################################
 #                 is.gamlss 

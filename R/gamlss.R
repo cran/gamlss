@@ -29,13 +29,13 @@ gamlssNews <- function() file.show(system.file("doc", "NEWS.txt", package="gamls
 #}
 ##
 ##----------------------------------------------------------------------------------------
-.gamlss.bi.list<-c("BI", "Binomial", "BB", "Beta Binomial", "ZIBI", "ZIBB", "ZABI", "ZABB") # binomial denominators
+.gamlss.bi.list<-c("BI", "Binomial", "BB", "Beta Binomial", "ZIBI", "ZIBB", "ZABI", "ZABB", "DBI") # binomial denominators
 .gamlss.multin.list<-c("MULTIN", "MN3", "MN4", "MN5")
 ##----------------------------------------------------------------------------------------
 .gamlss.sm.list<-c("cs", "scs",                   # smoothing cubic splines  "s" vc"
                    "ps", "pb", "cy", "tp", "pvc", # penalised splines : ps, pb, cy tp pvc pbq
                    "pbm", "pbj", "pbo", "pbz",    # monotone jumps and going to zero
-                   "pbc", "pbts",                  # pb cycle 
+                   "pbc", "pbts", "pbp",          # pb cycle pb predict
                    "pcat",                        # for categorical to reduce levels 
                    "pbq",                         # pb using Qfunction
                    "gmrf",                        # Gaussian Markov random fields
@@ -43,7 +43,7 @@ gamlssNews <- function() file.show(system.file("doc", "NEWS.txt", package="gamls
                    "sap", "sap3",                 # seperation of Anisotropic penalties
                    "krig" ,                       # kriging
                    "lo",                          # loess                   
-                   "random","re",                 # random effect     "ra","rc","rash"
+                   "random","re", "re4",          # random effect  "ra","rc","rash"
                    "fp","pp",                     # fractional poly         
                    "nl",                          # non-linear (.nl)         
                    "ri",                          # ridge regression      "ridge",
@@ -805,23 +805,23 @@ parameterOut <- function(what="mu", save)
 ##-----------------------------------------------------------------------------------------
 ##=========================================================================================
 get.smoothers <- function(term)
+{
+  a <- attributes(term)   #
+  smoothers <- a$specials #S convert variable pointers to term pointers
+  if(length(smoothers) > 0)
   {
-        a <- attributes(term)   #
-smoothers <- a$specials #S convert variable pointers to term pointers
-    if(length(smoothers) > 0) 
-       {
-      smoothers <- smoothers[sapply(smoothers, length) > 0]
-       for(i in seq(along = smoothers)) 
-          {
-                     tt <- smoothers[[i]]
-                     ff <- apply(a$factors[tt,  , drop = FALSE], 2, any)
-         smoothers[[i]] <- if(any(ff)) seq(along = ff)[a$order == 1 & ff]
-                           else NULL
-          }
-       if(length(smoothers) > 0) smoothers <-smoothers[order(unlist(smoothers))] # MS 1-9-15
-       }
-   smoothers
-   }
+    smoothers <- smoothers[sapply(smoothers, length) > 0]
+    # smoothersR <-smoothers 
+    for(i in seq(along = smoothers))
+    {
+      tt <- smoothers[[i]]
+      ff <- apply(a$factors[tt,  , drop = FALSE], 2, any)
+      smoothers[[i]] <- if(any(ff)) seq(along = ff)[a$order == 1 & ff]
+      else NULL
+    }
+  }
+  smoothers
+}
 ##=========================================================================================
 ##-----------------------------------------------------------------------------------------
 ## this function creates the parameter objects

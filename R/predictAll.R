@@ -189,7 +189,7 @@ if ((use.weights==TRUE)||(se.fit==TRUE))
 ##       this assumes that all the relevant variables will be in newdata
 ##       what happens if not?     
 ##      The question is if newdata does not contain all variables what we do 
-     DatA <- DatA[match(names(newdata),names(DatA))]
+     DatA <- DatA[match(names(newdata),names(DatA), nomatch = 0)]# mikis 
 ## merge the two data together
      DatA <- concat(DatA,newdata)
 ## get the old weights

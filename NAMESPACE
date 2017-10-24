@@ -11,6 +11,7 @@ export(gamlss, gamlss.control, glim.control, is.gamlss,
        scs,
        ps, gamlss.ps,
        pb, gamlss.pb, pb.control,
+       pbp, gamlss.pbp, pbp.control,
        pbm, gamlss.pbm, pbm.control,
        pbo, gamlss.pbo, pbo.control,
        pbz, gamlss.pbz, pbz.control,
@@ -35,11 +36,12 @@ export(gamlss, gamlss.control, glim.control, is.gamlss,
        calibration, lms, z.scores, Rsq, gen.likelihood,
        acfResid, rvcov, get.K, getSmo, 
        .gamlss.sm.list, .gamlss.bi.list, .gamlss.multin.list,
+       .counts, .binom, .realline, .realplus,  
        plot2way, loglogSurv1, loglogSurv2, loglogSurv3, loglogSurv, logSurv, 
        quantSheets.control, quantSheets, findPower, z.scoresQS,
        getZmatrix, vis.lo, VC.test,
        pcat, gamlss.pcat, plotDF, plotLambda,
-       getPEF)
+       getPEF, devianceIncr, get.rqres)
 
 
 

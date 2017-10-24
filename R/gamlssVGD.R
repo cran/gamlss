@@ -422,6 +422,7 @@ gamlssCV <- function(formula = NULL,
   rand <- if (is.null(rand)) sample(K.fold , N, replace=TRUE)
   else rand
   if (length(rand)!=N) stop("the length of the rand should be equal to data")
+  K.fold=length(unique(rand))
   CV <- rep(0, K.fold)
   residCV <- rep(0, N)
   i <- sort(unique(rand))

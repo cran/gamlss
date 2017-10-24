@@ -21,7 +21,7 @@ which distribution parameter is required, default what="mu"
 }
 \item{parameter}{equivalent to \code{what}}
   \item{which}{
-which smoothing term
+which smoothing term i.e. 1, 2 etc. Note that 0 means all.
 }
 }
 \details{

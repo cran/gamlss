@@ -90,6 +90,7 @@ gamlss.environment <- sys.frame(position)
       attr(xvar, "D")             <- D
       attr(xvar, "D1")            <- D1
       attr(xvar, "X")             <- X
+      attr(xvar, "x")             <- x
       attr(xvar, "df")            <- df 
       attr(xvar, "call")          <- substitute(gamlss.pbz(data[[scall]], z, w)) 
       attr(xvar, "lambda")        <- lambda
@@ -205,8 +206,11 @@ regpen <- function(y, X, w)# original
 # the main function starts here
 # get the attributes
 #w <- ifelse(w>.Machine$double.xmax^.5,.Machine$double.xmax^.5,w )
+if (is.null(xeval)) # if no prediction 
+    {    
               X <-  if (is.null(xeval)) as.matrix(attr(x,"X")) #the trick is for prediction
                     else  as.matrix(attr(x,"X"))[seq(1,length(y)),]
+           xvar <- as.matrix(attr(x,"x")) # main penalty
               D <- as.matrix(attr(x,"D")) # main penalty
              D1 <- as.matrix(attr(x,"D1")) # order 1 penalty   
          lambda <- as.vector(attr(x,"lambda")) # lambda 
@@ -327,6 +331,7 @@ startLambdaName <- as.character(attr(x, "NameForLambda"))
 #-end -----------------------------------------------------------    
          lev <- (lev-.hat.WX(w,x)) # subtract  the linear since is already fitted 
          var <- lev/w              # the variance of the smoother
+         Fun <- splinefun(xvar, fv, method="natural")
 coefSmo <- list(   coef = fit$beta,
                      fv = fv, 
                  lambda = lambda, 
@@ -335,18 +340,37 @@ coefSmo <- list(   coef = fit$beta,
                   sige2 = sig2,
                    sigb = if (is.null(tau2)) NA else sqrt(tau2),
                    sige = if (is.null(sig2)) NA else sqrt(sig2),
-                 method = control$method)
+                 method = control$method,
+                    fun = Fun)
 class(coefSmo) <- c("pbz", "pb") 
-if (is.null(xeval)) # if no prediction 
-    {
+# if (is.null(xeval)) # if no prediction 
+#     {
      list(fitted.values=fv, residuals=y-fv, var=var, nl.df =fit$edf-1,
           lambda=lambda, coefSmo=coefSmo )
     }                            
 else # for prediction 
     { 
-     ll <- dim(as.matrix(attr(x,"X")))[1]
-     nx <- as.matrix(attr(x,"X"))[seq(length(y)+1,ll),]
-   pred <- drop(nx %*% fit$beta) 
+   #   ll <- dim(as.matrix(attr(x,"X")))[1]
+   #   nx <- as.matrix(attr(x,"X"))[seq(length(y)+1,ll),]
+   # pred <- drop(nx %*% fit$beta) 
+      position=0
+      rexpr<-regexpr("predict.gamlss",sys.calls())
+      for (i in 1:length(rexpr))
+        { 
+        position <- i 
+        if (rexpr[i]==1) break
+        }
+cat("New way of prediction in pbz()  (starting from GAMLSS version 5.0-3)", "\n") 
+gamlss.environment <- sys.frame(position)
+             param <- get("what", envir=gamlss.environment)
+            object <- get("object", envir=gamlss.environment)
+                TT <- get("TT", envir=gamlss.environment)
+         intercept <- get("coef", envir=gamlss.environment)[1]
+     smooth.labels <- get("smooth.labels", envir=gamlss.environment)
+                ll <- dim(as.matrix(attr(x,"X")))[1]
+           newxval <- as.vector(attr(x,"x"))[seq(length(y)+1,ll)]
+              pred <- getSmo(object, parameter= param, which=which(TT%in%smooth.labels))$fun(newxval)
+             # pred <- getSmo(object, parameter= param, which=which(TT%in%smooth.labels))$fun(xeval)
    pred
     }    
 }

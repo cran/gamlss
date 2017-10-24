@@ -538,6 +538,7 @@ whichValueSmo <- CheckSmoList(nmt)
           # } 
           if (attr(whichValueSmo, "whichSmo")[i]=="re")
           {
+            
             plotLME(getSmo(object, what, which=whichValueSmo[i])) 
           } 
           if (attr(whichValueSmo, "whichSmo")[i]=="mrf"||attr(whichValueSmo, "whichSmo")[i]=="mrfa") 

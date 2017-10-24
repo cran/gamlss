@@ -3,12 +3,10 @@ GAMLSS is a R package implementing the Generalised Additive Models for
 location scale shape of Rigby and Stasinopoulos (2005),  Appl. Statist.,
 54,  pp. 507-554.
 
-A manual in a pdf form is included with the package and can be found
-in the windows version by using the menu
+The book "Flexible Regression and Smoothing: Using GAMLSS in R" explains 
+how the models can be used in R.
 
-help/HTML help/packages/gamlss/directory/gamlss-manual.pdf
-
-More information and papers about GAMLSS can be found in
+More more information about books and papers related to GAMLSS can be found in
 
 http://www.gamlss.org/
 
@@ -18,21 +16,44 @@ Question or suggestions about GAMLSS can be send to
 or
    r.rigby@londonmet.ac.uk
 --------------------------------------------------------------------------------
+Version 5.0-3
+
+1. gamlss
+     i) the function devianceIncr() is introduced to calculate the global deviance increment. 
+     ii)  An argument for changing the size of the axis is added in wp()
+     iii) The method of caclulating the average of rqres.plot() has changed 
+          In fact now the plot.type has two new arguments "few" and "all".
+          "few" plots different wp's or QQ's while "all" plots all the wp or QQ              plots on the same graph.
+      iv) The function get.object() withing the gamlss() function have changed.
+          The reason is that in a model like 
+          
+          u1 <- gamlss(y~pb(x1)+pbc(x4)+pb(x5)+ga(~s(x2,x6)), data=usair)
+          
+           changed the order of smoothing terms in the formula resulting to     an incorrect term.plot().
+           
+
+2. gamlss.dist
+     i) Double binomial distribution is introduced
+     ii) rechecking of the discrete distributions resulted to some minor changes
+         to several distributions. 
+     iii) An "if" "else" statment was replaced in PE and PE2 distributions with ifelse because it was causing problems with gen.Family (thanks to Francimário who report it)      
+      
 
 Version 5.0-2
-1. gamlss  i) The function lms() has been changed.  
-              Now the different fittings do not start from the previous values of               the normal model. This was found to fail in cases where the number                of observations was relative small (thanks Tanmay Nath for point                  out to us).
-          ii) ri() is amended so it can be used when the number of variables are                larger than the number of observations. In such case we found that                maybe the starting value for lambda (argument start) may have to                  change from 10 to a bigger value say 1000?.   
-          iii) gamlssML() accepts both Y or formula Y~1 (and some bug which had to               do with not using the foruma when used within another function is                 corrected)
-2. gamlss.add i) Marco Enea done some adjustments on the way data is dealt by  
-                 ga() and ba()
-             ii) the degrees of freedom of tr() function now are corrected. They                   are the number of leaves + the number of beak points. This                        effects the results on the page 309 of the book.
-3. gamlss.dist i) The discrete distribution BNB() (Beta negative binomial) is  
-                  introduced together with its zero adjusted and zero inflated 
-                  versions ZABNB() and ZIBNB().
-              ii) The zero adjusted and zero inflated versions  of the Sichel 
-                   (SICHEL) distribution are introduced ZASICHEL() and ZISICHEL().
-             iii) The zero adjusted PIG is introduced ZAPIG()
+1. gamlss  
+       i) The function lms() has been changed. Now the different fittings do not start from the previous values of the normal model. This was found to fail in cases where the number of observations was relative small (thanks Tanmay Nath for point  out to us).
+      ii) ri() is amended so it can be used when the number of variables are larger than the number of observations. In such case we found that maybe the starting value for lambda (argument start) may have to change from 10 to a bigger value say 1000?.   
+      iii) gamlssML() accepts both Y or formula Y~1 (and some bug which had to do with not using the formula when used within another function is corrected)
+
+2. gamlss.add 
+        i) Marco Enea have done some adjustments on the way data is dealt by  ga() and ba()
+       ii) the degrees of freedom of tr() function now are corrected. They are the number of leaves + the number of beak points. This effects the results on the page 309 of the book.
+       
+3. gamlss.dist 
+       i) The discrete distribution BNB() (Beta negative binomial) is introduced together with its zero adjusted and zero inflated versions ZABNB() and ZIBNB().
+      ii) The zero adjusted and zero inflated versions  of the Sichel (SICHEL) distribution are introduced ZASICHEL() and ZISICHEL().
+     iii) The zero adjusted PIG is introduced ZAPIG()
+      iv) the cdf of the GG distribution had an error when nu<0 (it was spotted by Felix Hunschede) and now is corrected.
 
 
 Version 5.0-1

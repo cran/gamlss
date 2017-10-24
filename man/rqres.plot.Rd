@@ -1,21 +1,27 @@
 \name{rqres.plot}
 \alias{rqres.plot}
+\alias{get.rqres}
 
-\title{Plotting Randomized Quantile Residuals}
+\title{Creating and Plotting Randomized Quantile Residuals}
 \description{
  This function plots worm plots, van Buuren and Fredriks M. (2001),  or QQ-plots of the normalized randomized quantile residuals (Dunn and Smyth, 1996) for a model using a discrete GAMLSS family distribution.    
 }
 \usage{
-rqres.plot(obj = NULL, howmany = 6, plot = c("all", "average"), 
-           type = c("wp", "QQ"), ...)
+rqres.plot(obj = NULL, howmany = 6, plot.type = c("few", "all"), 
+           type = c("wp", "QQ"),  xlim = NULL, ylim = NULL, ...)
+get.rqres(obj = NULL, howmany = 10, order = FALSE)           
+           
 }
 
 \arguments{
   \item{obj}{a fitted GAMLSS model object from a "discrete" type of family }
-  \item{howmany}{The number of QQ-plots required up to ten i.e. \code{howmany=6}}
-   \item{plot}{whether to plot all plots all the residual realisations  \code{"all"} or just the mean \code{"average"}}
+  \item{howmany}{The number randomise  quantile residuals required i.e. \code{howmany=6}}
+   \item{plot.type}{whether to plot few of the randomised quantile residual realisations, \code{"few"} in a separate plots (there must be less than 8)  or all   \code{"all"} in one plot (with their median)}
      \item{type}{whether to plot worm plots \code{"wp"}or QQ plots \code{"QQ"} with default worm plots}
-   \item{\dots}{for extra arguments tp be passed to \code{wp()}}
+     \item{xlim}{setting manually the \code{xlim} of the graph}
+     \item{ylim}{setting manually the \code{ylim} of the graph}
+     \item{order}{whether to order the ealization of randomised quantile residuals}
+   \item{\dots}{for extra arguments to be passed to \code{wp()}}
 }
 \details{For discrete family distributions, the \code{\link{gamlss}()} function saves on exit one realization of randomized quantile residuals which 
 can be plotted using the generic function \code{plot} which calls the \code{plot.gamlss}. Looking at only one realization can be misleading, so the 
@@ -59,7 +65,7 @@ h<-gamlss(y~pb(x)+qrt, family=NBI, data=aids) #
 plot(h)
 # plot qq- plots from 6 realization of the randomized quantile residuals
 rqres.plot(h) 
-# a qq-plot from the medians from 40 realizations
-rqres.plot(h,howmany=40,plot="average") # 
+# a worm-plot of the medians from 10 realizations
+rqres.plot(h,howmany=40,plot="all") # 
 }
 \keyword{regression}% 

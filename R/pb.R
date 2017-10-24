@@ -3,7 +3,7 @@
 ## created  19-12-2012 
 ## fixing df is ammended on 3-10-16 MS
 #-------------------------------------------------------------------------------
-pbp <- function(x, df = NULL, lambda = NULL, control=pbp.control(...), ...) 
+pb <- function(x, df = NULL, lambda = NULL, control=pb.control(...), ...) 
 {
 # ------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
@@ -50,6 +50,7 @@ pbp <- function(x, df = NULL, lambda = NULL, control=pbp.control(...), ...)
           xmin <- xl - 0.01 * (xr - xl)  
 ##                create the basis
              X <- bbase(x, xmin, xmax, control$inter, control$degree, control$quantiles) # 
+#        getting the base out    assign("X", X, envir = .GlobalEnv) 
              r <- ncol(X)
 ##                the penalty matrix
              D <- if(control$order==0) diag(r) else diff(diag(r), diff=control$order)
@@ -87,7 +88,7 @@ gamlss.environment <- sys.frame(position)
       attr(xvar, "D")             <- D
       attr(xvar, "X")             <- X
       attr(xvar, "df")            <- df 
-      attr(xvar, "call")          <- substitute(gamlss.pbp(data[[scall]], z, w)) 
+      attr(xvar, "call")          <- substitute(gamlss.pb(data[[scall]], z, w)) 
       attr(xvar, "lambda")        <- lambda
       attr(xvar, "gamlss.env")    <- gamlss.environment
       attr(xvar, "NameForLambda") <- startLambdaName
@@ -96,12 +97,12 @@ gamlss.environment <- sys.frame(position)
 }
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-# control function for pbp()
+# control function for pb()
 ##------------------------------------------------------------------------------
-pbp.control <- function(inter = 20, degree= 3, order = 2, start=10, quantiles=FALSE, 
+pb.control <- function(inter = 20, degree= 3, order = 2, start=10, quantiles=FALSE, 
                        method=c("ML","GAIC", "GCV"), k=2, ...)
 { 
-##  Control function for pbp()
+##  Control function for pb()
 ##  MS  Tuesday, March 24, 2009
 ## inter : is the number of equal space intervals in x 
 ## (unless quantiles = TRUE is used in which case the points will be at the quantiles values of x) 
@@ -130,7 +131,7 @@ method <- match.arg(method)
 }
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-gamlss.pbp <- function(x, y, w, xeval = NULL, ...)
+gamlss.pb <- function(x, y, w, xeval = NULL, ...)
 {
 # ------------------------------------------------------------------------------ 
 # functions within
@@ -200,6 +201,8 @@ I.lambda.D <- (1+lambda*UDU$values)
 # the main function starts here
 # get the attributes
 #w <- ifelse(w>.Machine$double.xmax^.5,.Machine$double.xmax^.5,w )
+if (is.null(xeval)) # if no prediction 
+{
               X <-  if (is.null(xeval)) as.matrix(attr(x,"X")) #the trick is for prediction
                     else  as.matrix(attr(x,"X"))[seq(1,length(y)),]
               D <- as.matrix(attr(x,"D")) # penalty
@@ -324,7 +327,7 @@ startLambdaName <- as.character(attr(x, "NameForLambda"))
        # if (any(class(lambda)%in%"try-error")) {lambda<-100000}
         lambda <-  exp(loglambda)
            fit <- regpen(y, X, w, lambda, D)
-      if (abs(fit$edf-df)>0.1) warning("the target df's are not acheived, try to reduce the no. of knot intervals \n in pbp(). eg. inter=10")
+      if (abs(fit$edf-df)>0.1) warning("the target df's are not acheived, try to reduce the no. of knot intervals \n in pb(). eg. inter=10")
             fv <- X %*% fit$beta
   }#end of case 3 --------------------------------------------------------------
   # I need to calculate the hat matrix here for the variance of the smoother
@@ -370,7 +373,7 @@ startLambdaName <- as.character(attr(x, "NameForLambda"))
 #         browser()
 #      # se <-  sqrt(diag(solve(XWX + lambda * t(D) %*% D)))
 
-
+          Fun <- splinefun(x, fv, method="natural")
 coefSmo <- list(   coef = fit$beta,
                      fv = fv, 
                  lambda = lambda, 
@@ -379,18 +382,30 @@ coefSmo <- list(   coef = fit$beta,
                   sige2 = sig2,
                    sigb = if (is.null(tau2)) NA else sqrt(tau2),
                    sige = if (is.null(sig2)) NA else sqrt(sig2),
-                 method = control$method)
+                 method = control$method,
+                   fun = Fun)
 class(coefSmo) <- "pb"
-  if (is.null(xeval)) # if no prediction 
-    {
      list(fitted.values=fv, residuals=y-fv, var=var, nl.df =fit$edf-2,
           lambda=lambda, coefSmo=coefSmo )
     }                            
 else # for prediction 
     { 
-     ll <- dim(as.matrix(attr(x,"X")))[1]
-     nx <- as.matrix(attr(x,"X"))[seq(length(y)+1,ll),]
-   pred <- drop(nx %*% fit$beta) 
+      position=0
+       rexpr<-regexpr("predict.gamlss",sys.calls())
+      for (i in 1:length(rexpr)){ 
+         position <- i 
+         if (rexpr[i]==1) break}
+  cat("New way of prediction in pb()  (starting from GAMLSS version 5.0-3)", "\n")    
+gamlss.environment <- sys.frame(position)
+             param <- get("what", envir=gamlss.environment)
+            object <- get("object", envir=gamlss.environment)
+                TT <- get("TT", envir=gamlss.environment)
+     smooth.labels <- get("smooth.labels", envir=gamlss.environment)
+     # ls(envir=gamlss.environment)
+      pred <- getSmo(object, parameter= param, which=which(TT%in%smooth.labels))$fun(xeval)
+   #   ll <- dim(as.matrix(attr(x,"X")))[1]
+   #   nx <- as.matrix(attr(x,"X"))[seq(length(y)+1,ll),]
+   # pred <- drop(nx %*% fit$beta) 
    pred
     }    
 }

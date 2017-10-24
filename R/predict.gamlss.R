@@ -26,11 +26,11 @@
 ### 4) NA coefficients are not working yet : should be OK
 predict.gamlss <- function(object, 
                            what = c("mu", "sigma", "nu", "tau"), 
-                            parameter = NULL,
-                           newdata = NULL, 
+                      parameter = NULL,
+                        newdata = NULL, 
                            type = c("link", "response", "terms"), # terms not working 
-                           terms = NULL, 
-                           se.fit = FALSE, 
+                          terms = NULL, 
+                         se.fit = FALSE, 
                            data = NULL, ...)                                                                  
 {
 ## this little function put data frames together 
@@ -238,7 +238,7 @@ if (!is.null(smo.mat))
 attr(new.m, "class") <- NULL
            residuals <-  if (!is.null(off.num)) object[[paste(what,"wv",sep=".")]] - object[[paste(what,"lp",sep=".")]]+offsetVar[onlydata]
                          else object[[paste(what,"wv",sep=".")]] - object[[paste(what,"lp",sep=".")]]
-       for(TT in smooth.labels)
+        for(TT in smooth.labels)
          { 
             if (is.matrix(m[[TT]])) # the problem is that for some smoother the m[[TT]] is a matrix (for example pvc())
              { # MS 27-6-11         # in this case  we have to protect the dim attributes of data[[tt]]
@@ -252,7 +252,7 @@ attr(new.m, "class") <- NULL
      # debug(gamlss.pvc)
           pred.s[, TT] <- eval(Call)
          }
-        if(type == "terms")
+if(type == "terms")
             {
             # pred[, smooth.wanted] <- pred[, smooth.wanted] + pred.s[, smooth.wanted]
             pred[, smooth.labels] <- pred[, smooth.labels] + pred.s[, smooth.labels]

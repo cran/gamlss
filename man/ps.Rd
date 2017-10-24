@@ -2,10 +2,12 @@
 \alias{ps}
 \alias{pb}
 \alias{pbo}
+\alias{pbp}
 \alias{pbc}
 \alias{pbc.control}
 \alias{pb.control}
 \alias{pbo.control}
+\alias{pbp.control}
 \alias{pvc}
 \alias{pvc.control}
 \alias{cy}
@@ -24,9 +26,9 @@ There are several function which use P-spline methodology:
 
 a) \code{pb()}, the current version of P-splines which uses SVD in the fitting and therefore is the most reliable 
 
-b) \code{pbo()}, an older version of P-splines which uses simple matrix algebra in the fits.
+b) \code{pbo()} and \code{pbp()}, older versions of P-splines. The first  uses a simple matrix algebra in the fits. The second is the last version of \code{pb()} with SVD  but uses different method  for prediction.
 
-c) \code{pbc()} the new vwrsion of cycle P-splines (using SVD)
+c) \code{pbc()} the new version of cycle P-splines (using SVD)
 
 d) \code{cy()} the older version of cycle P-splines.
 
@@ -36,7 +38,7 @@ f) \code{pbz()} for fitting  P-splines which allow the fitted curve to shrink to
 
 g) \code{ps()} the original P-splines with no facility of estimating the smoothing parameters and 
 
-j) \code{pvc()} penelised varying coefficient models.
+j) \code{pvc()} penalised varying coefficient models.
 
 Theoretical explanation of the above P-splines can be found in Eilers \emph{et al.} (2016)
 
@@ -59,9 +61,12 @@ The function \code{getZmatrix()} creates a (random effect) design matrix \code{Z
 \usage{
 pb(x, df = NULL, lambda = NULL, control = pb.control(...), ...)
 pbo(x, df = NULL, lambda = NULL, control = pbo.control(...), ...)
+pbp(x, df = NULL, lambda = NULL, control = pbp.control(...), ...)
 pbo.control(inter = 20, degree = 3, order = 2, start = 10, quantiles = FALSE, 
                method = c("ML", "GAIC", "GCV", "EM", "ML-1"), k = 2, ...)
 pb.control(inter = 20, degree = 3, order = 2, start = 10, quantiles = FALSE, 
+          method = c("ML", "GAIC", "GCV"), k = 2, ...)
+pbp.control(inter = 20, degree = 3, order = 2, start = 10, quantiles = FALSE, 
           method = c("ML", "GAIC", "GCV"), k = 2, ...)
 pbc(x, df = NULL, lambda = NULL, control = pbc.control(...), ...)
 pbc.control(inter = 20, degree = 3, order = 2, start = 10, 
@@ -106,8 +111,8 @@ getZmatrix(x, xmin = NULL, xmax = NULL, inter = 20, degree = 3, order = 2)
   \item{ps.intervals}{the no of break points in the x-axis}
   \item{xmin}{minimum value for creating the B-spline}
   \item{xmax}{maximum value for creating the B-spline}
-  \item{sin}{whether to use the sin penaltry or not}
-  \item{lim}{at which level the seconnd penaltly of order 1 should start}
+  \item{sin}{whether to use the sin penalty or not}
+  \item{lim}{at which level the second penalty of order 1 should start}
 } 
 \details{
 The \code{ps()} function is based on Brian Marx function which can be found in his website.

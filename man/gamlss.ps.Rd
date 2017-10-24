@@ -8,6 +8,7 @@
 \alias{gamlss.pbm}
 \alias{gamlss.pbz}
 \alias{gamlss.pbc}
+\alias{gamlss.pbp}
 
 \title{Support for Functions  for smoothers}
 \description{
@@ -24,6 +25,7 @@ gamlss.pvc(x, y, w, xeval = NULL, ...)
 gamlss.pbm(x, y, w, xeval = NULL, ...)
 gamlss.pbz(x, y, w, xeval = NULL, ...)
 gamlss.pbc(x, y, w, xeval = NULL, ...)
+gamlss.pbp(x, y, w, xeval = NULL, ...)
 }
 
 \arguments{
