@@ -16,7 +16,17 @@ Question or suggestions about GAMLSS can be send to
 or
    r.rigby@londonmet.ac.uk
 --------------------------------------------------------------------------------
-Version 5.0-3
+Version 5.0-5
+1.  i) gamlss pb(), pbm(), pbz(), and pbc() now stop if x is a matrix, it gives an  informative error.
+    ii)  The predict() function  of the re(ramdom=~1|f) is working now (Note that random() still do not allow prediction) 
+    iii) A bug in pb(), pbm() and pbz() is corrected. The bug effected the prediction. Thanks to Lisa Schlosser for reporting it. 
+
+
+2. gamlss.dist
+     i) the link of nu in NBF() have chanded to "log"
+
+
+Version 5.0-4
 
 1. gamlss
      i) the function devianceIncr() is introduced to calculate the global deviance increment. 

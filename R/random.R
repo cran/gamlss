@@ -2,7 +2,7 @@
 # this function is a modifyied version of  Hastie's S-plus gam test function
 # it allows a random effect fit for a factor
 # TO DO:  i) check for weighted out obseervations
-#        ii) put prediction
+#        ii) put prediction 
 #       iii) check if weighted levels 
 random <- function(x, df = NULL, lambda = NULL, start=10) 
 {
@@ -92,20 +92,20 @@ if (!is.null(df)&&is.null(lambda)) # case 3 : if df are required----------------
   #  if(is.null(df))     df <- sum(non.zero)
   #  if(lambda == 0) lambda <- df.inv(nw[non.zero], df)
   #   df <- sum(nw[non.zero]/(nw[non.zero] + lambda))
-    beta <- fit$beta #tapply(w * y, x, sum)/(nw + lambda)
-      fv <-   fit$beta[x]
-     var <- as.vector(w/(nw[x] + lambda))
-    residuals <- as.vector(y -fv )
-coefSmo <- list(  coef = fit$beta,
-                lambda = lambda, 
-                   edf = fit$edf, 
-                 sigb2 = tau2, 
-                 sige2 = sig2,
-                sigb = if (is.null(tau2)) NA else sqrt(tau2),
-                sige = if (is.null(sig2)) NA else sqrt(sig2),
-                    fv = fv,  
-                factor = x,
-                    se = sqrt(var))
+     beta <- fit$beta #tapply(w * y, x, sum)/(nw + lambda)
+       fv <- fit$beta[x]
+      var <- as.vector(w/(nw[x] + lambda))
+residuals <- as.vector(y -fv )
+  coefSmo <- list(  coef = fit$beta,
+                  lambda = lambda, 
+                     edf = fit$edf, 
+                   sigb2 = tau2, 
+                   sige2 = sig2,
+                    sigb = if (is.null(tau2)) NA else sqrt(tau2),
+                    sige = if (is.null(sig2)) NA else sqrt(sig2),
+                      fv = fv,  
+                  factor = x,
+                      se = sqrt(var))
 class(coefSmo) <- "random"
     list(x = seq(along = nw), y = fv, residuals = residuals, var = var, 
          nl.df = fit$edf, lambda=lambda, coefSmo=coefSmo) # MS 

@@ -155,10 +155,14 @@ fix.formula <- as.formula(paste("Y.var", deparse(fixed, width.cutoff = 500L), se
     }
 else 
     {
-   ll<-dim(OData)[1]
+   # ll<-dim(OData)[1]
+   # assign("fix.formula",fix.formula,envir=globalenv())
+   # on.exit(rm(fix.formula,envir=globalenv()))
+   # pred <- eval(expression(predict(fit,newdata = OData[seq(length(y)+1,ll),])),envir=environment() )
+   fit$call$fixed <- substitute(fix.formula)
+   ll <- dim(OData)[1]
    pred <- predict(fit,newdata = OData[seq(length(y)+1,ll),])
     }         
-
 }
 #-------------------------------------------------------------------------------
 

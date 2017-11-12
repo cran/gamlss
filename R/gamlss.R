@@ -852,8 +852,8 @@ get.object <- function(what)
        if(length(eval(parse(text=(paste(what,".smoothers", sep=""))))) > 0) 
         {        #only if smoothing 
         parAttrTermlevels  <- eval(parse(text=(paste(what,".a$term.labels", sep=""))))
-                       who <- parAttrTermlevels[unlist(
-                                eval(parse(text=(paste(what,".smoothers", sep="")))))]
+                       boo <- unlist(eval(parse(text=(paste(what,".smoothers", sep="")))))
+                       who <- parAttrTermlevels[boo[ order(boo)]]
               smooth.frame <- eval(parse(text=(paste(what,".frame", sep="")))) 
                          s <- matrix(0, N, length(who))
                dimnames(s) <- list(names(y), who)

@@ -41,6 +41,7 @@ pbm <- function(x, df = NULL, lambda = NULL, mono=c("up", "down"), control=pbm.c
 #-------------------------------------------------------------------------------
 # the main function starts here
         scall <- deparse(sys.call(), width.cutoff = 500L)
+        if (is.matrix(x)) stop("x is a matric declare it as a vector")
          mono <- match.arg(mono)
   no.dist.val <-  length(table(x))
            lx <- length(x)
@@ -416,7 +417,8 @@ gamlss.environment <- sys.frame(position)
      smooth.labels <- get("smooth.labels", envir=gamlss.environment)
                 ll <- dim(as.matrix(attr(x,"X")))[1]
            newxval <- as.vector(attr(x,"x"))[seq(length(y)+1,ll)]
-              pred <- getSmo(object, parameter= param, which=which(TT%in%smooth.labels))$fun(newxval)
+              pred <- getSmo(object, parameter= param, which=which(smooth.labels==TT))$fun(newxval)
+           #  pred <- getSmo(object, parameter= param, which=which(TT%in%smooth.labels))$fun(newxval)
    pred
     }    
 }

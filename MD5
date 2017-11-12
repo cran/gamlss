@@ -1,4 +1,4 @@
-90da49e0a0852fda3971471a6ec85cfc *DESCRIPTION
+6a7bb4f2e80a4f6f87d4ff2fd045f4d0 *DESCRIPTION
 1175175c2f4558f7d8c4414cd73a7f16 *NAMESPACE
 3e7f619c799c37dc1ac3f522d8001b8d *R/DevianceIncr.R
 b8ae959a78d68aeb2a15ecfe75336300 *R/DropAddStepGAIC-Parallel.R
@@ -26,7 +26,7 @@ ecdd7034e23ae949f6b79fa90d254993 *R/edf.R
 595914426a7b4928fe10c1158b8c8187 *R/fitDist-17-05-13.R
 b6c22ecd1f915931319f0625cabc3e9b *R/fitted-plot.R
 9fd238396a21acdcc7e2fbf636cddf14 *R/fracpoly.R
-91a26ad1d3f59026c8d67bae5649c114 *R/gamlss.R
+3873ae24e40bdc84b8bfb54f547f25ac *R/gamlss.R
 f316f0a28fcb5e8e49e8a038a0033184 *R/gamlssML.R
 3e8fbc0a36c73866913f7e75d09cfd76 *R/gamlssVGD.R
 9051aedb5b8a6cdc04af9a563c08041a *R/gen-Likelihood.R
@@ -40,12 +40,11 @@ ec8a84039c344fe277333abfe11be23d *R/lo_new.R
 9520cecf3bcd309b8f32c91364e29082 *R/lpred.R
 4a09cbcdf222c2e58b4dcf0a269e7157 *R/p-categorical.R
 81ea7b87b4a85442b7991e3d8840d88e *R/par_plot-21-5-13.R
-907d197105b567db8fc3742a98efc4a2 *R/pb.R
-11caaa6e3ce4d8f413c712778c047285 *R/pb_03-02-2014.R
-cbbca3d8f22113b55cadb27064e5a397 *R/pb_goingtozero.R
-8382a58da8fc1ee65e3225f02933be01 *R/pb_new.R
-a883475a9374d8628ad8c4f83162ea50 *R/pbc.R
-3194209d7d49b36d319b00b456b1964f *R/pbm.R
+12ce14390c7b41ca8b2ef7d81466bd6e *R/pb.R
+df000f5cf54376000a3e8e79dfbe6cd7 *R/pb_goingtozero.R
+b188df3812d3c560b555ae0cb55a9014 *R/pbc.R
+cefe89a09cafa82b39e8aa3ad21d0b6d *R/pbm.R
+11caaa6e3ce4d8f413c712778c047285 *R/pbo_original.R
 8382a58da8fc1ee65e3225f02933be01 *R/pbp.R
 68bca2d5c4ee7dd503a0f5abda53e382 *R/pdfplot.R
 a8a00cd9a03a70558f98a99bb3dfbd43 *R/plot.R
@@ -58,8 +57,8 @@ f9c3618d39dd92f78c9f9d946e489789 *R/predictAll.R
 7af2903236d36b577abbc2fb9b8dd155 *R/pvc.R
 8c40171db25e445e8b2ba07146a98941 *R/qstats.R
 84b1616756d1fbca542de56ff897049b *R/quantSheets.R
-a0b11841c846dc339488fd62513d7d85 *R/random.R
-530c4af8731104954a1ea581c16b6e44 *R/re_gamlss_lme.R
+217349b2a8074eb12b4735e6e37c5659 *R/random.R
+12fb679ab6820c26d42c50dab87e922f *R/re_gamlss_lme.R
 475a1765ee2bff90440aa193bf956c0a *R/ri.R
 96b114bcdb2d058587fb235e38081fdb *R/ridge.R
 5e01c0a8a1da0c10b0eb31f7c1f83ff2 *R/rqres.R
@@ -75,7 +74,7 @@ d60d02692ed989f1f4f39dbca2445dd3 *R/vcov-gamlss.R
 a80579b04e641d02e512dc4f4261f3b5 *R/wp.R
 c1fcf78d584146a66fcfb30f81bc727e *README.md
 469238c97e885729eb5da9f4d9fb35e0 *inst/CITATION
-46d31e5283eb7d1231e1599266e338b9 *inst/doc/NEWS.txt
+c6b2e0029d7bffdfbe142b8a1859b96d *inst/doc/NEWS.txt
 dd4589a5ff2ecdfb77876d0087a78a1f *inst/doc/gamlss-manual.pdf
 3e97d7c8c02af7802dd9754bc8a49f9e *man/DevianceIncr.Rd
 9d0b1fdc8e3fd69a32af27fd16218120 *man/IC.Rd

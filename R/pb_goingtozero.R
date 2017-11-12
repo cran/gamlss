@@ -45,6 +45,7 @@ pbz <- function(x, df = NULL, lambda = NULL, control=pbz.control(...), ...)
 # the main function starts here
             scall <- deparse(sys.call())
       no.dist.val <-  length(table(x))
+      if (is.matrix(x)) stop("x is a matric declare it as a vector")
                lx <- length(x)
     control.inter <- if (lx<99) 10 else control$inter # this is to prevent singularities when length(x) is small:change to 99 30-11-11 MS
     control$inter <- if (no.dist.val<=control$inter)  no.dist.val else control.inter 
@@ -369,8 +370,9 @@ gamlss.environment <- sys.frame(position)
      smooth.labels <- get("smooth.labels", envir=gamlss.environment)
                 ll <- dim(as.matrix(attr(x,"X")))[1]
            newxval <- as.vector(attr(x,"x"))[seq(length(y)+1,ll)]
-              pred <- getSmo(object, parameter= param, which=which(TT%in%smooth.labels))$fun(newxval)
-             # pred <- getSmo(object, parameter= param, which=which(TT%in%smooth.labels))$fun(xeval)
+              pred <- getSmo(object, parameter= param, which=which(smooth.labels==TT))$fun(newxval)
+            # pred <- getSmo(object, parameter= param, which=which(TT%in%smooth.labels))$fun(newxval)
+            # pred <- getSmo(object, parameter= param, which=which(TT%in%smooth.labels))$fun(xeval)
    pred
     }    
 }

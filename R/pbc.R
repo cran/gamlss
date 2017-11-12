@@ -76,6 +76,7 @@ Cdiff <- function(n, order=2, sin=TRUE)
 #--------------------------------------------------------------------------------
 # the main function starts here
          scall <- deparse(sys.call())
+if (is.matrix(x)) stop("x is a matric declare it as a vector or factor")
             lx <- length(x)
 if (is(x,"factor")) # ||control$ts==TRUE
  {
