@@ -378,7 +378,6 @@ startLambdaName <- as.character(attr(x, "NameForLambda"))
       #  lambda <- if (sign(edf_df(0))==sign(edf_df(100000))) 100000  # in case they have the some sign
       #            else  uniroot(edf_df, c(0,100000))$root
       #method 2 from Simon Wood (2006) pages 210-211, and 360 
-    browser()
            QR <- qr(sqrt(w)*X)
          Rinv <- solve(qr.R(QR))
           S   <- t(D)%*%D

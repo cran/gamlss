@@ -2,7 +2,8 @@
 ####### variable X.
 ###### It takes a GAMLSS object and for the range of a continous variable x, (and
 ###### by fixing the rest of the explanatory variables at specific values), 
-###### calculates the effect x has on the specific distribution parameter (or its predictor).
+###### calculates the effect x has on the specific distribution parameter 
+###### (or its predictor).
 ###### The infuence function is then approximated using the splinefun() in R and saved.
 ###### The saved function and its derivatives can be used later. 
 ###### The fixed values for the rest of the explanatory variables are  

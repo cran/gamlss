@@ -384,7 +384,7 @@ coefSmo <- list(   coef = fit$beta,
                    sigb = if (is.null(tau2)) NA else sqrt(tau2),
                    sige = if (is.null(sig2)) NA else sqrt(sig2),
                  method = control$method,
-                   fun = Fun)
+                    fun = Fun)
 class(coefSmo) <- "pb"
      list(fitted.values=fv, residuals=y-fv, var=var, nl.df =fit$edf-2,
           lambda=lambda, coefSmo=coefSmo )

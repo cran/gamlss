@@ -16,7 +16,14 @@ Question or suggestions about GAMLSS can be send to
 or
    r.rigby@londonmet.ac.uk
 --------------------------------------------------------------------------------
+Version 5.0.6
+
+1 gamlss Correcting a problem reported in R Under development (unstable) (2017-09-12 r73242)
+
+
+
 Version 5.0-5
+
 1.  i) gamlss pb(), pbm(), pbz(), and pbc() now stop if x is a matrix, it gives an  informative error.
     ii)  The predict() function  of the re(ramdom=~1|f) is working now (Note that random() still do not allow prediction) 
     iii) A bug in pb(), pbm() and pbz() is corrected. The bug effected the prediction. Thanks to Lisa Schlosser for reporting it. 
