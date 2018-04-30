@@ -41,8 +41,8 @@ export(gamlss, gamlss.control, glim.control, is.gamlss,
        quantSheets.control, quantSheets, findPower, z.scoresQS,
        getZmatrix, vis.lo, VC.test,
        pcat, gamlss.pcat, plotDF, plotLambda,
-       getPEF, devianceIncr, get.rqres)
-
+       getPEF, devianceIncr, get.rqres, 
+       gamlssMLpred, chooseDist, fitDistPred, getOrder)
 
 
 # datasets
@@ -114,6 +114,7 @@ S3method(coef, pcat)
 S3method(fitted, gamlssML)
 S3method(vcov, gamlssML)
 S3method(summary, gamlssML)
+S3method(predict, gamlssML)
 S3method(plot, histSmo)
 S3method(lines, histSmo)
 S3method(print, histSmo)

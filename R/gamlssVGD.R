@@ -6,7 +6,7 @@
 # TO DO: a) It should also save the residuals for the validation test 
 #         Now done the validated residuals are saved as "residVal"
 #        b) gamlssCV() needs parallelization
-#        c) need a function for comaring CV models    
+#        c) need a function for comparing CV models    
 #------------------------------------------------------------------------------
 # functions
 #-------------------------------------------------------------------------------
@@ -25,39 +25,70 @@
 # VALIDATION: this is fitting a gamlss model on a sample from the original data 
 #  and calculated the Validated Global Deviance from the new Validated data
 gamlssVGD <-function(formula = NULL, 
-        sigma.formula =~1, 
-           nu.formula =~1, 
-          tau.formula =~1, 
-                 data = NULL, # original data 
-               family = NO,  
-              control = gamlss.control(trace=FALSE),
-                 rand = NULL, # 1 for training 2 for validation
-              newdata = NULL, 
-                 ...)
+               sigma.formula = ~1, 
+                  nu.formula = ~1, 
+                 tau.formula = ~1, 
+                        data = NULL, # original data 
+                      family = NO,  
+                     control = gamlss.control(trace=FALSE),
+                        rand = NULL, # 1 for training 2 for validation
+                     newdata = NULL, 
+                          ...)
  {
-#-------------------------------------------------------------------------------
-# main functin starts here
-#-------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------
+# this is to replicate rqres within gamlssVGD enviroment
+# it is used as in gamlss()
+rqres <- function (pfun = "pNO", 
+                   type = c("Continuous", "Discrete", "Mixed"),
+               censored = NULL,  
+                   ymin = NULL, 
+                 mass.p = NULL, 
+                prob.mp = NULL,
+                      y = y,
+                      ... )
+  { }
+  body(rqres) <-  eval(quote(body(rqres)), envir = getNamespace("gamlss"))
+##---------------------------------------------------------------------------------------
+##---------------------------------------------------------------------------------------  
+##-------------------------------------------------------------------------------
+## main function starts here
+##-------------------------------------------------------------------------------
 if (is.null(data))   stop("data should be set here")
 if (is.null(rand)&&is.null(newdata)) stop("rand or newdata should be set")
 if (!is.null(rand))
   {
   if ( any(!rand%in%c(1,2))) stop("rand values should be 1 or 2")
   dataTraining <- subset(data, rand==1)
-     dataValid <- subset(data, rand==2)   
+     dataValid <- subset(data, rand==2) 
   }  
        fname <- as.gamlss.family(family)
         dfun <- paste("d", fname$family[[1]],sep="")
         pfun <- paste("p", fname$family[[1]],sep="")
         lpar <- length(fname$parameters)
+       dtype <- fname$type
+     #  fname$rqres[[1]][["ymin"]]
         if (is.null(formula)) stop("no formula is set in gamlssVGD")        
         if (is.null(data)) stop("the data argument is needed in gamlssVGD")
- if (!is.null(rand))#  if rand is set to this ----------------------------------
+# FIT MODEL + predict ---------------------------------------------------------
+if (!is.null(rand))#  if `rand' is set do this ----------------------------------
  {
-   m1 <- gamlss(formula=formula, sigma.formula=sigma.formula, nu.formula=nu.formula, 
-                tau.formula=tau.formula, data=dataTraining, family=family, control=control, ...) 
-   nfitted <- predictAll(m1, newdata=dataValid, data=dataTraining)
-   if (fname$family[1] %in% .gamlss.bi.list)# if binomial
+          m1 <- gamlss(formula=formula, sigma.formula = sigma.formula, 
+                       nu.formula = nu.formula, tau.formula = tau.formula, 
+                       data= dataTraining, family=family, control=control, ...) 
+     nfitted <- predictAll(m1, newdata=dataValid, data=dataTraining)
+dim1newdata  <- dim(dataValid)[1]
+ } else
+ {                   #if `newdata'  is set do this ----------------------------------
+          m1 <- gamlss(formula = formula, sigma.formula = sigma.formula, 
+                      nu.formula = nu.formula, tau.formula = tau.formula, 
+                      data = data, family = family, control = control, ...)
+     nfitted <- predictAll(m1, newdata=newdata, data=data)
+dim1newdata  <- dim(newdata)[1]
+ }
+#------------------------------------------------------------------------------
+# get  y for new data  if binomial       
+if (fname$family[1] %in% .gamlss.bi.list)# if binomial
    {
      if (NCOL(nfitted$y) == 1) 
      {
@@ -72,134 +103,90 @@ if (!is.null(rand))
    {
      y1 <- nfitted$y 
    }
-   if(lpar==1) 
+#------------------------------------------------------------------------------
+# jump depending on the number of parameters       
+if(lpar==1) 
    {
      if (fname$family[[1]] %in% .gamlss.bi.list)
      {
        devi <-  call(dfun, x=y1, mu =  nfitted$mu, bd=bd, log=TRUE) 
-       ures <-  call(pfun, q=y1, mu =  nfitted$mu, bd=bd)  
+       ures <-  call("rqres", pfun=pfun, type=dtype,
+                     ymin=fname$rqres[[1]][["ymin"]], 
+                     y=y1, bd=bd, mu= nfitted$mu) 
      } else
      {
        devi <-  call(dfun, x=y1, mu =  nfitted$mu,  log=TRUE) 
-       ures <-  call(pfun, q=y1, mu =  nfitted$mu)   
+       ures <-  call("rqres", pfun=pfun, type=dtype, 
+                     ymin=fname$rqres[[1]][["ymin"]], 
+                     y=y1, mu= nfitted$mu)
      } 
    }
-   else if(lpar==2)
-   {
+else if(lpar==2)
+   { 
      if (fname$family[[1]] %in% .gamlss.bi.list)
      {
-       devi <-  call(dfun, x=y1, mu =  nfitted$mu, sigma= nfitted$sigma,  bd=bd, log=TRUE) 
-       ures <-  call(pfun, q=y1, mu =  nfitted$nmu, sigma= nfitted$sigma,, bd=bd)  
+       devi <-  call(dfun, x=y1, mu =  nfitted$mu, sigma= nfitted$sigma,  
+                     bd=bd, log=TRUE) 
+       ures <-  call("rqres", pfun=pfun, type=dtype, 
+                     ymin=fname$rqres[[1]][["ymin"]], 
+                     y=y1, mu= nfitted$mu, sigma= nfitted$sigma, bd=bd)
      } else
      {
        devi <-  call(dfun, x=y1, mu =  nfitted$mu, sigma =  nfitted$sigma, log=TRUE) 
-       ures <-  call(pfun, q=y1, mu =  nfitted$mu, sigma =  nfitted$sigma) 
+       ures <- call("rqres", pfun=pfun,  type=dtype, 
+                     ymin=fname$rqres[[1]][["ymin"]], 
+                     y=y1, mu= nfitted$mu, sigma= nfitted$sigma )
      } 
    }
-   else if(lpar==3)
+else if(lpar==3)
    {
      if (fname$family[[1]] %in% .gamlss.bi.list)
      {
-       devi <-  call(dfun, x=y1, mu =  nfitted$mu, sigma =  nfitted$sigma, nu =  nfitted$nu, bd=bd, log=TRUE)
-       ures <-  call(pfun, q=y1, mu =  nfitted$mu, sigma =  nfitted$sigma, nu =  nfitted$nu, bd=bd) 
+       devi <- call(dfun, x=y1, mu =  nfitted$mu, sigma =  nfitted$sigma, 
+                     nu =  nfitted$nu, bd=bd, log=TRUE)
+       ures <- call("rqres", pfun=pfun,  type=dtype, 
+                    ymin=fname$rqres[[1]][["ymin"]], 
+                    y=y1, mu= nfitted$mu, sigma= nfitted$sigma,
+                    nu =  nfitted$nu, bd=bd)
      } else
      {
-       devi <-  call(dfun, x=y1, mu =  nfitted$mu, sigma =  nfitted$sigma, nu =  nfitted$nu, log=TRUE)
-       ures <-  call(pfun, q=y1, mu =  nfitted$mu, sigma =  nfitted$sigma, nu =  nfitted$nu)
+       devi <-  call(dfun, x=y1, mu =  nfitted$mu, sigma =  nfitted$sigma, 
+                     nu =  nfitted$nu, log=TRUE)
+       ures <- call("rqres", pfun=pfun,  type=dtype, 
+                    ymin=fname$rqres[[1]][["ymin"]], 
+                    y=y1, mu= nfitted$mu, sigma= nfitted$sigma,
+                    nu =  nfitted$nu)
      } 
    }
-   else 
+else 
    {
      if (fname$family[[1]] %in% .gamlss.bi.list)
      {
-       devi <-  call(dfun, x=y1, mu =  nfitted$mu, sigma =  nfitted$sigma, nu =  nfitted$nu, tau= nfitted$tau, bd=bd, log=TRUE)
-       ures <-  call(pfun, q=y1, mu =  nfitted$mu, sigma =  nfitted$sigma, nu =  nfitted$nu, tau= nfitted$tau, bd=bd)
+       devi <-  call(dfun, x=y1, mu =  nfitted$mu, sigma =  nfitted$sigma, 
+                     nu =  nfitted$nu, tau= nfitted$tau, bd=bd, log=TRUE)
+       ures <- call("rqres", pfun=pfun,  type=dtype, 
+                    ymin=fname$rqres[[1]][["ymin"]], 
+                    y=y1, mu= nfitted$mu, sigma= nfitted$sigma,
+                    nu =  nfitted$nu, tau = nfitted$tau, bd=bd)
      } else
      {
-       devi <-  call(dfun, x=y1, mu =  nfitted$mu, sigma =  nfitted$sigma,nu =  nfitted$nu,tau =  nfitted$tau, log=TRUE)
-       ures <-  call(pfun, q=y1, mu =  nfitted$mu, sigma =  nfitted$sigma,nu =  nfitted$nu,tau =  nfitted$tau)
+       devi <-  call(dfun, x=y1, mu =  nfitted$mu, sigma =  nfitted$sigma,
+                     nu =  nfitted$nu, tau =  nfitted$tau, log=TRUE)
+       ures <- call("rqres", pfun=pfun,  type=dtype, 
+                    ymin=fname$rqres[[1]][["ymin"]], 
+                    y=y1, mu= nfitted$mu, sigma= nfitted$sigma,
+                    nu =  nfitted$nu, tau= nfitted$tau)
+      # ures <-  call(pfun, q=y1, mu =  nfitted$mu, sigma =  nfitted$sigma,nu =  nfitted$nu,tau =  nfitted$tau)
      } 
    }
-   Vresid <- qNO(eval(ures))
-   dev <- -2*sum(eval(devi))
-   m1$VGD <- dev
-   m1$predictError  <- dev/dim(dataValid)[1]#  end of if rand-------------------
-   m1$residVal <-  Vresid 
- } else # if the 'newdata' is set do this-----------------------------------------
- { # 
-   m1 <- gamlss(formula = formula, sigma.formula = sigma.formula, nu.formula = nu.formula, 
-                tau.formula = tau.formula, data = data, family = family, control = control, 
-                ...)
-   nfitted <- predictAll(m1, newdata=newdata, data=data)
-   if (fname$family[1] %in% .gamlss.bi.list)# if binomial
-   {
-     if (NCOL(nfitted$y) == 1) 
-     {
-       y1 <- nfitted$y 
-     }
-     else                 
-     {
-       bd <- nfitted$y[,1] + nfitted$y[,2]
-       y1 <- nfitted$y[,1]
-     }
-   } else
-   {
-     y1 <- nfitted$y 
-   }
-   if(lpar==1) 
-   {
-     if (fname$family[[1]] %in% .gamlss.bi.list)
-     {
-       devi <-  call(dfun, x=y1, mu =  nfitted$mu, bd=bd, log=TRUE) 
-       ures <-  call(pfun, q=y1, mu =  nfitted$mu, bd=bd)  
-     } else
-     {
-       devi <-  call(dfun, x=y1, mu =  nfitted$mu,  log=TRUE) 
-       ures <-  call(pfun, q=y1, mu =  nfitted$mu)   
-     } 
-   }
-   else if(lpar==2)
-   {
-     if (fname$family[[1]] %in% .gamlss.bi.list)
-     {
-       devi <-  call(dfun, x=y1, mu =  nfitted$mu, sigma= nfitted$sigma,  bd=bd, log=TRUE) 
-       ures <-  call(pfun, q=y1, mu =  nfitted$nmu, sigma= nfitted$sigma,, bd=bd)  
-     } else
-     {
-       devi <-  call(dfun, x=y1, mu =  nfitted$mu, sigma =  nfitted$sigma, log=TRUE) 
-       ures <-  call(pfun, q=y1, mu =  nfitted$mu, sigma =  nfitted$sigma) 
-     } 
-   }
-   else if(lpar==3)
-   {
-     if (fname$family[[1]] %in% .gamlss.bi.list)
-     {
-       devi <-  call(dfun, x=y1, mu =  nfitted$mu, sigma =  nfitted$sigma, nu =  nfitted$nu, bd=bd, log=TRUE)
-       ures <-  call(pfun, q=y1, mu =  nfitted$mu, sigma =  nfitted$sigma, nu =  nfitted$nu, bd=bd) 
-     } else
-     {
-       devi <-  call(dfun, x=y1, mu =  nfitted$mu, sigma =  nfitted$sigma, nu =  nfitted$nu, log=TRUE)
-       ures <-  call(pfun, q=y1, mu =  nfitted$mu, sigma =  nfitted$sigma, nu =  nfitted$nu)
-     } 
-   }
-   else 
-   {
-     if (fname$family[[1]] %in% .gamlss.bi.list)
-     {
-       devi <-  call(dfun, x=y1, mu =  nfitted$mu, sigma =  nfitted$sigma, nu =  nfitted$nu, tau= nfitted$tau, bd=bd, log=TRUE)
-       ures <-  call(pfun, q=y1, mu =  nfitted$mu, sigma =  nfitted$sigma, nu =  nfitted$nu, tau= nfitted$tau, bd=bd)
-     } else
-     {
-       devi <-  call(dfun, x=y1, mu =  nfitted$mu, sigma =  nfitted$sigma,nu =  nfitted$nu,tau =  nfitted$tau, log=TRUE)
-       ures <-  call(pfun, q=y1, mu =  nfitted$mu, sigma =  nfitted$sigma,nu =  nfitted$nu,tau =  nfitted$tau)
-     } 
-   }
-   Vresid <- qNO(eval(ures))
-   dev <- -2 * sum(eval(devi))
-   m1$VGD <- dev
-   m1$predictError  <- dev/dim(newdata)[1]
-   m1$residVal <-  Vresid 
-   }#----------END of newdata -------------------------------------------------
+         Vresid <- eval(ures)
+       dev.incr <- -2 * eval(devi)
+            dev <- sum(dev.incr)
+         m1$VGD <- dev
+     m1$IncrVGD <- dev.incr
+m1$predictError <- dev/dim1newdata
+    m1$residVal <- Vresid 
+#   }#----------END of newdata -------------------------------------------------
  class(m1) <- c("gamlssVGD", "gamlss", "gam",    "glm",    "lm"  )
      m1
  } # end of function
@@ -224,6 +211,7 @@ VGD <- function(object,...) #UseMethod("AIC")
          val <-  as.data.frame(val[o.val])
        o.r.n <-row.names[o.val]
 rownames(val) <- o.r.n 
+colnames(val) <- "Pred.GD"
   val
   }
   else 
@@ -244,6 +232,7 @@ getTGD<- function (object,   newdata = NULL, ...)
   dfun <- paste("d", fname$family[[1]], sep = "")
   pfun <- paste("p", fname$family[[1]],sep="")
   lpar <- length(fname$parameters)
+  #lpar <- sum(unlist(fname$parameter))
   if (is.null(newdata)) 
     stop("no newdata is set in VGD")
   nfitted <- predictAll(object, newdata=newdata, ...)
@@ -337,7 +326,8 @@ TGD <- function(object,...) #UseMethod("AIC")
     o.val <- order(val)
     val  <-  as.data.frame(val[o.val])
     o.r.n <-row.names[o.val]
-    rownames(val) <- o.r.n 
+    rownames(val) <- o.r.n
+    colnames(val) <- "Pred.GD"
     val
   }
   else 

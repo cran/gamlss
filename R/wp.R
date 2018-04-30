@@ -144,10 +144,12 @@ deparen <- function(expr)
 ## get data if exist
 #if (is.null(data))
 # {
-  if (!is.null(object)&&any(grepl("data", names(object$call))))
+  if (!is.null(object)&&any(grepl("data", names(object$call)))&&!(object$call["data"]=="sys.parent()()"))
     {
      # if (any(grepl("data", names(object$call)))) # new Mikis 25-3-13
       # {
+    # if (object$call["data"]=="sys.parent()()")  DataExist <- FALSE
+    #    else
         DaTa <- get(as.character(object$call["data"])) 
    DataExist <- TRUE
       # }    

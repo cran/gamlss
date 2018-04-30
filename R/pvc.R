@@ -820,8 +820,8 @@ nlevs <- nlevels(x$by)
     if (factor.plots)
     {
       plot(fv[order(x$x)]~x$x[order(x$x)], type="n", ylim=ran,
-           ylab="f(x)", xlab="x" , main="var. coef.",  col = col.term, 
-           lwd = lwd.term)   
+           ylab="f(x)", xlab="x" , main=i,  col = col.term, 
+           lwd = lwd.term)   # ds 5-1-18
     }
     fvi <- fv[x$by==i]
     xi <-  x$x[x$by==i]

@@ -173,7 +173,7 @@ model.frame.gamlss <-function (formula, what = c("mu", "sigma", "nu", "tau"), pa
     Call <- object$call
      parform <- formula(object, what)
     #parform <- object[[paste(what, "formula", sep=".")]]
-    data <- if (!is.null(Call$data)) eval(Call$data)
+    data <- if (!is.null(Call$data))  eval(Call$data, environment(formula$mu.terms))# MS 11-318 after suggestion in 
             else environment(formula$terms)
    Terms <- terms(parform)
       mf <- model.frame(Terms, data, xlev = object[[paste(what,"xlevels",sep=".")]])

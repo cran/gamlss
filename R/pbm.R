@@ -395,7 +395,7 @@ coefSmo <- list(   coef = fit$beta,
 class(coefSmo) <- c("pb", "pbm")                         
 #  if (is.null(xeval)) # if no prediction 
 #    {
-     list(fitted.values=fv, residuals=y-fv, var=var, nl.df =fit$edf-2,
+     list(fitted.values=fv, residuals=y-fv, var=var, nl.df =fit$edf-1,
           lambda=lambda, coefSmo=coefSmo )
     }                            
 else # for prediction 

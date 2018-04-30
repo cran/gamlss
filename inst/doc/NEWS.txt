@@ -12,14 +12,55 @@ http://www.gamlss.org/
 
 Question or suggestions about GAMLSS can be send to
 
-   mikis.stasinopoulos@gamlss.org
-or
+   d.stasinopoulos@londonmet.ac.uk
+   or
    r.rigby@londonmet.ac.uk
 --------------------------------------------------------------------------------
-Version 5.0.6
+Version 5.0-8
+
+1. gamlss.dist  i)  NET(): the NET distribution was revised: 
+            a) The pNET(), qNET() and rNET functions were rewritten. 
+            b) The NET() functions was ammended so that gamlssML() will work                   with it
+            
+             ii) The function qZAGA has benn corrected by Almond Stocker.
+
+1 gamlss   pvc(): the plot of object created  by pvc(x, by=f) when f is factor             now prints the levels of the factor in the title i.e. 
+           plot(getSmo(model), factor.plots = TRUE)  
+         
+      wp(): worm plot  did not work if for example histDist(parzen$snowfall) is        used  instead of  histDist(snowfall, data=parzen). This is corrected now.
+          
+      pbm(): the non-linear degrees of freedom  exported by the function have           been  corrected. 
+         
+      histDist(): the `freq' argument did not work if the `data' argument was        used. This is corrected now.
+        
+      gamlssML(): small ammendement so can work with fixed parameters distributions like NET(). Also the predict.gamlssML() is added
+        
+      VGD() and TGD(): now print the colunm name as "pred.GD"
+        
+      Three new functions are introduced 
+      
+              (a) gamlssMLpred() and 
+              
+              (b) fitDistPred()
+              
+              (c) chooseDist()
+              
+         gamlssMLpred() and fitDistPred() are using useing `newdata'. For example the          gamlssMLpred() fits the training data and uses the newdata to evaluate the           prediction global deviance. fitDistPred() choose the model with best 
+         prediction global deviance. 
+         chooseDist() is using the function update.gamlss() to fit all relevant
+         parametric gamlss.family distributions to a fitted gamlss model. It can be           slow but its parallel version should be resonable.
+        
+       model.frame.gamlss() has been amended after suggestions on stackoverflow by
+        RolandASc and Hedgehog
+        
+       rqres() was amended for the discrete distributions so to produce a finite            quantile residuals if the probability integral transform function produced            values close to zero.
+      
+       predictAll() is amended to cope with the NET distribution (where some of the parameters are fixed)  
+
+-------------------------------------------------------------------------------
+Version 5.0-6
 
 1 gamlss Correcting a problem reported in R Under development (unstable) (2017-09-12 r73242)
-
 
 
 Version 5.0-5
@@ -30,7 +71,7 @@ Version 5.0-5
 
 
 2. gamlss.dist
-     i) the link of nu in NBF() have chanded to "log"
+     i) the link of nu in NBF() have changed to "log"
 
 
 Version 5.0-4
@@ -38,10 +79,10 @@ Version 5.0-4
 1. gamlss
      i) the function devianceIncr() is introduced to calculate the global deviance increment. 
      ii)  An argument for changing the size of the axis is added in wp()
-     iii) The method of caclulating the average of rqres.plot() has changed 
+     iii) The method of calculating the average of rqres.plot() has changed 
           In fact now the plot.type has two new arguments "few" and "all".
           "few" plots different wp's or QQ's while "all" plots all the wp or QQ              plots on the same graph.
-      iv) The function get.object() withing the gamlss() function have changed.
+      iv) The function get.object() within the gamlss() function have changed.
           The reason is that in a model like 
           
           u1 <- gamlss(y~pb(x1)+pbc(x4)+pb(x5)+ga(~s(x2,x6)), data=usair)

@@ -27,8 +27,13 @@ histDist <- function(y,
        typeDist <- FA$type
     #if (!is.null(data)) {attach(data); on.exit(detach(data))}
          subsY <- substitute(y)
-             y <- if (!is.null(data)) get(deparse(substitute(y)), envir=as.environment(data)) else y
-          freq <- if (!is.null(data)&&!is.null(freq)) get(deparse(substitute(freq)), envir=as.environment(data)) else freq  
+         if (!is.null(data))
+         {
+           y <- get(deparse(substitute(y)), envir=as.environment(data))
+           if ( deparse(substitute(freq))!="NULL") freq <-  get(deparse(substitute(freq)), envir=as.environment(data))
+         }
+        #    y <- if (!is.null(data)) get(deparse(substitute(y)), envir=as.environment(data)) else y
+        #  freq <- if (!is.null(data)&&is.null(freq)) get(deparse(substitute(freq)), envir=as.environment(data)) else freq  
   switch(typeDist, 
      "Continuous"=
            {

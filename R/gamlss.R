@@ -62,7 +62,8 @@ gamlssNews <- function() file.show(system.file("doc", "NEWS.txt", package="gamls
                    "pr",                          # projection pursuit Reg   : pr
 				           "pc",                          # principal component regr : pc
 				           "h2o",                         # h2o project 
-				           "pa")                          # partial regression       : pr
+				           "pa",                          # partial regression
+				           "gnet")                         
                    
 # note that predict only read 2 characters Monday, May 4, 2009 at 11:27
 ##----------------------------------------------------------------------------------------

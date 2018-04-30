@@ -7,7 +7,7 @@
 # creates a list containing y if exist in the newdata  and predicted values for 
 #  mu sigma nu and tau
 # # note that default type is "response"
-# an option of  new version of predictAll() is  based on weighrs
+# an option of  new version of predictAll() is  based on weights
 # The idea is that the fitted model is refitted with zero weights for the 
 # predictive valus and that allows to have also stadard errors for prediction.
 # refit the whole model could be slow
@@ -23,7 +23,7 @@
 # ##        we should use the means or for factors the most common level (not implemented)
 # ## iii) we should allow lists and data.frame (rather than only data.frame) 
 # ##       Probably not
-# ##  iv) chech for exceptions for binary and survival data 
+# ##  iv) check for exceptions for binary and survival data 
 # ##  iiv) need a option of how to get the y-variable prediction it is crusial 
 # ##       when estimating the deviance in the fit OK see y. 
 #----------------------------------------------------------------------------------------
@@ -142,14 +142,19 @@ if ((use.weights==FALSE)&&(se.fit==FALSE))#  if use.weights is FALSE and se.fit=
   if (output=="list")
   {
     out <- list()
-    if ("mu" %in% object$par) #
-      out$mu <- predict(object,newdata=newdata, what = "mu", type = type, terms = terms, se.fit = se.fit, data=DatA )
-    if ("sigma" %in% object$par)  
-      out$sigma <- predict(object, newdata=newdata, data=DatA,   what = "sigma", type = type, terms = terms, se.fit = se.fit)
-    if ("nu" %in% object$par)  
-      out$nu <- predict(object, newdata=newdata, data=DatA,  what = "nu", type = type, terms = terms, se.fit = se.fit )
+    whetherFitted <- as.gamlss.family(object$family[1])$par
+    if ("mu" %in% object$par)
+      out$mu  <- if (whetherFitted$mu) predict(object,newdata=newdata, what = "mu", 
+                    type = type, terms = terms, se.fit = se.fit, data=DatA ) else rep(fitted(object)[1], pN)
+    if ("sigma" %in% object$par)
+      out$sigma <- if (whetherFitted$sigma) predict(object, newdata=newdata, data=DatA,   what = "sigma", type = type, terms = terms, 
+                      se.fit = se.fit) else  rep(fitted(object, "sigma")[1], pN)
+    if ("nu" %in% object$par) 
+      out$nu <- if (whetherFitted$nu) predict(object, newdata=newdata, data=DatA,  what = "nu", 
+                      type = type, terms = terms, se.fit = se.fit ) else  rep(fitted(object, "nu")[1], pN)
     if ("tau" %in% object$par)  
-      out$tau <- predict(object, newdata=newdata, data=DatA , what = "tau", type = type, terms = terms, se.fit = se.fit)
+      out$tau <-  if (whetherFitted$tau) predict(object, newdata=newdata, data=DatA , what = "tau", type = type, terms = terms, 
+                      se.fit = se.fit)  else  rep(fitted(object, "tau")[1], pN)
     if (as.character(object$mu.formula[[2]])%in%names(newdata)) 
     out$y <-  newdata[,as.character(object$mu.formula[[2]])]
     attr(out, "family") <- object$family
@@ -157,7 +162,7 @@ if ((use.weights==FALSE)&&(se.fit==FALSE))#  if use.weights is FALSE and se.fit=
   }
    if (output=="matrix")
    {
-     ifY <- as.character(object$mu.formula[[2]])%in%names(newdata)
+     ifY <- any(as.character(object$mu.formula[[2]])%in%names(newdata))
      if (ifY)
      {
           prematrix <- matrix(0, ncol=length(object$parameters)+1, nrow=pN)
@@ -184,7 +189,7 @@ if ((use.weights==TRUE)||(se.fit==TRUE))
      # }
      # else data # if it provide get it 
 ## here we should check whether newdata has ResCha
-       ifY <- ResCha%in%names(newdata)     
+       ifY <- any(ResCha%in%names(newdata))     
 ##       keep only the same variables 
 ##       this assumes that all the relevant variables will be in newdata
 ##       what happens if not?     

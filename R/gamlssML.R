@@ -1,4 +1,5 @@
-# latest change done 1-11-13 MS 
+# latest change done 31-1-18 MS to make sure that NET is working  
+# changes done on 1-11-13 MS 
 # this is an attempt to create a function which 
 # fits a GAMLSS distribution using non-linear maximisation like optim()
 # in fact here we use MLE() which is a copy of the mle() function of stat4
@@ -79,35 +80,35 @@ gamlssML<-function(formula,
   #-------------------------------------------------------------------
   MLE <- function (minuslogl, 
                    start = formals(minuslogl), 
-                   method = "BFGS", 
+                  method = "BFGS", 
                    fixed = list(),
-                   optim.proc = c( "nlminb", "optim"),
-                   optim.control = NULL,
+              optim.proc = c( "nlminb", "optim"),
+           optim.control = NULL,
                    ...) 
   {
     #------------------------------------------------------------------------
-    call <- match.call()
+       call <- match.call()
     optim.p <- match.arg(optim.proc)
-    n <- names(fixed)
-    fullcoef <- formals(minuslogl)
+          n <- names(fixed)
+   fullcoef <- formals(minuslogl)
     if (any(!n %in% names(fullcoef))) 
       stop("some named arguments in 'fixed' are not arguments to the supplied log-likelihood")
-    fullcoef[n] <- fixed
+fullcoef[n] <- fixed
     if (!missing(start) && (!is.list(start) || is.null(names(start)))) 
       stop("'start' must be a named list")
-    start[n] <- NULL
-    start <- sapply(start, eval.parent)
-    nm <- names(start)
-    oo <- match(nm, names(fullcoef))
+   start[n] <- NULL
+      start <- sapply(start, eval.parent)
+         nm <- names(start)
+         oo <- match(nm, names(fullcoef))
     if (any(is.na(oo))) 
       stop("some named arguments in 'start' are not arguments to the supplied log-likelihood")
-    start <- start[order(oo)]
-    nm <- names(start)
-    f <- function(p) 
+      start <- start[order(oo)]
+         nm <- names(start)
+          f <- function(p) 
     {
-      l <- as.list(p)
-      names(l) <- nm
-      l[n] <- fixed
+          l <- as.list(p)
+   names(l) <- nm
+       l[n] <- fixed
       do.call("minuslogl", l)
     }
     if (length(start))
@@ -133,7 +134,7 @@ gamlssML<-function(formula,
     } 
     else 
       oout <- list(par = numeric(0L), value = f(start))		
-    coef <- oout$par
+      coef <- oout$par
     if (length(coef))
     {
       vcov <- try(solve(oout$hessian))
@@ -142,9 +143,6 @@ gamlssML<-function(formula,
     else     vcov <- matrix(numeric(0L), 0L, 0L)
     fullcoef[nm] <- coef
     method <- if (optim.p =="nlminb") "nlminb" else method
-    #new("mle", call = call, coef = coef, fullcoef = unlist(fullcoef), 
-    #    vcov = vcov, min = min, details = oout, minuslogl = minuslogl, 
-    #    method = method)
     out <- list(call = call, coef = coef, fullcoef = unlist(fullcoef), 
                 vcov = vcov, min = value.of.f, details = oout, minuslogl = minuslogl, 
                 method = method)
@@ -158,11 +156,11 @@ gamlssML<-function(formula,
   # it is used as in gamlss()
   rqres <- function (pfun = "pNO", 
                      type = c("Continuous", "Discrete", "Mixed"),
-                     censored = NULL,  
+                 censored = NULL,  
                      ymin = NULL, 
-                     mass.p = NULL, 
-                     prob.mp = NULL,
-                     y = y,
+                   mass.p = NULL, 
+                  prob.mp = NULL,
+                        y = y,
                      ... )
   { }
   body(rqres) <-  eval(quote(body(rqres)), envir = getNamespace("gamlss"))
@@ -171,7 +169,7 @@ gamlssML<-function(formula,
   #----------------------------------------------------------------------------------------
   #----------------------------------------------------------------------------------------
   # main function starts here
-  mlFitcall <- match.call()  #   the function call  
+ mlFitcall <- match.call()  #   the function call  
   ## checking for NA in the data 
   if(!missing(data) & any(is.na(data)))   
     stop("The data contains NA's, use data = na.omit(mydata)") 
@@ -190,11 +188,11 @@ mcall[[2]] <- if (any(grepl("~", deparse(substitute(formula)))))   mcall[[2]]
   # assign(deparse(substitute(formula)), Y_Y)
 #   mcall[[2]] <-as.formula(paste(deparse(substitute(formula)),"~1", sep=""), parent.frame(1))
 #  }
-  mu.frame <- eval(mcall, sys.parent())  # evalute the data.frame at the model.frame
-       Y <- model.extract(mu.frame, "response") #extracting the y variable from the formula
+ mu.frame <- eval(mcall, sys.parent())  # evalute the data.frame at the model.frame
+        Y <- model.extract(mu.frame, "response") #extracting the y variable from the formula
   if(is.null(dim(Y)))                       # if y not matrix
-    N <- length(Y) else N <- dim(Y)[1]
-    w <- model.extract(mu.frame, weights) # weights for the likelihood
+        N <- length(Y) else N <- dim(Y)[1]
+        w <- model.extract(mu.frame, weights) # weights for the likelihood
    if(is.null(w))   w <- rep(1, N)
    else if(any(w < 0)) stop("negative weights not allowed") #
    fam  <- as.gamlss.family(family)
@@ -274,28 +272,28 @@ mcall[[2]] <- if (any(grepl("~", deparse(substitute(formula)))))   mcall[[2]]
     mu <- if(is.null(mu.start))  mean(eval(fam$mu.initial, list(y=y)))
     else mu.start[1] 
     eta.mu <- fam$mu.linkfun(mu)
-    #eta.par <- c(eta.mu)          
+    mu.fix <- (mu.fix||!fam$parameters[["mu"]])   ### first check whether are fix     
   }
   if ("sigma"%in%names(fam$parameters))
   {
     sigma <- if(is.null(sigma.start)) mean(eval(fam$sigma.initial, list(y=y, mu=mu)))
     else sigma.start[1]
     eta.sigma <- fam$sigma.linkfun(sigma)
-    #eta.par <- c(eta.mu, eta.sigma)
+    sigma.fix <- (sigma.fix||!fam$parameters[["sigma"]]) 
   }
   if ("nu"%in%names(fam$parameters))
   {
     nu <- if(is.null(nu.start))  mean(eval(fam$nu.initial, list(y=y, mu=mu, sigma=sigma)))
     else nu.start[1]
     eta.nu <- fam$nu.linkfun(nu)
-    #eta.par <- c(eta.mu, eta.sigma, eta.nu)
+    nu.fix <- (nu.fix||!fam$parameters[["nu"]]) 
   }
   if ("tau"%in%names(fam$parameters))
   {  
     tau <- if(is.null(tau.start)) mean(eval(fam$tau.initial, list(y=y, mu=mu, sigma=sigma, nu=nu)))
     else tau.start[1]
     eta.tau <- fam$tau.linkfun(tau)
-    #eta.par <- c(eta.mu, eta.sigma, eta.nu, eta.tau)
+    tau.fix <- (tau.fix||!fam$parameters[["tau"]]) 
   }
   ## whether to fix parameters
   fixed <- list()
@@ -465,6 +463,56 @@ summary.gamlssML  <- function (object, digits = max(3, getOption("digits") - 3),
       "\n            AIC:    ", format(signif(object$aic)), "\n            SBC:    ", 
       format(signif(object$sbc)), "\n")
   invisible(object)
+}
+#-------------------------------------------------------------------------------------
+# created 21-2-18 MS
+# peobably it does not need data argument
+predict.gamlssML <- function(object, what = c("mu", "sigma", "nu", "tau"), 
+                                parameter = NULL,
+                                  newdata = NULL, 
+                                   se.fit = FALSE, 
+                                     data = NULL, ...) 
+{
+   what <- if (!is.null(parameter))  {
+  match.arg(parameter, choices=c("mu", "sigma", "nu", "tau", "all"))} else  match.arg(what)
+  if (! what%in%object$par) stop(paste(what,"is not a parameter in the gamlss object","\n"))
+# x <- rep(object[[what]], object$N)
+#  If no new data just use fitted() and finish
+#   browser()
+if (is.null(newdata))
+ {
+  if (!se.fit)
+     ret <- fitted(object,what)
+  else
+  {
+  # this is the case se.fit=TRUE get the se
+  se <- vcov(object,"se") 
+     dmudeta <- abs(
+  gamlss.family(eval(parse(text=paste(object$family[1],"(",what,".link=",
+   eval(parse(text=(paste("object$",what,".link", sep="")))),")", sep=""))))[[paste(what,"dr",sep=".")]]
+(coef(object, what)))
+  ret<-list(fit = fitted(object,what),                  # eta:  obj[[paste(what, "lp", sep=".")]]
+          se.fit = unname(rep(se[paste("eta.", what,sep="")]*dmudeta, length(fitted(object,what)))))          
+  # },   
+    
+  }
+ }
+   else # if new data use only the length of the new data
+ {
+   if (!se.fit)
+     ret<- rep(fitted(object,what)[1], length(newdata))  
+   else
+   {
+     se <- vcov(object,"se") 
+     dmudeta <- abs(
+       gamlss.family(eval(parse(text=paste(object$family[1],"(",what,".link=",
+                                           eval(parse(text=(paste("object$",what,".link", sep="")))),")", sep=""))))[[paste(what,"dr",sep=".")]]
+       (coef(object, what)))
+   ret<-list(fit = rep(fitted(object,what)[1], length(newdata)) ,                  # eta:  obj[[paste(what, "lp", sep=".")]]
+               se.fit = unname(rep(se[paste("eta.", what,sep="")]*dmudeta, length(newdata))))   
+   }
+ } 
+   ret
 }
 # methods are finish here  
 #-------------------------------------------------------------------------------------

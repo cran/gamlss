@@ -10,8 +10,10 @@
 \alias{stepTGD}
 \alias{stepTGDAll.A}
 
+
+
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{A  Set of Functions for selecting Models using Validation or Test Data Sets and Cross =Validation 
+\title{A  Set of Functions for selecting Models using Validation or Test Data Sets and Cross Validation 
 }
 \description{
 This is a set of function useful for selecting appropriate models. 
