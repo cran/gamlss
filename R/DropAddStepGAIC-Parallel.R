@@ -727,6 +727,8 @@ if (have_snow)
 }         
 # -------------- finish parallel------------------------------------------------
 #-------------------------------------------------------------------------------
+
+
       what <- if (!is.null(parameter))  {
     match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
      Terms <- terms(object, what)

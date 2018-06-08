@@ -36,7 +36,7 @@
 #--------------------------------------------------------------------------------
 # Group of distribution with interval ranging from 0 to 1
 .real0to1 <- c("BE", "BEo", # 2 par
-               "BEINF0", "BEINF1", #2 par 
+               "BEINF0", "BEINF1", "LOGITNO", "SIMPLEX", #2 par 
                "BEOI", "BEZI", # 3 par
                "BEINF", # 4 par
                "GB1") # par
@@ -89,12 +89,12 @@ chooseDist <- function(object,
   ## get the type of distribution  
   type <- match.arg(type)
   DIST <- switch(type, "realAll"= .realAll, 
-                 "realline"=  .realline, 
-                 "realplus"=  .realplus,
-                 "real0to1"=  .real0to1,
-                   "counts"=  .counts,
-                    "binom"=  .binom, 
-                 "extra"= extra)
+                      "realline"= .realline, 
+                      "realplus"= .realplus,
+                      "real0to1"= .real0to1,
+                        "counts"= .counts,
+                         "binom"= .binom, 
+                         "extra"= extra)
   if (type=="extra"&&is.null(extra)) stop("extra is not set")
   if  (!is.null(extra)) DIST <- unique(c(DIST, extra))
   ##   
@@ -147,8 +147,13 @@ chooseDist <- function(object,
            list(...)
           if (is.null(cl)) 
             { # make the cluster
-            #cl <- parallel::makePSOCKcluster(rep("localhost", ncpus))
-             cl <- parallel::makeForkCluster(ncpus)
+            if (.Platform$OS.type == "windows")
+            {
+              cl <- parallel::makePSOCKcluster(rep("localhost", ncpus))
+              clusterEvalQ(cl,pacman::p_load(gamlss)) 
+              exp.data =  paste0(object$call$data)
+              clusterExport(cl, c(ls(envir = .GlobalEnv), exp.data))
+            } else  cl <- parallel::makeForkCluster(ncpus)
              if (RNGkind()[1L] == "L'Ecuyer-CMRG") 
                  parallel::clusterSetRNGStream(cl)
              res <-  matrix(unlist((parallel::parLapply(cl, DIST, fun))),

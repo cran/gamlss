@@ -42,7 +42,8 @@ export(gamlss, gamlss.control, glim.control, is.gamlss,
        getZmatrix, vis.lo, VC.test,
        pcat, gamlss.pcat, plotDF, plotLambda,
        getPEF, devianceIncr, get.rqres, 
-       gamlssMLpred, chooseDist, fitDistPred, getOrder)
+       gamlssMLpred, chooseDist, fitDistPred, getOrder,
+       numeric.deriv)
 
 
 # datasets

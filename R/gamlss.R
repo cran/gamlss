@@ -29,7 +29,9 @@ gamlssNews <- function() file.show(system.file("doc", "NEWS.txt", package="gamls
 #}
 ##
 ##----------------------------------------------------------------------------------------
-.gamlss.bi.list<-c("BI", "Binomial", "BB", "Beta Binomial", "ZIBI", "ZIBB", "ZABI", "ZABB", "DBI") # binomial denominators
+.gamlss.bi.list<-c("BI", "Binomial", "BB", "Beta Binomial", "ZIBI", "ZIBB", 
+                   "ZABI", "ZABB", "DBI", "BItr", "BBtr",  "ZIBItr", "ZIBBtr", 
+                   "ZABItr", "ZABBtr", "DBItr") # binomial denominators
 .gamlss.multin.list<-c("MULTIN", "MN3", "MN4", "MN5")
 ##----------------------------------------------------------------------------------------
 .gamlss.sm.list<-c("cs", "scs",                   # smoothing cubic splines  "s" vc"
@@ -898,6 +900,8 @@ G.dev.expr <- body(family$G.dev.inc)          #MS Thursday, April 11, 2002 at 10
          Y <- model.extract(mu.frame, "response") #extracting the y variable from the formula
     if(is.null(dim(Y)))                       # if y not matrix
          N <- length(Y) else N <- dim(Y)[1]   # calculate the dimension for y  
+# .gamlss.bi.list <-  if (exists("gamlss.bi.list",envir=.GlobalEnv)) 
+#                         get("gamlss.bi.list", envir=.GlobalEnv) else .gamlss.bi.list
 ## extracting now the y and the binomial denominator in case we use BI or BB
     if(any(family$family%in%.gamlss.bi.list)) 
     { 

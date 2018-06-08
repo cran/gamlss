@@ -16,13 +16,13 @@ Question or suggestions about GAMLSS can be send to
    or
    r.rigby@londonmet.ac.uk
 --------------------------------------------------------------------------------
-Version 5.0-8
+Version 5.0-9
 
 1. gamlss.dist  i)  NET(): the NET distribution was revised: 
             a) The pNET(), qNET() and rNET functions were rewritten. 
             b) The NET() functions was ammended so that gamlssML() will work                   with it
-            
              ii) The function qZAGA has benn corrected by Almond Stocker.
+             iii) The distribution SIMPLEX is added
 
 1 gamlss   pvc(): the plot of object created  by pvc(x, by=f) when f is factor             now prints the levels of the factor in the title i.e. 
            plot(getSmo(model), factor.plots = TRUE)  
