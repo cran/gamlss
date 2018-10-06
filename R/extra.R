@@ -309,6 +309,32 @@ GAIC <- function(object,..., k = 2, c = FALSE ) #UseMethod("AIC")
       }
 }
 ################################################################################
+GAIC.table <- function(object,..., 
+                       k = c(2, 3.84, round(log(length(object$y)),2))) 
+{
+  objects <- list(object, ...)
+    norow <- length(objects)
+       lk <- length(k)
+      MM  <- matrix(0, nrow=norow, ncol=lk+1)
+ isgamlss <- unlist(lapply(objects, is.gamlss))
+  if (!any(isgamlss)) stop("some of the objects are not gamlss")
+   MM[,1] <- unlist(lapply(objects, function(x) x$df.fit))
+        N <- as.numeric(lapply(objects, function(x) x$N))
+  for (j in 1:lk)
+  {
+    MM[,1+j] <- unlist(lapply(objects, function(x) x$G.dev+x$df.fit*k[j] ))
+  }
+           val <- as.data.frame(MM)
+          Call <- match.call()
+        Call$k <- NULL
+row.names(val) <- as.character(Call[-1])
+    names(val) <- c("df", paste("k=",as.character(k), sep=""))
+  for (i in 1:length(k)) cat("minimum GAIC(k=",k[i],") model:", 
+                             row.names(val)[which.min(unclass(val[1+i][[1]]))], "\n")
+  val
+}
+##############################################################################
+################################################################################
 ## a small utility function to get the hat matrix from a weighted regression
 ## used in cs() and other additive terms 
 ## MS Tuesday, June 22, 2004 at 21:26

@@ -1,5 +1,5 @@
-b126a7afb8f8d4e7df6b91129a8410c2 *DESCRIPTION
-209d3a82b44399da30d3e698fa163068 *NAMESPACE
+5f17a26c681ce8febd21a3edc8795dc2 *DESCRIPTION
+05641837a17e6982d836062f8563d9d0 *NAMESPACE
 3e7f619c799c37dc1ac3f522d8001b8d *R/DevianceIncr.R
 5cc92de5982e5fa5dc799f04962191d1 *R/DropAddStepGAIC-Parallel.R
 5234753959ff346b56e1865d01fa6c88 *R/FitTail.R
@@ -22,7 +22,7 @@ ef8816e231e154795a0da39704c1d5f4 *R/confint-gamlss-03-10-13.R
 a9f62a44b3f29f77507ebeefe4d8d731 *R/cy.R
 39f8945d7b259e72d404e446877a739b *R/dtop.R
 e677cd1d747f6894e017ef2e82ceeac5 *R/edf.R
-e014254a4d54d40a36e5ef24eef83768 *R/extra.R
+6dac74e4292a6946a093b54a49e0b2ee *R/extra.R
 2a143f72221572613ce072608daa7d7b *R/findhyper-23-05-13.R
 e4a574eb3b2ed6d057eb43d5a1461a94 *R/fitDist-17-05-13.R
 8db21618cde906ebcb50c92f365ff6b9 *R/fitDistPred.R
@@ -34,6 +34,7 @@ b6c22ecd1f915931319f0625cabc3e9b *R/fitted-plot.R
 9051aedb5b8a6cdc04af9a563c08041a *R/gen-Likelihood.R
 eb8a2a8f78a8ae971cb6b02c2e470163 *R/get-K-rvcov-16-06-2913.R
 25517f906a22d37860512fdde709c962 *R/getPEF.R
+3fbe9bfedc601911531ab13d0e1b4c68 *R/getQuantile.R
 adb58f3b4495d5058edef0166a73912f *R/getSmo-18-6-13.R
 0138621433d0ee11af9114e0ba53b158 *R/histSmo.R
 4da0819ceb4f346e75a153e4cf2e8a86 *R/lms.R
@@ -42,9 +43,9 @@ ec8a84039c344fe277333abfe11be23d *R/lo_new.R
 9520cecf3bcd309b8f32c91364e29082 *R/lpred.R
 4a09cbcdf222c2e58b4dcf0a269e7157 *R/p-categorical.R
 81ea7b87b4a85442b7991e3d8840d88e *R/par_plot-21-5-13.R
-9f2ea0955d0f18b55026dc39560b2534 *R/pb.R
-df000f5cf54376000a3e8e79dfbe6cd7 *R/pb_goingtozero.R
-b188df3812d3c560b555ae0cb55a9014 *R/pbc.R
+afa258881956e95e2db748c8b3860771 *R/pb.R
+95ae21bac012d0d206c8802c580eea78 *R/pb_goingtozero.R
+ca9eb6a7e9b1f70d4bee7945bfa9f877 *R/pbc.R
 b96be22daffadf934ee5feb0319e2487 *R/pbm.R
 a7e40f760b26c54f63ba2244c4891d08 *R/pbo_original.R
 8382a58da8fc1ee65e3225f02933be01 *R/pbp.R
@@ -75,12 +76,12 @@ bd546373676a98a2e170bd7adfe5637a *R/stepTGDAll-A-parallel.R
 d60d02692ed989f1f4f39dbca2445dd3 *R/vcov-gamlss.R
 ee63c60e67e4242670a84ee90202ce48 *R/wp.R
 c1fcf78d584146a66fcfb30f81bc727e *README.md
-807aef86c1539f04671911e080e67ccc *build/partial.rdb
+bd16f370618019ddaa0cd26838b806f5 *build/partial.rdb
 469238c97e885729eb5da9f4d9fb35e0 *inst/CITATION
-c1f4eacb0b6845d95286df670cd3cb25 *inst/doc/NEWS.txt
+823660ad37be0e554052d5e7c9e2b881 *inst/doc/NEWS.txt
 dd4589a5ff2ecdfb77876d0087a78a1f *inst/doc/gamlss-manual.pdf
 3e97d7c8c02af7802dd9754bc8a49f9e *man/DevianceIncr.Rd
-9d0b1fdc8e3fd69a32af27fd16218120 *man/IC.Rd
+28712051b2f36d34b664b246950ebb11 *man/IC.Rd
 a8d0cd4e7ca3a742cbf04b3d7a7d7033 *man/LR.test.Rd
 b10434b038474eb480df929fd62a0155 *man/Q.stats.Rd
 4d61312d9aa81336062b3098fb01eae2 *man/Rsq.Rd
@@ -115,7 +116,8 @@ fe5f7a64cb022a0c7eb3300a11212281 *man/gamlss.random.Rd
 5cb4637d9bd5b5de37f76492b5fd7c29 *man/gamlssML.Rd
 69d2a9c4ea5b7f8f017d7b3136fb7a96 *man/gamlssVGD.Rd
 935a39a265c99d7a8118d44bd5435bac *man/gen.likelihood.Rd
-9c55c54e7a51fa9fdfc1921a4517881d *man/getPEF.Rd
+8444b76b0594d7efdfbaaabf301717b5 *man/getPEF.Rd
+1f01122ada4bcf082a4dbf7f5ee6da32 *man/getQuantile.Rd
 af90ee3afee50ba141d0d5d384c3610c *man/getSmo.Rd
 a3c4ca539fa9fea85fa987903ecd402a *man/glim.control.Rd
 ee867fee4363ce26d6f3c4dc72ee20d9 *man/histDist.Rd
@@ -137,7 +139,7 @@ a8408e2d686b66f4b9a4617e1e8d0b87 *man/polyS.Rd
 f626a03ab93c2983d827ec96e699ca18 *man/print.gamlss.Rd
 1b21c7b9f6043e97f0d55a855bcca780 *man/prof.dev.Rd
 1ab85508f141771941414afbb19808ee *man/prof.term.Rd
-466bf4ee99f5a8e9d3b3c0621eadd337 *man/ps.Rd
+ad33338afb5f3932aee5bbe76f310ea4 *man/ps.Rd
 6fe4379f9fb457033c2af28d016edc1a *man/quantSheets.Rd
 75f1d24d9c5048fe4a75189638944079 *man/random.Rd
 04ee90de1fa01a4edc2e44084c271c8d *man/refit.Rd

@@ -26,7 +26,7 @@ export(gamlss, gamlss.control, glim.control, is.gamlss,
        lo, gamlss.lo,
    random, gamlss.random,
         ri, gamlss.ri,
-       GAIC, .hat.WX,  gamlssNews,
+       GAIC, .hat.WX,  GAIC.table, gamlssNews,
        predictAll, #own.linkfun, own.linkinv, own.mu.eta,own.valideta,
   #      VGD, VGD1, VGD2, TGD,
        gamlssVGD, VGD,  getTGD, TGD, gamlssCV, CV,
@@ -43,7 +43,7 @@ export(gamlss, gamlss.control, glim.control, is.gamlss,
        pcat, gamlss.pcat, plotDF, plotLambda,
        getPEF, devianceIncr, get.rqres, 
        gamlssMLpred, chooseDist, fitDistPred, getOrder,
-       numeric.deriv)
+       numeric.deriv, getQuantile)
 
 
 # datasets

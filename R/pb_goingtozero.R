@@ -211,7 +211,7 @@ if (is.null(xeval)) # if no prediction
     {    
               X <-  if (is.null(xeval)) as.matrix(attr(x,"X")) #the trick is for prediction
                     else  as.matrix(attr(x,"X"))[seq(1,length(y)),]
-           xvar <- as.matrix(attr(x,"x")) # main penalty
+           xvar <- as.matrix(attr(x,"x")) # x variable
               D <- as.matrix(attr(x,"D")) # main penalty
              D1 <- as.matrix(attr(x,"D1")) # order 1 penalty   
          lambda <- as.vector(attr(x,"lambda")) # lambda 

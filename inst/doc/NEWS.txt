@@ -16,6 +16,34 @@ Question or suggestions about GAMLSS can be send to
    or
    r.rigby@londonmet.ac.uk
 --------------------------------------------------------------------------------
+Version 5.1-2
+
+ 1. gamlss  i) The function getQuantile() is added 
+            ii) the function pb() includes now the argument `max.df' for                               setting a fix maximum number for the degrees of freedom in                             order to avoid overfitting.
+          iii) pbc() has now `max.df' and the prediction is done similar to 
+                 pb() by using a generated cubic spline approximation function.
+                 Extrapolated prediction values are not a good idea for pbc()
+                 since are are using natural splines. A warning is given when 
+                 this happens
+          iv) GAIC.table() now produce a table of different models against different                 penalties       
+          v) the function make.link.gamlss() has two new link function "(0,2]" and 
+              "[-1,1]"       
+ 2. gamlss.dist 
+           i) the Discrete Burr type XII distribution, DBUR12(), is added.
+           ii) Stanislaus Stadlmann and Lens Lichter have added mean() a
+           and variance()  functions to the following distributions:
+               BE(), BEo(), EGB2(), exGAUS(), EXP(), GA(),GEOM(), GEOMo(),
+               GG(), GU(), GT(), IG(), IGAMMA(), JSU(), JSUo(), LG(),LO(),
+               LOGNO(), NO(), NO2(), PARETO(), PARETO2(), PE(), PE2(), PO(),
+               RG(), SN1(), SN2(), SST(), TF(), TF2(), WEI(), WEI2(), WEI3(),
+               YULE(), ZAGA(), ZAIG()
+               
+ 3. gamlss.data
+           i) the data set aircond (used in the second book) is added   
+           
+ 4. gamlss.tr 
+           i) the trun.r() is ammended so for discrete distributions the randomised                data are always in a< y <b.
+
 Version 5.0-9
 
 1. gamlss.dist  i)  NET(): the NET distribution was revised: 

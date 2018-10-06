@@ -3,12 +3,15 @@
 \alias{AIC.gamlss}
 \alias{GAIC}
 \alias{extractAIC.gamlss}
+\alias{GAIC.table}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Gives the GAIC for a GAMLSS Object}
 \description{
- \code{IC} is a function to calculate the Generalised Akaike information criterion (GAIC) for a given penalty \code{k} for a fitted GAMLSS object. 
- The function \code{AIC.gamlss} is the method associated with a GAMLSS object of the generic function \code{AIC}. 
- The function \code{GAIC} is a synonymous of the function \code{AIC.gamlss}. 
+ The function \code{IC()} calculates the Generalised Akaike information criterion (GAIC) for a given penalty \code{k} for a fitted GAMLSS object. 
+ The function \code{AIC.gamlss()} is the method associated with a GAMLSS object of the generic function \code{AIC()}. 
+ The function \code{GAIC()} is a synonymous of the function \code{AIC.gamlss}.
+ The function \code{GAIC.table()} produces a table for different models and different penalties, \code{k}.
+ 
  The function \code{extractAIC} is a the method associated a GAMLSS object of the generic function \code{extractAIC} and it is 
  mainly used in the \code{stepAIC} function. 
 The function \code{Rsq} compute a generalisation of the R-squared for not normal models.
@@ -17,6 +20,7 @@ The function \code{Rsq} compute a generalisation of the R-squared for not normal
 IC(object, k = 2)
 \method{AIC}{gamlss}(object, ..., k = 2, c = FALSE)
 GAIC(object, ..., k = 2, c = FALSE )
+GAIC.table(object, ..., k = c(2, 3.84, round(log(length(object$y)), 2)))
 \method{extractAIC}{gamlss}(fit, scale, k = 2, c = FALSE, ...)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -30,10 +34,11 @@ GAIC(object, ..., k = 2, c = FALSE )
 }
 
 \value{
-  The function \code{IC} returns the GAIC for given penalty k of the GAMLSS object.
-  The function \code{AIC} returns a matrix contains the df's and the GAIC's for given penalty k. 
-  The function \code{GAIC} returns identical results to \code{AIC}. 
-  The function \code{extractAIC} returns vector of length two with the degrees of freedom and the AIC criterion.  
+  The function \code{IC()} returns the GAIC for given penalty k of the GAMLSS object.
+  The function \code{AIC()} returns a matrix contains the df's and the GAIC's for given penalty k. 
+  The function \code{GAIC()} returns identical results to \code{AIC}. 
+  The function \code{GAIC.table()} returns a table which its rows showing different models and its columns different \code{k}'s.  
+  The function \code{extractAIC()} returns vector of length two with the degrees of freedom and the AIC criterion.  
 }
 \references{ 
 Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), 
@@ -57,6 +62,7 @@ IC(mod1)
 mod2<-gamlss(y~pb(x),sigma.fo=~x,family=BCT, data=abdom)
 AIC(mod1,mod2,k=3)
 GAIC(mod1,mod2,k=3)
+GAIC.table(mod1,mod2)
 extractAIC(mod1,k=3)
 rm(mod1,mod2)
 }

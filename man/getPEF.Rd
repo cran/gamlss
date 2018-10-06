@@ -5,7 +5,7 @@
 \description{
 This function can be used to calculate the partial effect and the elasticity of a continuous explanatory variable \code{x}.
 
-By `partial effect' function we mean how \code{x} is influence the parameter of interest given that the rest of explanatory terms for this paramerer are on (specified) fixed values.  
+By `partial effect' function we mean how \code{x} is influence the parameter of interest given that the rest of explanatory terms for this parameter are on (specified) fixed values.  
 
 The function takes a GAMLSS object and for the range of the continuous variable \code{x}, 
 (by fixing the rest of the explanatory terms at specified values), 
