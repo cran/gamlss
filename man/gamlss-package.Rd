@@ -37,6 +37,9 @@ Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2
 }
 
 \keyword{ package }
+\keyword{ distribution }
+\keyword{ regression }
+
 \seealso{
 \code{\link[gamlss.dist]{gamlss.dist}} 
 }

@@ -23,22 +23,46 @@
 #===============================================================================
 ################################################################################
 #===============================================================================
-ri <- function(X, 
-              df = NULL, 
-          lambda = NULL,
-          method = c("ML","GAIC"),
-           order = 0, 
-           start = 10,  
-              Lp = 2,
-           kappa = 0.00001, 
-            iter = 100,  # no of iterations 
-          c.crit = 1.0e-6,
-               k = 2) 
+ri <- function(X = NULL,
+            x.vars = NULL,
+                df = NULL, 
+            lambda = NULL,
+            method = c("ML","GAIC"),
+             order = 0, 
+             start = 10,  
+                Lp = 2,
+             kappa = 0.00001, 
+              iter = 100,  # no of iterations 
+            c.crit = 1.0e-6,
+                 k = 2) 
 {
      scall <- deparse(sys.call(), width.cutoff = 500L)
     method <- match.arg(method)
   # check for standarized matric
-         X <- scale(X)
+     rexpr <- grepl("gamlss",sys.calls()) ## 
+for (i in length(rexpr):1) { 
+      position <- i # get the position
+      if (rexpr[i]==TRUE) break
+    }
+gamlss.env <- sys.frame(position) #gamlss or predict.gamlss
+## get the data
+if (sys.call(position)[1]=="predict.gamlss()") { # if predict is used 
+      Data <- get("data", envir=gamlss.env)
+    } else if (sys.call(position)[1]=="gamlss()") { # if gamlss() is used
+      if (is.null(get("gamlsscall", envir=gamlss.env)$data)) { # if no data argument but the formula can be interpreted
+        Data <- data.frame(x)	
+    } else {# data argument in gamlss 
+        Data <- get("gamlsscall", envir=gamlss.env)$data
+    }
+    } else {
+      Data <- get("data", envir=gamlss.env)
+    }
+    Data <- data.frame(eval(substitute(Data)))
+    # 
+    if (is.null(X)&&is.null(x.vars)) stop("X or x.vars has to be set in gnet")
+    if (is.null(X)&&!is.null(x.vars)) X <- as.matrix(Data[, x.vars])
+    if (!is.null(X)&&is.null(x.vars)) warning("For prediction use the x.vars argument")
+     X <- scale(X)
   #if (any(abs(apply(X,2, "mean")>.5))) warning("The design matrix X should be standarized")
   # if (any(abs(apply(X,2, "sd")>.5))) warning("The design matrix X should be standarized")
          p <- ncol(X)
@@ -129,6 +153,18 @@ gamlss.ri <- function(x, y, w, xeval = NULL, ...)
       row.names(beta) <- namesX
          out <-  list(fv=fv, beta=beta, edf=edf, omega=omega.)  
   }
+  # regpen <- function(y, X, w, lambda, order, D)
+  # {
+  #   G <- lambda * t(D) %*% D
+  #   XW <- w * X
+  #   XWX <- t(XW) %*% X
+  #   beta <- solve(XWX + G, t(XW) %*% y)
+  #   fv <- X %*%beta
+  #   H <- solve(XWX + G, XWX)
+  #   #  edf <- sum(diag(H))
+  #   fit <- list(beta = beta, edf = sum(diag(H)))
+  #   return(fit)  
+  # }
   #-------------------------------------------------------------------------------
   #-------------------------------------------------------------------------------
   # ## function to find lambdas miimizing the local GAIC        
@@ -167,7 +203,7 @@ startLambdaName <- as.character(attr(x, "NameForLambda"))
             qrX <- qr(sqrt(w)*X, tol=.Machine$double.eps^.8)  
               R <- qr.R(qrX)
               Q <- qr.Q(qrX) 
-            Qy  <- t(Q)%*%(sqrt(w)*y)
+             Qy <- t(Q)%*%(sqrt(w)*y)
   # 
   if(p!=ap) stop("the dimensions of the penalty matrix and of the design matrix are incompatible")
             P0 <- diag(p) * 1e-6
@@ -212,19 +248,6 @@ startLambdaName <- as.character(attr(x, "NameForLambda"))
                 fv <- fit$fv     
   assign(startLambdaName, lambda, envir=gamlss.env)
 },
-# "GCV"={   #-------------------------------------------------------------- GCV
-#   # 
-#   wy <- sqrt(w)*y
-#   y.y <- sum(wy^2)
-#   Rinv <- solve(R)
-#   S <- t(D)%*%D
-#   UDU <- eigen(t(Rinv)%*%S%*%Rinv)
-#   yy <- t(UDU$vectors)%*%Qy #t(qr.Q(QR))%*%wy
-#   lambda <- nlminb(lambda, fnGCV,  lower = 1.0e-7, upper = 1.0e7, k=control$k)$par
-#   fit <- regpen(y=y, X=X, w=w, lambda=lambda, D)
-#   fv <- X %*% fit$beta     
-#   assign(startLambdaName, lambda, envir=gamlss.env) 
-# }
     )
   }
 else # case 3 : if df are required
@@ -249,8 +272,6 @@ else # case 3 : if df are required
      waug <- as.vector(c(w, rep(1,nrow(D))))
      xaug <- as.matrix(rbind(X,sqrt(lambda)*D))
       lev <- hat(sqrt(waug)*xaug,intercept=FALSE)[1:n] # get the hat matrix
-# lev <- (lev-.hat.WX(w,rep(1,n)))
-#lev <- (lev-.hat.WX(w,x)) # substract  the linear since is allready fitted 
       var <- lev/w # the variance of the smoother
   coefSmo <- list(coef = fit$beta, 
                 lambda = lambda, 

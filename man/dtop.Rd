@@ -57,6 +57,5 @@ dtop(a)
 dtop(a, xvar=abdom$x)
 rm(a)
 }
-
-\keyword{ ~kwd1 }
+\keyword{regression}% 
 

@@ -16,6 +16,27 @@ Question or suggestions about GAMLSS can be send to
    or
    r.rigby@londonmet.ac.uk
 --------------------------------------------------------------------------------
+Version 5.1-3
+
+ 1. gamlss i) ri() has a new argument x.xars which should be used if prediction                    is to used later on. 
+           ii) The functions logSurv(), loglogSurv(), loglogSurv1(), loglogSurv2() and  loglogSurv3() are rewriten and new extra argument "title",`'lcol' and `ltype'  have  been added
+           iii) the function ECDF() and loglogplot() have been added.
+ 
+ 2, gamlss.dist i) a mistake in the formula of the sigma for BE distribution in the help file is corrected thanks to Stephen Cromie  
+       ii) some new functions for skewness and kurtosis (related to the new distrinution  book of GAMLSS) have been added. The functions are   
+                  a) momentSK() 
+                  b) centileSK()
+                  c) centileSkew()
+                  d) centileKurt()
+                  e) theoCentileSK()
+                  f) plotCentileSK()
+                  g) checkMomentSK()
+                  j) checkCentileSK()
+    [Comment by Mikis Stasinopoulos: I would like (no) to thank the two                         contributors who answer my question in r-help-request@r-project.org 
+        on the 16-2-2019.  
+       Both answer were completely useless and one on the border of rudeness]   
+
+
 Version 5.1-2
 
  1. gamlss  i) The function getQuantile() is added 

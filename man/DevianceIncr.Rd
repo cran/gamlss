@@ -71,12 +71,8 @@ hist(p2, col=rgb(0,0,1,0.5), add=T)
 plot(ecdf(p1))
 lines(ecdf(p2), col=2)}
 #----------------------------------------------------------------
-
-
-
-
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }% use one of  RShowDoc("KEYWORDS")
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{regression}% use one of  RShowDoc("KEYWORDS")
+

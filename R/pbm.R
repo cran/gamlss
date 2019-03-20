@@ -463,21 +463,21 @@ getZmatrix<-function (x,xmin=NULL,xmax=NULL,inter=20,degree=3,order=2)
   #------------------------------------------------------------------------------
   #-------------------------------------------------------------------------------
   no.dist.val <-  length(table(x))
-  lx <- length(x)
-  inter <- if (lx<99) 10 else inter # this is to prevent singularities when length(x) is small
-  inter <- if (no.dist.val<=inter)  no.dist.val else inter 
+           lx <- length(x)
+        inter <- if (lx<99) 10 else inter # this is to prevent singularities when length(x) is small
+        inter <- if (no.dist.val<=inter)  no.dist.val else inter 
   if (is.null(xmin)) xl <- min(x)
   if (is.null(xmax)) xr <- max(x) 
-  xmin <- if (is.null(xmin))  xl - 0.01 * (xr - xl) else xmin  
-  xmax <- if (is.null(xmax))  xr + 0.01 * (xr - xl) else xmax 
-  B <- bbase(x, xmin, xmax, inter, degree, FALSE) # 
-  r <- ncol(B)
-  D <- if(order==0) diag(r) else diff(diag(r), diff=order)
-  P.svd <- svd(t(D)%*%D)
-  U <- (P.svd$u)[,1:(r-order)]
-  d <- (P.svd$d)[1:(r-order)]
-  Delta <- diag(1/sqrt(d))
-  Z <- B%*%U%*%Delta
+         xmin <- if (is.null(xmin))  xl - 0.01 * (xr - xl) else xmin  
+         xmax <- if (is.null(xmax))  xr + 0.01 * (xr - xl) else xmax 
+            B <- bbase(x, xmin, xmax, inter, degree, FALSE) # 
+            r <- ncol(B)
+            D <- if(order==0) diag(r) else diff(diag(r), diff=order)
+        P.svd <- svd(t(D)%*%D)
+            U <- (P.svd$u)[,1:(r-order)]
+            d <- (P.svd$d)[1:(r-order)]
+        Delta <- diag(1/sqrt(d))
+            Z <- B%*%U%*%Delta
   Z
 }
 #-------------------------------------------------------------------------------

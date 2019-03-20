@@ -43,7 +43,7 @@ export(gamlss, gamlss.control, glim.control, is.gamlss,
        pcat, gamlss.pcat, plotDF, plotLambda,
        getPEF, devianceIncr, get.rqres, 
        gamlssMLpred, chooseDist, fitDistPred, getOrder,
-       numeric.deriv, getQuantile)
+       numeric.deriv, getQuantile, loglogplot, ECDF)
 
 
 # datasets
