@@ -155,7 +155,7 @@ if ((use.weights==FALSE)&&(se.fit==FALSE))#  if use.weights is FALSE and se.fit=
     if ("tau" %in% object$par)  
       out$tau <-  if (whetherFitted$tau) predict(object, newdata=newdata, data=DatA , what = "tau", type = type, terms = terms, 
                       se.fit = se.fit)  else  rep(fitted(object, "tau")[1], pN)
-    if (as.character(object$mu.formula[[2]])%in%names(newdata)) 
+    if (any(as.character(object$mu.formula[[2]])%in%names(newdata))) 
     out$y <-  newdata[,as.character(object$mu.formula[[2]])]
     attr(out, "family") <- object$family
     return(out)    
@@ -215,6 +215,7 @@ if ((use.weights==TRUE)||(se.fit==TRUE))
 ## fits the model
      newobj <-  update(object, data=DatA, weights=DatA$Weights, trace=FALSE)
      # needs some checking here   
+ 
      DiffAIC  <- AIC(object, newobj, k=0)
      if (abs(diff(DiffAIC[,2]))>1)   warning("the global deviances differ more that 1 ")
      if (abs(diff(DiffAIC[,1]))>.5)  warning("the degrees of freedom differ more that 0.5 ")

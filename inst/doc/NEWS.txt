@@ -16,6 +16,16 @@ Question or suggestions about GAMLSS can be send to
    or
    r.rigby@londonmet.ac.uk
 --------------------------------------------------------------------------------
+Version 5.1-4
+  1. gamlss i) logSurv0() is added 
+            ii) new arguments in the histDist() were added to help the figures in                   book 2 (dittributions)
+           iii) the function pdf.plot() is updated
+  
+  2. gamlss.dist i) PARETO1o is added to help to estimated the power parameter of the tail of the data
+                 ii) some options for the plotting distribution function (used for the second book of GAMLSS are updated)
+                 
+  3. gamlss.data i) the InfMort data set is added 
+
 Version 5.1-3
 
  1. gamlss i) ri() has a new argument x.xars which should be used if prediction                    is to used later on. 

@@ -2,6 +2,7 @@
 \alias{fitDist}
 \alias{fitDistPred}
 \alias{chooseDist}
+\alias{chooseDistPred}
 \alias{getOrder}
 
 %- Also NEED an '\alias' for EACH other topic documented here.
@@ -32,6 +33,11 @@ chooseDist(object, k = c(2, 3.84, round(log(length(object$y)), 2)), type =
     c("realAll", "realline", "realplus", "real0to1", "counts", "binom","extra"), 
     extra = NULL, trace = FALSE, 
     parallel = c("no", "multicore", "snow"), ncpus = 1L, cl = NULL, ...)
+
+chooseDistPred(object, type = c("realAll", "realline", "realplus", 
+     "real0to1", "counts", "binom", "extra"), extra = NULL, 
+     trace = FALSE, parallel = c("no", "multicore", "snow"), 
+     ncpus = 1L, cl = NULL, newdata = NULL, rand = NULL, ...)
       
 getOrder(obj, column = 1)      
 }

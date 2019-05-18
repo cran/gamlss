@@ -86,12 +86,12 @@ if (sys.call(position)[1]=="predict.gamlss()") { # if predict is used
   ## here we get the gamlss environment and a random name to save
   ## the starting values for lambda within gamlss()
   ## get gamlss environment
-  #--------
-      rexpr <- regexpr("gamlss",sys.calls())
-  for (i in 1:length(rexpr)){ 
-    position <- i 
-    if (rexpr[i]==1) break}
-  gamlss.environment <- sys.frame(position)
+  # #--------
+  #     rexpr <- regexpr("gamlss",sys.calls())
+  # for (i in 1:length(rexpr)){ 
+  #   position <- i 
+  #   if (rexpr[i]==1) break}
+  # gamlss.environment <- sys.frame(position)
   #--------
   ## get a random name to use it in the gamlss() environment
   #--------
@@ -100,7 +100,7 @@ if (sys.call(position)[1]=="predict.gamlss()") { # if predict is used
   startLambdaName <- paste("start.Lambda",fourLetters, sep=".")
   ## put the starting values in the gamlss()environment
   #--------
-  assign(startLambdaName, start, envir=gamlss.environment)
+  assign(startLambdaName, start, envir=gamlss.env)
   #--------
   # this is included here for generality  
                          D <- if(order==0) diag(p) else diff(diag(p), diff=order)
@@ -119,7 +119,7 @@ if (sys.call(position)[1]=="predict.gamlss()") { # if predict is used
            attr(x,"order") <- order
          attr(x, "start")  <- start 
              attr(x, "k")  <- k 
-  attr(x, "gamlss.env")    <- gamlss.environment
+    attr(x, "gamlss.env")  <- gamlss.env
   attr(x, "NameForLambda") <- startLambdaName
                  class(x)  <- c("smooth", class(x))  
   x
@@ -150,21 +150,9 @@ gamlss.ri <- function(x, y, w, xeval = NULL, ...)
          HH <- (svdRD$u)[1:p,1:rank]%*%t(svdRD$u[1:p,1:rank])
         edf <- sum(diag(HH))
           fv <- X%*%beta
-      row.names(beta) <- namesX
-         out <-  list(fv=fv, beta=beta, edf=edf, omega=omega.)  
+row.names(beta) <- namesX
+        out <-  list(fv=fv, beta=beta, edf=edf, omega=omega.)  
   }
-  # regpen <- function(y, X, w, lambda, order, D)
-  # {
-  #   G <- lambda * t(D) %*% D
-  #   XW <- w * X
-  #   XWX <- t(XW) %*% X
-  #   beta <- solve(XWX + G, t(XW) %*% y)
-  #   fv <- X %*%beta
-  #   H <- solve(XWX + G, XWX)
-  #   #  edf <- sum(diag(H))
-  #   fit <- list(beta = beta, edf = sum(diag(H)))
-  #   return(fit)  
-  # }
   #-------------------------------------------------------------------------------
   #-------------------------------------------------------------------------------
   # ## function to find lambdas miimizing the local GAIC        
@@ -231,17 +219,17 @@ startLambdaName <- as.character(attr(x, "NameForLambda"))
              for (it in 1:20) 
              {
                fit  <- regpen(sm,  D, P0, lambda)
-             gamma. <-  D %*% as.vector(fit$beta)*sqrt(fit$omega) 
+             gamma. <- D %*% as.vector(fit$beta)*sqrt(fit$omega) 
                  fv <- X %*% fit$beta
                sig2 <- sum(w * (y - fv) ^ 2) / (N - fit$edf)
                tau2 <- sum(gamma. ^ 2) / (fit$edf-order)# Tuesday, March 17, 2009 at 11:57
          lambda.old <- lambda
              lambda <- sig2 / tau2
-               if (abs(lambda-lambda.old) < 0.0001||lambda>100000) break
+if (abs(lambda-lambda.old) < 0.0001||lambda>100000) break
                #cat("lambda",lambda, '\n')
              }
            },
-           "GAIC"=  #--------------------------------------------------------------- GAIC
+  "GAIC"=  #--------------------------------------------------------------- GAIC
 {
             lambda <- nlminb(lambda, fnGAIC,  lower = 1.0e-7, upper = 1.0e7, k=k)$par 
               fit  <- regpen(sm,  D,  P0, lambda)
@@ -322,7 +310,7 @@ fitted.ri<- function(object, ...)
 #------------------------------------------------------------------------------
 print.ri  <- function (x, digits = max(3, getOption("digits") - 3), ...) 
 {   
-  cat("P-spline fit using the gamlss function pb() \n")
+  cat("Ridge fit using the gamlss function ri() \n")
   cat("Degrees of Freedom for the fit :", x$edf, "\n")
   cat("Random effect parameter sigma_b:", format(signif(x$sigb)), "\n")  
   cat("Smoothing parameter lambda     :", format(signif(x$lambda)), "\n") 

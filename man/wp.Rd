@@ -6,11 +6,12 @@ Provides a single plot or multiple worm plots for a GAMLSS fitted or more genera
           }
 \usage{
 wp(object = NULL, xvar = NULL, resid = NULL, n.inter = 4,
-  xcut.points = NULL, overlap = 0, xlim.all = 4, 
-  xlim.worm = 3.5, show.given = TRUE, line = TRUE, 
-  ylim.all = 12 * sqrt(1/length(resid)), 
-  ylim.worm = 12 * sqrt(n.inter/length(resid)), 
-  cex = 1, cex.lab = 1, pch = 21, ...)
+xcut.points = NULL, overlap = 0, xlim.all = 4, 
+xlim.worm = 3.5, show.given = TRUE, line = TRUE, 
+ylim.all = 12 * sqrt(1/length(resid)), 
+ylim.worm = 12 * sqrt(n.inter/length(resid)), 
+cex = 1, cex.lab = 1, pch = 21, bg = "wheat", 
+col = "red", bar.bg = c(num = "light blue"), ...)
 }
 
 \arguments{
@@ -29,7 +30,12 @@ wp(object = NULL, xvar = NULL, resid = NULL, n.inter = 4,
   \item{cex}{ the cex plotting parameter for changing the side of worm with default \code{cex=1}}
   \item{cex.lab}{the cex plotting parameter for changing the size of the axis labels}
   \item{pch}{ the pch plotting parameter with default \code{pch=21} }
+    \item{bg}{The background colour of the worm plot points}
+  \item{col}{the colour of the fitted (and horizontal and vertical) 
+  lines}
+  \item{bar.bg}{the colour of the bars when \code{xvar} is used}
    \item{\dots}{for extra arguments}
+
  }
 \details{
  If the \code{xvar} argument is not specified then a single worm plot is used. In this case a worm plot is a de-trended normal QQ-plot so departure from normality is highlighted. 

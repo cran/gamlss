@@ -14,9 +14,11 @@
 #-------------------------------------------------------------------------------
 # log Survival plot
 # v)    logSurv() : plots the empirical survival function log(1-ecdf) 
-#        against log(y) for part of the data
-# vi)  loglogplot() plots the empirical survival function log(1-ecdf) for all data
-# v)  ECDF()
+#        against log(y) for part or all of the data and fits three linear model
+# vi)  logSurvo()  plots the empirical survival function log(1-ecdf) or ecdf 
+#        against log(y) for part or all the data (no fitting here)
+# vii)  loglogplot() plots the empirical survival function log(1-ecdf) for all data
+# viii)  ECDF()
 #-------------------------------------------------------------------------------
 # those are in gamlss.tr
 # vii)     fitTail : fits a truncated gamlss.family distribution to the tail of the data
@@ -60,8 +62,8 @@ howmany <- length(Y)
   lines(fitted(m1)~x, col=lcol, lty=ltype)  
   if (is.null(title))
     {
-    title(paste("Log Log Survival plot (Type I) for", prob, 
-                          "of the right tail of",  deparse(substitute(y))))
+    title(paste("Log Log Survival plot (Type I) for",  (1-prob)*100,
+                          "% of the right tail of",  deparse(substitute(y))))
     } else title(title)
   invisible(m1)  
 }
@@ -100,8 +102,8 @@ howmany <- length(Y)
   lines(fitted(m1)~x, col=lcol, lty=ltype)  
   if (is.null(title))
   {
-    title(paste("Log Log Survival plot (Type II) for", prob, 
-                "of the right tail of",  deparse(substitute(y))))
+    title(paste("Log Log Survival plot (Type II) for", (1-prob)*100,
+                "% of the right tail of",  deparse(substitute(y))))
   } else title(title)
   invisible(m1)  
 }
@@ -117,7 +119,7 @@ loglogSurv3 <- function(y,
                         ...)
 {
   #-----------------
-    Xlab1 <- paste("log(", deparse(substitute(y)), ")", sep="")
+    Xlab1 <- paste( deparse(substitute(y)), sep="")
       cdF <- ECDF(y) # get ecdf for all data
        mY <- quantile(y, probs=prob)
         Y <- y[y>mY]
@@ -139,8 +141,8 @@ loglogSurv3 <- function(y,
   lines(fitted(m1)~x, col=lcol, lty=ltype)  
   if (is.null(title))
   {
-    title(paste("Log Log Survival plot (Type III) for", prob, 
-                "of the right tail of",  deparse(substitute(y))))
+    title(paste("Log Log Survival plot (Type III) for",  (1-prob)*100, 
+                "% of the right tail of",  deparse(substitute(y))))
   } else title(title)
   invisible(m1)  
 }
@@ -203,8 +205,8 @@ if (plot)
            lines(fitted(m1)~x1, col=lcol, lty=ltype)
            if (is.null(title))
            {
-             title(paste("Log Log Survival plot (Type I) for", prob, 
-                         "of the right tail of",  deparse(substitute(y))))
+             title(paste("Log Log Survival plot (Type I) for", (1-prob)*100, 
+                         "% of the right tail of",  deparse(substitute(y))))
            } else title(title)
            },
          {
@@ -213,8 +215,8 @@ if (plot)
            lines(fitted(m2)~x2, col=lcol, lty=ltype)
            if (is.null(title))
            {
-             title(paste("Log Log Survival plot (Type II) for", prob, 
-                         "of the right tail of",  deparse(substitute(y))))
+             title(paste("Log Log Survival plot (Type II) for", (1-prob)*100, 
+                         "% of the right tail of",  deparse(substitute(y))))
            } else title(title)
          },
          {
@@ -223,8 +225,8 @@ if (plot)
            lines(fitted(m3)~x3, col=lcol, lty=ltype)
            if (is.null(title))
            {
-             title(paste("Log Log Survival plot (Type III) for", prob, 
-                         "of the right tail of",  deparse(substitute(y))))  
+             title(paste("Log Log Survival plot (Type III) for", (1-prob)*100, 
+                         "% of the right tail of",  deparse(substitute(y))))  
            } else title(title)   
            
          }
@@ -245,6 +247,7 @@ logSurv <- function(y,
                   prob = 0.9, 
                   tail = c("right", "left"), 
                   plot = TRUE, 
+                 lines = TRUE,
                  print = TRUE,
                  title = NULL,
                   lcol = c(gray(.1),gray(.2), gray(.3)), 
@@ -274,28 +277,104 @@ logSurv <- function(y,
      howmany <- length(Y)
         }
 # model fitting
-     m1 <- gamlss(newY ~ log(Y), trace=FALSE) # fitting k1=1 model
-     m2 <- gamlss(newY ~ log(Y)+I(log(Y)^2), trace=FALSE)  # fitting k1=2 model
-     m3 <- gamlss(newY2 ~ log(Y), trace=FALSE) # fitting k
-   fv3  <- -exp(fitted(m3))
+if (lines)
+{  #offset(rep(min(newY), length(newY)))
+     wm <- which.min(log(Y))
+   varY <- newY-newY[wm]
+   varX <- log(Y)-log(Y)[wm]
+  varX2 <- (log(Y))^2 -(log(Y)[wm])^2
+     m1 <- gamlss(varY ~ varX-1, trace=FALSE) # fitting k1=1 model
+  #points(fitted(m1)~varX, col="red")
+    m2 <- gamlss(varY ~ varX + varX2 - 1, trace=FALSE)  # fitting k1=2 model
+  #points(fitted(m2)~varX, col="red")
+    m3 <- gamlss(newY2 ~ log(Y), trace=FALSE) # fitting k
+  fv3  <- -exp(fitted(m3)) 
+}
   if (plot)
   {
     plot(newY[order(Y)]~log(Y)[order(Y)], xlab=Xlab, ylab=Ylab, ...)
-    lines(fitted(m1)[order(Y)]~log(Y)[order(Y)], col=lcol[1], lty=ltype[1], lwd=2)
-    lines(fitted(m2)[order(Y)]~log(Y)[order(Y)], col=lcol[2], lty=ltype[2] , lwd=2)
+    if (lines){
+    lines(I(fitted(m1)[order(Y)]+newY[wm])~log(Y)[order(Y)], col=lcol[1], lty=ltype[1], lwd=2)
+    lines(I(fitted(m2)[order(Y)]+newY[wm])~log(Y)[order(Y)], col=lcol[2], lty=ltype[2] , lwd=2)
     lines(fv3[order(Y)]~log(Y)[order(Y)], col=lcol[3], lty=ltype[3], lwd=2 )
+    }
     if (is.null(title))
     {
-      title(main=paste(paste(prob,"%",sep=""), "of the", tail, "tail", "of", 
-                       deparse(substitute(y)),howmany,"obs"))
+      if (tail=="right")
+      {
+        title(main=paste(paste((1-prob)*100,"%",sep=""),  tail, "tail", "of", 
+                         deparse(substitute(y)), ",",howmany,"obs."))
+      } else
+      {
+        title(main=paste(paste((prob)*100,"%",sep=""),  tail, "tail", "of", 
+                         deparse(substitute(y)), ",",howmany,"obs."))
+      }  
     } else title(title)
-    
-    legend(place, legend=c("linear", "quadratic", "exponential"), col=lcol, lty=ltype, lwd=2 )
+    if (lines)
+    {
+      legend(place, legend=c("linear", "quadratic", "exponential"), col=lcol, lty=ltype, lwd=2 )
+    }
   }
-    M <-rbind(coef(m1), coef(m2)[-2], coef(m3))
-    rownames(M) <- c("linear", "quadratic", "exponential")
-    invisible(M) 
+    # if (lines)
+    # {
+    #   M <-rbind(coef(m1), coef(m2)[-2], coef(m3))
+    #   rownames(M) <- c("linear", "quadratic", "exponential")
+    #  # invisible(M) 
+    # }
 }
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+# THE SAME AS logSurv() WITHOUT FITTING MODELS 
+logSurv0 <- function(y, 
+                     prob = 0.9, 
+                     tail = c("right", "left"), 
+                     plot = TRUE, 
+                    title = NULL,
+                     ...)
+{ # body of the function starts here
+  #  require(gamlss)
+   tail <- match.arg(tail)
+   Xlab <- paste("log(", deparse(substitute(y)), ")", sep="")
+    cdF <- ECDF(y) # get ecdf for all data
+     mY <- quantile(y, probs=prob)
+  if (tail=="right")
+  {   Y <- y[y>mY]
+   newY <-  log(1-cdF(Y))
+  newY2 <- log(-log(1-cdF(Y)))
+  place <- "bottomleft"
+   Ylab <- paste("log(1-F(",deparse(substitute(y)), "))", sep="")
+howmany <- length(Y)
+  } else
+  {
+      Y <- y[y<mY]
+   newY <-  log(cdF(Y))
+  newY2 <- log(-log(cdF(Y)))
+  place <- "topleft"
+   Ylab <- paste("log(F(",deparse(substitute(y)), "))", sep="")
+howmany <- length(Y)
+  }
+  if (plot)
+  {
+    plot(newY[order(Y)]~log(Y)[order(Y)], xlab=Xlab, ylab=Ylab, ...)
+    if (is.null(title))
+    {
+      if (tail=="right")
+      {
+        title(main=paste(paste((1-prob)*100,"%",sep=""),  tail, "tail", "of", 
+                         deparse(substitute(y)), ",",howmany,"obs."))
+      } else
+      {
+        title(main=paste(paste((prob)*100,"%",sep=""),  tail, "tail", "of", 
+                         deparse(substitute(y)), ",",howmany,"obs."))
+      }  
+     
+    } else title(title)
+  }
+  M <-rbind(newY[order(Y)], log(Y)[order(Y)])
+  rownames(M) <- c("logS", "logy")
+  invisible(M) 
+}
+#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 loglogplot <- function(y, nplus1=TRUE, ...)
 {

@@ -19,8 +19,9 @@ prof.term <- function (model = NULL,
                       xlabel = NULL,
                         plot = TRUE,
                         perc = 95,
-                  start.prev = TRUE, 
-                        ...) 
+                  start.prev = TRUE,
+                        col = "darkgreen"
+                        ) 
 {
 if(is.null(model)) stop("you have not defined the model")
 if(is.null(min)) stop("you have not defined the minimum")
@@ -69,7 +70,7 @@ if (plot)
    {
   # start plotting
   # first the curve
-  curve(prof.fun, min, max, xlab=xlab, ylab=ylab, main=main, col="darkgreen", frame.plot = TRUE)
+  curve(prof.fun, min, max, xlab=xlab, ylab=ylab, main=main, col=col, frame.plot = TRUE)
   plims <- par("usr")
   # then the minimum
   segments(PML, plims[3], PML, Gmin, lty = 3)

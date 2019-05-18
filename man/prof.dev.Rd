@@ -10,7 +10,7 @@ a profile confidence intervals.
 \usage{
 prof.dev(object, which = NULL, min = NULL, max = NULL, 
         step = NULL, length = 7, startlastfit = TRUE, 
-        plot = TRUE, perc = 95, ...)
+        plot = TRUE, perc = 95, col="darkgreen")
 }
 
 \arguments{
@@ -23,7 +23,7 @@ prof.dev(object, which = NULL, min = NULL, max = NULL,
   \item{startlastfit}{whether to start fitting from the last fit or not, default value is \code{startlastfit=TRUE}  }
    \item{plot}{whether to plot, \code{plot=TRUE} or save the results, \code{plot=FALSE}  }
   \item{perc}{what \% confidence interval is required }
-  \item{\dots}{for extra arguments}
+  \item{col}{The colour of the profile line}
 }
 \details{
 This function can be use to provide likelihood based confidence intervals for a parameter for which a constant model (i.e. no explanatory model) is fitted and

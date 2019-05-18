@@ -37,12 +37,14 @@ export(gamlss, gamlss.control, glim.control, is.gamlss,
        acfResid, rvcov, get.K, getSmo, 
        .gamlss.sm.list, .gamlss.bi.list, .gamlss.multin.list,
        .counts, .binom, .realline, .realplus,  
-       plot2way, loglogSurv1, loglogSurv2, loglogSurv3, loglogSurv, logSurv, 
+       plot2way, loglogSurv1, loglogSurv2, loglogSurv3, loglogSurv, 
+       logSurv, logSurv0, 
        quantSheets.control, quantSheets, findPower, z.scoresQS,
        getZmatrix, vis.lo, VC.test,
        pcat, gamlss.pcat, plotDF, plotLambda,
        getPEF, devianceIncr, get.rqres, 
        gamlssMLpred, chooseDist, fitDistPred, getOrder,
+       chooseDistPred,
        numeric.deriv, getQuantile, loglogplot, ECDF)
 
 

@@ -107,8 +107,8 @@ get.rqres <- function(obj = NULL, howmany=10, order=FALSE) #, pit=FALSE
           yy <- rmedian - x
           points(yy~x,  pch=20, cex=.4 )
           grid(lty = "solid")
-          abline(0, 0, lty = 2, col = 2)
-          abline(0, 100000, lty = 2, col = 2)
+          abline(0, 0, lty = 2, col = gray(.6))
+          abline(0, 100000, lty = 2, col = gray(.6))
           yuplim <- 10*sqrt(1/length(rmedian))
            level <- .95    
                z <- seq(-5,5,0.25)

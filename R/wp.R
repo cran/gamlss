@@ -33,7 +33,9 @@ wp <- function ( object = NULL,
 		                cex = 1,
 		            cex.lab = 1,
 		                pch = 21,
-#                  data = NULL,
+		                 bg = "wheat",
+		                col = "red",
+		             bar.bg = c(num="light blue"), 
 		                  ...)
 {
 ##-----------------------------------------------------------------------------
@@ -52,8 +54,8 @@ wp <- function ( object = NULL,
 		grid(nx=NA,ny=NA, lwd = 2) # grid only in y-direction 
 		#     points(qq$x, qq$y, pch = 1, col = col, bg = bg, cex = 0.7)
 		points(qq$x, qq$y, pch = pch, col = col, bg = bg, cex = cex)
-		abline(0, 0, lty = 2, col = 1)
-		abline(0, 100000, lty = 2, col = 1)
+		abline(0, 0, lty = 2, col = col)
+		abline(0, 100000, lty = 2, col = col)
 		yuplim <- 10*sqrt(1/length(qq$y))
 	 	 level <- .95    
 	      	lz <- -xlim.worm
@@ -88,7 +90,7 @@ wp <- function ( object = NULL,
 			fit <- lm(y ~ x+I(x^2)+I(x^3), data=qq) #poly(qq$x,3)) 
 		 	  s <- spline(qq$x, fitted(fit))
 		  flags <- s$x > -2.5 & s$x < 2.5
-			lines(list(x = s$x[flags], y = s$y[flags]), col="red", lwd=.5)
+			lines(list(x = s$x[flags], y = s$y[flags]), col=col, lwd=.5)
 			assign("coef1",coef(fit),envir = parent.frame(n=3))
 			assign("coef" , c(coef, coef1),envir = parent.frame(n=3))
 		}
@@ -204,10 +206,10 @@ if (!grepl("$", deparse(substitute(xvar)), fixed=T)&&!grepl("~", deparse(substit
 			warning("Some points are missed out ", "\n","increase the x limits using xlim.all" )
 		}
 		plot(qq$x,qq$y,ylab="Deviation", xlab="Unit normal quantile", 
-				xlim=c(-xlim.all,xlim.all), ylim=c(-ylim.all , ylim.all), cex=cex, pch=pch , bg = "wheat",cex.lab=cex.lab )
+				xlim=c(-xlim.all,xlim.all), ylim=c(-ylim.all , ylim.all), cex=cex, pch=pch , bg = bg,cex.lab=cex.lab )
 		grid(lty = "solid")
-		abline(0, 0, lty = 2, col = 2)
-		abline(0, 100000, lty = 2, col = 2)
+		abline(0, 0, lty = 2, col = col)
+		abline(0, 100000, lty = 2, col = col)
 		lines(z, low, lty=2)
 		lines(z, high, lty=2)
 		if(line == TRUE)
@@ -215,7 +217,7 @@ if (!grepl("$", deparse(substitute(xvar)), fixed=T)&&!grepl("~", deparse(substit
 		  	fit <- lm(qq$y ~ qq$x+I(qq$x^2)+I(qq$x^3)) #poly(qq$x,3)) 
 	  	    s <- spline(qq$x, fitted(fit))
 		  flags <- s$x > -xlim.all & s$x < xlim.all
-		  lines(list(x = s$x[flags], y = s$y[flags]), col="red", lwd=.5)
+		  lines(list(x = s$x[flags], y = s$y[flags]), col=col, lwd=.5)
 		}
     return(invisible(coef(fit)))
 	}
@@ -251,10 +253,10 @@ if (!is(xvar,"formula")) # xvar =x or data$x
 				         ylab = "Deviation", 
 				         xlab = "Unit normal quantile",
            show.given = show.given,
-				           bg = "wheat", 
-				  pch = pch,
-				  cex = cex, 
-			   bar.bg = c(num="light blue")) 
+				           bg = bg, 
+				          pch = pch,
+				          cex = cex, 
+			         bar.bg =  bar.bg) 
 		if (overlap==0)
 		{
 			if  (total.points!=length(resid))
@@ -291,10 +293,10 @@ if (is(xvar,"formula"))
            ylab = "Deviation", 
            xlab = "Unit normal quantile",
            show.given = show.given,
-           bg = "wheat", 
+           bg = bg, 
            pch = pch,
            cex = cex, 
-           bar.bg = c(num="light blue"), ...) 
+           bar.bg = bar.bg , ...) 
     mcoef <- matrix(coef,ncol=4,byrow=TRUE) 
     # classes = given.in,
     if ("given.values"%in%names(vars <- list(...)))
@@ -339,10 +341,10 @@ if (is(xvar,"formula"))
            ylab = "Deviation", 
            xlab = "Unit normal quantile",
            show.given = show.given,
-           bg = "wheat", 
+           bg = bg, 
            pch = pch,
            cex = cex, 
-           bar.bg = c(num="light blue"), ...) 
+           bar.bg = bar.bg , ...) 
     mcoef <- matrix(coef,ncol=4,byrow=TRUE) 
     # classes = given.in,
     if ("given.values"%in%names(vars <- list(...)))

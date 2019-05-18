@@ -9,7 +9,7 @@ This functions plots the profile deviance for a chosen parameter included in the
 prof.term(model = NULL, criterion = c("GD", "GAIC"), penalty = 2.5, 
           other = NULL, min = NULL, max = NULL, step = NULL, 
           length = 7, xlabel = NULL, plot = TRUE, perc = 95, 
-          start.prev = TRUE, ...)
+          start.prev = TRUE, col="darkgreen")
 }
 
 \arguments{
@@ -26,7 +26,7 @@ prof.term(model = NULL, criterion = c("GD", "GAIC"), penalty = 2.5,
   \item{plot}{whether to plot, \code{plot=TRUE} the resulting profile deviance (or GAIC)}
   \item{perc}{what \% confidence interval is required}
   \item{start.prev}{whether to start from the previous fitted model parameters values or not (default is TRUE)}
-  \item{\dots}{for extra arguments}
+  \item{col}{the color of the profile line}
 }
 \details{
  This function can be use to provide likelihood based confidence intervals for a parameter involved in terms in the linear predictor(s). 
