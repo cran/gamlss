@@ -44,9 +44,9 @@ Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location s
 
 Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
 
-(see also \url{http://www.gamlss.org/}).
+(see also \url{http://www.gamlss.com/}).
 }
-\author{Mikis Stasinopoulos \email{mikis.stasinopoulos@gamlss.org}, Bob Rigby with contributions from Elaine Borghie}
+\author{Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby with contributions from Elaine Borghie}
 
 \seealso{  \code{\link{gamlss}}, \code{\link{centiles.split}},  \code{\link{wp}} }
 \examples{

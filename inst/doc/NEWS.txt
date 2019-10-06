@@ -1,14 +1,20 @@
 -------------- GAMLSS NEWS-------------------------------------------
-GAMLSS is a R package implementing the Generalised Additive Models for
-location scale shape of Rigby and Stasinopoulos (2005),  Appl. Statist.,
-54,  pp. 507-554.
+gamlss is a R package implementing the Generalised Additive Models for
+Location Scale ans Shape (GAMLSS) of Rigby and Stasinopoulos (2005),  
+Appl. Statist., 54,  pp. 507-554.
 
-The book "Flexible Regression and Smoothing: Using GAMLSS in R" explains 
-how the models can be used in R.
+The book 
+"Flexible Regression and Smoothing: Using GAMLSS in R" 
+explains how the models can be used in R.
+
+The book 
+"Distributions for modeling location, scale and shape: Using GAMLSS in R" 
+explains the explicit and generated distributions available in the 
+package gamlss.dist  
 
 More more information about books and papers related to GAMLSS can be found in
 
-http://www.gamlss.org/
+http://www.gamlss.com/
 
 Question or suggestions about GAMLSS can be send to
 
@@ -16,6 +22,34 @@ Question or suggestions about GAMLSS can be send to
    or
    r.rigby@londonmet.ac.uk
 --------------------------------------------------------------------------------
+Version 5.1-5
+
+   1. gamlss i) the code in the example for the centiles.pred() function has been                     changed
+   
+           ii) the function random() allows now prediction.
+           
+           iii) the argument "level"" has been added to the function re(). 
+           It allows uses to get the marginal contribution of the random effect factor            when use predict().
+           
+           vi) suppressWarnings(Fun <- splinefun(x, fv, method="natural"))
+              was added in gamlss.pb() gamlss.pbc(), gamlss.pbm() and gamlss.pbz()                to avoid warnings when the values of x-variable are not unique 
+              
+            v) The argument 'xvar' in functions centiles(), centiles.fan()
+             centiles.split(), and centiles.com() is not needed any more provided 
+             that the function can find it from the fitted model 
+             (As suggested by Tim Cole).
+             
+            vi) The lms() function has been modified to so the "call" represent                   closer the real call of the fitting. For example, while before was shown
+             y~pb(x) now the real names will be shown i.e. head~pb(age) 
+             
+   2. gamlss.dist i) the PIG2 distribution is added
+   
+   3. gamlss.foreach A new package is create for parallel computations at the moments                 its has:
+          i) centile.boost() for centiles confident interval
+          ii) pc() for principal component regression and 
+          iii) fitRolling() for time series rolling fitting
+
+
 Version 5.1-4
   1. gamlss i) logSurv0() is added 
             ii) new arguments in the histDist() were added to help the figures in                   book 2 (dittributions)

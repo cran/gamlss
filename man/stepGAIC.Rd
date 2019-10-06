@@ -200,7 +200,7 @@ Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location s
 \emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
 
 Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
-(see also \url{http://www.gamlss.org/}).
+(see also \url{http://www.gamlss.com/}).
 
 Venables, W. N. and Ripley, B. D. (2002) \emph{Modern Applied
      Statistics with S}. Fourth edition.  Springer.

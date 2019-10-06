@@ -332,7 +332,7 @@ startLambdaName <- as.character(attr(x, "NameForLambda"))
 #-end -----------------------------------------------------------    
          lev <- (lev-.hat.WX(w,x)) # subtract  the linear since is already fitted 
          var <- lev/w              # the variance of the smoother
-         Fun <- splinefun(xvar, fv, method="natural")
+         suppressWarnings(Fun <- splinefun(xvar, fv, method="natural"))
 coefSmo <- list(   coef = fit$beta,
                      fv = fv, 
                  lambda = lambda, 

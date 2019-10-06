@@ -100,7 +100,7 @@ Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2
 
 
 
-(see also \url{http://www.gamlss.org/}).
+(see also \url{http://www.gamlss.com/}).
 }
 \author{
 Bob Rigby, Mikis Stasinopoulos and Vlassios Voudouris 

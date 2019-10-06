@@ -37,9 +37,9 @@ gamlssNews <- function() file.show(system.file("doc", "NEWS.txt", package="gamls
 .gamlss.sm.list<-c("cs", "scs",                   # smoothing cubic splines  "s" vc"
                    "ps", "pb", "cy", "tp", "pvc", # penalised splines : ps, pb, cy tp pvc pbq
                    "pbm", "pbj", "pbo", "pbz",    # monotone jumps and going to zero
-                   "pbc", "pbts", "pbp",          # pb cycle pb predict
+                   "pbc", "pbts", "pbp", "pbf",   # pb cycle pb predict
                    "pcat",                        # for categorical to reduce levels 
-                   "pbq",                         # pb using Qfunction
+                   "pbq",                         # pb using Qfunction 
                    "gmrf",                        # Gaussian Markov random fields
                    "mrfa",  "mrf",                # Markov random fields
                    "sap", "sap3",                 # seperation of Anisotropic penalties
@@ -65,7 +65,7 @@ gamlssNews <- function() file.show(system.file("doc", "NEWS.txt", package="gamls
 				           "pc",                          # principal component regr : pc
 				           "h2o",                         # h2o project 
 				           "pa",                          # partial regression
-				           "gnet")                         
+				           "gnet")                        # glmnet
                    
 # note that predict only read 2 characters Monday, May 4, 2009 at 11:27
 ##----------------------------------------------------------------------------------------
@@ -192,7 +192,7 @@ body(rqres) <-  eval(quote(body(rqres)), envir = getNamespace("gamlss"))
            olddv <- dv+1         # the old global deviance
             dldp <- f$dldp(fv)   # u score
           d2ldp2 <- f$d2ldp2(fv) # second derivative of log-Likelihood
-         d2ldp2 <-  ifelse(d2ldp2 < -1e-15, d2ldp2,-1e-15) # added 26-10-07  
+          d2ldp2 <- ifelse(d2ldp2 < -1e-15, d2ldp2,-1e-15) # added 26-10-07  
               wt <- -(d2ldp2/(dr*dr))#  -(d2l/dp2)/(1/(dmu/deta))^2=- (d2l/dp2)(dmu/eta)^2
             # we need to stop the weights to go to Infty
               wt <- ifelse(wt>1e+10,1e+10,wt) # Mikis 9-10-14 
@@ -661,7 +661,7 @@ body(rqres) <-  eval(quote(body(rqres)), envir = getNamespace("gamlss"))
     ## new for automatic steps MS BR Friday, April 15, 2005 at 18:50
             if (G.dev > G.dev.old && iter >= 2 && autostep == TRUE) # && itn >= 2 ) 
               {
-              for(i in 1:5) 
+              for(i in 1:5)             
                 { 
                  if ("mu"%in%names(family$parameters))
                   {

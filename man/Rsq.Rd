@@ -29,10 +29,10 @@ Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location s
 
 Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
 
-(see also \url{http://www.gamlss.org/}).
+(see also \url{http://www.gamlss.com/}).
 }
 
-\author{Mikis Stasinopoulos \email{mikis.stasinopoulos@gamlss.org} }
+\author{Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk} }
 \note{The null model is fitted using the function gamlssML() which can create warning messages}
 
 \seealso{\code{\link{GAIC}}}

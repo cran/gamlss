@@ -10,7 +10,7 @@ The functions also tabulates the sample percentages below each centile curve for
 }
 
 \usage{
-centiles.split(obj, xvar = NULL, xcut.points = NULL, n.inter = 4, 
+centiles.split(obj, xvar, xcut.points = NULL, n.inter = 4, 
                cent = c(0.4, 2, 10, 25, 50, 75, 90, 98, 99.6), 
                legend = FALSE, main = NULL, main.gsub = "@", 
                ylab = "y", xlab = "x", ylim = NULL, overlap = 0, 
@@ -50,9 +50,9 @@ Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location s
 
 Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
 
-(see also \url{http://www.gamlss.org/}).
+(see also \url{http://www.gamlss.com/}).
 }
-\author{Mikis Stasinopoulos, \email{mikis.stasinopoulos@gamlss.org}, Bob Rigby \email{r.rigby@londonmet.ac.uk}, with contributions from Elaine Borghie}
+\author{Mikis Stasinopoulos, \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby \email{r.rigby@londonmet.ac.uk}, with contributions from Elaine Borghie}
 
 
 \section{Warning }{This function is appropriate when only one continuous explanatory variable is fitted in the model}

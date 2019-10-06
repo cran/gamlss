@@ -168,9 +168,9 @@ Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location s
 
 Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
 
-(see also \url{http://www.gamlss.org/}).
+(see also \url{http://www.gamlss.com/}).
 }
-\author{ Mikis Stasinopoulos \email{mikis.stasinopoulos@gamlss.org}, Bob Rigby and Paul Eilers}
+\author{ Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby and Paul Eilers}
 
 \section{Warning}{There are occasions where the automatic local methods do not work. One accusation which came to our attention is  when 
 the range of the response variable values is very large. Scaling the response variable will solve the problem.} 

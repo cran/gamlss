@@ -381,7 +381,7 @@ startLambdaName <- as.character(attr(x, "NameForLambda"))
          var <- lev/w              # the variance of the smootherz
 #         browser()
 #      # se <-  sqrt(diag(solve(XWX + lambda * t(D) %*% D)))
-         Fun <- splinefun(xvar, fv, method="monoH.FC")
+    suppressWarnings(Fun <- splinefun(xvar, fv, method="monoH.FC"))
 coefSmo <- list(   coef = fit$beta,
                      fv = fv, 
                  lambda = lambda, 

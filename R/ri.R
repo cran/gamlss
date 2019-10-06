@@ -50,7 +50,7 @@ if (sys.call(position)[1]=="predict.gamlss()") { # if predict is used
       Data <- get("data", envir=gamlss.env)
     } else if (sys.call(position)[1]=="gamlss()") { # if gamlss() is used
       if (is.null(get("gamlsscall", envir=gamlss.env)$data)) { # if no data argument but the formula can be interpreted
-        Data <- data.frame(x)	
+        Data <- data.frame(X)	
     } else {# data argument in gamlss 
         Data <- get("gamlsscall", envir=gamlss.env)$data
     }
@@ -291,8 +291,11 @@ else
 # methods for ri object
 plot.ri <- function(x, ...)
 {
+  alist <- list(...)
+main  <-  if (!is.null(alist$main)) alist$main 
+else paste("Lp =", paste(x$Lp), sep=" ")
   plot(x$coef, type="h", xlab="x-variables", ylab="coefficients", 
-       main=paste("Lp =", paste(x$Lp), sep=" "))
+       main=main)  
   abline(h=0)
 }
 #-------------------------------------------------------------------------------

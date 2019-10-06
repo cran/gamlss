@@ -64,9 +64,9 @@ Tutz G. (2013) Regularization and Sparsity in Discrete Structures in the \emph{P
 
 Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
 
-(see also \url{http://www.gamlss.org/}).
+(see also \url{http://www.gamlss.com/}).
 }
-\author{Mikis Stasinopoulos \email{mikis.stasinopoulos@gamlss.org},  Paul Eilers and Marco Enea}
+\author{Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk},  Paul Eilers and Marco Enea}
 \note{Note that \code{pcat} itself does no smoothing; it simply sets things up for \code{gamlss.pcat()} to do the smoothing within the backfitting.}
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~

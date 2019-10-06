@@ -14,7 +14,8 @@ The function \code{re()} is an interface for calling the \code{lme()} function o
 \usage{
 random(x, df = NULL, lambda = NULL, start=10)
 
-re(fixed = ~1, random = NULL, correlation = NULL, method = "ML", ...)
+re(fixed = ~1, random = NULL, correlation = NULL, method = "ML",
+          level = NULL, ...)
 }
 
 \arguments{
@@ -26,6 +27,7 @@ re(fixed = ~1, random = NULL, correlation = NULL, method = "ML", ...)
   \item{random}{a formula or list specufying the random effect  part of the model as in  \code{lme()} function}
   \item{correlation}{the correlation structure of the \code{lme()} model}
   \item{method}{which method, "ML" (the default), or "REML"}
+  \item{level}{this argument has to be set to zero (0) if when use \code{predict()} you want to get the marginal contribution} 
   \item{\dots}{this can be used to pass arguments for \code{lmeControl()}
 }
   }
@@ -64,7 +66,7 @@ Schall, R. (1991) Estimation in generalized linear models with random effects. \
 Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
 \emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
 
-Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. (see also \url{http://www.gamlss.org/}).
+Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. (see also \url{http://www.gamlss.com/}).
 
 Venables, W. N. and Ripley, B. D. (2002) \emph{Modern Applied Statistics with S}. Fourth edition. Springer.
 }

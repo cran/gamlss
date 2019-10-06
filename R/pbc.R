@@ -283,10 +283,10 @@ startLambdaName <- as.character(attr(x, "NameForLambda"))
          n <- nrow(X) # the no of observations
          p <- ncol(D) # the rows of the penalty matrix
        qrX <- qr(sqrt(w)*X, tol=.Machine$double.eps^.8)  
-        R <- qr.R(qrX)
-        Q <- qr.Q(qrX) 
-      Qy  <- t(Q)%*%(sqrt(w)*y)
-     tau2  <- sig2 <- NULL
+         R <- qr.R(qrX)
+         Q <- qr.Q(qrX) 
+        Qy <- t(Q)%*%(sqrt(w)*y)
+      tau2 <- sig2 <- NULL
 # now the action depends on the values of lambda and df
 #----------------------------------------------------------------------- 
   lambdaS <-  get(startLambdaName, envir=gamlss.env) ## geting the starting value
@@ -382,7 +382,7 @@ loglambda <- if (sign(edf2_df(-30))==sign(edf2_df(30))) 30
     lev <- hat(sqrt(waug)*xaug,intercept=FALSE)[1:n] # get the hat matrix
 # the variance of the smoother
      # se <-  sqrt(diag(solve(XWX + lambda * t(D) %*% D)))Q
-     Fun <- splinefun(xvar, fv, method="natural")
+    suppressWarnings(Fun <- splinefun(xvar, fv, method="natural"))
 coefSmo <- list(   coef = fit$beta,
                      fv = fv, 
                  lambda = lambda, 

@@ -56,9 +56,9 @@ Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location s
 
 Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
 
-(see also \url{http://www.gamlss.org/}).
+(see also \url{http://www.gamlss.com/}).
 }
-\author{Mikis Stasinopoulos \email{mikis.stasinopoulos@gamlss.org} and Calliope Akantziliotou}
+\author{Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk} and Calliope Akantziliotou}
 \note{The range of the y values given by min, max and step are very important in the plot}
 
 \section{Warning}{The range of some distributions depends on the fitted parameters} 

@@ -48,13 +48,13 @@ Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location s
 
 Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
 
-(see also \url{http://www.gamlss.org/}).
+(see also \url{http://www.gamlss.com/}).
 }
-\author{Mikis Stasinopoulos , \email{mikis.stasinopoulos@gamlss.org}, based on ideas of Elaine Borghie 
+\author{Mikis Stasinopoulos , \email{d.stasinopoulos@londonmet.ac.uk}, based on ideas of Elaine Borghie 
 from the World Health Organization}
 \note{The power option should be only used if the model  }
 
-\section{Warning }{See example below of how to use the function when power transofrmation is used for the x-variables} 
+\section{Warning }{See example below of how to use the function when power transformation is used for the x-variables} 
 
 \seealso{\code{\link{gamlss}}, \code{\link{centiles}}, \code{\link{centiles.split}} }
 \examples{
@@ -64,7 +64,7 @@ a<-gamlss(y~pb(x),sigma.fo=~pb(x), data=abdom, family=BCT)
 ## plot the centiles
 centiles(a,xvar=abdom$x)
 ##-----------------------------------------------------------------------------
-## first use of  centiles.pred()
+## the first use of the function centiles.pred()
 ## to calculate the centiles at new x values
 ##-----------------------------------------------------------------------------
 newx<-seq(12,40,2)
@@ -73,7 +73,7 @@ mat
 ## now plot the centile curves  
  mat <- centiles.pred(a, xname="x",xvalues=newx, plot=TRUE )
 ##-----------------------------------------------------------------------------
-## second use of centiles.pred()
+## the second use of the function centiles.pred()
 ## to calculate (nornalised) standard-centiles for new x
 ## values using the fitted model
 ##-----------------------------------------------------------------------------
@@ -84,7 +84,7 @@ mat
 mat <- centiles.pred(a, xname="x",xvalues=newx, type="standard-centiles",
        plot = TRUE )
 ##-----------------------------------------------------------------------------
-## third use of centiles.pred()
+## the third use of the function centiles.pred()
 ##  if we have new x and y values what are their z-scores?
 ##-----------------------------------------------------------------------------
 # create new y and x values and plot them in the previous plot
@@ -102,24 +102,34 @@ znewx
 ##----------------------------------------------------------------------------
 ## fit model
 aa <- gamlss(y~pb(x^0.5),sigma.fo=~pb(x^0.5), data=abdom, family=BCT)
-## centiles works
-centiles(aa,xvar=abdom$x, legend = FALSE)
-newx<-seq(12,40,2)
-mat <- centiles.pred(aa, xname="x",xvalues=newx, plot=TRUE )
-
-mat <- centiles.pred(aa, xname="x",xvalues=c(20, 2 )
+## centiles is working in this case
+centiles(aa, xvar=abdom$x, legend = FALSE)
+## get predict for values of x at 12, 14, ..., 40
+mat <- centiles.pred(aa, xname="x", xvalues=seq(12,40,2), plot=TRUE )
 mat
+# plot all prediction points
 xx <- rep(mat[,1],9)
-yy<-mat[,2:10]
+yy <- unlist(mat[,2:10])
 points(xx,yy,col="red")
-## case 2 : x-variable previously transformed 
-nx<-abdom$x^0.5
-aa<-gamlss(y~pb(nx),sigma.fo=~pb(nx), data=abdom, family=BCT)
+##----------------------------------------------------------------------------
+##  case 2 : the x-variable is previously transformed 
+##----------------------------------------------------------------------------
+nx <- abdom$x^0.5
+aa <- gamlss(y~pb(nx),sigma.fo=~pb(nx), data=abdom, family=BCT)
 centiles(aa, xvar=abdom$x)
+# equivalent to fitting
 newd<-data.frame( abdom, nx=abdom$x^0.5)
-mat <-  centiles.pred(aa, xname="nx", xvalues=c(30), power=0.5, data=newd)
-xxx<-rep(mat[,1],9)
-yyy<-mat[,2:10]
-points(xxx,yyy,col="red")}
+aa1 <- gamlss(y~pb(nx),sigma.fo=~pb(nx), family=BCT, data=newd)
+centiles(aa1, xvar=abdom$x)
+# getting the centiles at x equal to 12, 14, ...40
+mat <-  centiles.pred(aa, xname="nx", xvalues=seq(12,40,2), power=0.5, 
+         data=newd, plot=TRUE)
+# plot all prediction points         
+xxx <- rep(mat[,1],9)
+yyy <- unlist(mat[,2:10])
+points(xxx,yyy,col="red")
+# the idea is that if the transformed x-variable is used in the fit
+# the power argument has to used in centiles.pred()
+}
 }
 \keyword{regression}% 

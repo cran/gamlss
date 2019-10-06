@@ -9,13 +9,13 @@ The function \code{centiles.fan()} plots a fan-chart of the centile curves.
 A restriction of the functions is that it applies to models with one explanatory variable only.    
 }
 \usage{
-centiles(obj, xvar = NULL, cent = c(0.4, 2, 10, 25, 50, 75, 90, 98, 99.6), 
+centiles(obj, xvar, cent = c(0.4, 2, 10, 25, 50, 75, 90, 98, 99.6), 
          legend = TRUE, ylab = "y", xlab = "x", main = NULL, 
          main.gsub = "@", xleg = min(xvar), yleg = max(obj$y), 
          xlim = range(xvar), ylim = range(obj$y), save = FALSE, 
          plot = TRUE, points = TRUE,  pch =  15, cex = 0.5, col =  gray(0.7), 
          col.centiles = 1:length(cent) + 2, lty.centiles = 1, lwd.centiles = 1, ...)
-centiles.fan(obj, xvar = NULL, cent = c(0.4, 2, 10, 25, 50, 75, 90, 98, 99.6), 
+centiles.fan(obj, xvar, cent = c(0.4, 2, 10, 25, 50, 75, 90, 98, 99.6), 
          ylab = "y", xlab = "x", main = NULL, main.gsub = "@", 
          xleg = min(xvar), yleg = max(obj$y), xlim = range(xvar), 
          ylim = range(obj$y), points = FALSE,  median = TRUE, pch =  15, 
@@ -72,10 +72,10 @@ Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location s
 
 Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
 
-(see also \url{http://www.gamlss.org/}).
+(see also \url{http://www.gamlss.com/}).
 }
 
-\author{Mikis Stasinopoulos \email{mikis.stasinopoulos@gamlss.org}, Bob Rigby \email{r.rigby@londonmet.ac.uk} with contribution from Steve Ellison}
+\author{Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby \email{r.rigby@londonmet.ac.uk} with contribution from Steve Ellison}
 
 
 \section{Warning }{This function is appropriate only when one continuous explanatory variable is fitted in the model}  

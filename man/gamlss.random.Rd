@@ -10,7 +10,7 @@ It is not intended to be called directly by users.
 .
 }
 \usage{
-gamlss.random(x, y, w)
+gamlss.random(x, y, w, xeval = NULL, ...)
 gamlss.re(x, y, w, xeval = NULL, ...)
 }
 
@@ -41,7 +41,7 @@ Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location s
 
 Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
 
-(see also \url{http://www.gamlss.org/}).
+(see also \url{http://www.gamlss.com/}).
 }
 \author{Mikis Stasinopoulos, based on Trevor Hastie function \code{gam.random}}
 

@@ -177,7 +177,7 @@ deparen <- function(expr)
 # if xvar=NULL will work
 # if xvar=data$variable it will work
 # if xvar=variable you need to get it from the data
-# if xvar=~formula the we are in trouble
+# if xvar=~formula then we are in trouble
 
 if (!grepl("$", deparse(substitute(xvar)), fixed=T)&&!grepl("~", deparse(substitute(xvar)), fixed=T)&&DataExist)
 {

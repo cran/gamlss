@@ -81,10 +81,10 @@ Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location s
 
 Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
 
-(see also \url{http://www.gamlss.org/}).
+(see also \url{http://www.gamlss.com/}).
 }
 
-\author{Mikis Stasinopoulos \email{mikis.stasinopoulos@gamlss.org}, Bob Rigby, (The original \code{lo()} function was based on the Trevor Hastie's S-plus \code{lo()} function. See also the documentation of the \code{loess} function for the authorship of the function.}
+\author{Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby, (The original \code{lo()} function was based on the Trevor Hastie's S-plus \code{lo()} function. See also the documentation of the \code{loess} function for the authorship of the function.}
 \note{Note that \code{lo} itself does no smoothing; it simply sets things up for \code{gamlss.lo()} to do the backfitting.}
 
 \section{Warning }{In this version the first argument is a formula NOT a list as in the previous one} 
