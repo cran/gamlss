@@ -374,92 +374,92 @@ TGD <- function(object,...) #UseMethod("AIC")
 # }
 #------------------------------------------------------------------------------
 gamlssCV <- function(formula = NULL, 
-                     sigma.formula =~1, 
-                     nu.formula =~1, 
-                     tau.formula =~1, 
-                     data = NULL, # original data 
-                     family = NO,  
+               sigma.formula = ~1, 
+                  nu.formula = ~1, 
+                 tau.formula = ~1, 
+                        data = NULL, # original data 
+                      family = NO,  
                      control = gamlss.control(trace=FALSE),
-                     K.fold = 10,
-                     set.seed = 123,
-                     rand = NULL,
-                     parallel = c("no", "multicore", "snow"), 
-                     ncpus = 1L, 
-                     cl = NULL, ...) 
+                      K.fold = 10,
+                    set.seed = 123,
+                        rand = NULL,
+                    parallel = c("no", "multicore", "snow"), 
+                       ncpus = 1L, 
+                          cl = NULL, ...) 
 {
-  #--------------- PARALLEL-------------------------------------------------------
-  #----------------SET UP PART----------------------------------------------------
-  if (missing(parallel)) 
+#--------------- PARALLEL-------------------------------------------------------
+#----------------SET UP PART----------------------------------------------------
+if (missing(parallel)) 
     parallel <- "no"
-  parallel <- match.arg(parallel)
-  have_mc <- have_snow <- FALSE
-  if (parallel != "no" && ncpus > 1L) 
-  {
-    if (parallel == "multicore") 
+    parallel <- match.arg(parallel)
+     have_mc <- have_snow <- FALSE
+if (parallel != "no" && ncpus > 1L) 
+{
+  if (parallel == "multicore") 
       have_mc <- .Platform$OS.type != "windows"
-    else if (parallel == "snow") 
-      have_snow <- TRUE
-    if (!have_mc && !have_snow) 
-      ncpus <- 1L
-    loadNamespace("parallel")
-  }
-  # -------------- finish parallel------------------------------------------------
-  #-------------------------------------------------------------------------------
-  if (is.null(data))   stop("data should be set here")
-  N <- dim(data)[1]
-  #RNAMES <- rownames(data)
-  set.seed <- set.seed
-  rand <- if (is.null(rand)) sample(K.fold , N, replace=TRUE)
-  else rand
-  if (length(rand)!=N) stop("the length of the rand should be equal to data")
-  K.fold=length(unique(rand))
-  CV <- rep(0, K.fold)
-  residCV <- rep(0, N)
-  i <- sort(unique(rand))
-  #---------------------------------------
-  fn <- function(i,...)
-  {
+  else if (parallel == "snow") 
+    have_snow <- TRUE
+  if (!have_mc && !have_snow) 
+        ncpus <- 1L
+  loadNamespace("parallel")
+}
+# -------------- finish parallel------------------------------------------------
+#-------------------------------------------------------------------------------
+if (is.null(data))   stop("data should be set here")
+       N <- dim(data)[1]
+# RNAMES <- rownames(data)
+set.seed <- set.seed
+    rand <- if (is.null(rand)) sample(K.fold , N, replace=TRUE)
+            else rand
+if (length(rand)!=N) stop("the length of the rand should be equal to data")
+  K.fold <- length(unique(rand))
+      CV <- rep(0, K.fold)
+ residCV <- rep(0, N)
+       i <- sort(unique(rand))
+#---------------------------------------
+fn <- function(i,...)
+ {
     cat("fold ", i, "\n",sep="")
     learn <- gamlssVGD(formula=formula, sigma.formula=sigma.formula, nu.formula=nu.formula, tau.formula=tau.formula,  family=family, control=control, data=data[rand!=i,], newdata=data[rand==i,],...)
     # residCV[rand==i] <<-  learn$residVal
     list(CV=learn$VGD, resid=learn$residVal) 
-  }
-  #pp<-vapply(i, fn, list("gc", "res"))
-  # ll<-lapply(i, fn)
-  # ss<-sapply(i, fn)
-  #========================================
-  # --------  parallel -----------------------------------------------------------
-  CV <- if (ncpus > 1L && (have_mc || have_snow)) 
-  { 
-    if (have_mc) 
-    {# sapply(scope, fn)
+ }
+#pp<-vapply(i, fn, list("gc", "res"))
+# ll<-lapply(i, fn)
+# ss<-sapply(i, fn)
+#========================================
+# --------  parallel -----------------------------------------------------------
+CV <- if (ncpus > 1L && (have_mc || have_snow)) 
+{ 
+  if (have_mc) 
+  {# sapply(scope, fn)
       parallel::mclapply(i, fn, mc.cores = ncpus)
-    }
-    else if (have_snow) 
-    {
+  }
+  else if (have_snow) 
+  {
       list(...)
-      if (is.null(cl)) 
-      {
-        # make the cluster
-        # cl <- parallel::makePSOCKcluster(rep("localhost", ncpus))
-        cl <- parallel::makeForkCluster(ncpus)
-        if (RNGkind()[1L] == "L'Ecuyer-CMRG") 
+   if (is.null(cl)) 
+    {
+# make the cluster
+# cl <- parallel::makePSOCKcluster(rep("localhost", ncpus))
+  cl <- parallel::makeForkCluster(ncpus)
+    if (RNGkind()[1L] == "L'Ecuyer-CMRG") 
           parallel::clusterSetRNGStream(cl)
-        res <- parallel::parLapply(cl, i, fn)
-        parallel::stopCluster(cl)
-        res
-      }
-      else t(parallel::parLapply(cl, i, fn))
+ res <- parallel::parLapply(cl, i, fn)
+    parallel::stopCluster(cl)
+  res
+     }
+    else t(parallel::parLapply(cl, i, fn))
     }
-  } # end parallel ---------------------------------------------------------------
-  else lapply(i, fn)
+} # end parallel ---------------------------------------------------------------
+else lapply(i, fn)
   cv <- rep(0, K.fold)
-  for (i in 1:K.fold)
+for (i in 1:K.fold)
   {
     residCV[rand==i] <-  CV[[i]]$resid
     cv[i] <- CV[[i]]$CV
   }
-  # CV <-  sapply(i, fn) 
+ # CV <-  sapply(i, fn) 
   out <- list(CV=sum(cv), allCV=cv, residCV=residCV) 
   class(out) <- "gamlssCV"
   out

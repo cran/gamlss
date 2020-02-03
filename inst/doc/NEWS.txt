@@ -22,14 +22,30 @@ Question or suggestions about GAMLSS can be send to
    or
    r.rigby@londonmet.ac.uk
 --------------------------------------------------------------------------------
+Version 5.1-6
+   1. gamlss 
+   
+        i) predict.gamlssML() with the option `newdata' was coming back with a vectors of length 1. This is corrected now. The length now is the number of rows in newdata. 
+        
+   2. gamlss.dist 
+        i) a correction for pSEP2 so the cdf is never bigger that .9999         ii) ST1 in the help file the argument "..."" was deleted since did not exist the function
+   
+   3. gamlss.foreach A new package is create for parallel computations. At the          moment it  has the following functions:
+   
+          i)  centile.boost() for centiles confident interval
+          
+          ii)  pc() for principal component regression and 
+          
+          iii) fitRolling() for time series rolling fitting        
+
 Version 5.1-5
 
-   1. gamlss i) the code in the example for the centiles.pred() function has been                     changed
+   1. gamlss i) the code in the example for the centiles.pred() function has been changed
    
            ii) the function random() allows now prediction.
            
            iii) the argument "level"" has been added to the function re(). 
-           It allows uses to get the marginal contribution of the random effect factor            when use predict().
+           It allows uses to get the marginal contribution of the random effect              factor when use predict().
            
            vi) suppressWarnings(Fun <- splinefun(x, fv, method="natural"))
               was added in gamlss.pb() gamlss.pbc(), gamlss.pbm() and gamlss.pbz()                to avoid warnings when the values of x-variable are not unique 
@@ -39,16 +55,9 @@ Version 5.1-5
              that the function can find it from the fitted model 
              (As suggested by Tim Cole).
              
-            vi) The lms() function has been modified to so the "call" represent                   closer the real call of the fitting. For example, while before was shown
-             y~pb(x) now the real names will be shown i.e. head~pb(age) 
-             
-   2. gamlss.dist i) the PIG2 distribution is added
-   
-   3. gamlss.foreach A new package is create for parallel computations at the moments                 its has:
-          i) centile.boost() for centiles confident interval
-          ii) pc() for principal component regression and 
-          iii) fitRolling() for time series rolling fitting
-
+            vi) The lms() function has been modified to so the "call" represent                   closer the real call of the fitting. For example, while before was                 shown y~pb(x) now the real names will be shown i.e. head~pb(age) 
+            
+ 2. gamlss.dist i) the PIG2 distribution is added            
 
 Version 5.1-4
   1. gamlss i) logSurv0() is added 

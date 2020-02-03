@@ -499,8 +499,9 @@ if (is.null(newdata))
  }
    else # if new data use only the length of the new data
  {
+   lengthnewdata <- if (class(newdata)=="data.frame") dim(newdata)[1] else length(newdata)
    if (!se.fit)
-     ret<- rep(fitted(object,what)[1], length(newdata))  
+     ret<- rep(fitted(object,what)[1], lengthnewdata)  
    else
    {
      se <- vcov(object,"se") 
@@ -508,8 +509,8 @@ if (is.null(newdata))
        gamlss.family(eval(parse(text=paste(object$family[1],"(",what,".link=",
                                            eval(parse(text=(paste("object$",what,".link", sep="")))),")", sep=""))))[[paste(what,"dr",sep=".")]]
        (coef(object, what)))
-   ret<-list(fit = rep(fitted(object,what)[1], length(newdata)) ,                  # eta:  obj[[paste(what, "lp", sep=".")]]
-               se.fit = unname(rep(se[paste("eta.", what,sep="")]*dmudeta, length(newdata))))   
+   ret<-list(fit = rep(fitted(object,what)[1], lengthnewdata) ,                  # eta:  obj[[paste(what, "lp", sep=".")]]
+               se.fit = unname(rep(se[paste("eta.", what,sep="")]*dmudeta, lengthnewdata)))   
    }
  } 
    ret

@@ -85,11 +85,11 @@ if(!is.null(df)) # degrees of freedom
     df <- if (df < 0)  2  else  df+2
   }
 ## -------- check max.df   (new 7-2018 MS)  
-if (is.null(max.df)) max.df <- dim(X)[2]-2
-if (max.df>(dim(X)[2]-2)) 
+if (is.null(max.df)) max.df <- dim(X)[2]
+if (max.df>(dim(X)[2])) 
   {
-    max.df <- dim(X)[2]-2
-    warning("The max.df's are set to",  dim(X)[2]-2,  "\n")
+    max.df <- dim(X)[2]
+    warning("The max.df's are set to",  dim(X)[2],  "\n")
   }   
 ## here we get the gamlss environment and a random name to save
 ## the starting values for lambda within gamlss()

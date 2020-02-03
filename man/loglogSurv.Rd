@@ -50,7 +50,7 @@ logSurv0(y, prob = 0.9, tail = c("right", "left"), plot = TRUE,
            title = NULL, ...)
            
          
-ECDF(y)
+ECDF(y, weights=NULL)
 
 loglogplot(y, nplus1 = TRUE, ...)
 
@@ -66,7 +66,8 @@ loglogplot(y, nplus1 = TRUE, ...)
   \item{lcol}{The line colour in the plot}
   \item{lines}{whether to plot the fitted lines}  
   \item{ltype}{The line type in the plot}
-    \item{nplus1}{whether to divide by n+1 or n when calculating the ecdf}
+  \item{nplus1}{whether to divide by n+1 or n when calculating the ecdf}
+  \item{weights}{prior weights for \code{ECDF()}}  
   \item{...}{for extra argument in the plot command}
 }
 \details{

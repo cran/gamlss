@@ -1,8 +1,8 @@
-3354aa429a41e557e9dcb5003dbb0fc0 *DESCRIPTION
+476918bfa55a08c980d074c568022405 *DESCRIPTION
 a1d152db6eb063ab3e31c2fcd869c136 *NAMESPACE
 3e7f619c799c37dc1ac3f522d8001b8d *R/DevianceIncr.R
 5cc92de5982e5fa5dc799f04962191d1 *R/DropAddStepGAIC-Parallel.R
-2184fc52cda3276910c0cd436adc4696 *R/FitTail.R
+998027f72825d0cbbfc723bf14b7d3dd *R/FitTail.R
 ee62eae349a22d2c3cb7793e0da6d4f7 *R/HistDist-03-10-13.R
 8421bf7675635bf9e47cee06de2a6655 *R/LR-test-12-06-2013.R
 98384d2cef9b807ead36e44b7c3a7fda *R/POLY.R
@@ -28,9 +28,9 @@ e4a574eb3b2ed6d057eb43d5a1461a94 *R/fitDist-17-05-13.R
 8db21618cde906ebcb50c92f365ff6b9 *R/fitDistPred.R
 b6c22ecd1f915931319f0625cabc3e9b *R/fitted-plot.R
 9fd238396a21acdcc7e2fbf636cddf14 *R/fracpoly.R
-8f41e3e1463a93d18e49cd60971b1ec7 *R/gamlss.R
-66ae1e7d827065199d083c69d87e0819 *R/gamlssML.R
-578c63dac21c11807a24ff8cfbef57df *R/gamlssVGD.R
+289ed04967a637143b89b9cd5576f3fc *R/gamlss.R
+d8b31754c992415cc440ad062ce07fa2 *R/gamlssML.R
+3cd400f096f52a9d9e284be3991482e0 *R/gamlssVGD.R
 9051aedb5b8a6cdc04af9a563c08041a *R/gen-Likelihood.R
 eb8a2a8f78a8ae971cb6b02c2e470163 *R/get-K-rvcov-16-06-2913.R
 25517f906a22d37860512fdde709c962 *R/getPEF.R
@@ -43,7 +43,7 @@ ec8a84039c344fe277333abfe11be23d *R/lo_new.R
 9520cecf3bcd309b8f32c91364e29082 *R/lpred.R
 4a09cbcdf222c2e58b4dcf0a269e7157 *R/p-categorical.R
 81ea7b87b4a85442b7991e3d8840d88e *R/par_plot-21-5-13.R
-788b9d2f9b8729261eaaccbe944c2a25 *R/pb.R
+d928178540c4e6d7851958a5e2ff0721 *R/pb.R
 efd59afa3c6e9b887febfad2598d2ca7 *R/pb_goingtozero.R
 a13b716a4d8b7f07718e2bb349a7f2d9 *R/pbc.R
 05f51b471c1d3f4d1b2d5709427abce8 *R/pbm.R
@@ -75,9 +75,9 @@ bd546373676a98a2e170bd7adfe5637a *R/stepTGDAll-A-parallel.R
 704b0b579cb9e498a9f61d2a2a9e8d21 *R/update.R
 d60d02692ed989f1f4f39dbca2445dd3 *R/vcov-gamlss.R
 7d8f5d21270fc68ef7a1eb97a3773235 *R/wp.R
-4780ecbf64e68070a14c53548481488e *build/partial.rdb
+9aac71df5196d1f7599d3fd00f28f147 *build/partial.rdb
 469238c97e885729eb5da9f4d9fb35e0 *inst/CITATION
-a99dfe811613415dd9b29b4e13db7ab1 *inst/doc/NEWS.txt
+a4115ef99d9867fede50828f0f50eaaf *inst/doc/NEWS.txt
 dd4589a5ff2ecdfb77876d0087a78a1f *inst/doc/gamlss-manual.pdf
 ea04102a3c97993db0345616b26fb1ce *man/DevianceIncr.Rd
 d1e4a523756cfdc3e8c9915b9e33fdc4 *man/IC.Rd
@@ -123,7 +123,7 @@ cb51b965ffa30c256c406ecd51416080 *man/histDist.Rd
 93811a23e5e97da34cd08fa79a28aca5 *man/histSmo.Rd
 af7fdb9f6aed4c19329bdeab9feb7ff7 *man/lms.Rd
 ea5129b464c3889406ed96ad07250bda *man/lo.Rd
-874c605b3996e56a9438036a7754c443 *man/loglogSurv.Rd
+73b2eb38c4e62e539bf72fc61d71db2b *man/loglogSurv.Rd
 e0ca867b38af2d107d07c90ef535715c *man/lpred.Rd
 efec49bcf9a1914fb79fdc6f08d8fddc *man/model.frame.gamlss.Rd
 35f2e854aeed95fe9f28819028aff8be *man/numeric.deriv.Rd

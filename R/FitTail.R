@@ -406,14 +406,45 @@ loglogplot0 <- function(x,  ...)
 } 
 #-------------------------------------------------------------------------------
 # a function for ecdf the the difference that it divide by n+1
-ECDF <- function(y)
+# Mikis 9-1-2010 added weights
+# 
+ECDF <- function (y, weights=NULL) 
 {
+if (is.null(weights))
+  {
   ysort <- unique(sort(y))
       n <- length(y)
-# ecdf0 <- cumsum(tabulate(match(y, ysort)))/n# standard definition
-   ecdf <- cumsum(tabulate(match(y, ysort)))/(n+1)
-  fun <- stepfun(ysort,c(0,ecdf))
+   ecdf <- cumsum(tabulate(match(y, ysort)))/(n + 1)
+    fun <- stepfun(ysort, c(0, ecdf))
   class(fun) <- c("ecdf", "stepfun")
-  fun
-}
+  return(fun)
+  } else
+  {
+    if (length(weights)!=length(y)) stop("y and weights have different length")
+    i <- is.na(weights) | weights == 0
+    if (any(i)) 
+    {
+      y <- y[!i]
+weights <- weights[!i]
+    } 
+  ysort <- unique(sort(y))
+      n <- length(y)       
+weights <- tapply(weights, y, sum)
+   cumu <- cumsum(weights)
+   ecdf <- (cumu)/(cumu[length(cumu)]+1)
+    fun <- stepfun(ysort, c(0, ecdf))
+  class(fun) <- c("ecdf", "stepfun")
+    return(fun)
+  }   
+}  
+# ECDF <- function(y)
+# {
+#   ysort <- unique(sort(y))
+#       n <- length(y)
+# # ecdf0 <- cumsum(tabulate(match(y, ysort)))/n# standard definition
+#    ecdf <- cumsum(tabulate(match(y, ysort)))/(n+1)
+#   fun <- stepfun(ysort,c(0,ecdf))
+#   class(fun) <- c("ecdf", "stepfun")
+#   fun
+# }
 #------------------------------------------------------------------------------
