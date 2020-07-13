@@ -19,6 +19,7 @@
 #        against log(y) for part or all the data (no fitting here)
 # vii)  loglogplot() plots the empirical survival function log(1-ecdf) for all data
 # viii)  ECDF()
+#       
 #-------------------------------------------------------------------------------
 # those are in gamlss.tr
 # vii)     fitTail : fits a truncated gamlss.family distribution to the tail of the data
@@ -447,4 +448,42 @@ weights <- tapply(weights, y, sum)
 #   class(fun) <- c("ecdf", "stepfun")
 #   fun
 # }
+# --------------------------------------------------------------
+# --------------------------------------------------------------
+# this function is not exported 
+#---------------------------------------------------------------
+#---------------------------------------------------------------
+# This function allow weighted quantiles
+# It is bsed on the function wtd.quantile() of package Hmisc
+quantile.weights <- function (y, weights = NULL, probs = c(0, 0.25, 0.5, 0.75, 1)) 
+{
+  if (!length(weights)) 
+    return(quantile(y, probs = probs))
+  if (any(probs < 0 | probs > 1)) 
+    stop("Probabilities must be between 0 and 1 inclusive")
+  i <- is.na(weights) | weights == 0
+  if (any(i)) 
+  {
+    y <- y[!i]
+    weights <- weights[!i]
+  }
+  ysort <- unique(sort(y))
+  weights1 <- tapply(weights, y, sum)
+  cumu <- cumsum(weights1)
+  x <- ysort
+  wts <- weights1
+  n <- sum(wts)
+  order <- 1 + (n - 1) * probs
+  low <- pmax(floor(order), 1)
+  high <- pmin(low + 1, n)
+  order <- order%%1
+  allq <- approx(cumsum(wts), x, xout = c(low, high), method = "constant", 
+                 f = 1, rule = 2)$y
+  k <- length(probs)
+  quantiles <- (1 - order) * allq[1:k] + order * allq[-(1:k)]
+  nams <- paste(format(round(probs * 100, 
+                             if (length(probs) > 1) 2 - log10(diff(range(probs))) else 2)), "%", sep = "")
+  names(quantiles) <- nams
+  return(quantiles)  
+}
 #------------------------------------------------------------------------------

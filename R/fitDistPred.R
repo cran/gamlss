@@ -20,7 +20,7 @@ predictAll.V <- function(object, newdata=NULL, se.fit=FALSE)
   {
      y  <- if (is.null(newdata)) y else newdata
     out <- list(y=y)
-    if ("mu" %in% object$par)  
+    if ("mu" %in% object$par)   
       out$mu <- predict(object, newdata=newdata, what = "mu", se.fit = se.fit )
     if ("sigma" %in% object$par)  
       out$sigma <- predict(object,  newdata=newdata, what = "sigma", se.fit = se.fit)

@@ -22,15 +22,19 @@ Question or suggestions about GAMLSS can be send to
    or
    r.rigby@londonmet.ac.uk
 --------------------------------------------------------------------------------
-Version 5.1-6
+Version 5.1-7
    1. gamlss 
-   
         i) predict.gamlssML() with the option `newdata' was coming back with a vectors of length 1. This is corrected now. The length now is the number of rows in newdata. 
+        ii) the GAIC.scaled() function is added.
+       iii) a bug in VC.test() function when the two models were binomial type is corrected now (thanks to Dave Armstrong) 
         
    2. gamlss.dist 
-        i) a correction for pSEP2 so the cdf is never bigger that .9999         ii) ST1 in the help file the argument "..."" was deleted since did not exist the function
+        i)  a correction for pSEP2 so the cdf is never bigger that .9999         
+        ii) ST1 in the help file the argument "..."" was deleted since did not exist the function
+        iii) the argument "weights" (for prior weights) is added to most of the skewness and          kurtosis functions, i.e. checkMomentSK() 
    
-   3. gamlss.foreach A new package is create for parallel computations. At the          moment it  has the following functions:
+   3. gamlss.foreach A new package is created for parallel computations. 
+   At the moment it has the following functions:
    
           i)  centile.boost() for centiles confident interval
           
@@ -55,7 +59,8 @@ Version 5.1-5
              that the function can find it from the fitted model 
              (As suggested by Tim Cole).
              
-            vi) The lms() function has been modified to so the "call" represent                   closer the real call of the fitting. For example, while before was                 shown y~pb(x) now the real names will be shown i.e. head~pb(age) 
+            vi) The lms() function has been modified to so the "call" represent                                closer the real call of the fitting. For example, while before was shown 
+                  y~pb(x) now the real names will be shown i.e. head~pb(age) 
             
  2. gamlss.dist i) the PIG2 distribution is added            
 

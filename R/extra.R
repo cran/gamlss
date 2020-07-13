@@ -63,6 +63,27 @@ if (!what%in%object$par) stop(paste(what,"is not a parameter in the object","\n"
 x <- object[[paste(what,"coefficients",sep=".")]]
 x
 }
+##------------------------------------------------------------
+##============================================================
+# this probably shoulf go in the main gamlss 
+coefAll <- function(obj, deviance=FALSE, ...)
+{
+  out <- list()
+  if ("mu" %in% obj$par) #
+    out$mu <- coef(obj, "mu")
+  if ("sigma" %in% obj$par)  
+    out$sigma <- coef(obj, "sigma")
+  if ("nu" %in% obj$par)  
+    out$nu <- coef(obj, "nu")
+  if ("tau" %in% obj$par)  
+    out$tau <-  coef(obj, "tau")
+  if (deviance) out$deviance <- deviance(obj)
+  return(out)
+}
+##============================================================
+##------------------------------------------------------------
+##============================================================
+
 ################################################################################
 #                 residual or resid.gamlss
 ################################################################################
@@ -310,7 +331,8 @@ GAIC <- function(object,..., k = 2, c = FALSE ) #UseMethod("AIC")
 }
 ################################################################################
 GAIC.table <- function(object,..., 
-                       k = c(2, 3.84, round(log(length(object$y)),2))) 
+                       k = c(2, 3.84, round(log(length(object$y)),2)),
+                       text.to.show=NULL) 
 {
   objects <- list(object, ...)
     norow <- length(objects)
@@ -327,14 +349,168 @@ GAIC.table <- function(object,...,
            val <- as.data.frame(MM)
           Call <- match.call()
         Call$k <- NULL
-row.names(val) <- as.character(Call[-1])
+row.names(val) <- if (is.null(text.to.show)) as.character(Call[-1])
+                  else text.to.show
     names(val) <- c("df", paste("k=",as.character(k), sep=""))
   for (i in 1:length(k)) cat("minimum GAIC(k=",k[i],") model:", 
                              row.names(val)[which.min(unclass(val[1+i][[1]]))], "\n")
   val
 }
-##############################################################################
 ################################################################################
+################################################################################
+# Creating AIC weights
+# the weights can be interpreted as posterior probabilities
+# i.e prob(model/data)
+# but more like as evidence on how the diffrent models 
+# compared with each other
+#  diff.dev should be a function of the sample size
+################################################################################
+################################################################################
+GAIC.scaled <- function(object,..., 
+                        k = 2,      # which column
+                        c = FALSE,  # whether corrected GAIC
+                        plot = TRUE,   #
+                        text.cex = 0.7,    # the model/distribution text size
+                        which = 1,      # for families which GAIC
+                        diff.dev = 1000,
+                        text.to.show=NULL)   # if difference i GD more that 1000 do not print
+{
+  if (is.matrix(object))
+  {
+    fnas <- !is.na(object[,which])
+    dm <- dim(object)
+    # object
+    wmin <- which.min(object[,which])  #apply(object, 2, which.min)
+    #wmax <- which.max(object[,which]) #apply(object, 2, which.max)
+    # dAIC <- oAIC <- matrix(0,nrow=dm[1], ncol=dm[2] )
+    # 
+    dAIC <- (object[,which]-object[wmin,which])
+    dAIC <- ifelse( dAIC > diff.dev, NA, dAIC)
+    which.max(dAIC)
+    oAIC <- 1-dAIC/dAIC[which.max(dAIC)] #
+    #   }
+    if (plot)
+    {    
+      which.na <- !is.na(oAIC)   
+      namesDist <- rownames(object)[which.na] 
+      scaled <- oAIC[which.na]
+      ind  <- c(1:sum(which.na))
+      plot(scaled~ind, type="h", ylim=c(-0.35, 1.05), xlab="families")
+      points(scaled, pch=20)
+      abline(h=0, col="gray")
+      abline(h=1, col="gray")
+      text(ind,-0.01, namesDist, srt = 90, cex=text.cex, adj=1) #
+    }
+  } else
+    if (length(list(...))) 
+    {
+      object <- list(object, ...)
+      isgamlss <- unlist(lapply(object, is.gamlss))
+      if (!any(isgamlss)) stop("some of the objects are not gamlss")
+      df <- as.numeric(lapply(object, function(x) x$df.fit))
+      N <- as.numeric(lapply(object, function(x) x$N))
+      Cor <- if ((k == 2)&&(c==TRUE)) (2*df*(df+1))/(N-df-1) else rep(0, length(object)) 
+      AIC <- as.numeric(lapply(object, function(x) x$G.dev+x$df.fit*k ))+Cor  
+      dAIC <- (AIC-AIC[which.min(AIC)]) 
+      oAIC <- 1-dAIC/dAIC[which.max(dAIC)]
+      val <- as.data.frame(cbind(df,AIC, delta=round(dAIC,5), scaled=round(oAIC,4)))
+      Call <- match.call()
+      Call$k <- Call$c <- Call$plot <- Call$text.cex <- Call$which <- Call$diff.dev <- NULL 
+      row.names(val) <- if (is.null(text.to.show)) as.character(Call[-1])
+                        else text.to.show
+      if  (plot) 
+      {
+        ind <- 1:length(AIC)
+        plot(ind, oAIC , ylab="scaled", xlab="models", 
+             type="h", col="black", ylim=c(-0.25, 1.1))
+        points(1:length(AIC), oAIC, pch=20)
+        abline(h=0, col="gray")
+        abline(h=1, col="gray")
+        text(ind,-0.01, rownames(val), srt = 90, cex=text.cex, adj=1) 
+      }
+      val  <-  val[,]
+      val
+    }
+  else 
+  { val <- if (is.gamlss(object)) object$G.dev+object$df.fit*k 
+  else stop(paste("this is not a gamlss object"))
+  if ((k == 2)&&(c==TRUE)) val <- val + (2*object$df.fit*(object$df.fit+1))/(object$N-object$df.fit-1) 
+  val 
+  }
+}
+################################################################################
+################################################################################
+# GAIC.weights <- function(object, ..., 
+#                          k = 2,      # whic gAIC
+#                          c = FALSE,  # whether corrected GAIC
+#                       plot = TRUE,   #
+#                   text.cex = 0.7,    # the model/distribution text size
+#                      which = 1,      # for families which GAIC
+#                   diff.dev = 1000)   # if difference i GD more that 1000 do not print
+# {
+# if (is.matrix(object))
+#   {
+#     fnas <- !is.na(object)
+#     dm <- dim(object)
+#     # object
+#     wmin <- apply(object, 2, which.min)
+#     dAIC <- wAIC <- matrix(0,nrow=dm[1], ncol=dm[2] )
+#     for (i in 1:dm[2]){
+#       dAIC[,i] <- (object[,i]-object[wmin[i],i])[fnas[i]]
+#       dAIC[,i] <- ifelse( dAIC[,i]>diff.dev, NA, dAIC[,i])
+#           dAIC <- 2*scale(dAIC) # this is rather abritary 
+#       wAIC[,i] <- exp(-0.5*dAIC[,i])/sum(exp(-0.5*dAIC[,i]), na.rm=TRUE)
+#     }
+#     if (plot)
+#     {    
+#       which.na <- !is.na(wAIC[,which])   
+#      namesDist <- rownames(object)[which.na] 
+#        Weights <- wAIC[which.na,which]
+#           ind  <- c(1:length(namesDist))
+#       plot(Weights~ind, type="h", ylim=c(-0.22, max(Weights)+.05), xlab="families")
+#       points(Weights, pch=20)
+#       abline(h=0)
+#       text(ind,-0.01, namesDist, srt = 90, cex=text.cex, adj=1) #
+#     }
+#   } else if (length(list(...))) 
+#   {
+#     object <- list(object, ...)
+#   isgamlss <- unlist(lapply(object, is.gamlss))
+# if (!any(isgamlss)) stop("some of the objects are not gamlss")
+#         df <- as.numeric(lapply(object, function(x) x$df.fit))
+#          N <- as.numeric(lapply(object, function(x) x$N))
+#        Cor <- if ((k == 2)&&(c==TRUE)) (2*df*(df+1))/(N-df-1) else rep(0, length(object)) 
+#        AIC <- as.numeric(lapply(object, function(x) x$G.dev+x$df.fit*k ))+Cor  
+#       dAIC <- (AIC-AIC[which.min(AIC)]) 
+#       #dAIC <- ifelse( dAIC > diff.dev, NA, dAIC)
+#       sAIC <- 2*scale(dAIC) # this is rather abritary 
+#       wAIC <- exp(-0.5*sAIC)/sum(exp(-0.5*sAIC))
+#        val <- as.data.frame(cbind(df, AIC, delta=round(dAIC,5), weights=round(wAIC,4)))
+#       Call <- match.call()
+#     Call$k <- Call$c <- NULL 
+# row.names(val) <- as.character(Call[-1])
+#  if  (plot) 
+#       {
+#         ind <- 1:length(AIC)
+#         plot(ind, wAIC , ylab="weights", xlab="models", 
+#              type="h", col="black", ylim=c(-0.1, max(wAIC)+0.1))
+#         points(1:length(AIC), wAIC, pch=20)
+#         abline(h=0)
+#         text(ind,-0.01, rownames(val), srt = 90, cex=text.cex, adj=1) 
+#       }
+#       val
+#     }
+#   else 
+#   { val <- if (is.gamlss(object)) object$G.dev+object$df.fit*k 
+#   else stop(paste("this is not a gamlss object"))
+#   if ((k == 2)&&(c==TRUE)) val <- val + (2*object$df.fit*(object$df.fit+1))/(object$N-object$df.fit-1) 
+#   val 
+#   }
+# }
+################################################################################
+################################################################################
+##############################################################################
+##############################################################################
 ## a small utility function to get the hat matrix from a weighted regression
 ## used in cs() and other additive terms 
 ## MS Tuesday, June 22, 2004 at 21:26

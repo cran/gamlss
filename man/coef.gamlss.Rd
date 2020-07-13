@@ -1,5 +1,7 @@
 \name{coef.gamlss}
 \alias{coef.gamlss}
+\alias{coefAll}
+
 \title{Extract Model Coefficients in a GAMLSS fitted model}
 \description{\code{coef.gamlss} is the GAMLSS specific method for the generic function \code{coef} which extracts model coefficients
      from objects returned by modelling functions.  `coefficients' is an
@@ -8,11 +10,14 @@
 \usage{
 \method{coef}{gamlss}(object, what = c("mu", "sigma", "nu", "tau"), 
                       parameter = NULL, ... )
+                      
+coefAll(obj, deviance = FALSE, ...)
 }
 \arguments{
-  \item{object}{a GAMLSS fitted model}
+  \item{object, obj}{a GAMLSS fitted model}
   \item{what}{which parameter coefficient is required, default \code{what="mu"} }
    \item{parameter}{equivalent to \code{what} (more obvious name)}
+   \item{deviance}{whether to print also the deviance.}
   \item{\dots}{for extra arguments}
 }
 
@@ -36,8 +41,9 @@ Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2
 \seealso{  \code{\link{gamlss}}, \code{\link{deviance.gamlss}},  \code{\link{fitted.gamlss}} }
 \examples{
 data(aids)
-h<-gamlss(y~poly(x,3)+qrt, family=PO, data=aids) # 
+h<-gamlss(y~poly(x,3)+qrt, family=NBI, data=aids) # 
 coef(h)
+coefAll(h)
 rm(h)
 }
 \keyword{regression}% 

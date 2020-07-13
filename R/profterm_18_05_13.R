@@ -46,7 +46,7 @@ criterion  <- match.arg(criterion)
        call <- mod.1$call
     if (start.prev)
     {
-      if (   "mu"%in%mod.1$parameters)  call$mu.start<-fitted(mod.1,"mu")
+      if (   "mu"%in%mod.1$parameters)  call$mu.start    <- fitted(mod.1,"mu")
       if ("sigma"%in%mod.1$parameters)  call$sigma.start <- fitted(mod.1,"sigma")
       if (   "nu"%in%mod.1$parameters)  call$nu.start    <- fitted(mod.1,"nu")
       if (  "tau"%in%mod.1$parameters)  call$tau.start   <- fitted(mod.1,"tau")

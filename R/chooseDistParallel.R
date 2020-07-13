@@ -169,10 +169,10 @@ chooseDist <- function(object,
                     dimnames = list(DIST,  as.character(k)))  
 #----------------------------------------------------------------  
 #----------------------------------------------------------------    
-  for (i in 1:length(k)) cat("minimum GAIC(k=",k[i],") family:", 
-                             names(which.min(MM[,i])), "\n")
+     for (i in 1:length(k)) cat("minimum GAIC(k=",k[i],") family:", 
+                                names(which.min(MM[,i])), "\n")
 #----------------------------------------------------------------
-  MM  
+     MM  
 }
 #----------------------------------------------------------------
 getOrder <- function(obj, column=1) 

@@ -82,7 +82,7 @@ dim1newdata  <- dim(dataValid)[1]
  {                   #if `newdata'  is set do this ----------------------------------
           m1 <- gamlss(formula = formula, sigma.formula = sigma.formula, 
                       nu.formula = nu.formula, tau.formula = tau.formula, 
-                      data = data, family = NO, control = control, ...)
+                      data = data, family = family, control = control, ...)
      nfitted <- predictAll(m1, newdata=newdata, data=data)
 dim1newdata  <- dim(newdata)[1]
  }
@@ -271,7 +271,7 @@ getTGD<- function (object,   newdata = NULL, ...)
     if (fname$family[[1]] %in% .gamlss.bi.list)
     {
       devi <-  call(dfun, x=y1, mu =  nfitted$mu, sigma= nfitted$sigma,  bd=bd, log=TRUE) 
-      ures <-  call(pfun, q=y1, mu =  nfitted$nmu, sigma= nfitted$sigma,, bd=bd)  
+      ures <-  call(pfun, q=y1, mu =  nfitted$nmu, sigma= nfitted$sigma, bd=bd)  
     } else
     {
       devi <-  call(dfun, x=y1, mu =  nfitted$mu, sigma =  nfitted$sigma, log=TRUE) 

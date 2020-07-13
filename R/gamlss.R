@@ -55,13 +55,13 @@ gamlssNews <- function() file.show(system.file("doc", "NEWS.txt", package="gamls
                    "arma",                        # time series  
                    "rw", "ar", "seas",            # time series             
                    "srw", "sar",                  # time series seasonal  
-                   "la",                          # time series penalised lags, 
+                   "la", "plag",                  # time series penalised lags, 
                    "tr",                          # decision trees  
                    "ga", "ba", "mm",              # gam - bam Simon Wood      
                    "nn",                          # neural netwoks           : nn
                    "sv",                          # suppor vector machines   : sv 
                    "ma",                          # mars                     : ma
-                   "pr",                          # projection pursuit Reg   : pr
+                   "pcr",                         # principal component Reg  : pcr
 				           "pc",                          # principal component regr : pc
 				           "h2o",                         # h2o project 
 				           "pa",                          # partial regression
@@ -84,7 +84,6 @@ gamlssNews <- function() file.show(system.file("doc", "NEWS.txt", package="gamls
 #                    "sap", "sap3",  "seas",                      
 #                   "test", "test0","test1","tr",                     
 #                   "own")
-
 ##========================================================================================
 ##  Generalised Additive Models for Location Scale and Shape 
 ##   R-functions created
