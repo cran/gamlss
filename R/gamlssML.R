@@ -61,7 +61,7 @@ gamlssML<-function(formula,
                 sigma.fix = FALSE,
                    nu.fix = FALSE,
                   tau.fix = FALSE,
-                     data = sys.parent(), # it need start.from = NULL
+                     data, # it need start.from = NULL
                start.from = NULL,
                    ...) 
 {
@@ -171,8 +171,11 @@ fullcoef[n] <- fixed
   # main function starts here
  mlFitcall <- match.call()  #   the function call  
   ## checking for NA in the data 
-  if(!missing(data) & any(is.na(data)))   
-    stop("The data contains NA's, use data = na.omit(mydata)") 
+  if(!missing(data)) 
+  {
+    if  (any(is.na(data)))   
+      stop("The data contains NA's, use data = na.omit(mydata)")
+  }  
   ##       Evaluate the model frame
     mnames <- c("", "formula", "data", "weights" ) #  "subset"  "na.action"
     cnames <- names(mlFitcall)  # get the names of the arguments of the call
@@ -411,7 +414,7 @@ mcall[[2]] <- if (any(grepl("~", deparse(substitute(formula)))))   mcall[[2]]
   
   out$residuals <- eval(fam$rqres)
   out$rqres <- fam$rqres
-  if (!is.null(data) ) out$call$data <- substitute(data)
+  if (!missing(data) ) out$call$data <- substitute(data)
   class(out) <- c("gamlssML", "gamlss")
   out
 }                                        

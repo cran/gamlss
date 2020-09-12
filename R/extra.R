@@ -367,66 +367,94 @@ row.names(val) <- if (is.null(text.to.show)) as.character(Call[-1])
 ################################################################################
 ################################################################################
 GAIC.scaled <- function(object,..., 
-                        k = 2,      # which column
-                        c = FALSE,  # whether corrected GAIC
-                        plot = TRUE,   #
-                        text.cex = 0.7,    # the model/distribution text size
-                        which = 1,      # for families which GAIC
-                        diff.dev = 1000,
-                        text.to.show=NULL)   # if difference i GD more that 1000 do not print
+                      k = 2,      # which column
+                      c = FALSE,  # whether corrected GAIC
+                   plot = TRUE,   #
+               text.cex = 0.7,    # the model/distribution text size
+                  which = 1,      # for families which GAIC
+               diff.dev = 1000,
+           text.to.show = NULL,
+                    col = NULL,   # color for the bars
+                  horiz = FALSE)  #  verical or horizontal
 {
-  if (is.matrix(object))
+if (is.matrix(object))
   {
     fnas <- !is.na(object[,which])
-    dm <- dim(object)
-    # object
+      dm <- dim(object)
+# object
     wmin <- which.min(object[,which])  #apply(object, 2, which.min)
-    #wmax <- which.max(object[,which]) #apply(object, 2, which.max)
-    # dAIC <- oAIC <- matrix(0,nrow=dm[1], ncol=dm[2] )
-    # 
     dAIC <- (object[,which]-object[wmin,which])
     dAIC <- ifelse( dAIC > diff.dev, NA, dAIC)
-    which.max(dAIC)
+    #    which.max(dAIC)
     oAIC <- 1-dAIC/dAIC[which.max(dAIC)] #
     #   }
-    if (plot)
+  if (plot)
     {    
       which.na <- !is.na(oAIC)   
-      namesDist <- rownames(object)[which.na] 
-      scaled <- oAIC[which.na]
-      ind  <- c(1:sum(which.na))
-      plot(scaled~ind, type="h", ylim=c(-0.35, 1.05), xlab="families")
-      points(scaled, pch=20)
-      abline(h=0, col="gray")
-      abline(h=1, col="gray")
-      text(ind,-0.01, namesDist, srt = 90, cex=text.cex, adj=1) #
-    }
-  } else
-    if (length(list(...))) 
-    {
-      object <- list(object, ...)
-      isgamlss <- unlist(lapply(object, is.gamlss))
-      if (!any(isgamlss)) stop("some of the objects are not gamlss")
-      df <- as.numeric(lapply(object, function(x) x$df.fit))
-      N <- as.numeric(lapply(object, function(x) x$N))
-      Cor <- if ((k == 2)&&(c==TRUE)) (2*df*(df+1))/(N-df-1) else rep(0, length(object)) 
-      AIC <- as.numeric(lapply(object, function(x) x$G.dev+x$df.fit*k ))+Cor  
-      dAIC <- (AIC-AIC[which.min(AIC)]) 
-      oAIC <- 1-dAIC/dAIC[which.max(dAIC)]
-      val <- as.data.frame(cbind(df,AIC, delta=round(dAIC,5), scaled=round(oAIC,4)))
-      Call <- match.call()
-      Call$k <- Call$c <- Call$plot <- Call$text.cex <- Call$which <- Call$diff.dev <- NULL 
-      row.names(val) <- if (is.null(text.to.show)) as.character(Call[-1])
-                        else text.to.show
-      if  (plot) 
+     namesDist <- rownames(object)[which.na] 
+        scaled <- oAIC[which.na]
+      names(scaled) <- ""
+          ind  <- c(1:sum(which.na))
+     if (horiz)
       {
-        ind <- 1:length(AIC)
-        plot(ind, oAIC , ylab="scaled", xlab="models", 
-             type="h", col="black", ylim=c(-0.25, 1.1))
-        points(1:length(AIC), oAIC, pch=20)
+        BP <- barplot(scaled, xlim=c(-0.25, 1.1), horiz=TRUE,  col=col )
+        points(scaled, BP, pch=20)
+        abline(v=0, col="black")
+        abline(v=1, col="gray")
+        grid()
+        box()
+        text(-0.01, BP, namesDist, srt = 0, cex=text.cex, adj=1) 
+      } 
+      else 
+      { 
+        BP <- barplot(scaled,  ylim=c(-0.25, 1.1), col=col)
+        points(BP, scaled, pch=20)
         abline(h=0, col="gray")
         abline(h=1, col="gray")
-        text(ind,-0.01, rownames(val), srt = 90, cex=text.cex, adj=1) 
+        grid()
+        box()
+        text(BP,-0.01, namesDist, srt = 90, cex=text.cex, adj=1)
+      }
+    }
+  } else
+if (length(list(...))) 
+    {
+      object <- list(object, ...)
+    isgamlss <- unlist(lapply(object, is.gamlss))
+if (!any(isgamlss)) stop("some of the objects are not gamlss")
+          df <- as.numeric(lapply(object, function(x) x$df.fit))
+           N <- as.numeric(lapply(object, function(x) x$N))
+         Cor <- if ((k == 2)&&(c==TRUE)) (2*df*(df+1))/(N-df-1) else rep(0, length(object)) 
+         AIC <- as.numeric(lapply(object, function(x) x$G.dev+x$df.fit*k ))+Cor  
+        dAIC <- (AIC-AIC[which.min(AIC)]) 
+        oAIC <- 1-dAIC/dAIC[which.max(dAIC)]
+         val <- as.data.frame(cbind(df,AIC, delta=round(dAIC,5), scaled=round(oAIC,4)))
+        Call <- match.call()
+      Call$k <- Call$c <- Call$plot <- Call$text.cex <- Call$which <- Call$diff.dev <- Call$horiz <- NULL 
+      row.names(val) <- if (is.null(text.to.show)) as.character(Call[-1])
+      else text.to.show
+   if  (plot) 
+    {
+      ind <- 1:length(AIC)
+      if (horiz)
+        {
+          BP <- barplot(oAIC,   xlim=c(-0.25, 1.1), horiz=TRUE,  col=col )
+          points(oAIC,BP, pch=20)
+          abline(v=0, col="black")
+          abline(v=1, col="gray")
+          grid()
+          box()
+          text(-0.01, BP, rownames(val), srt = 0, cex=text.cex, adj=1) 
+        } else
+        { 
+          BP <- barplot(oAIC,   ylim=c(-0.25, 1.1),  col=col)
+          points(BP, oAIC, pch=20)
+          abline(h=0, col="gray")
+          abline(h=1, col="gray")
+          grid()
+          box()
+          text(BP,-0.01, rownames(val), srt = 90, cex=text.cex, adj=1)
+        }
       }
       val  <-  val[,]
       val
@@ -540,7 +568,7 @@ Rsq <- function(object, type = c("Cox Snell","Cragg Uhler","both"))
   if (!is.gamlss(object)) stop("this is design for gamlss objects only")
   #  m0 <- update(object,  formula=~1, sigma.formula=~1, nu.formula=~1, tau.formula=~1, trace=F)
   Y <- if (object$family[1]%in%.gamlss.bi.list) cbind(object$y, object$bd-object$y) else object$y
-  suppressWarnings(m0 <- gamlssML(Y~1, family=object$family[1]))
+  suppressWarnings(m0 <- gamlssML(Y, family=object$family[1]))
   rsq1 <- 1-exp((2/object$N)*(logLik(m0)[1]-logLik(object)[1]))
   rsq2 <- rsq1/(1-exp((2/object$N)*logLik(m0)[1]))
   if (type=="Cox Snell") return(rsq1)

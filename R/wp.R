@@ -152,7 +152,7 @@ deparen <- function(expr)
       # {
     # if (object$call["data"]=="sys.parent()()")  DataExist <- FALSE
     #    else
-        DaTa <- get(as.character(object$call["data"])) 
+        DaTa <-  eval(object$call[["data"]]) #get(as.character(object$call["data"])) 
    DataExist <- TRUE
       # }    
     }

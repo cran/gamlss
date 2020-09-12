@@ -19,7 +19,7 @@ The function \code{gamlssNews()} shows what is new in the current implementation
 \usage{
 gamlss(formula = formula(data), sigma.formula = ~1, 
         nu.formula = ~1, tau.formula = ~1, family = NO(), 
-        data = sys.parent(), weights = NULL, 
+        data, weights = NULL, 
         contrasts = NULL, method = RS(),  start.from = NULL,  
         mu.start = NULL,  sigma.start = NULL, 
         nu.start = NULL, tau.start = NULL, 
@@ -46,8 +46,7 @@ gamlssNews()
    The distribution families supported by \code{gamlss()} can be found in \code{\link[gamlss.dist]{gamlss.family}}.
    Functions such as BI() (binomial) produce a family object. Also can be given without the parentheses i.e. \code{BI}.
    Family functions can take arguments, as in \code{BI(mu.link=probit)}} 
-  \item{data}{a data frame containing the variables occurring in the formula. If this is missing, the variables should be on the search list.
-     e.g. \code{data=aids}}
+  \item{data}{a data frame containing the variables occurring in the formula, e.g. \code{data=aids}. If this is missing, the variables should be on the search list.}
   %\item{na.action}{a function which indicates what should happen when the data contain \code{NA}s.  The default is set by the \code{na.action} setting
   %        of \code{options}, and is \code{na.omit}. Other options are \code{na.fail} and \code{na.exclude}. \code{na.omit} omits all the 
   %        rows in the data frame with the \code{NA}s.  \code{na.fail} will give an error if there are \code{NA}s in the data. 
@@ -142,12 +141,16 @@ in the model are fitted using a backfitting algorithm.
 Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), 
 \emph{Appl. Statist.}, \bold{54}, part 3, pp 507-554.
 
+Rigby, R. A., Stasinopoulos, D. M.,  Heller, G. Z.,  and De Bastiani, F. (2019)
+	\emph{Distributions for modeling location, scale, and shape: Using GAMLSS in R}, Chapman and Hall/CRC. An older version can be found in \url{https://www.gamlss.com/}.
+
 Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
-\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
+\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{https://www.jstatsoft.org/v23/i07/}.
 
-Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
+Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017)
+\emph{Flexible Regression and Smoothing: Using GAMLSS in R},  Chapman and Hall/CRC.  
 
-(see also \url{http://www.gamlss.com/}).
+(see also \url{https://www.gamlss.com/}).
 
 }
 

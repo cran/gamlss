@@ -9,7 +9,6 @@
   packageStartupMessage(paste("For more on GAMLSS look at",  packageDescription("gamlss")$URL))
   packageStartupMessage("Type gamlssNews() to see new features/changes/bug fixes.\n")
     }
-  	
 # packageStartupMessage(cat(paste(" **********   GAMLSS Version",  packageDescription("gamlss")$Version), "********** \n")
 #                 ;cat(paste("For more on GAMLSS look at",  packageDescription("gamlss")$URL), "\n")
 #                 ;cat("Type gamlssNews() to see new features/changes/bug fixes.\n")
@@ -109,7 +108,7 @@ gamlss <- function(formula = formula(data),
                 nu.formula = ~1,
                tau.formula = ~1,
                     family = NO(),
-                      data = sys.parent(),
+                      data,
                    weights = NULL, # for weighted likelihood analysis 
                                    # (not the same as in GLM's) 
                  contrasts = NULL, # one type of contrasts for all  parameters 
@@ -875,8 +874,11 @@ object
 ##       Save call for future reference
 gamlsscall <- match.call()  #   the function call
 ## checking for NA in the data 
-  if(!missing(data) & any(is.na(data)))   
-      stop("The data contains NA's, use data = na.omit(mydata)") 
+  if(!missing(data)) 
+     {
+    if  (any(is.na(data)))   
+    stop("The data contains NA's, use data = na.omit(mydata)")
+      }  
 ##       Evaluate the model frame
     mnames <- c("", "formula", "data", "weights" ) #  "subset"  "na.action"
     cnames <- names(gamlsscall)  # get the names of the arguments of the call
@@ -887,7 +889,8 @@ mcall[[1]] <- as.name("model.frame") # replace NULL with model.frame
 ##        Specials for smoothing
 mcall$formula <- if(missing(data)) terms(formula, specials = .gamlss.sm.list) 
                  else terms(formula, specials = .gamlss.sm.list, data = data)    
-    mu.frame <- eval(mcall, sys.parent())  # evalute the data.frame at the model.frame 
+    mu.frame <- eval(mcall, sys.parent())  # evalute the data.frame at the model.frame
+    
 ##-----------------------------------------------------------------------------------------
 ## This part deals with the family 
     family <- as.gamlss.family(family)        # bring first the gamlss family

@@ -14,7 +14,7 @@ A restriction of the function is that it applies to models with only one explana
 centiles.pred(obj, type = c("centiles", "z-scores", "standard-centiles"), 
              xname = NULL, xvalues = NULL, power = NULL, yval = NULL, 
              cent = c(0.4, 2, 10, 25, 50, 75, 90, 98, 99.6), 
-             dev = c(-4, -3, -2, -1, 0, 1, 2, 3, 4), 
+             dev = c(-4, -3, -2, -1, 0, 1, 2, 3, 4), calibration = FALSE,
              plot = FALSE, legend = TRUE, 
              ...)
 }
@@ -30,6 +30,7 @@ centiles.pred(obj, type = c("centiles", "z-scores", "standard-centiles"),
   \item{yval}{the response values for a given x required for the calculation of "z-scores"}
   \item{cent}{a vector with elements the \% centile values for which the centile curves have to be evaluated}
   \item{dev}{ a vector with elements the standard normalized values for which the centile curves have to be evaluated in the option \code{type="standard-centiles"}}
+   \item{calibration}{whether to calibrate the "centiles", the default is \code{calibrate=FALSE}}
   \item{plot}{whether to plot the "centiles" or the "standard-centiles", the default is \code{plot=FALSE}}
   \item{legend}{whether a legend is required in the plot or not, the default is \code{legent=TRUE}  } 
   \item{\dots}{ for extra arguments }
@@ -43,12 +44,16 @@ centiles.pred(obj, type = c("centiles", "z-scores", "standard-centiles"),
 \references{Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), 
 \emph{Appl. Statist.}, \bold{54}, part 3, pp 507-554.
 
+Rigby, R. A., Stasinopoulos, D. M.,  Heller, G. Z.,  and De Bastiani, F. (2019)
+	\emph{Distributions for modeling location, scale, and shape: Using GAMLSS in R}, Chapman and Hall/CRC. An older version can be found in \url{https://www.gamlss.com/}.
+
 Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
-\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
+\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{https://www.jstatsoft.org/v23/i07/}.
 
-Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
+Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017)
+\emph{Flexible Regression and Smoothing: Using GAMLSS in R},  Chapman and Hall/CRC.  
 
-(see also \url{http://www.gamlss.com/}).
+(see also \url{https://www.gamlss.com/}).
 }
 \author{Mikis Stasinopoulos , \email{d.stasinopoulos@londonmet.ac.uk}, based on ideas of Elaine Borghie 
 from the World Health Organization}

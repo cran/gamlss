@@ -8,7 +8,7 @@ It is  applicable when only "one" explanatory variable is available (usually age
 }
 \usage{
 lms(y, x, families = LMS, data = NULL, k = 2, 
-        cent = 100 * pnorm((-4:4) * 2/3), 
+        cent = c(0.4, 2, 10, 25, 50, 75, 90, 98, 99.6),
         calibration = TRUE, trans.x = FALSE, 
         fix.power = NULL, lim.trans = c(0, 1.5), 
         prof = FALSE, step = 0.1, legend = FALSE, 
@@ -65,12 +65,16 @@ Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for lo
 \emph{Appl. Statist.}, \bold{54}, part 3, pp 507-554.
 
 
+Rigby, R. A., Stasinopoulos, D. M.,  Heller, G. Z.,  and De Bastiani, F. (2019)
+	\emph{Distributions for modeling location, scale, and shape: Using GAMLSS in R}, Chapman and Hall/CRC. An older version can be found in \url{https://www.gamlss.com/}.
+
 Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
-\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
+\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{https://www.jstatsoft.org/v23/i07/}.
 
-Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
+Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017)
+\emph{Flexible Regression and Smoothing: Using GAMLSS in R},  Chapman and Hall/CRC.  
 
-(see also \url{http://www.gamlss.com/}).
+(see also \url{https://www.gamlss.com/}).
 }
 \author{
 Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby and Vlasios Voudouris \email{vlasios.voudouris@abm-analytics.com}

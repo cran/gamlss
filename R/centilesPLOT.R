@@ -38,11 +38,11 @@ if (!is.gamlss(obj))  stop(paste("This is not an gamlss object", "\n", ""))
 # attemp to take xvar argument out 1-10-2019
 # new 2-10-19
 if (missing(xvar))
- { 
+{ 
     xvar <-  all.vars(obj$call$formula)[[2]]
   if (any(grepl("data", names(obj$call))))
     {
-     DaTa <- get(as.character(obj$call["data"])) 
+    DaTa <- eval(obj$call[["data"]]) #get(as.character(obj$call["data"])) get(as.character(obj$call["data"])) 
     xvar <- get(xvar, envir=as.environment(DaTa))
     } 
 } 
@@ -50,7 +50,7 @@ xvarO <- deparse(substitute(xvar))  # get the name
 xvar <- try(xvar, silent = TRUE)    # get the vector
 if  (any(class(xvar)%in%"try-error"))# if vector in DaTa not in the global Env 
 { # will fail therefore get it from DaTa
-  DaTa <- get(as.character(obj$call["data"])) 
+  DaTa <- eval(obj$call[["data"]])#get(as.character(obj$call["data"])) 
   xvar <- get(xvarO, envir=as.environment(DaTa))
 }
 # end of new 
@@ -211,7 +211,7 @@ centiles.split<- function(obj,
     xvar <-  all.vars(obj$call$formula)[[2]]
     if (any(grepl("data", names(obj$call))))
     {
-      DaTa <- get(as.character(obj$call["data"])) 
+      DaTa <- eval(obj$call[["data"]]) #get(as.character(obj$call["data"])) 
       xvar <- get(xvar, envir=as.environment(DaTa))
     } 
   } 
@@ -219,7 +219,7 @@ centiles.split<- function(obj,
   xvar <- try(xvar, silent = TRUE)    # get the vector
   if  (any(class(xvar)%in%"try-error"))# if vector in DaTa not in the global Env 
   { # will fail therefore get it from DaTa
-    DaTa <- get(as.character(obj$call["data"])) 
+    DaTa <-eval(obj$call[["data"]])# get(as.character(obj$call["data"])) 
     xvar <- get(xvarO, envir=as.environment(DaTa))
   }
   #

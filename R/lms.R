@@ -34,7 +34,7 @@ lms <- function(y, x,
         families = LMS,
             data = NULL, 
                k = 2, # for the AIC
-            cent = 100*pnorm((-4:4)*2/3),
+            cent = c(0.4, 2, 10, 25, 50, 75, 90, 98, 99.6), #100*pnorm((-4:4)*2/3)
      calibration = TRUE,
          trans.x = FALSE,
        fix.power = NULL,
@@ -325,7 +325,8 @@ out
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 # this function is appropriate to used when fitted model fails to c
-calibration <- function(object, xvar, cent=100*pnorm((-4:4)*2/3), legend=FALSE, fan=FALSE,  ...)
+calibration <- function(object, xvar, cent=c(0.4, 2, 10, 25, 50, 75, 90, 98, 99.6),#100*pnorm((-4:4)*2/3), 
+              legend=FALSE, fan=FALSE,  ...)
 {
  z   <-  quantile(resid(object), probs = cent/100)
  p   <-  pNO(z, mu=0, sigma=1)
@@ -336,7 +337,9 @@ calibration <- function(object, xvar, cent=100*pnorm((-4:4)*2/3), legend=FALSE, 
  }
  else
  {
-   centiles(object,  cent=percent, legend=legend,  ...)
+  cc <- centiles(object,  cent=percent, legend=legend, save=TRUE, ...)
+  cpp<-cbind(target=cent, calib.=cc[,1], sample=cc[,2])
+  print(cpp, digits=3)
  }
 }
 #-------------------------------------------------------------------------------

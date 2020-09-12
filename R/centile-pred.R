@@ -13,6 +13,7 @@ centiles.pred <- function(obj,
                         yval = NULL,
                         cent = c(.4,2,10,25,50,75,90,98,99.6),
                          dev = c(-4,-3,-2,-1,0,1,2,3,4),
+                 calibration = FALSE,
                         plot = FALSE,
                       legend = TRUE, 
                               ...)
@@ -150,8 +151,17 @@ if (type=="centiles")
      qfun <- paste("q",fname,sep="")
      #  Title <- paste("Centile curves using",fname, sep=" ")
      xvar <- xvalues
-   # oxvar <- xvar[order(xvar)]
-      mat <- calc.cent(xvar=xvar, cent=cent)
+if (calibration)
+     {
+       z   <-  quantile(resid(obj), probs = cent/100)
+       p   <-  pNO(z, mu=0, sigma=1)
+      cent <- round(100*p, digits=2)      
+     }
+ mat <- calc.cent(xvar=xvar, cent=cent)
+     #  cc <- centiles(obj, save=TRUE, plot=FALSE)
+#if (calibration)  colnames(mat) <- c("x", paste(as.character(format(cc[,2], digits=2)), names(cent), sep="|"))
+     colnames(mat) <- c("x", as.character(cent))
+      # paste(as.character(format(cc[,2], digits=2)), names(cent), sep="|")
       if (plot)
       plot.mat(mat,cent,legend,...)
       return(mat)
@@ -159,6 +169,7 @@ if (type=="centiles")
 ##   only for type z-scores  
 if (type=="z-scores")
      {
+      if (calibration) stop("calibration is not implemeted yet in z-scores")
       if (is.null(yval)) stop("the y values should be set if type=z-scores is used")
       if (length(yval)!= length(xvalues)) stop("length of xvalues and yval is not the same")
     fname <- obj$family[1]

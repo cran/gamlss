@@ -34,7 +34,7 @@ GAIC.table(object, ..., k = c(2, 3.84, round(log(length(object$y)), 2)),
            text.to.show=NULL)
 GAIC.scaled(object,..., k = 2, c = FALSE, plot = TRUE,   
               text.cex = 0.7, which = 1, diff.dev = 1000,
-              text.to.show = NULL) 
+              text.to.show = NULL, col = NULL, horiz = FALSE) 
 \method{extractAIC}{gamlss}(fit, scale, k = 2, c = FALSE, ...)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -50,7 +50,10 @@ GAIC.scaled(object,..., k = 2, c = FALSE, plot = TRUE,
   \item{text.cex}{the size of the models/famlies in the text of the plot of \code{GAIC.scaled()}.}
   \item{diff.dev}{this argument prevents models with a difference in deviance greater than \code{diff.dev} from the `best' model to be considered (or plotted).}
   \item{which}{which column of GAIC scaled to plot in \code{GAIC.scaled()}.}
-  \item{text.to.show}{if NULL, \code{GAIC.table()} shows the model names otherwise the character in this list}
+  \item{text.to.show}{if NULL, \code{GAIC.scaled()} shows the model names otherwise the character in this list}
+   \item{col}{The colour of the bars in  \code{GAIC.scaled()}}
+   \item{horiz}{whether to plot the bars vertically (default) or horozontaly}
+   
 }
 
 \value{
@@ -69,12 +72,16 @@ Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for lo
 \emph{Appl. Statist.}, \bold{54}, part 3, pp 507-554.
 
 
+Rigby, R. A., Stasinopoulos, D. M.,  Heller, G. Z.,  and De Bastiani, F. (2019)
+	\emph{Distributions for modeling location, scale, and shape: Using GAMLSS in R}, Chapman and Hall/CRC. An older version can be found in \url{https://www.gamlss.com/}.
+
 Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
-\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
+\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{https://www.jstatsoft.org/v23/i07/}.
 
-Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
+Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017)
+\emph{Flexible Regression and Smoothing: Using GAMLSS in R},  Chapman and Hall/CRC.  
 
-(see also \url{http://www.gamlss.com/}).
+(see also \url{https://www.gamlss.com/}).
 }
 \author{Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk} }
 

@@ -29,7 +29,7 @@ centiles.fan<-function (obj,
     xvar <-  all.vars(obj$call$formula)[[2]]
     if (any(grepl("data", names(obj$call))))
     {
-      DaTa <- get(as.character(obj$call["data"])) 
+      DaTa <-  eval(obj$call[["data"]])# get(as.character(obj$call["data"])) 
       xvar <- get(xvar, envir=as.environment(DaTa))
     } 
   } 
@@ -37,7 +37,7 @@ centiles.fan<-function (obj,
   xvar <- try(xvar, silent = TRUE)    # get the vector
   if  (any(class(xvar)%in%"try-error"))# if vector in DaTa not in the global Env 
   { # will fail therefore get it from DaTa
-    DaTa <- get(as.character(obj$call["data"])) 
+    DaTa <-  eval(obj$call[["data"]])#get(as.character(obj$call["data"])) 
     xvar <- get(xvarO, envir=as.environment(DaTa))
   }
   # end of new 
