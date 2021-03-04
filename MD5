@@ -1,4 +1,4 @@
-28363f9afc85e256daac7f4a403358ac *DESCRIPTION
+f8a3aafa6dab62922d9f86983252344d *DESCRIPTION
 cf9658f3e5140e4258ae280678334484 *NAMESPACE
 3e7f619c799c37dc1ac3f522d8001b8d *R/DevianceIncr.R
 5cc92de5982e5fa5dc799f04962191d1 *R/DropAddStepGAIC-Parallel.R
@@ -16,7 +16,7 @@ ee5700e0fd23ce3c32291d2a109873e0 *R/centile-pred.R
 ccfda785a4b21a12dd8972f083fb66f0 *R/centilesFan.R
 06c394bed4cd07f7e59b89e1ab468f98 *R/centilesPlot.R
 ed7352d675874e2e326dc3fc588b63a3 *R/centilescom.R
-bd5c3b0af4e723dfb6c2a642e74e236b *R/chooseDistParallel.R
+9e32f6651e64961c3d566b6a061d4f00 *R/chooseDistParallel.R
 ef8816e231e154795a0da39704c1d5f4 *R/confint-gamlss-03-10-13.R
 1186dc2b7da47903abb34b9551ae335b *R/cubicSplines-10-08-12.R
 a9f62a44b3f29f77507ebeefe4d8d731 *R/cy.R
@@ -24,8 +24,8 @@ a9f62a44b3f29f77507ebeefe4d8d731 *R/cy.R
 e677cd1d747f6894e017ef2e82ceeac5 *R/edf.R
 03e4ab7ad5478cb3840ce8d1ba5d5202 *R/extra.R
 2a143f72221572613ce072608daa7d7b *R/findhyper-23-05-13.R
-e4a574eb3b2ed6d057eb43d5a1461a94 *R/fitDist-17-05-13.R
-b0eee0ea4d4796c4a007f0c48f7cd1e2 *R/fitDistPred.R
+19bbdd96f12c800a7204cacf31201303 *R/fitDist.R
+556cf0036a01d9544e9c3e6bee916f52 *R/fitDistPred.R
 b6c22ecd1f915931319f0625cabc3e9b *R/fitted-plot.R
 9fd238396a21acdcc7e2fbf636cddf14 *R/fracpoly.R
 dc8a6dadf4619e12e5fbd7e41e8919fa *R/gamlss-5.R
@@ -54,7 +54,7 @@ a8a00cd9a03a70558f98a99bb3dfbd43 *R/plot.R
 4d713f1638f6660c408ab56284de5a70 *R/plot2way.R
 c2aebf11b88e2d80b38ed2e851edd598 *R/powerpoly.R
 38d5a4c47d394ca3f232de15431b03f9 *R/predict.gamlss.R
-9c78fd48d83c4cdaf832917dc85e179c *R/predictAll.R
+a9003e264e74632f20a20a0d59a5c566 *R/predictAll_4_3_21.R
 973e5de178fee0b67f86b396afe33967 *R/print.R
 f2773cbc67a852e6c8dca92ec2744088 *R/profterm_18_05_13.R
 0492423039b851eebe200819ebd193a0 *R/pvc.R
@@ -75,9 +75,9 @@ bd546373676a98a2e170bd7adfe5637a *R/stepTGDAll-A-parallel.R
 704b0b579cb9e498a9f61d2a2a9e8d21 *R/update.R
 d60d02692ed989f1f4f39dbca2445dd3 *R/vcov-gamlss.R
 3d57ef0f9ec4bc596d4df545d455fa2d *R/wp.R
-50bf02ce5d9442a4719c2b881022ff09 *build/partial.rdb
+75bc44f3f9b9541b50f4859e57678c66 *build/partial.rdb
 469238c97e885729eb5da9f4d9fb35e0 *inst/CITATION
-adcadf7b9259304d8e1629d6fe0aa0f1 *inst/doc/NEWS.txt
+fecbc82ce31a1aaea3b93aff59b249fa *inst/doc/NEWS.txt
 ef13d0e76d46258824158aabaeb88c7a *man/DevianceIncr.Rd
 d7f1ea23f60a39d1d4b55493b6c56bc2 *man/IC.Rd
 e13a52273f4f342de3bd40cccb724650 *man/LR.test.Rd

@@ -86,8 +86,10 @@ if  (!is.null(extra)) DIST <- unique(c(DIST, extra))
 #      ow <- options("warn")
 if (trace)     cat("---------------------------------------- ","\n")
 if (trace)     cat("fitting different", type, "distributions", "\n")
+    pb <- txtProgressBar(max = length(DIST), style=3)
     for (i in 1:length(DIST)) 
 {
+      setTxtProgressBar(pb, i)  
     m1 <- try(gamlssML(y,family=DIST[i], ...), silent=TRUE)
         if (any(class(m1)%in%"try-error")&&try.gamlss==TRUE) 
         { 
@@ -112,7 +114,7 @@ if (trace)     cat("fitting different", type, "distributions", "\n")
         }
       }
 }
-      
+    close(pb)    
 #options(ow)     
  m0$failed <- failed
       fits <- unlist(fits)

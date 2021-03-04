@@ -101,8 +101,8 @@ chooseDist <- function(object,
        m0 <- object
   klength <- length(k)
   AiC  <- rep(NA, klength) #matrix(NA, nrow=length(DIST), ncol= klength, dimnames=list(DIST,  as.character(k)))
-  #--------------- PARALLEL-------------------------------------------------------
-  #----------------SET UP PART----------------------------------------------------
+#--------------- PARALLEL-------------------------------------------------------
+#----------------SET UP PART----------------------------------------------------
     parallel <- match.arg(parallel)
      have_mc <- have_snow <- FALSE
     if (parallel != "no" && ncpus > 1L) 
@@ -115,9 +115,9 @@ chooseDist <- function(object,
          ncpus <- 1L
        loadNamespace("parallel")
      } 
-  # -------------- finish parallel------------------------------------------------
-  # define the function 
-  fun <- function(dist,...)
+# -------------- finish parallel------------------------------------------------
+# define the function 
+fun <- function(dist,...)
   {    
     m1 <- try(update(object,family=dist, trace=FALSE,...), silent=TRUE)
     if (any(class(m1)%in%"try-error")) 

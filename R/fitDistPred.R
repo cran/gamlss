@@ -215,9 +215,11 @@ fitDistPred <- function(y,
                         "binom"= gamlssMLpred(y, rand=rand, newdata=newdata,family=BI, ...) 
   ) 
   failed <- list() 
-  fits <- list()
+    fits <- list()
+      pb <- txtProgressBar(max = length(DIST), style=3)
   for (i in 1:length(DIST)) 
   {
+    setTxtProgressBar(pb, i)    
     m1 <- try(gamlssMLpred(y, rand=rand, newdata=newdata,family=DIST[i], ...), silent=TRUE)
     if (any(class(m1)%in%"try-error")&&try.gamlss==TRUE) 
     { 
@@ -240,6 +242,7 @@ fitDistPred <- function(y,
       }
     }
   }
+      close(pb)        
   m0$failed <- failed
   fits <- unlist(fits)
   m0$fits <- fits[order(fits)]         
