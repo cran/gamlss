@@ -22,11 +22,18 @@ Question or suggestions about GAMLSS can be send to
    or
    r.rigby@londonmet.ac.uk
 --------------------------------------------------------------------------------
-Version 5.3-1
+Version 5.3-2
 
 1. gamlss 
        i)  predictAll is modified to allow binomial fits
        ii) fitDist() and fitDistpred() a txtProgressBar() is added to both functions
+       iii) .realAll and real0to1 added to NAMESPACE
+       
+2. gamlss.dist new version 5.3-2 was sent to CRAN 
+       i) qNET abd rNET were added to NAMESPACE
+       
+3. gamlss.foreach was sent to CRAN
+       i) choose_dist() was added since
 
 Version 5.2
 

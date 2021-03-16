@@ -1,5 +1,5 @@
-f8a3aafa6dab62922d9f86983252344d *DESCRIPTION
-cf9658f3e5140e4258ae280678334484 *NAMESPACE
+5ec9960515f7406910a231bae34b85a3 *DESCRIPTION
+7cff13edf26d52ef95ca2cece8cc6c51 *NAMESPACE
 3e7f619c799c37dc1ac3f522d8001b8d *R/DevianceIncr.R
 5cc92de5982e5fa5dc799f04962191d1 *R/DropAddStepGAIC-Parallel.R
 e550366399bd65214bc98a109a9578a0 *R/FitTail.R
@@ -75,9 +75,9 @@ bd546373676a98a2e170bd7adfe5637a *R/stepTGDAll-A-parallel.R
 704b0b579cb9e498a9f61d2a2a9e8d21 *R/update.R
 d60d02692ed989f1f4f39dbca2445dd3 *R/vcov-gamlss.R
 3d57ef0f9ec4bc596d4df545d455fa2d *R/wp.R
-75bc44f3f9b9541b50f4859e57678c66 *build/partial.rdb
+1d018d95a0af5ccf5c1f76d4f6614df2 *build/partial.rdb
 469238c97e885729eb5da9f4d9fb35e0 *inst/CITATION
-fecbc82ce31a1aaea3b93aff59b249fa *inst/doc/NEWS.txt
+481d804551d987b2d915cbbee4bf388b *inst/doc/NEWS.txt
 ef13d0e76d46258824158aabaeb88c7a *man/DevianceIncr.Rd
 d7f1ea23f60a39d1d4b55493b6c56bc2 *man/IC.Rd
 e13a52273f4f342de3bd40cccb724650 *man/LR.test.Rd
