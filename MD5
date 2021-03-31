@@ -1,4 +1,4 @@
-5ec9960515f7406910a231bae34b85a3 *DESCRIPTION
+59ff9285fc41aa82c800a3e62f155d3b *DESCRIPTION
 7cff13edf26d52ef95ca2cece8cc6c51 *NAMESPACE
 3e7f619c799c37dc1ac3f522d8001b8d *R/DevianceIncr.R
 5cc92de5982e5fa5dc799f04962191d1 *R/DropAddStepGAIC-Parallel.R
@@ -28,7 +28,7 @@ e677cd1d747f6894e017ef2e82ceeac5 *R/edf.R
 556cf0036a01d9544e9c3e6bee916f52 *R/fitDistPred.R
 b6c22ecd1f915931319f0625cabc3e9b *R/fitted-plot.R
 9fd238396a21acdcc7e2fbf636cddf14 *R/fracpoly.R
-dc8a6dadf4619e12e5fbd7e41e8919fa *R/gamlss-5.R
+990c1f0f5885380f37372da5e12922ba *R/gamlss-5.R
 1f32aef2a013415feeb396fb589d71e9 *R/gamlssML.R
 1f76eedf0c49c6aca165b0196c1382c8 *R/gamlssVGD.R
 9051aedb5b8a6cdc04af9a563c08041a *R/gen-Likelihood.R
@@ -75,9 +75,9 @@ bd546373676a98a2e170bd7adfe5637a *R/stepTGDAll-A-parallel.R
 704b0b579cb9e498a9f61d2a2a9e8d21 *R/update.R
 d60d02692ed989f1f4f39dbca2445dd3 *R/vcov-gamlss.R
 3d57ef0f9ec4bc596d4df545d455fa2d *R/wp.R
-1d018d95a0af5ccf5c1f76d4f6614df2 *build/partial.rdb
+cf572af9b94a8efda820a462fd3a70b3 *build/partial.rdb
 469238c97e885729eb5da9f4d9fb35e0 *inst/CITATION
-481d804551d987b2d915cbbee4bf388b *inst/doc/NEWS.txt
+0a18e5975e5bb163a643f5d49d57b1a4 *inst/doc/NEWS.txt
 ef13d0e76d46258824158aabaeb88c7a *man/DevianceIncr.Rd
 d7f1ea23f60a39d1d4b55493b6c56bc2 *man/IC.Rd
 e13a52273f4f342de3bd40cccb724650 *man/LR.test.Rd
