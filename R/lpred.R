@@ -11,10 +11,10 @@ lpred <-function (obj,
                 se.fit = FALSE, 
                   ... ) 
 {
- ## internal function 1
- ## calculates the s.e.'s for a given parameters mu, sigma, nu or tau 
- ## based on predict.lm() function 
- # --------cal.se  start here --------------------------------------------------
+## internal function 1
+## calculates the s.e.'s for a given parameters mu, sigma, nu or tau 
+## based on predict.lm() function 
+# --------cal.se  start here --------------------------------------------------
  cal.se <- function(obj, what ) 
   {   
   # for some additive terms the X contains zero columns 
@@ -31,39 +31,39 @@ smo.var <- obj[[paste(what,"var",sep=".")]]
     {     vl <- vl +  rowSums(smo.var) }  
   sqrt(vl)             
   }
- #---------cal.se ends here ----------------------------------------------------
- #------------------------------------------------------------------------------
- ## internal function 2
- ## calculates the terms for a given parameters mu, sigma, nu or tau 
- ## based on predict.lm() function 
- #--------cal.terms starts here 
+#---------cal.se ends here ----------------------------------------------------
+#------------------------------------------------------------------------------
+## internal function 2
+## calculates the terms for a given parameters mu, sigma, nu or tau 
+## based on predict.lm() function 
+#--------cal.terms starts here 
  cal.terms <- function(obj, what, se.fit, terms)
   {
-     tt <- obj[[paste(what,"terms",sep=".")]]
-      n <- obj$N
-      p <- obj[[paste(what,"qr",sep=".")]]$rank 
-     p1 <- seq(len = p)
-    piv <- obj[[paste(what,"qr",sep=".")]]$pivot[p1] 
-     mm <- obj[[paste(what,"x",sep=".")]]
-      X <- obj[[paste(what,"x",sep=".")]]
-      w <- obj[[paste(what,"wt",sep=".")]]
-   beta <- obj[[paste(what,"coefficients",sep=".")]]
-smo.mat <- obj[[paste(what,"s",sep=".")]]
-smo.var <- obj[[paste(what,"var",sep=".")]]      
-     aa <- attr(mm, "assign")
-     ll <- attr(tt, "term.labels")
-   if (attr(tt, "intercept") > 0) 
-     ll <- c("(Intercept)", ll)
-    aaa <- factor(aa, labels = ll)
-   asgn <- split(order(aa), aaa)
+     tt <- obj[[paste(what,"terms",sep=".")]]  # get the `par.terms'
+      n <- obj$N                               # no of observations
+      p <- obj[[paste(what,"qr",sep=".")]]$rank# no of fitted terms 
+     p1 <- seq(len = p)                        #
+    piv <- obj[[paste(what,"qr",sep=".")]]$pivot[p1] # 1,2,...,p
+     mm <- obj[[paste(what,"x",sep=".")]]      # design matrix
+      X <- obj[[paste(what,"x",sep=".")]]      # again the design matrix
+      w <- obj[[paste(what,"wt",sep=".")]]     # param iterative weights
+   beta <- obj[[paste(what,"coefficients",sep=".")]]# param.coef
+smo.mat <- obj[[paste(what,"s",sep=".")]]      # param smoothers
+smo.var <- obj[[paste(what,"var",sep=".")]]    # param var   
+     aa <- attr(mm, "assign")                  # attributes of the design matrix
+     ll <- attr(tt, "term.labels")             # attributes of the param terms
+   if (attr(tt, "intercept") > 0)              # if intercepts  
+     ll <- c("(Intercept)", ll) 
+    aaa <- factor(aa, labels = ll)             # factor conttaining the names  
+   asgn <- split(order(aa), aaa)               # split position of terms according to names
   hasintercept <- attr(tt, "intercept") > 0
-   if (hasintercept) 
+   if (hasintercept)                           # if there is intercept evaluate the terms constant
         {
        asgn$"(Intercept)" <- NULL
                       avx <- colMeans(mm)
                termsconst <- sum(avx[piv] * beta[piv])
         }
- nterms <- length(asgn)
+ nterms <- length(asgn)                       # number of terms 
         if (nterms > 0) 
         {
            predictor <- matrix(ncol = nterms, nrow = NROW(X))
@@ -75,9 +75,9 @@ smo.var <- obj[[paste(what,"var",sep=".")]]
                 Rinv <- qr.solve(qr.R(obj[[paste(what,"qr",sep=".")]])[p1, p1])
             }
             if (hasintercept) 
-                X <- sweep(X, 2, avx)
+                X <- sweep(X, 2, avx)          # designmatr(X) - average(X)
             unpiv <- rep.int(0, NCOL(X))
-            unpiv[piv] <- p1
+            unpiv[piv] <- p1                   # position              
             for (i in seq(1, nterms, length = nterms)) 
             {
                 iipiv <- asgn[[i]]

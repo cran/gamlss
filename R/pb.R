@@ -53,6 +53,9 @@ pb <- function(x, df = NULL, lambda = NULL, max.df = NULL, control=pb.control(..
           D <- diff(diag(n), diff = deg + 1) / (gamma(deg + 1) * dx ^ deg) # 
           B <- (-1) ^ (deg + 1) * P %*% t(D)
           attr(B, "knots") <- knots[-c(1:(deg-1), (n-(deg-2)):n)]
+          # I think what I need is xl, xr, ndx, deg 
+          # quantiles should be eliminated
+          # why I do not save all knots?
           B 
      }
   }
@@ -492,9 +495,9 @@ print.pb  <- function (x, digits = max(3, getOption("digits") - 3), ...)
   cat("Smoothing parameter lambda     :", format(signif(x$lambda)), "\n") 
 }
 #-------------------------------------------------------------------------
-knots.pb <- function(object, ...)
+knots.pb <- function(Fn, ...)
 {
-  as.vector(object$knots)
+  as.vector(Fn$knots)
 }
 #-----------------------------------------------------------------------------
 # END

@@ -22,6 +22,40 @@ Question or suggestions about GAMLSS can be send to
    or
    r.rigby@londonmet.ac.uk
 --------------------------------------------------------------------------------
+Version 5.4-1
+
+1. gamlss 
+       i) predict() the function did not work when "Slog" was used for a link                 function. Now it should work. 
+          The functions predictAll(), centiles.pred(), gamlssVG() are modified.  
+          bp(): the bucket plot is added
+
+
+Version 5.4-0
+
+1. gamlss 
+       i) confint() is corrected. It was not working with parameter other than "mu"
+         The parameter has now argument "all" as default.
+      ii) stepGAICAll.A() now has direction option.    
+  gamlss.dist 
+       i) the "r" functions of all count distributions now same the result 
+         as.integer()
+
+
+Version 5.3-8
+
+1. gamlss
+        i) pbc() the se's are corrected
+        ii) predictAll() did not worked with an gamlssML object. The lpred()              calls 
+           have been replaced with predict() and seems to work
+        iii) the pbf() and pba() will be  added
+        iv) the method hatvalues.gamlss() is added
+        
+
+1. gamlss.lasso 
+       i) the lrs() has been added as a new additve term for lasso regression
+
+
+
 Version 5.3-2
 
 1. gamlss 

@@ -2,6 +2,8 @@
 ########################################################################
 ########################################################################
 ########################################################################
+# last change 20-5-21 
+# the
 # this the predictAll() function 
 # allows the user to get all the parameters using the  predict.gamlss().
 # creates a list containing y if exist in the newdata and predicted values for 
@@ -21,7 +23,7 @@
 # ##   i) type should  c("link", "response") is working for use.weights=T
 #            but I am not sure about term
 # ##  ii) if explanatory variables are not in the list 
-# ##        we should use the means or for factors the most common level 
+# ##        we should use the means or for factors the most common level as defaults
 #           (not implemented)
 # ## iii) we should allow lists and data.frame (rather than only data.frame) 
 # ##       Probably not
@@ -87,7 +89,7 @@ gamlss.bi.list <- .gamlss.bi.list
  ResCha <- as.character(object$mu.formula[2][[1]])
 ## data
    DatA <- if (is.null(data))
- {        ## if it is not provided then get it from the original call
+ {   ## if it is not provided then get it from the original call
    if (!is.null(Call$data)) eval(Call$data) 
    else stop("define the original data using the option data") 
  }
@@ -97,16 +99,16 @@ gamlss.bi.list <- .gamlss.bi.list
 if (is.null(newdata)) 
 {
 if (output=="list")#list
-   {
+   {# this part did  not working with gamlssML() so I have chanded lpred() with predict()
     out <- list(y=object$y[])
     if ("mu" %in% object$par)  
-      out$mu <- lpred(object, what = "mu", type = type, terms = terms, se.fit = se.fit, ... )
+      out$mu <- predict(object, what = "mu", type = type, terms = terms, se.fit = se.fit, ... )
     if ("sigma" %in% object$par)  
-      out$sigma <- lpred(object, what = "sigma", type = type, terms = terms, se.fit = se.fit, ... )
+      out$sigma <- predict(object, what = "sigma", type = type, terms = terms, se.fit = se.fit, ... )
     if (  "nu" %in% object$par)     
-      out$nu <- lpred(object, what = "nu", type = type, terms = terms, se.fit = se.fit, ... )
+      out$nu <- predict(object, what = "nu", type = type, terms = terms, se.fit = se.fit, ... )
     if ( "tau" %in% object$par)    
-      out$tau <- lpred(object, what = "tau", type = type, terms = terms, se.fit = se.fit, ... )
+      out$tau <- predict(object, what = "tau", type = type, terms = terms, se.fit = se.fit, ... )
     if (fname%in%gamlss.bi.list)  out$bd <- object$bd
     attr(out, "family") <- object$family
     return(out)
@@ -129,7 +131,7 @@ colnames(prematrix) <- c("y", object$parameters)
        colnames(predse) <- object$parameters
        for (i in 1:length(object$parameters))
         { 
-               PVaSE <-  lpred(object, parameter=object$parameter[i], type=type, se.fit=TRUE)
+               PVaSE <-  predict(object, parameter=object$parameter[i], type=type, se.fit=TRUE)
      prematrix[,i+1] <-  PVaSE$fit  
           predse[,i] <- PVaSE$se.fit  
        }
@@ -139,12 +141,15 @@ colnames(prematrix) <- c("y", object$parameters)
        attr(matout, "family") <- object$family
        return(matout)
      } else
-     {  for (i in object$parameters)
-     { prematrix[,i] <- lpred(object, parameter=i, type=type)  }
+     {  
+       for (i in 1:(length(object$parameters)))
+       {
+        prematrix[,i+1] <- predict(object, what=object$parameters[i], type=type)  
+        }
        if (fname%in%gamlss.bi.list) prematrix[,length(object$parameters)+2] <- object$bd
        attr(prematrix, "family") <- object$family
        return(prematrix)  
-     }    
+    }    
   }   # end matrix
 }# end  if is.null(newdata) 
 else #  --------   if new data ----------------------------------------- 
@@ -154,7 +159,7 @@ if (!(inherits(newdata, "data.frame")))
       stop("newdata must be a data frame ") # or a frame number
 ## if use.weights is FALSE and se.fit=FALSE     
 if ((use.weights==FALSE)&&(se.fit==FALSE))#  
- {    # use idividual predict()
+ {    # use idividual predict.gamlss2()
   if (output=="list") ## list
   {
             out <- list()

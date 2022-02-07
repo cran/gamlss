@@ -29,11 +29,12 @@ pbm <- function(x, df = NULL, lambda = NULL, mono=c("up", "down"), control=pbm.c
       }
      else # if false use Paul's
      { 
-      knots <- seq(xl - deg * dx, xr + deg * dx, by = dx)
-          P <- outer(x, knots, tpower, deg)# calculate the power in the knots
-          n <- dim(P)[2]
-          D <- diff(diag(n), diff = deg + 1) / (gamma(deg + 1) * dx ^ deg) # 
-          B <- (-1) ^ (deg + 1) * P %*% t(D) 
+           knots <- seq(xl - deg * dx, xr + deg * dx, by = dx)
+               P <- outer(x, knots, tpower, deg)# calculate the power in the knots
+               n <- dim(P)[2]
+               D <- diff(diag(n), diff = deg + 1) / (gamma(deg + 1) * dx ^ deg) # 
+               B <- (-1) ^ (deg + 1) * P %*% t(D) 
+attr(B, "knots") <- knots[-c(1:(deg-1), (n-(deg-2)):n)]
           B 
      }
   }
@@ -388,25 +389,21 @@ coefSmo <- list(   coef = fit$beta,
                     edf = fit$edf, 
                   sigb2 = tau2, 
                   sige2 = sig2,
+                  knots = attr(X,"knots"),
                    sigb = if (is.null(tau2)) NA else sqrt(tau2),
                    sige = if (is.null(sig2)) NA else sqrt(sig2),
                  method = control$method,
                     fun = Fun)
-class(coefSmo) <- c("pb", "pbm")                         
-#  if (is.null(xeval)) # if no prediction 
+class(coefSmo) <- c("pbm", "pb")                         
 #    {
      list(fitted.values=fv, residuals=y-fv, var=var, nl.df =fit$edf-1,
           lambda=lambda, coefSmo=coefSmo )
     }                            
 else # for prediction 
     { 
-#     browser()
-#     ll <- dim(as.matrix(attr(x,"X")))[1]
-#     nx <- as.matrix(attr(x,"X"))[seq(length(y)+1,ll),]
-#   pred <- drop(nx %*% fit$beta)
-    position = 0
-    rexpr<-regexpr("predict.gamlss",sys.calls())
-    for (i in 1:length(rexpr)){
+ position <-  0
+    rexpr <- regexpr("predict.gamlss",sys.calls())
+for (i in 1:length(rexpr)){
         position <- i
         if (rexpr[i]==1) break}
   cat("New way of prediction in pbm()  (starting from GAMLSS version 5.0-3)", "\n" )
@@ -422,7 +419,8 @@ gamlss.environment <- sys.frame(position)
    pred
     }    
 }
-#-------------------------------------------------------------------------------
+#########################################################################
+#########################################################################
 print.pbm  <- function (x, digits = max(3, getOption("digits") - 3), ...) 
 {   
   cat("Monotone P-spline fit using the gamlss function pbm() \n")
@@ -430,10 +428,11 @@ print.pbm  <- function (x, digits = max(3, getOption("digits") - 3), ...)
   cat("Random effect parameter sigma_b:", format(signif(x$sigb)), "\n")  
   cat("Smoothing parameter lambda     :", format(signif(x$lambda)), "\n") 
 }
-#-------------------------------------------------------------------------------
+#########################################################################
+#########################################################################
 getZmatrix<-function (x,xmin=NULL,xmax=NULL,inter=20,degree=3,order=2) 
 {
-  #-----------------------local function------------------------------------------
+#-----------------------local function------------------------------------------
   bbase <- function(x, xl, xr, ndx, deg, quantiles=FALSE)
   {
     tpower <- function(x, t, p)
@@ -456,6 +455,7 @@ getZmatrix<-function (x,xmin=NULL,xmax=NULL,inter=20,degree=3,order=2)
       n <- dim(P)[2]
       D <- diff(diag(n), diff = deg + 1) / (gamma(deg + 1) * dx ^ deg) # 
       B <- (-1) ^ (deg + 1) * P %*% t(D) 
+attr(B, "knots") <- knots[-c(1:(deg-1), (n-(deg-2)):n)]
       B 
     }
   }
@@ -480,5 +480,6 @@ getZmatrix<-function (x,xmin=NULL,xmax=NULL,inter=20,degree=3,order=2)
             Z <- B%*%U%*%Delta
   Z
 }
-#-------------------------------------------------------------------------------
+#########################################################################
+#########################################################################
 

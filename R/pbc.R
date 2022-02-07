@@ -192,19 +192,6 @@ method <- match.arg(method)
 gamlss.pbc <- function(x, y, w, xeval = NULL, ...)
 {
 # -------------------------------------------------- 
-# functions within
-# a siple penalized regression
-# regpen <- function(y, X, w, lambda, D)
-#   {
-#              G <- lambda * t(D) %*% D
-#             XW <- w * X
-#            XWX <- t(XW) %*% X
-#           beta <- solve(XWX + G, t(XW) %*% y)
-#             fv <- X %*%beta
-#              H <- solve(XWX + G, XWX)
-#            fit <- list(beta = beta, edf = sum(diag(H)))
-#   return(fit)  
-#   }
 #-------------------------------------------------------------------------------
 regpen <- function(y, X, w, lambda, D)# original
 {
@@ -380,9 +367,10 @@ loglambda <- if (sign(edf2_df(-30))==sign(edf2_df(30))) 30
    waug <- as.vector(c(w, rep(1,nrow(D))))
    xaug <- as.matrix(rbind(X,sqrt(lambda)*D))
     lev <- hat(sqrt(waug)*xaug,intercept=FALSE)[1:n] # get the hat matrix
+    var <- lev/w 
 # the variance of the smoother
      # se <-  sqrt(diag(solve(XWX + lambda * t(D) %*% D)))Q
-    suppressWarnings(Fun <- splinefun(xvar, fv, method="natural"))
+    suppressWarnings(Fun <- splinefun(xvar, fv, method="periodic"))
 coefSmo <- list(   coef = fit$beta,
                      fv = fv, 
                  lambda = lambda, 
@@ -396,7 +384,7 @@ coefSmo <- list(   coef = fit$beta,
                  knots = attr(X,"knots"),
                    fun = Fun)
 class(coefSmo) <- c("pbc", "pb") 
-  list(fitted.values=fv, residuals=y-fv, var=lev, nl.df = fit$edf-1,
+  list(fitted.values=fv, residuals=y-fv, var=var, nl.df = fit$edf-1,
           lambda=lambda, coefSmo=coefSmo)
     }                            
 else # for prediction 

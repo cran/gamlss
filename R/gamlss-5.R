@@ -37,7 +37,7 @@ gamlssNews <- function() file.show(system.file("doc", "NEWS.txt", package="gamls
                    "ps", "pb", "cy", "tp", "pvc", # penalised splines : ps, pb, cy tp pvc pbq
                    "pbm", "pbj", "pbo", "pbz",    # monotone jumps and going to zero
                    "pbc", "pbts", "pbp", "pbf",   # pb cycle pb predict
-                   "pcat",                        # for categorical to reduce levels 
+                   "pcat", "pba",                 # for categorical to reduce levels 
                    "pbq",                         # pb using Qfunction 
                    "gmrf",                        # Gaussian Markov random fields
                    "mrfa",  "mrf",                # Markov random fields

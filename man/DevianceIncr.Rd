@@ -64,7 +64,7 @@ m1 <- gamlss(head~pb(age), data=db[1:6000,])
 p1<-devianceIncr(m1)
 m2 <- gamlss(head~pb(age), sigma.fo=~pb(age), nu.fo=~pb(age), 
       tau.fo=~pb(age), data=db[1:6000,], family=BCT)
-p2<-d.evianceIncr(m2)
+p2<-devianceIncr(m2)
 # comparing using summaries
 summary(p1); summary(p2)
 # comparing using boxplots
@@ -74,7 +74,8 @@ hist(p1, col=rgb(1,0,0,0.5), xlim=c(0,50), breaks=seq(0,50,2))
 hist(p2, col=rgb(0,0,1,0.5), add=T)
 # comparing using emphirical cdf
 plot(ecdf(p1))
-lines(ecdf(p2), col=2)}
+lines(ecdf(p2), col=2)
+}
 #----------------------------------------------------------------
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
