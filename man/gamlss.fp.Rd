@@ -13,7 +13,7 @@ gamlss.pp(x, y, w)
 }
 
 \arguments{
-  \item{x}{the \code{x} for function \code{gamlss.fp} is referred to the design matric of the specific parameter model (not to be used by the user)}
+  \item{x}{the \code{x} for function \code{gamlss.fp} is referred to the design matrix of the specific parameter model (not to be used by the user)}
   \item{y}{the \code{y} for function \code{gamlss.fp} is referred to the working variable of the specific parameter model (not to be used by the user)}
   \item{w}{the \code{w} for function \code{gamlss.fp} is referred to the iterative weight variable of the specific parameter model (not to be used by the user) }
   \item{npoly}{a positive indicating how many fractional polynomials should be considered in the fit. Can take the values 1, 2 or 3 with 2 as default }

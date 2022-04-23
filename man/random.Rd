@@ -4,11 +4,11 @@
 
 \title{Specify a random intercept model in a GAMLSS formula}
 
-\description{They are two functions for fitting random effects wthin a  GAMLSS model, \code{random()} and \code{re()}. 
+\description{They are two functions for fitting random effects within a  GAMLSS model, \code{random()} and \code{re()}. 
 
-The function \code{random()} is based on the original \code{random()} function of Trevor Hastie in the package \code{gam}. TIn our version the function has been modified to allow a "local" maximum likelihood estimation of the smoothing parameter \code{lambda}. This method is  equivalent to the PQL method of Breslow and Clayton (1993) applied at the local iterations of the algorithm. In fact for a GLM model and a simple random effect it is equivalent to \code{glmmPQL()} function in the package \code{MASS} see Venables and Ripley (2002).  Venables and Ripley (2002) claimed that this iterative method was first introduced by Schall (1991). Note that in order for the "local" maximum likelhood estimation procedure to operate both argument \code{df} and \code{lambda} has to be \code{NULL}.
+The function \code{random()} is based on the original \code{random()} function of Trevor Hastie in the package \code{gam}. In our version the function has been modified to allow a "local" maximum likelihood estimation of the smoothing parameter \code{lambda}. This method is  equivalent to the PQL method of Breslow and Clayton (1993) applied at the local iterations of the algorithm. In fact for a GLM model and a simple random effect it is equivalent to \code{glmmPQL()} function in the package \code{MASS} see Venables and Ripley (2002).  Venables and Ripley (2002) claimed that this iterative method was first introduced by Schall (1991). Note that in order for the "local" maximum likelihood estimation procedure to operate both argument \code{df} and \code{lambda} has to be \code{NULL}.
 
-The function \code{re()} is an interface for calling the \code{lme()} function of the package  \pkg{nlme}. This gives the user the abilty to fit comlpicated random effect models while the assumtion of the normal distribution for the response variable is relaxed.  The theoretical justification cames again from the fact that this is a PQL method,  Breslow and Clayton (1993). 
+The function \code{re()} is an interface for calling the \code{lme()} function of the package  \pkg{nlme}. This gives the user the ability to fit complicated random effect models while the assumption of the normal distribution for the response variable is relaxed.  The theoretical justification comes again from the fact that this is a PQL method,  Breslow and Clayton (1993). 
 
 }
 \usage{
@@ -24,7 +24,7 @@ re(fixed = ~1, random = NULL, correlation = NULL, method = "ML",
   \item{lambda}{the smoothing parameter lambda which can be viewed as a shrinkage parameter.}
   \item{start}{starting value for lambda if local Maximul likelihood is used.}
   \item{fixed}{a formula specify the fixed effects of the \code{lme()} model. This, in most cases  can be also included in the \code{gamlss} parameter formula}
-  \item{random}{a formula or list specufying the random effect  part of the model as in  \code{lme()} function}
+  \item{random}{a formula or list specifying the random effect  part of the model as in  \code{lme()} function}
   \item{correlation}{the correlation structure of the \code{lme()} model}
   \item{method}{which method, "ML" (the default), or "REML"}
   \item{level}{this argument has to be set to zero (0) if when use \code{predict()} you want to get the marginal contribution} 
@@ -35,7 +35,7 @@ re(fixed = ~1, random = NULL, correlation = NULL, method = "ML",
 \details{
 The function \code{random()} can be seen as  a smoother for use with factors in gamlss(). 
 It allows the fitted values for a factor predictor to be shrunk towards the overall mean, 
-where the amount of shrinking depends either on lambda, or on the equivalent degrees of freedom or on the estimated sigma parameter (default).  Similar in spirit to smoothing splines, this fitting method can be justified on Bayesian grounds or by a random effects model. Note that the behavier of the function is different from the original Hastie function. Here the function behaves as follows: i) if both \code{df} and \code{lambda} are \code{NULL} then the PQL method is used
+where the amount of shrinking depends either on lambda, or on the equivalent degrees of freedom or on the estimated sigma parameter (default).  Similar in spirit to smoothing splines, this fitting method can be justified on Bayesian grounds or by a random effects model. Note that the behaviour of the function is different from the original Hastie function. Here the function behaves as follows: i) if both \code{df} and \code{lambda} are \code{NULL} then the PQL method is used
 ii) if  \code{lambda} is not \code{NULL},  \code{lambda} is used for fitting
 iii) if  \code{lambda} is  \code{NULL} and   \code{df} is not \code{NULL} then \code{df}
  is used for fitting. 

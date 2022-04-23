@@ -102,7 +102,7 @@ draw.polys.in <-function( polys,
   { # if object is defined  we must two alternatives
     ## i) it is MRF object
     ## ii) a list which defines the values and the areas    
-    if(class(object)=="GMRF")
+    if(is(object,"GMRF"))
     {
       y.y <- object$beta 
       #  x.x <- object$x

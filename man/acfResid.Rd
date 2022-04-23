@@ -5,24 +5,24 @@
 ACF plot of the residuals
 }
 \description{
-This plot display the ACF and PACF of the residuals of a gamlss or other fitted model (provided that they have been standardised appropriately.  Is is approriate for time series data.
+This plot display the ACF and PACF of the residuals of a gamlss or other fitted model (provided that they have been standardised appropriately.  Is is appropriate for time series data.
 }
 \usage{
 acfResid(obj = NULL, resid = NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{obj}{A gamlss model or othe fitted model where the resid() function applies exist
+  \item{obj}{A gamlss model or other fitted model where the resid() function applies exist
 }
   \item{resid}{
 if \code{obj} does not exist the argument here will be used
 }
 }
 \details{
-The ACF abd PACF for the residuals \code{r}, squared residuals \code{r^2},  \code{r^3} and \code{r^4} are plotted
+The ACF and PACF for the residuals \code{r}, squared residuals \code{r^2},  \code{r^3} and \code{r^4} are plotted
 }
 \value{
-The relevant plots are displayied
+The relevant plots are displayed
 }
 \references{
 Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), 

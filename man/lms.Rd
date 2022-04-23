@@ -28,14 +28,14 @@ lms(y, x, families = LMS, data = NULL, k = 2,
  \item{trans.x}{whether to check for transformation in x with default \code{FALSE}}
   \item{fix.power}{if set it fix the power of the transformation for x}
  \item{lim.trans}{the limits for the search of the power parameter for x}
-  \item{prof}{whether to use the profile GAIC of the power tranformation}
+  \item{prof}{whether to use the profile GAIC of the power transformation}
   \item{step}{if code{prof=TRUE} is used this determine the step for the profile GAIC }
  \item{legend}{whether a legend is required in the plot with default \code{FALSE}}
  \item{mu.df}{\code{mu} effective degrees of freedom if required otherwise are estimated}
   \item{sigma.df}{\code{sigma} effective degrees of freedom if required otherwise are estimated}
   \item{nu.df}{\code{nu} effective degrees of freedom if required otherwise are estimated}
   \item{tau.df}{\code{tau} effective degrees of freedom if required otherwise are estimated}
-   \item{c.crit}{the convergence critetion to be pass to \code{gamlss()} }
+   \item{c.crit}{the convergence criterion to be pass to \code{gamlss()} }
   \item{method.pb}{the method used in the \code{pb()} for estimating the smoothing 
   parameters. The default is local maximum likelihood \code{"ML"}. \code{"GAIC"} is also permitted where \code{k} is taken from the \code{k} argument of the function.}
   \item{\dots}{extra argument which can be passed to \code{gamlss()}}
@@ -77,8 +77,8 @@ Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2
 (see also \url{https://www.gamlss.com/}).
 }
 \author{
-Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby and Vlasios Voudouris \email{vlasios.voudouris@abm-analytics.com}
-}
+Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby and Vlasios Voudouris}
+
 \note{The function is fitting several models and for large data can be slow}
 
 \seealso{\code{\link{gamlss}}, \code{\link{centiles}}, \code{\link{calibration}}}

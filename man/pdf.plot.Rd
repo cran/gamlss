@@ -31,8 +31,8 @@ pdf.plot(obj = NULL, obs = c(1), family = NO(), mu = NULL,
   \item{no.title}{Whether you need title in the plot, default is  \code{no.title=FALSE}}
   \item{col}{the colot of the lines}
   \item{y.axis.lim }{the limits for the y-axis}
-  \item{frame.plot}{whether to frame the idividual plots} 
-  \item{...}{for extra arguments, Note tha usufull argument can be \code{col.axis}, \code{col.lab}, \code{cex.axis}, \code{cex.lab} etc.}
+  \item{frame.plot}{whether to frame the individual plots} 
+  \item{...}{for extra arguments, Note that a  useful argument can be \code{col.axis}, \code{col.lab}, \code{cex.axis}, \code{cex.lab} etc.}
   }
 
 \details{

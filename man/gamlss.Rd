@@ -8,7 +8,7 @@
   Returns an object of class "gamlss", which is a generalized additive model for location scale and shape (GAMLSS).
   The function \code{gamlss()} is very similar to the \code{gam()} function in S-plus (now also in R in package \code{gam}), but
   can fit more distributions (not only the ones belonging to the  exponential family) and can model all the parameters of the
- distribution as functions of the explanatory variables (e.g. using linear, non-linear, smoothing, loess and random effects terms).
+ distribution as functions of the explanatory variables (e.g. using linear, non-linear, smoothing, \code{loess} and random effects terms).
 
 This implementation of \code{gamlss()} allows modelling of up to four
 parameters in a distribution family, which are conventionally called \code{mu}, \code{sigma}, \code{nu} and \code{tau}.
@@ -33,7 +33,7 @@ gamlssNews()
 
 \arguments{
   \item{formula}{a formula object, with the response on the left of an ~ operator, and the terms, separated by \eqn{+}{+} operators, on the right.
-  Nonparametric smoothing terms are indicated by \code{pb()} for penalised beta splines, \code{cs} for smoothing splines, \code{lo} for loess smooth terms and \code{random} or \code{ra}
+  Nonparametric smoothing terms are indicated by \code{pb()} for penalised beta splines, \code{cs} for smoothing splines, \code{lo} for \code{loess} smooth terms and \code{random} or \code{ra}
   for random terms, e.g. \code{y~cs(x,df=5)+x1+x2*x3}.  Additional smoothers can be added by creating the appropriate interface.
   Interactions with nonparametric smooth terms are not fully supported, but will not produce errors;
   they will simply produce the usual parametric interaction 
@@ -56,7 +56,7 @@ gamlssNews()
   Here weights can be used to weight out observations (like in \code{subset}) or for a weighted likelihood analysis where 
   the contribution of the observations to the likelihood differs according to \code{weights}. 
   The length of \code{weights} must be the same as the number of observations in the data. 
-  By default, the weight is set to one. To set  weights to vector w use \code{weights=w}}
+  By default, the weight is set to one. To set  weights to vector \code{w} use \code{weights=w}}
   \item{contrasts}{list of contrasts to be used for some or all of the factors appearing as variables in the model formula. 
   The names of the list should be the names of the corresponding variables. 
   The elements should either be contrast-type matrices (matrices with as many rows as levels of the factor and with columns 
@@ -119,7 +119,7 @@ in the model are fitted using a backfitting algorithm.
   \item{residuals}{the normalized (randomized) quantile residuals of the model}
  \item{mu.fv}{the fitted values of the mu model, also  sigma.fv, nu.fv, tau.fv for the other parameters if present}
  \item{mu.lp}{the linear predictor of the mu model, also  sigma.lp, nu.lp, tau.lp for the other parameters if present}
- \item{mu.wv}{the working variable of the mu model, also  sigma.wv, nu.wv, tau.wv for the other parameters if present}
+ \item{mu.wv}{the working variable of the mu model, also  \code{sigma.wv}, \code{nu.wv}, \code{tau.wv} for the other parameters if present}
  \item{mu.wt}{the working weights of the mu model, also  sigma.wt, nu.wt, tau.wt for the other parameters if present}
  \item{mu.link}{the link function for the mu model, also  sigma.link, nu.link, tau.link for the other parameters if present}
  \item{mu.terms}{the terms for the mu model, also  sigma.terms, nu.terms, tau.terms for the other parameters if present}
@@ -155,7 +155,7 @@ Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2
 }
 
 
-\author{ Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby, Calliope Akantziliotou and Vlasios Voudouris \email{vlasios.voudouris@abm-analytics.com>}}
+\author{ Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby, Calliope Akantziliotou and Vlasios Voudouris}
 
 \note{The following generic functions can be used with a GAMLSS object: \code{print}, \code{summary},  \code{fitted},  \code{coef},  
           \code{residuals}, \code{update},  \code{plot}, \code{deviance}, \code{formula}   }

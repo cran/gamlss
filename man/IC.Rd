@@ -47,12 +47,12 @@ GAIC.scaled(object,..., k = 2, c = FALSE, plot = TRUE,
   \item{c}{whether the corrected AIC, i.e. AICc, should be used, note that it applies only when  \code{k=2}}
   \item{scale}{this argument is not used in gamlss}
     \item{plot}{whether to plot the ranking in \code{GAIC.scaled()}.}
-  \item{text.cex}{the size of the models/famlies in the text of the plot of \code{GAIC.scaled()}.}
+  \item{text.cex}{the size of the models/families in the text of the plot of \code{GAIC.scaled()}.}
   \item{diff.dev}{this argument prevents models with a difference in deviance greater than \code{diff.dev} from the `best' model to be considered (or plotted).}
   \item{which}{which column of GAIC scaled to plot in \code{GAIC.scaled()}.}
   \item{text.to.show}{if NULL, \code{GAIC.scaled()} shows the model names otherwise the character in this list}
    \item{col}{The colour of the bars in  \code{GAIC.scaled()}}
-   \item{horiz}{whether to plot the bars vertically (default) or horozontaly}
+   \item{horiz}{whether to plot the bars vertically (default) or horizontally}
    
 }
 
@@ -65,7 +65,7 @@ GAIC.scaled(object,..., k = 2, c = FALSE, plot = TRUE,
 }
 \references{ 
 
-Burnham K. P.  and  Anderson D. R (2002). \emph{Model Selection and Multimodel Inference
+Burnham K. P.  and  Anderson D. R (2002). \emph{Model Selection and Multi model Inference
 A Practical Information-Theoretic Approach}, Second Edition, Springer-Verlag New York, Inc.
 
 Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), 

@@ -8,7 +8,7 @@ A bucket plot is a graphical way to check the skewness and kurtosis of a continu
 There are two different bucket plots specified by the \code{type} argument:
 
 i) the \code{moment} bucket   and 
-ii) the \code{centile} bucket wjhich itself can be  \code{cental} or \code{tail} one.
+ii) the \code{centile} bucket which itself can be  \code{central} or \code{tail} one.
 
 }
 \usage{
@@ -35,7 +35,7 @@ bp(obj = NULL, weights = NULL,
   \item{bootstrap}{whether to bootstrap the skewness and kurtosis points}
   \item{no.bootstrap}{the number of the  bootstrap samples in the plot}
   \item{col.bootstrap}{the colour of the  bootstrap samples in the plot}
-  \item{pch.bootstrap}{the character plotting sympol.}
+  \item{pch.bootstrap}{the character plotting symbol.}
   \item{asCharacter}{whether to plot the skewness and kurtosis as character or just  points.}
   \item{col.point}{the colout of the point is plotted as point}
   \item{pch.point}{the character symbol for the point}
@@ -46,7 +46,7 @@ bp(obj = NULL, weights = NULL,
   \item{show.legend}{whether to show the legend}
   \item{n.inter}{number of intervals}
   \item{xcut.points}{cut points for the \code{xvar} if need}
-  \item{overlap}{whether the interval id \code{xvar} is set should ovelap}
+  \item{overlap}{whether the interval id \code{xvar} is set should overlap}
   \item{show.given}{showing the top part of the plot}
   \item{cex}{the \code{cex}}
   \item{pch}{the point character \code{pch}}

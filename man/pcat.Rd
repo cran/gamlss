@@ -59,8 +59,7 @@ The vector itself is used in the construction of the model matrix, while the att
 
 
 \references{
-Tutz G. (2013) Regularization and Sparsity in Discrete Structures in the \emph{Proceedings of the
-29th International Workshop on Statistical Modelling}, Volume 1, p 29-42, Gottingen, Germany
+Tutz G. (2013) Regularization and Sparsity in Discrete Structures in the \emph{Proceedings of the 29th International Workshop on Statistical Modelling}, Volume 1, p 29-42, Gottingen, Germany
 
 Rigby, R. A., Stasinopoulos, D. M.,  Heller, G. Z.,  and De Bastiani, F. (2019)
 	\emph{Distributions for modeling location, scale, and shape: Using GAMLSS in R}, Chapman and Hall/CRC. An older version can be found in \url{https://www.gamlss.com/}.

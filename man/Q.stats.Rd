@@ -14,7 +14,7 @@ Q.stats(obj = NULL, xvar = NULL, resid = NULL, xcut.points = NULL, n.inter = 10,
 \arguments{
   \item{obj}{a GAMLSS object}
   \item{xvar}{a unique explanatory variable}
-  \item{resid}{quantile or standardised residuals can be given here instead of a GAMLSS object in \code{obj}. In this case the function behaves diffently (see details below) }
+  \item{resid}{quantile or standardised residuals can be given here instead of a GAMLSS object in \code{obj}. In this case the function behaves differently (see details below) }
   \item{xcut.points}{the x-axis cut off points e.g. \code{c(20,30)}. If \code{xcut.points=NULL} then the \code{n.inter} argument is activated }
   \item{n.inter}{if \code{xcut.points=NULL} this argument gives the number of intervals in which the x-variable will be split, with default 10}
   \item{zvals}{if \code{TRUE} the output matrix contains the individual Z-statistics rather that  the Q statistics}
@@ -29,7 +29,7 @@ Note that the function \code{Q.stats} behaves differently depending whether the 
 }
 
 \value{
-  A table containing the  Q-statistics or Z-statistics. If \code{plot=TRUE} it produces also an graphical represenation of the table. 
+  A table containing the  Q-statistics or Z-statistics. If \code{plot=TRUE} it produces also an graphical representation of the table. 
 }
 \references{
 

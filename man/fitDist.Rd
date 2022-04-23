@@ -66,7 +66,7 @@ The following are the different \code{type} argument:
   
   \item{\code{realline}:}{ The \code{gamlss.family} continuous distributions : "NO", "GU", "RG" ,"LO", "NET", "TF", "TF2", "PE","PE2", "SN1", "SN2", "exGAUS", "SHASH", "SHASHo","SHASHo2", "EGB2", "JSU", "JSUo", "SEP1", "SEP2", "SEP3", "SEP4",  "ST1", "ST2", "ST3", "ST4", "ST5", "SST", "GT"}
   
-  \item{\code{realplus}:}{ The \code{gamlss.family} continuous distributions in the positive leal line: "EXP", "GA","IG","LOGNO", "LOGNO2","WEI", "WEI2", "WEI3", "IGAMMA","PARETO2", "PARETO2o", "GP", "BCCG", "BCCGo", "exGAUS", "GG", "GIG", "LNO","BCTo", "BCT", "BCPEo", "BCPE", "GB2"}
+  \item{\code{realplus}:}{ The \code{gamlss.family} continuous distributions in the positive real line: "EXP", "GA","IG","LOGNO", "LOGNO2","WEI", "WEI2", "WEI3", "IGAMMA","PARETO2", "PARETO2o", "GP", "BCCG", "BCCGo", "exGAUS", "GG", "GIG", "LNO","BCTo", "BCT", "BCPEo", "BCPE", "GB2"}
   
   \item{\code{real0to1}:}{ The \code{gamlss.family} continuous distributions from 0 to 1: "BE", "BEo", "BEINF0", "BEINF1", "BEOI", "BEZI", "BEINF", "GB1""}
   

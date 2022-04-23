@@ -27,7 +27,7 @@ pp(x, start = list(), shift = NULL, scale = NULL)
   \item{x}{the explanatory variable to be used in functions \code{bfp()} or \code{fp()}. Note that this is different from the argument \code{x} use in \code{gamlss.fp} (a function used in the backfitting but not by straight by the user) }
   \item{powers}{a vector containing as elements  the powers in which the x has to be raised }
   \item{shift}{a number for shifting the x-variable. The default values is  zero, if x is positive, or the minimum of the positive difference in x  minus the minimum of x}
-  \item{scale}{a positive number for scalling the x-variable. The default values is 
+  \item{scale}{a positive number for scaling the x-variable. The default values is 
                \eqn{10^(sign(log10(range)))*trunc(abs(log10(range)))}{10^(sign(log10(range)))*trunc(abs(log10(range)))}}
   \item{npoly}{a positive indicating how many fractional polynomials should be considered in the fit. Can take the values 1, 2 or 3 with 2 as default}
   \item{start}{a list containing the starting values for the non-linear maximization to find the powers. 

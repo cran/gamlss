@@ -406,7 +406,7 @@ else # for prediction
 for (i in 1:length(rexpr)){
         position <- i
         if (rexpr[i]==1) break}
-  cat("New way of prediction in pbm()  (starting from GAMLSS version 5.0-3)", "\n" )
+ # cat("New way of prediction in pbm()  (starting from GAMLSS version 5.0-3)", "\n" )
 gamlss.environment <- sys.frame(position)
              param <- get("what", envir=gamlss.environment)
             object <- get("object", envir=gamlss.environment)

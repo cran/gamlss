@@ -14,7 +14,7 @@
 
 The function \code{stepGAIC()} performs stepwise model selection using a Generalized Akaike Information Criterion (GAIC). It is based on the function \code{stepAIC()} given in the library MASS of Venables and Ripley (2002). The function has been changed recently to allow parallel computation.  The parallel computations are similar to the ones performed in the function \code{boot()} of the \pkg{boot} package. Note that since version 4.3-5 of \pkg{gamlss} the  \code{stepGAIC()} do not have the option of using the function \code{stepGAIC.CH} through the argument \code{additive}. 
 
-Note that \code{stepGAIC()}  is relying to the \code{dropterm()} and \code{addterm()} methods applyied to gamlss objects.    \code{drop1()} and \code{add1()} are equivalent methods  to the  \code{dropterm()} and \code{addterm()} respectivelly but with different default arguments (see the examples). 
+Note that \code{stepGAIC()}  is relying to the \code{dropterm()} and \code{addterm()} methods applied to gamlss objects.    \code{drop1()} and \code{add1()} are equivalent methods  to the  \code{dropterm()} and \code{addterm()} respectively but with different default arguments (see the examples). 
 
 The function \code{stepGAIC.VR()} is the old version  of \code{stepGAIC()} with no parallel computations.    
 
@@ -52,7 +52,7 @@ Note for this strategy to work the \code{scope} argument should be set appropria
 
 
 \code{stepGAICAll.B()} uses the same procedure as the function  \code{stepGAIC()} but each term in the scope is fitted  to all the parameters of the distribution, rather than the one specified  by the argument \code{what} of \code{stepGAIC()}. 
-The \code{stepGAICAll.B()} relies on the \code{add1All()} and \code{drop1All()} functions for the selection of variabes.
+The \code{stepGAICAll.B()} relies on the \code{add1All()} and \code{drop1All()} functions for the selection of variables.
  
 
 }

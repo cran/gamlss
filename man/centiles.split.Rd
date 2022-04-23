@@ -21,7 +21,7 @@ centiles.split(obj, xvar, xcut.points = NULL, n.inter = 4,
   \item{obj}{a fitted gamlss object from fitting a gamlss continuous distribution}
   \item{xvar}{the unique explanatory variable}
   \item{xcut.points}{the x-axis cut off points e.g. \code{c(20,30)}. If \code{xcut.points=NULL} then the \code{n.inter} argument is activated }
-  \item{n.inter}{if \code{xcut.points=NULL} this argument gives the number of intervals in which the x-variable will be splited, with default 4 }
+  \item{n.inter}{if \code{xcut.points=NULL} this argument gives the number of intervals in which the x-variable will be split, with default 4 }
   \item{cent}{a vector with elements the \% centile values for which the centile curves are to be evaluated}
   \item{legend}{whether a legend is required in the plots or not, the default is \code{legent=FALSE}  }
   \item{main}{the main title as character. 
@@ -34,7 +34,7 @@ centiles.split(obj, xvar, xcut.points = NULL, n.inter = 4,
   \item{overlap}{how much overlapping in the \code{xvar} intervals. Default value is \code{overlap=0} for non overlapping intervals}
   \item{save}{whether to save the sample percentages or not with default equal to \code{TRUE}. 
             In this case the functions produce a matrix giving the sample percentages for each interval }
-  \item{plot}{whether to plot the centles. This option is usefull if the sample statistics only are to be used}
+  \item{plot}{whether to plot the centles. This option is useful if the sample statistics only are to be used}
   \item{\dots}{for extra arguments}
 }
 

@@ -502,7 +502,7 @@ if (is.null(newdata))
  }
    else # if new data use only the length of the new data
  {
-   lengthnewdata <- if (class(newdata)=="data.frame") dim(newdata)[1] else length(newdata)
+   lengthnewdata <- if (is(newdata,"data.frame")) dim(newdata)[1] else length(newdata)
    if (!se.fit)
      ret<- rep(fitted(object,what)[1], lengthnewdata)  
    else

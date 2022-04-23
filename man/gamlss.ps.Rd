@@ -29,7 +29,7 @@ gamlss.pbp(x, y, w, xeval = NULL, ...)
 }
 
 \arguments{
-  \item{x}{ the \code{x} for function \code{gamlss.fp} is referred to the design matric of the specific parameter model (not to be used by the user)}
+  \item{x}{ the \code{x} for function \code{gamlss.fp} is referred to the design matrix of the specific parameter model (not to be used by the user)}
   \item{y}{the \code{y} for function \code{gamlss.fp} is referred to the working variable of the specific parameter model (not to be used by the user)}
   \item{w}{ the \code{w} for function \code{gamlss.fp} is referred to the iterative weight variable of the specific parameter model (not to be used by the user) }
   \item{xeval}{used in prediction}

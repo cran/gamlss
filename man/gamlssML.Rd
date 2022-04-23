@@ -8,7 +8,7 @@
  The function \code{gamlssML()} fits  a \code{gamlss.family} distribution to single  data set  using a non linear maximisation algorithm in \code{R}.
 This is relevant only when explanatory variables do not exist.
 
-The function \code{gamlssMLpred()} is similar to \code{gamlssML()} but it saves the \emph{predictive} global deviance for the \code{newdata}.  The newdata in \code{gamlssMLpred()} can be given with the arguments \code{newdata} or defining the factor  \code{rand}.  \code{rand} should be a binary factor \code{rand} splitting the original  data set into a training set (value 1)  and  a validation/test set (values 2), see
+The function \code{gamlssMLpred()} is similar to \code{gamlssML()} but it saves the \emph{predictive} global deviance for the \code{newdata}.  The new data in \code{gamlssMLpred()} can be given with the arguments \code{newdata} or defining the factor  \code{rand}.  \code{rand} should be a binary factor \code{rand} splitting the original  data set into a training set (value 1)  and  a validation/test set (values 2), see
 also \code{\link{gamlssVGD}}} 
 \usage{
 gamlssML(formula, family = NO, weights = NULL, mu.start = NULL, 
@@ -27,7 +27,7 @@ a vector of data requiring the fit of a \code{gamlss.family} distribution or (on
   \item{family}{ \code{\link[gamlss.dist]{gamlss.family}} object, which is used to define the distribution and the link functions of the various parameters. 
    The distribution families supported by \code{gamlssML()} can be found in \code{\link[gamlss.dist]{gamlss.family}}}
   \item{weights}{ a vector of weights. 
-  Here weights can be used to weight out observations (like in \code{subset}) or for a weighted likelihood analysis where  the contribution of the observations to the likelihood differs according to \code{weights}. The length of \code{weights} must be the same as the number of observations in the data. By default, the weight is set to one. To set  weights to vector say w use \code{weights=w}
+  Here weights can be used to weight out observations (like in \code{subset}) or for a weighted likelihood analysis where  the contribution of the observations to the likelihood differs according to \code{weights}. The length of \code{weights} must be the same as the number of observations in the data. By default, the weight is set to one. To set  weights to vector say \code{w} use \code{weights=w}
 }
   \item{mu.start}{ a scalar of initial values for the location parameter \code{mu} e.g.  \code{mu.start=4}}
   \item{sigma.start}{a scalar of initial values for the scale parameter \code{sigma} e.g. \code{sigma.start=1}}
@@ -47,7 +47,7 @@ a vector of data requiring the fit of a \code{gamlss.family} distribution or (on
  in fact it uses the internal function \code{MLE()} which is a copy of the \code{mle()} function of package \code{stat4}.
 The function \code{gamlssML()} could be for large data faster than the equivalent \code{gamlss()} function which is designed for regression type of models. 
 
-The  function \code{gamlssMLpred()} uses the  functionfunction \code{gamlssML()}   to fit the model but then uses \code{predict.gamlssML()} to predict for newdata and saves the the prediction i) deviance increments, ii) global deviance iii) residuals.   
+The  function \code{gamlssMLpred()} uses the  function  \code{gamlssML()}   to fit the model but then uses \code{predict.gamlssML()} to predict for new data and saves the the prediction i) deviance increments, ii) global deviance iii) residuals.   
 }
 \value{Returns a \code{gamlssML} object which behaves like a \code{gamlss} fitted objected}
 \references{

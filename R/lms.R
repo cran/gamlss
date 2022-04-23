@@ -271,7 +271,7 @@ predict.lms <- function(object,
  # other if vector use it 
   if (!is.null(newdata))
   {
-  if (class(newdata)=="data.frame")
+  if (is(newdata,"data.frame"))
     {
     if (!object$xlab%in%names(newdata)) stop("the name in the data.frame do not much the x-variable in the model")
     x <- newdata[[object$xlab]]
