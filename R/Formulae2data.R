@@ -1,7 +1,7 @@
 ####################################################################################
 ####################################################################################
 ####################################################################################
-# this function is neede in ALE but it should be use to all partial effect functions
+# this function is needed in ALE but it should be use to all partial effect functions
 ###################################################################################
 ####################################################################################
 Formulae2data <- function(formula = list(), data=NULL, weights=NULL, subset=NULL, 
@@ -37,7 +37,7 @@ Formulae2data <- function(formula = list(), data=NULL, weights=NULL, subset=NULL
   }
   environment(ff) <- globalenv()    # do I need this
   all.vars <- get_all_vars(ff, data=data)
-  if (!is.null(data)&&class(data)!="data.frame") warning("data is not a data frame class attributes will be lost")
+  if (!is.null(data)&&!inherits(data, "data.frame")) warning("data is not a data frame class attributes will be lost")
   M <- dim(all.vars)[1]
   ## subsetting             
   if (!is.null(subset)) {

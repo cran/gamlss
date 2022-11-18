@@ -21,7 +21,7 @@ predictAll(object, newdata = NULL, type = c("response", "link", "terms"),
                 terms = NULL, se.fit = FALSE, use.weights = FALSE, 
                 data = NULL, y.value = "median", 
                 set.to = .Machine$double.xmin,
-                output = c("list", "matrix"), ...)
+                  output = c("list","data.frame", "matrix"), ...)
 }
 
 \arguments{

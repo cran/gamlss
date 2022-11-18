@@ -4,13 +4,15 @@
 
 \title{Extract Linear Predictor Values and Standard Errors For A GAMLSS Model }
 \description{
-\code{lpred} is the GAMLSS specific method which extracts the linear predictor and its (approximate) standard errors 
-for a specified parameter from a GAMLSS objects.  
-The \code{lpred} can be also used to extract the fitted values (with its approximate standard errors) or specific  terms in the model  
-(with its approximate standard errors) in the same way that the \code{predict.lm()} and \code{predict.glm()} functions can be used for 
+The function \code{lpred()} is the GAMLSS specific method which extracts the linear predictor and its (approximate) standard errors 
+for a specified model parameter from a GAMLSS objects.  
+The \code{lpred()} can be used to extract the predictor fitted values (and its approximate standard errors) or the contribution of specific terms in the model  
+(with their approximate standard errors) in the same way that the \code{predict.lm()} and \code{predict.glm()} functions can be used for 
 \code{lm} or \code{glm} objects. 
-The function \code{lp} extract only the linear predictor. If prediction is required for new data values then use the 
-function \code{predict.gamlss()}.
+Note that \code{lpred()} extract information for the predictors of \code{mu},\code{sigma}, \code{nu} and \code{tau} at the training data values.  If predictions are  required for new data then use the 
+functions \code{predict.gamlss()} or \code{predictAll()}.
+
+The function \code{lp} extract only the linear predictor at the training data values. 
 }
 \usage{
 lpred(obj, what = c("mu", "sigma", "nu", "tau"), parameter= NULL,

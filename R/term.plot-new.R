@@ -218,7 +218,7 @@ CheckSmoList <- function(termList)
 CheckSmoWithPlot <- function(termList)
 {
   #gamlss.Smo.plot.list <- c( "tr", "ga")
-  gamlss.Smo.plot.list1 <- c( "tr(", "ga(", "nn(", "pvc(", "gmrf(", "mrfa(", "ri(",
+ gamlss.Smo.plot.list1 <- c( "tr(", "ga(", "nn(", "pvc(", "gmrf(", "mrfa(", "ri(",
                              "own(" , "re(", "lo(", "pcat(",  "ba(")# "ma(",
   lgamsmol  <- length(gamlss.Smo.plot.list1)
   lsm  <- length(termList)
@@ -605,7 +605,6 @@ whichValueSmo <- CheckSmoList(nmt)
 #   if (any(class(mf)%in%"try-error")){ mf <-  get_all_vars(parform, data)}
 #   mf
 # }
-
 
 
 # THIS FUNCTION IS MORE GENERAL THAN THE EXISTING ONE

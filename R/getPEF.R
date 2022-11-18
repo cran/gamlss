@@ -76,7 +76,6 @@ names(dat.temp) <- v.names <- names(DaTa)
   theFun  <- splinefun(xvar, fittted.orig)
   if (plot)
   {
-   # browser() #def.par <- par(no.readonly = TRUE)
     layout(matrix(c(1,1,2,2), 2, 2, byrow = TRUE))
     plot(theFun(xvar)~xvar, ylab="s()", xlab=term, type="l")
     plot(theFun(xvar, deriv=1)~xvar, xlab=term,  ylab="ds/dx", type="l")

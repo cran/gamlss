@@ -122,7 +122,6 @@ get.rqres <- function(obj = NULL, howmany=10, order=FALSE) #, pit=FALSE
     #  }, 
      # "cb"=
      # {
-     #   browser()
      #   rmedian <- apply(rs, MARGIN=1, "median")
      #     low <- apply(rs, MARGIN=1, "quantile",0.025)
      #   upper <- apply(rs, MARGIN=1, "quantile",0.975)

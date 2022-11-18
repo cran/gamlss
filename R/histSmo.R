@@ -1,5 +1,6 @@
-# needs this to read the data reading the data 
 # Paul Eilers' density estimation
+# Mikis: dx is added into the output so we can reconstruct the 
+# probabilities at mids
 #########################################################################
 #########################################################################
 #########################################################################
@@ -149,7 +150,8 @@ if (plot)
  }
 
          density <- if (discrete) (mu/sum(mu)) else (mu/sum(mu))/dx	
-             out <- list(x=x, counts=Y, density=density, hist=hst, cdf=cdfFun, invcdf=invcdfFun, call= histSmocall, discrete=discrete)
+             out <- list(x=x, counts=Y, density=density, hist=hst, cdf=cdfFun, 
+                         invcdf=invcdfFun, call= histSmocall, discrete=discrete, dx=dx)
       class(out) <- "histSmo"
   invisible(out) 
 
@@ -245,7 +247,9 @@ if (plot)
  }
   {
          density <- if (discrete) (mu/sum(mu)) else (mu/sum(mu))/dx	
-             out <- list(x=x, counts=Y, density=density, hist=hst, cdf=cdfFun, invcdf=invcdfFun, model=m1, call= histSmocall, discrete=discrete)
+             out <- list(x=x, counts=Y, density=density, hist=hst, cdf=cdfFun, 
+                         invcdf=invcdfFun, model=m1, call= histSmocall, 
+                         discrete=discrete, dx=dx)
       class(out) <- "histSmo"
       invisible(out) 
   }       
@@ -348,7 +352,9 @@ if (plot)
  }
  
          density <- if (discrete) (mu/sum(mu)) else (mu/sum(mu))/dx	
-             out <- list(x=x, counts=Y, density=density, hist=hst, cdf=cdfFun, invcdf=invcdfFun, model=m1, call= histSmocall, discrete=discrete)
+             out <- list(x=x, counts=Y, density=density, hist=hst, cdf=cdfFun, 
+                         invcdf=invcdfFun, model=m1, call= histSmocall, 
+                         discrete=discrete, dx=dx)
       class(out) <- "histSmo"
       invisible(out) 
          

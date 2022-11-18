@@ -59,21 +59,20 @@ The \code{stepGAICAll.B()} relies on the \code{add1All()} and \code{drop1All()} 
 \usage{
 
 stepGAIC(object, scope, direction = c("both", "backward", "forward"), 
-          trace = T, keep = NULL, steps = 1000, scale = 0, 
+          trace = TRUE, keep = NULL, steps = 1000, scale = 0, 
           what = c("mu", "sigma", "nu", "tau"), parameter= NULL, k = 2, 
           parallel = c("no", "multicore", "snow"), ncpus = 1L, cl = NULL, 
           ...)
 
 stepGAIC.VR(object, scope, direction = c("both", "backward", "forward"), 
-         trace = T, keep = NULL, steps = 1000, scale = 0, 
+         trace = TRUE, keep = NULL, steps = 1000, scale = 0, 
          what = c("mu", "sigma", "nu", "tau"), parameter= NULL, k = 2, 
          ...)
 
 stepGAIC.CH(object, scope = gamlss.scope(model.frame(object)), 
-            direction = c("both", "backward", "forward"), trace = T, 
+            direction = c("both", "backward", "forward"), trace = TRUE, 
             keep = NULL, steps = 1000, what = c("mu", "sigma", "nu", "tau"),
             parameter= NULL, k = 2, ...)
-
 
 stepGAICAll.A(object, scope = NULL, sigma.scope = NULL, nu.scope = NULL, 
               tau.scope = NULL, mu.try = TRUE, sigma.try = TRUE, 
@@ -81,7 +80,6 @@ stepGAICAll.A(object, scope = NULL, sigma.scope = NULL, nu.scope = NULL,
               parallel = c("no", "multicore", "snow"), ncpus = 1L, 
               cl = NULL,  ...)
 
-               
 stepGAICAll.B(object, scope, direction = c("both", "backward", "forward"), 
               trace = T, keep = NULL, steps = 1000, scale = 0, k = 2, 
               parallel = c("no", "multicore", "snow"), ncpus = 1L, 

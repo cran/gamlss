@@ -56,7 +56,6 @@ switch(type,
                 # case 1
                 if(mass.p==0)
                 { 
-                 # browser()
                   uval <- ifelse(y==mass.p, runif(length(y),0,prob.mp),cdf(q=y,...))  
                 } # if length  1 
                   #  and the mass point is at 2    

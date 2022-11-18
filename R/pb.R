@@ -429,7 +429,6 @@ if (abs(fit$edf-df)>0.1) warning("the target df's are not acheived, try to reduc
 #-end -----------------------------------------------------------    
      lev <- (lev-.hat.WX(w,x)) # subtract  the linear since is already fitted 
      var <- lev/w              # the variance of the smootherz
-#         browser()
 #      # se <-  sqrt(diag(solve(XWX + lambda * t(D) %*% D)))
      suppressWarnings(Fun <- splinefun(x, fv, method="natural"))
 coefSmo <- list(   coef = fit$beta,

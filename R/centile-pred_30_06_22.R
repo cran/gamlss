@@ -16,6 +16,8 @@ centiles.pred <- function(obj,
                  calibration = FALSE,
                         plot = FALSE,
                       legend = TRUE, 
+                        ylim = NULL,
+                        xlim = NULL,
                               ...)
 {
 ## ------function calc.cent-----------------------------------------------------
@@ -93,9 +95,12 @@ centiles.pred <- function(obj,
    plot.mat <- function(mat, cent, legend ,...)
    {
     lcent <- dim(mat)[2]
-     xleg <- min(mat[,1])
-     yleg <- max(mat[,2:lcent])
-    plot(mat[,1],mat[,2],ylim=c(min(mat[,2:lcent]),max(mat[,2:lcent])), type="n",...)
+     ylim <- if (is.null(ylim)) c(min(mat[,2:lcent]),max(mat[,2:lcent]))
+             else ylim  
+     xlim <- if (is.null(xlim)) NULL else xlim 
+     xleg <-  min(mat[,1], xlim)
+     yleg <- max(mat[,2:lcent], ylim)
+    plot(mat[,1],mat[,2],, type="n",ylim=ylim, xlim=xlim,...)
      for(i in 2:lcent)    lines(mat[,1],mat[,i],col=i)
      if (legend)
       legend(list(x=xleg,y=yleg), legend = cent, col=c(2,3,4,5,6,7,8,9,10,11,12,13,14,15,16), lty=1, ncol=1, bg="white")# 

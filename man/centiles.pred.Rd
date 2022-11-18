@@ -15,7 +15,7 @@ centiles.pred(obj, type = c("centiles", "z-scores", "standard-centiles"),
              xname = NULL, xvalues = NULL, power = NULL, yval = NULL, 
              cent = c(0.4, 2, 10, 25, 50, 75, 90, 98, 99.6), 
              dev = c(-4, -3, -2, -1, 0, 1, 2, 3, 4), calibration = FALSE,
-             plot = FALSE, legend = TRUE, 
+             plot = FALSE, legend = TRUE,  ylim = NULL,xlim = NULL,
              ...)
 }
 
@@ -33,6 +33,8 @@ centiles.pred(obj, type = c("centiles", "z-scores", "standard-centiles"),
    \item{calibration}{whether to calibrate the "centiles", the default is \code{calibrate=FALSE}}
   \item{plot}{whether to plot the "centiles" or the "standard-centiles", the default is \code{plot=FALSE}}
   \item{legend}{whether a legend is required in the plot or not, the default is \code{legent=TRUE}  } 
+  \item{ylim}{If different \code{ylim} is required from the default} 
+  \item{xlim}{If different \code{xlim} is required from the default } 
   \item{\dots}{ for extra arguments }
 }
 

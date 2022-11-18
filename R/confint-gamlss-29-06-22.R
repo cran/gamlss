@@ -51,6 +51,7 @@ confint.gamlss  <- function (object, parm,
        } 
             else  match.arg(what)
        cf <- unlist(coefAll(object))
+       cf <- cf[!is.na(cf)]
    pnames <-  names(cf)
 if (!missing(parm)) warning("The option parm is not used in the function confint.gamlss()")
         a <- (1 - level)/2

@@ -181,7 +181,7 @@ fullcoef[n] <- fixed
     cnames <- names(mlFitcall)  # get the names of the arguments of the call
     cnames <- cnames[match(mnames,cnames,0)] # keep only the ones that match with mnames
      mcall <- mlFitcall[cnames] # get in mcall all the relevant information but remember
-  # that the first elenent will be NULL
+                                 # that the first element will be NULL
 mcall[[1]] <- as.name("model.frame") # replace NULL with model.frame
 mcall[[2]] <- if (any(grepl("~", deparse(substitute(formula)))))   mcall[[2]] 
               else as.formula(paste(deparse(substitute(formula)),"~1", sep=""), parent.frame(1))
@@ -481,7 +481,6 @@ predict.gamlssML <- function(object, what = c("mu", "sigma", "nu", "tau"),
   if (! what%in%object$par) stop(paste(what,"is not a parameter in the gamlss object","\n"))
 # x <- rep(object[[what]], object$N)
 #  If no new data just use fitted() and finish
-#   browser()
 if (is.null(newdata))
  {
   if (!se.fit)
