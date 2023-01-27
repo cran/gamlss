@@ -12,6 +12,10 @@ book 2
 explains the explicit and generated distributions available in the 
 package gamlss.dist  
 
+book 3 
+"Generized Additive Models for Location Scale and Shape: A distributional 
+regression  approach with applications" explains the different method for fitting GAMLSS i.e. penalised Likelihood, Bayesian and Boosting.  (expected publication data summer 2023)
+ 
 More more information about books and papers related to GAMLSS can be found in
 
 http://www.gamlss.com/
@@ -23,12 +27,26 @@ Question or suggestions about GAMLSS can be send to
    r.rigby@londonmet.ac.uk
 _______________________________________________________________
 _______________________________________________________________
-Version 5.4-4
+Version 5.5-12
+
+1. gamlss 5.5-11 
+      i) The warning "New way of prediction in pb() " in pb() is taken out
+      ii) a bug in getTGD() which did not allowed binary resposnse has been 
+          corrected
+      iii) hatvalue.gamlss has been rewtitten 
+      
+2. gamlss.dist
+      i) all d and p fuctions allow now arguments out of the range of the 
+      distribution but produce the correct value i.e. dGA(-1) = pGA(-1) = 0   
+      This is done to conform with all R distributions.
+
+Version 5.4-8
 
 1. gamlss  5.4-8
        i) confint() : did not work when NA were present in the coefficients, for    example, if random effects were used. The bug was reported  by Julia Wood.  Now it is fixed together with the  robust=T option which did  not worked before.
        
         ii) The help file for lpred() is amended 
+        
        iii) predictAll() now should work with survival models plus the `output` option has been extended  
        
 2. gamlss.dist 6.0-5: Problems with  KaTeX are resolved. All formulae have been checked or refer to Book 2. 

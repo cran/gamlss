@@ -94,6 +94,7 @@ if (fname$family[1] %in% .gamlss.bi.list)# if binomial
      if (NCOL(nfitted$y) == 1) 
      {
        y1 <- nfitted$y 
+       bd <- nfitted$bd
      }
      else                 
      {
@@ -245,6 +246,7 @@ getTGD<- function (object,   newdata = NULL, ...)
     if (NCOL(nfitted$y) == 1) 
     {
       y1 <- nfitted$y 
+      bd <- nfitted$bd
     }
     else                 
     {

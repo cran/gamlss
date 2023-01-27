@@ -1,7 +1,7 @@
 Package: gamlss
 Description: Functions for fitting the Generalized Additive Models for Location Scale and Shape introduced by Rigby and Stasinopoulos (2005), <doi:10.1111/j.1467-9876.2005.00510.x>. The models use a distributional regression approach where all the parameters of the conditional distribution of the response variable are modelled using explanatory variables.
-Version: 5.4-10
-Date: 2022-10-18
+Version: 5.4-12
+Date: 2023-01-26
 Authors@R: c(person("Mikis", "Stasinopoulos", role = c("aut", "cre", "cph"), 
              email = "d.stasinopoulos@londonmet.ac.uk"),
            person("Bob", "Rigby", role = c("aut")), 
@@ -19,7 +19,7 @@ Imports: MASS, survival, methods
 License: GPL-2 | GPL-3
 URL: https://www.gamlss.com/
 NeedsCompilation: yes
-Packaged: 2022-11-18 12:38:57 UTC; dimitriosstasinopoulos
+Packaged: 2023-01-27 09:18:54 UTC; dimitriosstasinopoulos
 Author: Mikis Stasinopoulos [aut, cre, cph],
   Bob Rigby [aut],
   Vlasios Voudouris [ctb],
@@ -27,4 +27,4 @@ Author: Mikis Stasinopoulos [aut, cre, cph],
   Marco Enea [ctb],
   Daniil Kiose [ctb]
 Repository: CRAN
-Date/Publication: 2022-11-18 15:00:05 UTC
+Date/Publication: 2023-01-27 10:10:02 UTC

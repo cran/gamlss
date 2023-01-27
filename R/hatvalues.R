@@ -1,40 +1,32 @@
-######################################################################
-######################################################################
-# the hatvalues for GAMLSS
-######################################################################
-######################################################################
-######################################################################
-######################################################################
-######################################################################
-######################################################################
+################################################################################
+################################################################################
+# the hat values for GAMLSS
+################################################################################
+################################################################################
+################################################################################
+################################################################################
+################################################################################
+################################################################################
 # the linear leverage of a gamlss object
 hatvalues.gamlss <- function(model, ...)
 {
-#####################################################################
-#####################################################################  
-Formulae2one <- function(formula, sigma=~1, nu=~1, tau=~1, data )
-  {
-    form <- formula(formula)
-    nform <- paste(paste(form[[2]],form[[1]]), deparse(form[[3]]), "+",  
-                   deparse(sigma[[2]]),"+",
-                   deparse(nu[[2]]),"+",
-                   deparse(tau[[2]]))[1]
-    ff<- formula(paste(nform, collapse = " "))
-    environment(ff) <- globalenv()
-    ff
-  }
-#####################################################################
-#####################################################################
-leverage <- function(formula = list(), 
-                             data = NULL, 
-                             weights = NULL, 
-                             subset = NULL, 
-                             na.action)
-{
-####################################################################  
+################################################################################
 # local
-Formulae2data <- function(formula = list(), data=NULL, weights=NULL, subset=NULL, 
-                            na.action, print = FALSE )
+################################################################################  
+# Formulae2one <- function(formula, sigma=~1, nu=~1, tau=~1, data )
+#   {
+#     form <- formula(formula)
+#     nform <- paste(paste(form[[2]],form[[1]]), deparse(form[[3]]), "+",  
+#                    deparse(sigma[[2]]),"+",
+#                    deparse(nu[[2]]),"+",
+#                    deparse(tau[[2]]))[1]
+#     ff<- formula(paste(nform, collapse = " "))
+#     environment(ff) <- globalenv()
+#     ff
+# }
+#####################################################################3########## 
+  formulae2data <- function(formula = list(), data=NULL, weights=NULL, subset=NULL, 
+                            na.action, print = TRUE  )
   {
     if (is(formula,"list"))
     {
@@ -48,15 +40,16 @@ Formulae2data <- function(formula = list(), data=NULL, weights=NULL, subset=NULL
         # the first formula  
         form <- formula(formula[[1]])
         # create y~x+   
-        f1 <- paste(paste(form[[2]],form[[1]]), deparse(form[[3]]), "+")
+        f1 <- ff <- paste(paste(form[[2]],form[[1]]), 
+                          deparse(form[[3]], width.cutoff = 500L), "+")
         # now add the of he formulae    
         for (i in 2:lenList)
         {
-          ff <- if (i==lenList) paste(f1, deparse(formula[[i]][[2]]))
-          else paste(f1, deparse(formula[[i]][[2]]),"+")
+          ff <- if (i==lenList) paste(ff, deparse(formula[[i]][[2]], width.cutoff = 500L))
+          else paste(ff, deparse(formula[[i]][[2]], width.cutoff = 500L),"+")
         } 
       }
-    } else if (is(formula,"formula")) {ff  <- formula}
+    } else if (is(formula,"formula")) {ff  <- deparse(substitute(formula))}
     else stop("The formula argument should be a formula or a list") 
     if (!is.null(weights)) 
     {
@@ -84,35 +77,62 @@ Formulae2data <- function(formula = list(), data=NULL, weights=NULL, subset=NULL
     if (print) {if (M-N > 0) cat(M-N, "rows with NAs are deleted", "\n" )}
     if (print) cat( N, "observations with", dim(all.vars)[2], "variables \n")    
     attr(all.vars, "formula") <- ff
-    all.vars
+    return(all.vars)
   }
-################################################################  
-    d_f <- Formulae2data(formula=formula, data=data, weights=weights, subset=subset, 
-                       na.action, print = FALSE)
-  dimDF <- dim(d_f)
-      p <-  dimDF[2]-1 # in general the number of x variables
-      n <- dimDF[1]   # in general the number of cases, n=99 here
-     m1 <- lm(attr(d_f, "formula"), data= d_f)
-      h <- hatvalues(m1)
-  return(h)
-}
-################################################################
-################################################################
-if (!is.null(model$call[["data"]]))
+################################################################################
+################################################################################
+################################################################################
+################################################################################
+################################################################################
+################################################################################
+# getAll.formulae2data <- function(model, data)
+# {
+#   if (!is(model,"gamlss")) stop("it needs a gamlss object")
+#   param <- model$parameters
+#   lparam <- length(param)
+#   formul <- list()
+#   for (i in 1:lparam) 
+#   {
+#     formul[[param[i]]] <- as.formula(model[[paste0(param[i],".formula")]])
+#   }
+#   DaTa <-  Formulae2data(formul, data=data) #
+#   DaTa
+# }
+################################################################################
+# This in combination with  formulae2data()
+# takes a gamlss object, extract its formulae and then 
+# creates a data frame 
+model2formulae2data <- function(model, data)
 {
-  DaTa <- eval(model$call[["data"]])
-} else stop("the data argument is not used in the fitted model")
-  lpar <- length(model$parameters)
-  form <- switch(lpar, 
-               Formulae2one(model$mu.formula),
-               Formulae2one(model$mu.formula, model$sigma.formula),
-               Formulae2one(model$mu.formula, model$sigma.formula, model$nu.formula),
-               Formulae2one(model$mu.formula, model$sigma.formula, model$nu.formula, model$tau.formula)
-               )
-lev <- leverage(form, data=DaTa)
+  if (!is(model,"gamlss")) stop("it needs a gamlss object")
+  param <- model$parameters
+  lparam <- length(param)
+  formul <- list()
+  for (i in 1:lparam) 
+  {
+    formul[[param[i]]] <- as.formula(model[[paste0(param[i],".formula")]])
+  }
+  DaTa <-  formulae2data(formul, data=data) #
+  DaTa
+}
+################################################################################
+# hatvalue function starts here 
+if (any(grepl("data", names(model$call)))) 
+{
+  DaTa <- if (startsWith(as.character(model$call["data"]), "na.omit")) 
+    eval(parse(text = as.character(model$call["data"])))
+  else get(as.character(model$call["data"]))
+}
+else if (is.null(data)) 
+  stop("The data argument is needed in obj")
+     weights <- model$weights
+reduced_data <- model2formulae2data(model, data=DaTa)
+        form <- attr(reduced_data, "formula")
+reduced_data <- cbind(reduced_data, weights )
+lev <- hatvalues(lm(form, weights=weights, data=reduced_data))
 lev
 }
-##############################################################
-##############################################################
-##############################################################
-##############################################################  
+################################################################################
+################################################################################
+################################################################################
+################################################################################  
