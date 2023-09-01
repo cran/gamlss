@@ -25,8 +25,8 @@ hatvalues.gamlss <- function(model, ...)
 #     ff
 # }
 #####################################################################3########## 
-  formulae2data <- function(formula = list(), data=NULL, weights=NULL, subset=NULL, 
-                            na.action, print = TRUE  )
+  formulae2data <- function(formula = list(), data=NULL, weights=NULL, 
+                            subset=NULL, na.action, print = TRUE  )
   {
     if (is(formula,"list"))
     {
@@ -45,7 +45,8 @@ hatvalues.gamlss <- function(model, ...)
         # now add the of he formulae    
         for (i in 2:lenList)
         {
-          ff <- if (i==lenList) paste(ff, deparse(formula[[i]][[2]], width.cutoff = 500L))
+    ff <- if (i==lenList) paste(ff, deparse(formula[[i]][[2]], 
+                                            width.cutoff = 500L))
           else paste(ff, deparse(formula[[i]][[2]], width.cutoff = 500L),"+")
         } 
       }
@@ -57,9 +58,10 @@ hatvalues.gamlss <- function(model, ...)
       ff <- paste(ff, deparse(substitute(weights)), sep="+")
       # ff[[3]] <- paste(ff[[3]],deparse(substitute(weights)), sep="+")
     }
-    environment(ff) <- globalenv()    # do I need this
-    all.vars <- get_all_vars(ff, data=data)
-    if (!is.null(data)&&!inherits(data,"data.frame")) warning("data is not a data frame class attributes will be lost")
+ environment(ff) <- globalenv()    # do I need this
+        all.vars <- get_all_vars(ff, data=data)
+if (!is.null(data)&&!inherits(data,"data.frame")) 
+      warning("data is not a data frame class attributes will be lost")
     M <- dim(all.vars)[1]
     ## subsetting             
     if (!is.null(subset)) {
@@ -116,12 +118,13 @@ model2formulae2data <- function(model, data)
   DaTa
 }
 ################################################################################
-# hatvalue function starts here 
+################################################################################
+# hatvalue.gamlss function starts here 
 if (any(grepl("data", names(model$call)))) 
 {
   DaTa <- if (startsWith(as.character(model$call["data"]), "na.omit")) 
-    eval(parse(text = as.character(model$call["data"])))
-  else get(as.character(model$call["data"]))
+             eval(parse(text = as.character(model$call["data"])))
+         else get(as.character(model$call["data"]))
 }
 else if (is.null(data)) 
   stop("The data argument is needed in obj")

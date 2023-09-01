@@ -10,9 +10,11 @@
 #------------------------------------------------------------------------------
 # functions
 #-------------------------------------------------------------------------------
-#   i) gamlssVGD() for fiting a model and then calculate the deviance for the extra data
+#   i) gamlssVGD() for fiting a model and then calculate the deviance for the 
+#      extra data
 #  ii) VGD() for comparing fitted gamlssVHD models
-# iii) getTGD()  after fitting to training data  get the global deviance for the test data
+# iii) getTGD()  after fitting to training data  get the global deviance for 
+#      the test data
 #  iv) TDG() comparing fitted TGD objects
 #   v) gamlssCV() for fitting k-folds cross validation
 #  vi) CV() comparing fitted CV objects
@@ -35,8 +37,8 @@ gamlssVGD <-function(formula = NULL,
                      newdata = NULL, 
                           ...)
  {
-#--------------------------------------------------------------------------------------
-#--------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 # this is to replicate rqres within gamlssVGD enviroment
 # it is used as in gamlss()
 rqres <- function (pfun = "pNO", 
@@ -49,12 +51,12 @@ rqres <- function (pfun = "pNO",
                       ... )
   { }
   body(rqres) <-  eval(quote(body(rqres)), envir = getNamespace("gamlss"))
-##---------------------------------------------------------------------------------------
-##---------------------------------------------------------------------------------------  
-##-------------------------------------------------------------------------------
+##------------------------------------------------------------------------------
+##------------------------------------------------------------------------------  
+##------------------------------------------------------------------------------
 ## main function starts here
-##-------------------------------------------------------------------------------
- sys_call <- sys.call() 
+##------------------------------------------------------------------------------
+   sys_call <- sys.call() 
 if (is.null(data))   stop("data should be set here")
 if (is.null(rand)&&is.null(newdata)) stop("rand or newdata should be set")
 if (!is.null(rand))
@@ -71,8 +73,8 @@ if (!is.null(rand))
      #  fname$rqres[[1]][["ymin"]]
         if (is.null(formula)) stop("no formula is set in gamlssVGD")        
         if (is.null(data)) stop("the data argument is needed in gamlssVGD")
-# FIT MODEL + predict ---------------------------------------------------------
-if (!is.null(rand))#  if `rand' is set do this ----------------------------------
+# FIT MODEL + predict ----------------------------------------------------------
+if (!is.null(rand))#  if `rand' is set do this ---------------------------------
  {
           m1 <- gamlss(formula=formula, sigma.formula = sigma.formula, 
                        nu.formula = nu.formula, tau.formula = tau.formula, 
@@ -238,7 +240,7 @@ getTGD<- function (object,   newdata = NULL, ...)
   #lpar <- sum(unlist(fname$parameter))
   if (is.null(newdata)) 
     stop("no newdata is set in VGD")
-  nfitted <- predictAll(object, newdata=newdata, ...)
+   nfitted <- predictAll(object, newdata=newdata, ...)
   if (is.null(nfitted$y)) stop("the response variables is missing in the newdata")
   
   if (fname$family[1] %in% .gamlss.bi.list)# if binomial

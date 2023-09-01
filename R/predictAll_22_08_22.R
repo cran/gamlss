@@ -90,7 +90,8 @@ gamlss.bi.list <- .gamlss.bi.list
   fname <- object$family[1]        
    npar <- length(object$parameters)
 ## geting the  response as character 
- ResCha <- as.character(object$mu.formula[2][[1]])
+ ResCha <- if(is.null(names(attr(object$mu.formula,"dataClass")[1]))) as.character(object$mu.formula[2][[1]])
+       else names(attr(object$mu.formula,"dataClass")[1])
  if (any(ResCha=="Surv")){
    ResCha <- ResCha[-which(ResCha=="Surv")]
  }
@@ -284,18 +285,21 @@ for (i in object$parameters)
   if   (output=="list")#  list
      {
        attr(listout, "family") <- object$family
+       attr(listout, "response") <- ResCha
        return(listout)  
      }
      if (output=="data.frame")# data.frame
      {
        df.out = as.data.frame(listout)
        attr(df.out, "family") <- object$family
+       attr(df.out, "response") <- ResCha
        return(df.out)
      }
      if (output=="matrix")# MATRIX 
      {
        m.out = as.matrix(as.data.frame(listout))
        attr(m.out, "family") <- object$family
+       attr(m.out, "response") <- ResCha
        return(m.out)
      }
 } ## END CASE (ii)
