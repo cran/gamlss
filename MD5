@@ -1,5 +1,6 @@
-688be0dda1c86084e3ea063f3526cc2b *DESCRIPTION
-34808696cb12d81e9c0c63ad1e49a5fa *NAMESPACE
+562f22e3ee0eaaf820e5ece37070674f *DESCRIPTION
+933a714f35094021b02a3a740db7addc *NAMESPACE
+c722f35b513c18b0a87740a57fce88c4 *NEWS.md
 3e7f619c799c37dc1ac3f522d8001b8d *R/DevianceIncr.R
 870c7b0d64c653f68e21877748f0726a *R/DropAddStepGAIC-Parallel.R
 699aa299551c32cfca458ffb5e716bde *R/FitTail.R
@@ -59,6 +60,7 @@ c2aebf11b88e2d80b38ed2e851edd598 *R/powerpoly.R
 881295546b9096c9f83c0770530c5ea3 *R/predict.gamlss_23_12_21.R
 39f168f4cd173ac8ad50de32c3c0de38 *R/predictAll_22_08_22.R
 973e5de178fee0b67f86b396afe33967 *R/print.R
+313532790c2af9098ac7f21da0788675 *R/prodist.R
 f2773cbc67a852e6c8dca92ec2744088 *R/profterm_18_05_13.R
 5535456ec2d8f51a3243dbec278f22a0 *R/pvc.R
 8c40171db25e445e8b2ba07146a98941 *R/qstats.R
@@ -78,8 +80,8 @@ be1ea537fe547782bc1eb0db5bf22cf7 *R/term.plot-new.R
 704b0b579cb9e498a9f61d2a2a9e8d21 *R/update.R
 767f62ba9e28e5313735438becc801f6 *R/vcov-gamlss.R
 3d57ef0f9ec4bc596d4df545d455fa2d *R/wp.R
-c1fcf78d584146a66fcfb30f81bc727e *README.md
-65c157f76518ff8a570012d868cb9787 *build/partial.rdb
+392d5e4c0f50513ef8052280093d900a *README.md
+7643ae5a94901e4480b9202d8997d035 *build/partial.rdb
 4141e4be5e9fb8dbb210a9b80a25b825 *inst/CITATION
 1a1b614cc0c9573e49607e8452ca9e29 *inst/doc/NEWS.txt
 da2afe100fb420c97493237dbe012ef1 *man/DevianceIncr.Rd
@@ -141,6 +143,7 @@ dd45fe3a915b83aa73d2dcba46e4c62b *man/plot2way.Rd
 a643680413bfda4766c2e6ecc6ed5616 *man/polyS.Rd
 cb80a6c13a6923333ad7927086b420a4 *man/predict.gamlss.Rd
 7649e8e68da7e9b0b72ca540d8bba422 *man/print.gamlss.Rd
+f8c2f84f242d318a94ef23d179c45c94 *man/prodist.gamlss.Rd
 06ba65c5901986646c8401fed57e995c *man/prof.dev.Rd
 84f8538dad75d539e998376bb0e5c78b *man/prof.term.Rd
 df66f46ec3b439b3f1b2427394b2fd90 *man/ps.Rd
