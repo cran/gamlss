@@ -26,6 +26,15 @@ The GitHub repository is now hosted under the new `gamlss-dev` organization:
   <https://github.com/gamlss-dev/gamlss/>.
 
 
+
+# Version 5.4-23
+
+- Tim Cole's suggestion in  `predictAll()` is added. This is to deal with the problem when `mu` is fixed.
+
+- Tim Cole's suggestion in `summary()`is added. This to fix the problem when y~0, (that is, when there are no df's), to be incorporated in the `summary.gamlss()`.
+
+
+
 # Version 5.4-21
 
 * `predict()` do not  print the message "new prediction"

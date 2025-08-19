@@ -3,9 +3,6 @@
 ################################################################################
 ################################################################################
 # this work is a rethinking on Training, Validation and Test data sets analysis
-# gamlssVGD() is a combination of the original TGD()  TGD1() TGD2() functions
-# it fits a gamlss model at the training  data (rand==1) and calculates the global
-# deviance for the validation set (rand==2)
 # TO DO: a) It should also save the residuals for the validation test 
 #         Now done the validated residuals are saved as "residVal"
 #        b) gamlssCV() needs parallelization
@@ -14,14 +11,8 @@
 ################################################################################
 # functions
 ################################################################################
-#   i) gamlssVGD() for fitting a model and then calculate the deviance for the 
-#      extra data
-#  ii) VGD() for comparing fitted gamlssVHD models
-# iii) getTGD()  after fitting to training data get the global deviance for 
-#      the test data
-#  iv) TDG() comparing fitted TGD objects
-#   v) gamlssCV() for fitting k-folds cross validation
-#  vi) CV() comparing fitted CV objects
+#   i) gamlss_test() for fitting a model and then calculate the deviance and residual 
+#   for the test data
 ################################################################################
 #rand <- sample(2, 610, replace=T, prob=c(0.6,0.4)
 ################################################################################
@@ -30,7 +21,7 @@
 ################################################################################
 # VALIDATION: this is fitting a gamlss model on a sample from the original data 
 #  and calculated the Validated Global Deviance from the new Validated data
-gamlssVGD <-function(formula = NULL, 
+gamlss_test<-function(formula = NULL, 
                sigma.formula = ~1, 
                   nu.formula = ~1, 
                  tau.formula = ~1, 
